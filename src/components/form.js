@@ -1,0 +1,134 @@
+import React from "React"
+import styled from "styled-components"
+
+import RightArrowIcon from "../assets/img/right-arrow.png"
+
+let FormTitle = styled.h1`
+    padding-top: 120px;
+    font-size: 36px;
+    line-height: 43px;
+    margin: 0;
+`
+
+let FormSubtitle = styled.p`
+    font-size: 16px;
+    line-height: 19px;
+    max-width: 400px;
+    margin-bottom: 52px;
+`
+
+let FloatingLabel = styled.span`
+    position: absolute;
+    pointer-events: none;
+    left: 10px;
+    top: 20px;
+    transition: 0.2s ease all;
+    color: #ACADAE;
+    text-transform: uppercase;
+    font-size: 18px;
+`
+
+let StyledInput = styled.input`
+    display: block;
+    width: 100%;
+    border: 1px solid #ACADAE;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    font-size: 18px;
+    padding: 8px;
+    padding-top: 26px;
+    
+
+    &:focus ~ ${ FloatingLabel }
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
+
+    &:valid ~ ${ FloatingLabel }
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
+`
+
+
+let FormContainer = styled.div`
+    position: relative;
+    margin: 0 auto;
+    width: 80%;
+    height: 100%;
+
+`
+
+let FormRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+let FormControls = styled.div`
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+    right: 0px;
+`
+
+let StyledFormInput = styled.div`
+    position: relative;
+    flex-basis: ${({width}) => width ? width : 'auto'};
+    margin: 20px 0;
+`
+
+let StyledNextButton = styled.button`
+    display: flex;
+    position: relative;
+    background-color: #F2994A;
+    border-radius: 16px;
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    padding: 15px 28px;
+    align-self: flex-end;
+
+    img {
+        padding-left: 10px;
+        width: 16px;
+    }
+`
+
+let NextButton = (props) => (
+    <StyledNextButton onClick={ props.onClick }>
+        NEXT
+        <img src={ RightArrowIcon }></img>
+    </StyledNextButton>
+)
+
+let StyledPrevButton = styled.button`
+    border: none;
+    background: none;
+    color: #ACADAE;
+    align-self: flex-start;
+    font-size: 18px;
+`
+
+let PrevButton = (props) => (
+    <StyledPrevButton onClick={ props.onClick }>
+        PREVIOUS STEP
+    </StyledPrevButton>
+)
+
+let FormInput = (props) => (
+    <StyledFormInput width={ props.width }>
+        <StyledInput type={ props.type } required></StyledInput>
+        <FloatingLabel>{ props.placeholder }</FloatingLabel>
+    </StyledFormInput>
+)
+
+export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, FormControls}
