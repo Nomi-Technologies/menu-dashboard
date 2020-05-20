@@ -14,6 +14,7 @@ const Header = styled.div`
   right: 0%;
   top: 0px;
   background: #FFFFFF;
+  font-family: 'HK Grotesk Bold';
   /* TopBar */
   box-shadow: 0px 0px 20px rgba(0, 12, 54, 0.2);
   z-index: 10;

@@ -56,7 +56,6 @@ let StyledInput = styled.input`
     }
 `
 
-
 let FormContainer = styled.div`
     position: relative;
     margin: 0 auto;
@@ -73,11 +72,12 @@ let FormRow = styled.div`
 
 let FormControls = styled.div`
     display: flex;
-    flex-direction: row;
-    position: absolute;
-    bottom: 20px;
-    left: 0px;
-    right: 0px;
+    /* flex-direction: row; */
+    /* position: absolute; */
+    /* bottom: 20px; */
+    padding-top: 40px;
+    width: 100%;
+    justify-content: space-between;
 `
 
 let StyledFormInput = styled.div`
@@ -88,7 +88,6 @@ let StyledFormInput = styled.div`
 
 let StyledNextButton = styled.button`
     display: flex;
-    position: relative;
     background-color: #F2994A;
     border-radius: 16px;
     align-items: center;
@@ -96,6 +95,7 @@ let StyledNextButton = styled.button`
     color: white;
     padding: 15px 28px;
     align-self: flex-end;
+    margin-right: -20px;
 
     img {
         padding-left: 10px;

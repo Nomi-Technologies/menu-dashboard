@@ -1,5 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@font-face {
+    font-family: 'HK Grotesk Regular';
+    src: url("../assets/fonts/hk-grotesk/HKGrotesk-SemiBold.otf");
+}
+
+@font-face {
+    font-family: 'HK Grotesk Bold';
+    src: url("../assets/fonts/hk-grotesk/HKGrotesk-Bold.otf");
+}
+
+
+h1, h2, h3, h4 {
+    font-family: 'HK Grotesk Bold';
+}
 
 body {
-    font-family: 'Questrial', sans-serif;
+    font-family: 'HK Grotesk Regular';
+}
+
+input, button {
+    font-family: 'HK Grotesk Bold';
 }

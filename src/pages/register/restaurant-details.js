@@ -7,6 +7,8 @@ import { Container, Column, ImageColumn } from "../../components/grid"
 
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, PrevButton } from "../../components/form"
 
+import { RestaurantProgress } from "../../components/registration-progress"
+
 let SideBar = styled(Column)`
     background-color: #F2994A;
 `
@@ -27,8 +29,8 @@ let FormColumn = styled(Column)`
 const RestaurantDetails = () => (
     <Layout>
         <Container>
-            <SideBar width='33%'>
-
+            <SideBar width='33%' style={{ "background-color": "white"}}>
+                <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress>
             </SideBar>
             <FormColumn>
                 <FormContainer>
