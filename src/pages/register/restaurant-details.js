@@ -3,6 +3,8 @@ import styled from "styled-components"
 
 import Layout from "../../components/layout"
 
+import navigate from "@reach/router"
+
 import { Container, Column, ImageColumn } from "../../components/grid"
 
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, PrevButton } from "../../components/form"
@@ -30,7 +32,8 @@ const RestaurantDetails = () => (
     <Layout>
         <Container>
             <SideBar width='33%' style={{ "background-color": "white"}}>
-                <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress>
+                {/* TODO: Add restaurant progress later */}
+                {/* <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress> */}
             </SideBar>
             <FormColumn>
                 <FormContainer>
@@ -52,8 +55,8 @@ const RestaurantDetails = () => (
                         <FormInput width='45%' name='yelp-profile' placeholder='yelp profile (optional)'></FormInput>    
                     </FormRow>
                     <FormControls>
-                        <PrevButton/>
-                        <NextButton/>
+                        <PrevButton destination='contact-info'/>
+                        <NextButton destination='review'/>
                     </FormControls>
                 </FormContainer>
             </FormColumn>

@@ -3,7 +3,8 @@ import styled from "styled-components"
 
  const Container = styled.div`
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     width: 100vw;
     flex-direction: row;
  `
@@ -11,7 +12,6 @@ import styled from "styled-components"
  const Column = styled.div`
    flex-basis: ${({width}) => width ? width : 'auto'};
    flex-grow: ${({width}) => width ? 0 : 1};
-   height: 100%;
    
  `
 

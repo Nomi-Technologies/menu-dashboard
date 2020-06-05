@@ -3,6 +3,8 @@ import styled from "styled-components"
 
 import RightArrowIcon from "../assets/img/right-arrow.png"
 
+import { navigate } from "@reach/router"
+
 let FormTitle = styled.h1`
     padding-top: 120px;
     font-size: 36px;
@@ -104,9 +106,15 @@ let StyledNextButton = styled.button`
 `
 
 let NextButton = (props) => (
-    <StyledNextButton onClick={ props.onClick }>
+    <StyledNextButton onClick = { () => navigate(props.destination) }>
         NEXT
         <img src={ RightArrowIcon }></img>
+    </StyledNextButton>
+)
+
+let DoneButton = (props) => (
+    <StyledNextButton o onClick = { () => navigate(props.destination) }>
+        DONE
     </StyledNextButton>
 )
 
@@ -119,16 +127,16 @@ let StyledPrevButton = styled.button`
 `
 
 let PrevButton = (props) => (
-    <StyledPrevButton onClick={ props.onClick }>
+    <StyledPrevButton  onClick = { () => navigate(props.destination) }>
         PREVIOUS STEP
     </StyledPrevButton>
 )
 
 let FormInput = (props) => (
     <StyledFormInput width={ props.width }>
-        <StyledInput type={ props.type } required></StyledInput>
+        <StyledInput type={ props.type } onChange={ props.onChange } required></StyledInput>
         <FloatingLabel>{ props.placeholder }</FloatingLabel>
     </StyledFormInput>
 )
 
-export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, FormControls}
+export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls}

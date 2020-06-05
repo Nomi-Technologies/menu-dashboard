@@ -46,7 +46,7 @@ const ContactInfo = () => (
                     </FormRow>
 
                     <FormControls>
-                        <NextButton/>
+                        <NextButton destination='restaurant-details'/>
                     </FormControls>
                 </FormContainer>
             </FormColumn>
