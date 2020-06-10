@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { updateDish } from '../../util/client'
+import { updateDish, getDish } from '../../util/client'
 
 import styled from "styled-components"
 import { Column, Table } from 'react-virtualized'
@@ -14,33 +14,54 @@ import CheckIconOrange from "../../assets/img/check-orange.png"
 
 const StyledMenuTable = styled.div`
     width: 100%;
+    max-width: 100%;
     transition: 0.5s ease-in-out all;
     margin-bottom: 20px;
-
-    input {
-        width: 100%;
-        height: 100%;
-        padding-left: 8px;
-    }
 `
 
 
 const TableCell = styled.div`
     display: flex;
     min-height: 48px;
-    padding: 10px 5px;
     box-sizing: border-box;
     align-items: center;
+    padding-right: 10px;
+    text-overflow: ellipsis;
+    min-width: 0px;
+    max-width: 100%;
+
+    input, textarea {
+        width: 100%;
+        height: 50%;
+        padding-left: 8px;
+        font-size: 16px;
+        resize: none;
+    }
+
+    input, textarea:focus {
+        position: relative;
+        height: auto;
+        overflow: wrap;
+    }
+
+    p {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 `
 
 const TableRow = styled.div`
     position: relative;
     width: 100%;
     display: flex;
+    min-width: 0px;
     flex-direction: row;
     box-sizing: border-box;
     padding-left: 52px;
     background-color: #f9f9f9;
+    
 
     ${TableCell}:nth-child(1) {
         flex-basis: 20%;
@@ -82,7 +103,8 @@ const StyledItemRow = styled(TableRow)`
 const ItemRow = ({ item }) => {
     const [displayMenu, setDisplayMenu] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [updatedItem, setUpdatedItem] = useState(item)
+    const [name, setName] = useState(item.name)
+    const [description, setDescription] = useState(item.description)
 
     const toggleMenu = () => {
         if(!displayMenu) {
@@ -101,10 +123,15 @@ const ItemRow = ({ item }) => {
 
     const submit = () => {
         // send update to API from edit field
-        updateDish(item.id, updatedItem).then(() => {
+        updateDish(item.id, {name: name, description: description}).then(() => {
             setEditMode(false)
+        }).catch((err) => {
+            getDish(item.id).then((oldItem) => {
+                setName(oldItem.name)
+                setDescription(oldItem.description)
+            })
+            console.error(err)
         })
-        
     }
 
     return (
@@ -114,23 +141,32 @@ const ItemRow = ({ item }) => {
                 (
                     <>
                         <TableCell>
-                            { item.name }
+                            <p>
+                                { name }
+                            </p>
+                            
                         </TableCell>
                         <TableCell>
-                            { item.description }
+                            <p>
+                                { description }
+                            </p>
+                            
                         </TableCell>
                         <TableCell>
-                            { allergen_list(item.tags) }
+                            <p>
+                                { allergen_list(item.tags) }
+                            </p>
+                            
                             <img className='edit' src={ EditIconGrey } onClick={ toggleMenu }/>
                         </TableCell>  
                     </>
                 ) : (
                     <>
                         <TableCell>
-                            <input name='name' defaultValue={ item.name } onChange={(event) => { updatedItem.name = event.target.value; setUpdatedItem(updatedItem) } }/>
+                            <input name='name' defaultValue={ name } onChange={(event) => { setName(event.target.value) } }/>
                         </TableCell>
                         <TableCell>
-                            <input name='description' defaultValue={ item.description } onChange={(event) => { updatedItem.descriipition = event.target.value; setUpdatedItem(updatedItem) } }/>
+                            <textarea name='description' defaultValue={ description } onChange={(event) => { setDescription(event.target.value) } }/>
                         </TableCell>
                         <TableCell>
                             { allergen_list(item.tags) }
@@ -346,6 +382,7 @@ const MenuControls = styled.div`
         color: white;
         align-self: flex-end;
         text-align: center;
+        font-size: 14px;
 
         .new-dish {
             background-color: #F3A35C;

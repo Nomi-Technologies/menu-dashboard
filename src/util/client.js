@@ -17,6 +17,11 @@ export const getDishes = () => {
     return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
 }
 
+export const getDish = (id) => {
+    let token = retrieveUserToken(); // get user auth token
+    return axios.get(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
+}
+
 export const updateDish = (id, data) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.put(ROOT_URL + '/dishes/' + id, data, {headers: {Authorization: `Bearer ${token}`}})

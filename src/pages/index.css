@@ -17,6 +17,6 @@ body {
     font-family: 'HK Grotesk Regular';
 }
 
-input, button {
+input, button, textarea {
     font-family: 'HK Grotesk Bold';
 }
