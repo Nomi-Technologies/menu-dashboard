@@ -10,7 +10,7 @@ import { Container, Column, ImageColumn } from "../../components/grid"
 
 import { MenuTable } from "../../components/dashboard/menu-table"
 
-import { getDishes } from "../../util/client"
+import Client from "../../util/client"
 
 
 
@@ -34,46 +34,11 @@ let Content = styled.div`
 
 `
 
-// let MenuData = {
-//     "Appetizers": [
-//         {
-//             name: "Pizza",
-//             description: "Pizza. That's all.",
-//             allergens: ["Egg", "Dairy", "Shellfish"]
-//         },
-//         {
-//             name: "Pizza Again",
-//             description: "Pizza. That's all.",
-//             allergens: ["Egg", "Dairy", "Shellfish"]
-//         },
-//         {
-//             name: "Pizza One More Time",
-//             description: "Pizza. That's all.",
-//             allergens: ["Egg", "Shellfish"]
-//         },
-//     ],
-//     "Pastas": [
-//         {
-//             name: "Linguini",
-//             description: "Flat bois",
-//             allergens: ["Egg"]
-//         },
-//         {
-//             name: "Spaghet",
-//             description: "Who touch",
-//             allergens: []
-//         },
-
-//     ]
-// }
-
-// console.log(MenuData)
-
 const MenuPage = () => {
     const [menuData, setMenuData] = useState()
 
     useEffect(() => {
-        getDishes().then((response) => {
+        Client.getDishes().then((response) => {
             setMenuData(response.data)
             console.log(response.data)
         })

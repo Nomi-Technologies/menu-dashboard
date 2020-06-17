@@ -2,6 +2,7 @@ import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
 import styled from "styled-components"
+import { retrieveUserToken } from "../util/auth"
 
 
 const Header = styled.div`
@@ -69,8 +70,16 @@ export default () => (
         Team
       </li>
     </ul>
+
+    { retrieveUserToken() !== null ? 
+      (
+        <LoginButton to='profile'>Your Profile</LoginButton>
+      ) : (
+        <LoginButton to='login'>Member Login</LoginButton>
+      )
     
-      <LoginButton to='login'>Member Login</LoginButton>
+    }
+    
 
 
   </Header>

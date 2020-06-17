@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { updateDish, getDish } from '../../util/client'
+import Client from '../../util/client'
 
 import styled from "styled-components"
 import { Column, Table } from 'react-virtualized'
@@ -123,10 +123,10 @@ const ItemRow = ({ item }) => {
 
     const submit = () => {
         // send update to API from edit field
-        updateDish(item.id, {name: name, description: description}).then(() => {
+        Client.updateDish(item.id, {name: name, description: description}).then(() => {
             setEditMode(false)
         }).catch((err) => {
-            getDish(item.id).then((oldItem) => {
+            Client.getDish(item.id).then((oldItem) => {
                 setName(oldItem.name)
                 setDescription(oldItem.description)
             })
@@ -144,7 +144,6 @@ const ItemRow = ({ item }) => {
                             <p>
                                 { name }
                             </p>
-                            
                         </TableCell>
                         <TableCell>
                             <p>

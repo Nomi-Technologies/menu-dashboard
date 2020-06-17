@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { FormButton, ButtonRow } from "./buttons"
 import { navigate } from "@reach/router"
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls } from "../components/form"
-import { login } from "../util/client"
+import Client from "../util/client"
 import { saveUserToken } from "../util/auth"
 
 
@@ -55,7 +55,7 @@ const LoginForm = () => {
     let [loginError, setLoginError] = useState(false)
 
     const loginUser = () => {
-        login(email, password).then((response) => {
+        Client.login(email, password).then((response) => {
             console.log(response.data)
             saveUserToken(response.data['token'])
             setLoginError(false)
