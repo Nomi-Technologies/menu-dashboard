@@ -57,7 +57,6 @@ const MenuPage = () => {
           }
       }
       Client.setMenu(lines)
-      alert('Success!');
     }
 
     function onFileChange(event) {
