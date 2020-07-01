@@ -12,21 +12,31 @@ export default class Client {
             password: pass
         })
     }
-    
+
     static getDishes = () => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
     }
-    
+
     static getDish = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
-    
+
     static updateDish = (id, data) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.put(ROOT_URL + '/dishes/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
     }
-    
-}
 
+    static setMenu = (data) => {
+        let token = retrieveUserToken();
+        return axios.post(ROOT_URL + '/uploadMenuCSV',
+        {
+          data: data
+        },
+        {
+          headers: {Authorization: `Bearer ${token}`}
+        }
+        )
+    }
+}
