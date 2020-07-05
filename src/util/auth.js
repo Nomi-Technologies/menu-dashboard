@@ -1,8 +1,10 @@
+const windowGlobal = typeof window !== 'undefined' && window
+
 export const saveUserToken = (token) => {
-    localStorage.setItem('authToken', token);
+    windowGlobal.localStorage.setItem('authToken', token);
 }
 
 export const retrieveUserToken = () => {
-    const token = localStorage.getItem('authToken')
+    const token = windowGlobal.localStorage.getItem('authToken')
     return token ? token : null
 }
