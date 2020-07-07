@@ -1,9 +1,9 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 
 import Layout from "../../components/layout"
 import { Container, Column, ImageColumn } from "../../components/grid"
-import {} from "../../components/dashboard/account-info"
+import Populate from "../../components/dashboard/populate"
 
 import {
   FormInput,
@@ -108,12 +108,6 @@ let StyleButton = styled.button`
   margin-top: 200px;
 `
 
-let SaveButton = props => (
-  <StyleButton o onClick={() => navigate(props.destination)}>
-    Save
-  </StyleButton>
-)
-
 const account = () => (
   <Layout>
     <Wrapper>
@@ -135,13 +129,12 @@ const account = () => (
 
         <GreyBar>
           <InfoTitle>Personal Info</InfoTitle>
-          <FormContainer>
+          <Populate></Populate>
+          {/* <FormContainer>
             <FormRow>
-              <FormInput
-                width="48%"
-                name="first-name"
-                placeholder="first name"
-              ></FormInput>
+              <FormInput width="48%" name="first-name" placeholder="first name">
+                {displayFirst}
+              </FormInput>
               <FormInput
                 width="48%"
                 name="last-name"
@@ -164,7 +157,7 @@ const account = () => (
             </FormRow>
 
             <SaveButton destination="" />
-          </FormContainer>
+          </FormContainer> */}
         </GreyBar>
       </Container>
     </Wrapper>
