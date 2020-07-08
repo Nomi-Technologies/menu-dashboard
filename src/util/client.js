@@ -28,21 +28,41 @@ export default class Client {
 
   static updateDish = (id, data) => {
     let token = retrieveUserToken() // get user auth token
+    console.log(
+      axios.put(ROOT_URL + "/dishes/" + id, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    )
     return axios.put(ROOT_URL + "/dishes/" + id, data, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
 
-  static getPersonalInfo = id => {
+  static getPersonalInfo = () => {
     let token = retrieveUserToken() // get user auth token
-    return axios.get(ROOT_URL + "/user/" + id, {
+    return axios.get(ROOT_URL + "/user/details/", {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
 
   static updatePersonalInfo = (id, data) => {
+    console.log("data", data)
     let token = retrieveUserToken() // get user auth token
-    return axios.put(ROOT_URL + "/user/" + id, data, {
+    return axios.put(ROOT_URL + "/user/details/" + id, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static getRestaurantInfo = id => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.get(ROOT_URL + "/restaurants/me", id, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static updateRestaurantInfo = (id, data) => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.put(ROOT_URL + "/restaurants/me/" + id, data, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
