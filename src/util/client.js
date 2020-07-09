@@ -27,6 +27,37 @@ export default class Client {
         return axios.put(ROOT_URL + '/dishes/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
     }
 
+    static createDish = (data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.post(ROOT_URL + '/dishes/', data, {headers: {Authorization: `Bearer ${token}`}})
+    }  
+    
+    static deleteDish = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.delete(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static updateCategory = (id, data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.put(ROOT_URL + '/categories/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static createCategory = (data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.post(ROOT_URL + '/categories/', data, {headers: {Authorization: `Bearer ${token}`}})
+    }  
+    
+    static deleteCategory = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.delete(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static getCategory = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+}
+
     static setMenu = (data) => {
         let token = retrieveUserToken();
         return axios.post(ROOT_URL + '/uploadMenuCSV',
