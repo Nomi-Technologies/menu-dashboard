@@ -39,6 +39,7 @@ const MenuPage = () => {
 
     useEffect(() => {
         Client.getDishes().then((response) => {
+            console.log("menu init")
             setMenuData(response.data)
             console.log(response.data)
         })
