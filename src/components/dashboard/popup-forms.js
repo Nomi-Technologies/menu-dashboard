@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {FormInput} from "../form"
 import { FormButton, ButtonRow } from "../buttons" 
 
+import {Dropdown} from "./dropdown"
+
 import Client from '../../util/client'
 
 import styled from "styled-components"
@@ -36,25 +38,15 @@ const Container = styled.div`
 
 const NewDishForm = (props) => {
     const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
-    const [categoryId, setCategoryId] = useState(112);
-     
-    //for debugging
-    /*
-    useEffect(() => {
-        Client.getDishes().then((res) => {
-            console.log(res)
-        })
-    });
-    */
+    const [categoryId, setCategoryId] = useState(0);
 
     const createDish = () => {
         let dishData = {
             name: name,
             description: description,
-            categoryId: 113,
+            categoryId: categoryId,
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -73,11 +65,17 @@ const NewDishForm = (props) => {
         }
     }
 
+    const updateCategorySelection = (category) => {
+        console.log("category selection updated")
+        console.log(category)
+        setCategoryId(category.id)
+    }
+
     return (
         <StyledModal>
             <Container>
                 <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                <FormInput placeholder='menu category' name='category' type='category' onChange={ (event) => {setCategory(event.target.value)} }/>
+                <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
                 <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
                 <FormInput placeholder="00.00" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                 <ButtonRow>
@@ -96,11 +94,19 @@ const EditDishForm = (props) => {
     const [price, setPrice] = useState(0);
     const [categoryId, setCategoryId] = useState(props.dish.categoryId);
 
+    useEffect(() => {
+        Client.getCategory(categoryId).then((res) => {
+            console.log(res.data)
+            setCategory(res.data.name)
+        })
+    }, []);
+
     const updateDish = () => {
+        console.log("here")
         let dishData = {
             name: name,
             description: description,
-            categoryId: 113,
+            categoryId: categoryId,
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -124,11 +130,17 @@ const EditDishForm = (props) => {
         }
     }
 
+    const updateCategorySelection = (category) => {
+        console.log("category selection updated")
+        console.log(category)
+        setCategoryId(category.id)
+    }
+
     return (
         <StyledModal>
             <Container>
                 <FormInput placeholder={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                <FormInput placeholder='menu category' name='category' type='category' onChange={ (event) => {setCategory(event.target.value)} }/>
+                <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
                 <FormInput placeholder={description} name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
                 <FormInput placeholder="00.00" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                 <ButtonRow>
