@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { retrieveUserToken } from './auth'
 
-// const ROOT_URL = 'https://dashboard.heroku.com/apps/nomi-menu-service/api'
-const ROOT_URL = 'http://localhost:3000/api'
+const ROOT_URL = process.env.API_URL
 
 
 export default class Client {
