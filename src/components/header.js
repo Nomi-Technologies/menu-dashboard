@@ -1,6 +1,6 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { retrieveUserToken } from "../util/auth"
 
@@ -54,33 +54,37 @@ const LoginButton = styled(Link)`
 `
 
 
-export default () => (
-  <Header>
-    <ul>
-      <li>
-        Mission
-      </li>
-      <li>
-        Product
-      </li>
-      <li>
-        Pricing
-      </li>
-      <li>
-        Team
-      </li>
-    </ul>
+export default () => {
+  const [loggedIn, setLoggedIn] = useState(false)
+  
+  useEffect(() => {
+    setLoggedIn(retrieveUserToken() !== null)
+  }, [])
 
-    { retrieveUserToken() !== null ? 
-      (
-        <LoginButton to='profile'>Your Profile</LoginButton>
-      ) : (
-        <LoginButton to='login'>Member Login</LoginButton>
-      )
-    
-    }
-    
+  return (
+    <Header>
+      <ul>
+        <li>
+          Mission
+        </li>
+        <li>
+          Product
+        </li>
+        <li>
+          Pricing
+        </li>
+        <li>
+          Team
+        </li>
+      </ul>
 
-
-  </Header>
-)
+      { loggedIn ? 
+        (
+          <LoginButton to='profile'>Your Profile</LoginButton>
+        ) : (
+          <LoginButton to='login'>Member Login</LoginButton>
+        )
+      }
+    </Header>
+  )
+}
