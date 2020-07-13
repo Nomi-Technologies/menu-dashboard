@@ -134,7 +134,7 @@ let PrevButton = (props) => (
 
 let FormInput = (props) => (
     <StyledFormInput width={ props.width }>
-        <StyledInput type={ props.type } onChange={ props.onChange } required></StyledInput>
+        <StyledInput type={ props.type } onChange={ props.onChange } value={ props.value } required></StyledInput>
         <FloatingLabel>{ props.placeholder }</FloatingLabel>
     </StyledFormInput>
 )

@@ -77,7 +77,7 @@ const NewDishForm = (props) => {
                 <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
                 <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
                 <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
-                <FormInput placeholder="00.00" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                 <ButtonRow>
                     <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                     <FormButton text='Submit' onClick = {createDish} />    
@@ -139,10 +139,10 @@ const EditDishForm = (props) => {
     return (
         <StyledModal>
             <Container>
-                <FormInput placeholder={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
+                <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
                 <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
-                <FormInput placeholder={description} name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
-                <FormInput placeholder="00.00" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                <FormInput placeholder="Description" value={category} name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
+                <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                 <ButtonRow>
                     <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                     <FormButton text='Submit' onClick = {updateDish} />    
