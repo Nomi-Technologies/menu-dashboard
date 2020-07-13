@@ -56,8 +56,7 @@ export default class Client {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
-}
-
+    
     static setMenu = (data) => {
         let token = retrieveUserToken();
         return axios.post(ROOT_URL + '/uploadMenuCSV',
