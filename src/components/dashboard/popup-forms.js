@@ -141,7 +141,7 @@ const EditDishForm = (props) => {
             <Container>
                 <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
                 <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
-                <FormInput placeholder="Description" value={category} name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
+                <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
                 <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                 <ButtonRow>
                     <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    

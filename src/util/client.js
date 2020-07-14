@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { retrieveUserToken } from './auth'
 
-const ROOT_URL = process.env.API_URL
+const ROOT_URL = "http://localhost:3000/api"
 
 
 export default class Client {
@@ -14,6 +14,7 @@ export default class Client {
 
     static getDishes = () => {
         let token = retrieveUserToken(); // get user auth token
+        console.log(ROOT_URL + '/dishes-by-category')
         return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
     }
 
@@ -56,7 +57,7 @@ export default class Client {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
-    
+
     static setMenu = (data) => {
         let token = retrieveUserToken();
         return axios.post(ROOT_URL + '/uploadMenuCSV',
