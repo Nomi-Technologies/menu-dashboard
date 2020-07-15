@@ -107,14 +107,14 @@ let StyledNextButton = styled.button`
 `
 
 let NextButton = (props) => (
-    <StyledNextButton onClick = { () => navigate(props.destination) }>
+    <StyledNextButton onClick = { props.onClick }>
         NEXT
         <img src={ RightArrowIcon }></img>
     </StyledNextButton>
 )
 
 let DoneButton = (props) => (
-    <StyledNextButton o onClick = { () => navigate(props.destination) }>
+    <StyledNextButton onClick = { props.onClick }>
         DONE
     </StyledNextButton>
 )
@@ -128,7 +128,7 @@ let StyledPrevButton = styled.button`
 `
 
 let PrevButton = (props) => (
-    <StyledPrevButton  onClick = { () => navigate(props.destination) }>
+    <StyledPrevButton  onClick = { () => navigate(props.destination, {state: props.state}) }>
         PREVIOUS STEP
     </StyledPrevButton>
 )
@@ -140,4 +140,9 @@ let FormInput = (props) => (
     </StyledFormInput>
 )
 
-export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls}
+let FormError = styled.p`
+    color: red;
+    margin: 0px;
+`
+
+export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}

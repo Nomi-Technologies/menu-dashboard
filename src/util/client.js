@@ -66,12 +66,26 @@ export default class Client {
     static setMenu = (data) => {
         let token = retrieveUserToken();
         return axios.post(ROOT_URL + '/uploadMenuCSV',
-        {
-          data: data
-        },
-        {
-          headers: {Authorization: `Bearer ${token}`}
-        }
+            {
+            data: data
+            },
+            {
+            headers: {Authorization: `Bearer ${token}`}
+            }
         )
     }
+
+    static registerRestaurant = (data) => {
+        return axios.post(ROOT_URL + '/restaurants/register', data)
+    }
+
+    static registerUser = (data) => {
+        return axios.post(ROOT_URL + '/user/register', data)
+    }
+
+    static checkEmail = (email) => {
+        return axios.get(ROOT_URL + '/user/check-email', { params: { email: email } })
+    }
+
+    
 }

@@ -36,6 +36,10 @@ const Container = styled.div`
         padding: 0;
         margin: 0;
     }
+
+    ${ButtonRow} {
+        justify-content: space-between;
+    }
 `
 
 const InputField = styled.input`
