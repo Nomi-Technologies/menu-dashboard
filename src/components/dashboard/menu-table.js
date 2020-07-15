@@ -382,7 +382,7 @@ const MenuTable = () => {
     return (
         <>
             <MenuControls>
-                <input className='search' name='search' placeholder='DISH SEARCH'/> 
+                {/* <input className='search' name='search' placeholder='DISH SEARCH'/>  */}
                 <div className='buttons'>
                     <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div> 
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>               

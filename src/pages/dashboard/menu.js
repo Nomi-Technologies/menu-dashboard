@@ -84,7 +84,7 @@ const MenuPage = () => {
                 <Column>
                     <Content>
                         <MenuTitle >{ MenuTitleText }</MenuTitle>
-                        <input type="file" accept=".csv" onChange={ onFileChange }/ >
+                        {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                         <MenuTable menu={ menuData }/>
                     </Content>
                 </Column>
