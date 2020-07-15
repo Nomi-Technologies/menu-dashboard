@@ -93,24 +93,42 @@ const StyledTagsForm = styled.div`
     }
 `
 
-const TagsForm = ({ dish }) => {
-    const [tags, setTags] = useState([])
+const TagsForm = ({ tags, setTags }) => {
+    const [allTags, setAllTags] = useState([])
     const [selectedTags, setSelectedTags] = useState([])
 
     useEffect(() => {
         Client.getTags().then((response) => {
-            setTags(response.data);
+            setAllTags(response.data);
         })
 
-        if(dish != null) {
+        if(tags != null) {
             let builtSelectedTags = []
-            dish.tags.map((tag) => {
+            tags.map((tag) => {
                 builtSelectedTags.push(tag.id)
             })
 
             setSelectedTags(builtSelectedTags)
         }
     }, [])
+
+    // update tags based on checkbox
+    const updateSelectedTags = (tagId) => {
+        let newSelectedTags = [...selectedTags]
+        if(!selectedTags.includes(tagId)) {
+            newSelectedTags.push(tagId)
+            setSelectedTags(newSelectedTags)
+        } else {
+            const index = selectedTags.indexOf(tagId);
+            if (index > -1) {
+                newSelectedTags.splice(index, 1);
+                setSelectedTags(newSelectedTags)
+            }
+        }
+
+        // update dishes tags
+        setTags(newSelectedTags)
+    }
 
     return( 
         <StyledTagsForm>
@@ -119,9 +137,9 @@ const TagsForm = ({ dish }) => {
             </h1>
             <div className='tags'>
                 {
-                    tags ? tags.map((item, index) => (
-                        <div className='tag'>
-                            <input type="checkbox" name={ item.id } key={ item.id } checked={ selectedTags.includes(item.id) ? true : false }/>
+                    allTags ? allTags.map((item, index) => (
+                        <div key={ item.id } className='tag'>
+                            <input type="checkbox" name={ item.id } key={ item.id } checked={ selectedTags.includes(item.id) ? true : false } onChange={ (event) => { updateSelectedTags(item.id) } }/>
                             <p>{ item.name }</p>
                         </div>
                     )) : null
@@ -136,12 +154,14 @@ const NewDishForm = (props) => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [categoryId, setCategoryId] = useState(0);
+    const [dishTags, setDishTags] = useState([]);
 
     const createDish = () => {
         let dishData = {
             name: name,
             description: description,
             categoryId: categoryId,
+            dishTags: dishTags
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -175,7 +195,7 @@ const NewDishForm = (props) => {
                     <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
                     <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
                     <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
-                    <TagsForm></TagsForm>
+                    <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                         <FormButton text='Submit' onClick = {createDish} />    
@@ -192,6 +212,9 @@ const EditDishForm = (props) => {
     const [description, setDescription] = useState(props.dish.description);
     const [price, setPrice] = useState(0);
     const [categoryId, setCategoryId] = useState(props.dish.categoryId);
+    const [dishTags, setDishTags] = useState(props.dish.tags);
+
+    console.log(props)
 
     useEffect(() => {
         Client.getCategory(categoryId).then((res) => {
@@ -206,6 +229,7 @@ const EditDishForm = (props) => {
             name: name,
             description: description,
             categoryId: categoryId,
+            dishTags: dishTags
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -244,7 +268,7 @@ const EditDishForm = (props) => {
                     <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
                     <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
                     <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
-                    <TagsForm dish={ props.dish }></TagsForm>
+                    <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                         <FormButton text='Submit' onClick = {updateDish} />    

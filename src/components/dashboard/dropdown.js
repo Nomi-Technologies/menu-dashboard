@@ -5,6 +5,25 @@ import { FormButton, ButtonRow } from "../buttons"
 
 import Client from '../../util/client'
 
+import styled from "styled-components"
+
+const Categories = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .category {
+        padding: 5px 10px;
+        margin: 5px 0;
+        border: 2px solid #F3A35C;
+        box-sizing: border-box;
+        flex-basis: 45%; 
+        border-radius: 5px;   
+        cursor: pointer;
+        color: #F3A35C;
+    }
+`
 
 class Dropdown extends React.Component {
     constructor(props) {
@@ -36,6 +55,7 @@ class Dropdown extends React.Component {
 
     showDropdown (event) {
         event.preventDefault()
+        console.log("showDropdown")
         this.setState({displayList: true}, () => {
             document.addEventListener('click', this.hideDropdown)
         });
@@ -58,13 +78,13 @@ class Dropdown extends React.Component {
                 <FormButton text={this.state.currentSelection} onClick={this.showDropdown} />
                 {
                 this.state.displayList ? (
-                    <ul>
+                    <Categories>
                         {
                             this.state.data.map((item) => (
-                                <li key={item.id} onClick={()=>this.select(item)}>{item.name}</li>
+                                <div className='category' key={item.id} onClick={()=>this.select(item)}>{item.name}</div>
                             ))
                         }
-                    </ul>
+                    </Categories>
                 ) : null
                 }
             </>
