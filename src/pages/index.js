@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/layout"
@@ -13,11 +13,13 @@ import "./index.css"
 
 const IndexPage = () => {
 
-  if(retrieveUserToken() != null) {
-    navigate("/dashboard/menu")
-  } else {
-    navigate("/login")
-  }
+  useEffect(() => {
+    if(retrieveUserToken() != null) {
+      navigate("/dashboard/menu")
+    } else {
+      navigate("/login")
+    }
+  }, [])
 
   return(<></>)
 }
