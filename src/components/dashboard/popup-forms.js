@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import {FormInput} from "../form"
-import { FormButton, ButtonRow } from "../buttons" 
+import { FormInput } from "../form"
+import { FormButton } from "../buttons"
 
 import {Dropdown} from "./dropdown"
 
@@ -10,19 +10,24 @@ import Client from '../../util/client'
 import styled from "styled-components"
 
 const StyledModal = styled.div`
-    position: fixed;
+    margin-top: 40px;
+    position: absolute;
+    width: 80%;
     z-index: 100;
     box-shadow: 2px 2px 2px grey;
+    border-radius: 5px;
     background-color: white;
+    left: 50%;
+    transform: translate(-50%, 0);
 `
 
 const Container = styled.div`
-    margin-top: 24px;
+    display: block;
     display: flex;
     margin: 0 auto;
-    width: 90%; 
     flex-direction: column;
-    max-width: 400px;
+    width: 85%;
+    margin-top: 30px;
 
     input {
         border: none;
@@ -35,6 +40,96 @@ const Container = styled.div`
         margin: 0;
     }
 ` 
+
+const ButtonRow = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+
+    button {
+        margin-left: 10px;
+    }
+`
+
+const ModalBackground = styled.div`
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    left: 280px;
+    background-color: rgba(10, 10, 10, 0.5);
+    z-index: 1;
+`
+
+const StyledTagsForm = styled.div`
+    h1 {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 auto;
+
+        .tag {
+            flex-basis: 50%;
+            display: flex;
+            justify-content: middle;
+            box-sizing: border-box;
+            padding: 5px 0;
+    
+            input {
+                display: inline-block;
+            }
+        
+            p {
+                padding-left: 10px;
+                display: inline-block;
+                margin: 0;
+            }
+        }
+    }
+`
+
+const TagsForm = ({ dish }) => {
+    const [tags, setTags] = useState([])
+    const [selectedTags, setSelectedTags] = useState([])
+
+    useEffect(() => {
+        Client.getTags().then((response) => {
+            setTags(response.data);
+        })
+
+        if(dish != null) {
+            let builtSelectedTags = []
+            dish.tags.map((tag) => {
+                builtSelectedTags.push(tag.id)
+            })
+
+            setSelectedTags(builtSelectedTags)
+        }
+    }, [])
+
+    return( 
+        <StyledTagsForm>
+            <h1 className='header'>
+                Allergens
+            </h1>
+            <div className='tags'>
+                {
+                    tags ? tags.map((item, index) => (
+                        <div className='tag'>
+                            <input type="checkbox" name={ item.id } key={ item.id } checked={ selectedTags.includes(item.id) ? true : false }/>
+                            <p>{ item.name }</p>
+                        </div>
+                    )) : null
+                }
+            </div>
+        </StyledTagsForm>
+     )
+}
 
 const NewDishForm = (props) => {
     const [name, setName] = useState('');
@@ -72,18 +167,22 @@ const NewDishForm = (props) => {
     }
 
     return (
-        <StyledModal>
-            <Container>
-                <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
-                <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
-                <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
-                <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                    <FormButton text='Submit' onClick = {createDish} />    
-                </ButtonRow>
-            </Container>
-        </StyledModal>
+        <>
+            <ModalBackground/>
+            <StyledModal>
+                <Container>
+                    <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
+                    <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
+                    <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
+                    <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                    <TagsForm></TagsForm>
+                    <ButtonRow>
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
+                        <FormButton text='Submit' onClick = {createDish} />    
+                    </ButtonRow>
+                </Container>
+            </StyledModal>
+        </>
     )
 }
 
@@ -137,18 +236,22 @@ const EditDishForm = (props) => {
     }
 
     return (
-        <StyledModal>
-            <Container>
-                <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
-                <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
-                <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
-                <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                    <FormButton text='Submit' onClick = {updateDish} />    
-                </ButtonRow>
-            </Container>
-        </StyledModal>
+        <>
+            <ModalBackground/>
+            <StyledModal>
+                <Container>
+                    <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
+                    <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
+                    <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
+                    <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                    <TagsForm dish={ props.dish }></TagsForm>
+                    <ButtonRow>
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
+                        <FormButton text='Submit' onClick = {updateDish} />    
+                    </ButtonRow>
+                </Container>
+            </StyledModal>
+        </>
     )
 }
 
@@ -177,15 +280,18 @@ const NewCategoryForm = (props) => {
     }
 
     return (
-        <StyledModal>
-            <Container>
-                <FormInput placeholder='category' name='category' onChange={ (event) => {setName(event.target.value)} }/>
-                <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                    <FormButton text='Submit' onClick = {createCategory} />    
-                </ButtonRow>
-            </Container>
-        </StyledModal>
+        <>
+            <ModalBackground/>
+            <StyledModal>
+                <Container>
+                    <FormInput placeholder='category' name='category' onChange={ (event) => {setName(event.target.value)} }/>
+                    <ButtonRow>
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
+                        <FormButton text='Submit' onClick = {createCategory} />    
+                    </ButtonRow>
+                </Container>
+            </StyledModal>
+        </>
     )
 }
 
@@ -217,15 +323,18 @@ const EditCategoryForm = (props) => {
     }
 
     return (
-        <StyledModal>
-            <Container>
-                <FormInput placeholder={name} name='category' onChange={ (event) => {setName(event.target.value)} }/>
-                <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                    <FormButton text='Submit' onClick = {updateCategory} />    
-                </ButtonRow>
-            </Container>
-        </StyledModal>
+        <>
+            <ModalBackground/>
+            <StyledModal>
+                <Container>
+                    <FormInput placeholder="Name" name='category' value={name} onChange={ (event) => {setName(event.target.value)} }/>
+                    <ButtonRow>
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
+                        <FormButton text='Submit' onClick = {updateCategory} />    
+                    </ButtonRow>
+                </Container>
+            </StyledModal>
+        </>
     )
 }
 

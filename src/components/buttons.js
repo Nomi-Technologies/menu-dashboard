@@ -25,7 +25,8 @@ let StyledButton = styled.button`
 let ButtonRow = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: right;
+    align-items: flex-end;
 `
 
 const FormButton = (props) => (

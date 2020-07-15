@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { retrieveUserToken } from './auth'
 
-const ROOT_URL = "http://localhost:3000/api"
+const ROOT_URL = process.env.GATSBY_API_URL
 
 
 export default class Client {
@@ -56,6 +56,11 @@ export default class Client {
     static getCategory = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static getTags = () => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/tags', {headers: {Authorization: `Bearer ${token}`}})
     }
 
     static setMenu = (data) => {

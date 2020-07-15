@@ -63,21 +63,6 @@ export default () => {
 
   return (
     <Header>
-      <ul>
-        <li>
-          Mission
-        </li>
-        <li>
-          Product
-        </li>
-        <li>
-          Pricing
-        </li>
-        <li>
-          Team
-        </li>
-      </ul>
-
       { loggedIn ? 
         (
           <LoginButton to='profile'>Your Profile</LoginButton>

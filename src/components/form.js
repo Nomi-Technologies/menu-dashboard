@@ -39,6 +39,7 @@ let StyledInput = styled.input`
     font-size: 18px;
     padding: 8px;
     padding-top: 26px;
+    box-sizing: border-box; 
     
 
     &:focus ~ ${ FloatingLabel }

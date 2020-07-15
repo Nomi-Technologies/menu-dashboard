@@ -332,7 +332,6 @@ const MenuTable = () => {
 
     useEffect(() => {
         Client.getDishes().then((response) => {
-            console.log("menu init")
             setMenuData(response.data)
         })
     }, [])
@@ -342,23 +341,7 @@ const MenuTable = () => {
             console.log("update menu")
             console.log(res.data)
             setMenuData(null)
-            setMenuData(res.data)
-
-            /*
-            console.log(menuData)
-            var i
-            for (i=0; i<res.data.length; i++) {
-                if (res.data[i].id === categoryId) {
-                    break
-                }
-            }
-            console.log(i)
-            var newMenuData = menuData
-            newMenuData[i].dishes = []
-            setMenuData(newMenuData)
-            setMenuData(res.data)
-            */
-            
+            setMenuData(res.data)            
         })
     };
 
@@ -441,7 +424,7 @@ const MenuTable = () => {
                 </HeaderRow>
                    { 
                         menuData ? menuData.map((item) => (
-                            <TableCategory key={item.id} category={item} updateMenu={updateMenu}
+                            <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
                         )) : ''
                     }
