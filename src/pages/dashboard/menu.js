@@ -38,36 +38,6 @@ let Content = styled.div`
 
 const MenuPage = () => {
     const [menuData, setMenuData] = useState()
-    const [selectedFile, setSelectedFile] = useState(null)
-    let fileReader
-
-    function parseFile() {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
-
-      for (var i=1; i<allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j=0; j<headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''))
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.setMenu(lines)
-    }
-
-    function onFileChange(event) {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
-        }
-    }
 
     useEffect(() => {
         Client.getDishes().then((response) => {
@@ -84,7 +54,6 @@ const MenuPage = () => {
                 <Column>
                     <Content>
                         <MenuTitle >{ MenuTitleText }</MenuTitle>
-                        {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                         <MenuTable menu={ menuData }/>
                     </Content>
                 </Column>

@@ -64,7 +64,7 @@ const TableRow = styled.div`
     box-sizing: border-box;
     padding-left: 52px;
     background-color: #f9f9f9;
-    
+
 
     ${TableCell}:nth-child(1) {
         flex-basis: 20%;
@@ -80,7 +80,7 @@ const TableRow = styled.div`
 
     ${TableCell}:nth-child(4) {
         flex-basis: 10%;
-    }    
+    }
 
     &:last-child {
         border-bottom-left-radius: 8px;
@@ -145,7 +145,7 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish }) => {
                     <TableCell>
                         <img className='edit' src={EditIconGrey} onClick={()=>toggleEditDish(item)}/>
                         <img className='delete' src={CheckIconGrey} onClick={deleteItem}/>
-                    </TableCell> 
+                    </TableCell>
                 </>
             }
         </StyledItemRow>
@@ -183,7 +183,7 @@ const allergen_list = ( allergens ) => {
     }
 
     let list = ''
-    
+
     allergens.forEach((element, idx) => {
         if(idx !== allergens.length - 1) {
             list += element.name + ', '
@@ -214,7 +214,7 @@ const StyledTableCategory = styled.div`
             max-height: none;
             display: block;
         }
-        
+
         .collapse-icon {
             transform: none;
         }
@@ -262,11 +262,11 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
             </CategoryHeaderRow>
             <div className='items'>
                 {
-                    category ? 
+                    category ?
                     category.dishes.map((item, index) => (
                         <ItemRow key={index} item={item} updateMenu={updateMenu}
                             catId={id} toggleEditDish={toggleEditDish}/>
-                    )) : 
+                    )) :
                     ''
                 }
             </div>
@@ -325,10 +325,13 @@ const MenuTable = () => {
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
-    const [showEditCategoryForm, setEditCategoryForm] = useState(false); 
+    const [showEditCategoryForm, setEditCategoryForm] = useState(false);
 
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
+
+    const [selectedFile, setSelectedFile] = useState(null)
+    let fileReader
 
     useEffect(() => {
         Client.getDishes().then((response) => {
@@ -341,7 +344,7 @@ const MenuTable = () => {
             console.log("update menu")
             console.log(res.data)
             setMenuData(null)
-            setMenuData(res.data)            
+            setMenuData(res.data)
         })
     };
 
@@ -379,15 +382,48 @@ const MenuTable = () => {
         setEditCategoryForm(false)
     }
 
+    const onFileChange = (event) => {
+        if(event.target.files){
+          setSelectedFile(event.target.files[0]);
+          fileReader = new FileReader();
+          fileReader.onloadend = parseFile;
+          fileReader.readAsText(event.target.files[0]);
+        }
+    }
+
+    const parseFile = () => {
+      const content = fileReader.result;
+      var allTextLines = content.split(/\r\n|\n/);
+      var headers = allTextLines[0].split(',');
+      var lines = [];
+
+      for (var i = 1; i < allTextLines.length; i++) {
+          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+          if (data.length == headers.length) {
+              var tarr = []
+              for (var j = 0; j < headers.length; j++) {
+                  tarr.push(data[j].replace(/['"]+/g, ''));
+              }
+              lines.push(tarr);
+          }
+      }
+      Client.setMenu(lines).then((res) => {
+          updateMenu();
+      }).catch((err) => {
+          console.log(err)
+      })
+    }
+
     return (
         <>
             <MenuControls>
                 {/* <input className='search' name='search' placeholder='DISH SEARCH'/>  */}
                 <div className='buttons'>
-                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div> 
-                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>               
+                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
+                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
+                    <input type="file" accept=".csv" onChange={ onFileChange }/ >
                 </div>
-            </MenuControls>  
+            </MenuControls>
             {
                 showNewDishForm ? (
                     <NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu}/>
@@ -422,7 +458,7 @@ const MenuTable = () => {
                         Allergens
                     </TableCell>
                 </HeaderRow>
-                   { 
+                   {
                         menuData ? menuData.map((item) => (
                             <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
@@ -433,4 +469,4 @@ const MenuTable = () => {
     )
 }
 
-export { MenuTable } 
+export { MenuTable }
