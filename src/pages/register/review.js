@@ -101,36 +101,42 @@ const Review = (props) =>
                     <FormContainer>
                         <FormTitle>Review setup information</FormTitle>
                         <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
-                            <InfoBox>
-                                <p className = 'infoTitle'>Admin Info</p>
-                                <p>
-                                    { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
-                                </p>
-                                <p>
-                                    { props.location.state.contactInfo.email }
-                                </p>
-                                <p>
-                                    { props.location.state.contactInfo.phone }
-                                </p>
-                            </InfoBox>
-                            <InfoBox>
-                                <p className = 'infoTitle'>Restaurant Info</p>
-                                <p>
-                                    { props.location.state.restaurantDetails.name }
-                                </p>
-                                <p>
-                                    { props.location.state.restaurantDetails.address }
-                                </p>
-                                <p>
-                                    { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
-                                </p>
-                                <p>
-                                    { props.location.state.restaurantDetails.phone }
-                                </p>
-                                <p>
-                                    { props.location.state.restaurantDetails.yelp }
-                                </p>
-                            </InfoBox>
+                        { 
+                                    props.location.state ? (
+                                        <>
+                                        <InfoBox>
+                                            <p className = 'infoTitle'>Admin Info</p>
+                                            <p>
+                                                { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
+                                            </p>
+                                            <p>
+                                                { props.location.state.contactInfo.email }
+                                            </p>
+                                            <p>
+                                                { props.location.state.contactInfo.phone }
+                                            </p>
+                                        </InfoBox>
+                                        <InfoBox>
+                                            <p className = 'infoTitle'>Restaurant Info</p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.name }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.address }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.phone }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.yelp }
+                                            </p>
+                                        </InfoBox> 
+                                        </>
+                                    ) : null
+                        }   
                         <FormControls>
                             <PrevButton destination='restaurant-details'/>
                             <DoneButton onClick={ submitRegistration }/>
