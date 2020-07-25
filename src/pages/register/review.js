@@ -122,7 +122,7 @@ const Review = (props) =>
                                                 { props.location.state.restaurantDetails.name }
                                             </p>
                                             <p>
-                                                { props.location.state.restaurantDetails.address }
+                                                { props.location.state.restaurantDetails.streetAddress }
                                             </p>
                                             <p>
                                                 { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }

@@ -65,7 +65,7 @@ const RestaurantDetails = (props) =>
                         <FormTitle>Restaurant Details</FormTitle>
                         <FormSubtitle>Details about your restaurant's location and services</FormSubtitle>
                         <FormRow>
-                            <FormInput width='100%' name='restuarant-name' placeholder='restuarant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}}></FormInput>    
+                            <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}}></FormInput>    
                         </FormRow>
                         <FormRow>
                             <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}}></FormInput>    
