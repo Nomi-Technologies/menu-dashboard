@@ -79,7 +79,7 @@ const LoginForm = () => {
             <ForgotPassword>Forgot password?</ForgotPassword>  
             <ButtonRow>
                 <FormButton text='Login' onClick={ loginUser }/>    
-                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('register/contact-info') } />    
+                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info') } />    
             </ButtonRow>
         </Container>
     )

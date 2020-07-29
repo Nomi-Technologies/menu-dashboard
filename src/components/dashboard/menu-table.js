@@ -10,8 +10,8 @@ import ArrowIcon from "../../assets/img/arrow_icon.png"
 import EditIconGrey from "../../assets/img/edit-grey.png"
 import EditIconOrange from "../../assets/img/edit-orange.png"
 
-import CheckIconGrey from "../../assets/img/check-black.png"
-import CheckIconOrange from "../../assets/img/check-orange.png"
+import EditIcon from "../../assets/img/edit-icon.png"
+import DeleteIcon from "../../assets/img/delete-icon.png"
 
 import {NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm} from "./popup-forms"
 
@@ -21,7 +21,6 @@ const StyledMenuTable = styled.div`
     transition: 0.5s ease-in-out all;
     margin-bottom: 20px;
 `
-
 
 const TableCell = styled.div`
     display: flex;
@@ -89,13 +88,13 @@ const TableRow = styled.div`
 
     .edit {
         position: absolute;
-        width: 11px;
+        width: 15px;
         right: 50px;
         cursor: pointer;
     }
     .delete {
         position: absolute;
-        width: 11px;
+        width: 15px;
         right: 20px;
         cursor: pointer;
     }
@@ -143,9 +142,9 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish }) => {
                         <p>{allergen_list(item.tags)}</p>
                     </TableCell>
                     <TableCell>
-                        <img className='edit' src={EditIconGrey} onClick={()=>toggleEditDish(item)}/>
-                        <img className='delete' src={CheckIconGrey} onClick={deleteItem}/>
-                    </TableCell>
+                        <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
+                        <img className='delete' src={DeleteIcon} onClick={deleteItem}/>
+                    </TableCell> 
                 </>
             }
         </StyledItemRow>
@@ -254,8 +253,8 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                     {
                         <>
                             {name}
-                            <img className='edit' src={EditIconOrange} onClick={()=>toggleEditCategory(category)}/>
-                            <img className='delete' src={CheckIconOrange} onClick={deleteCategory}/>
+                            <img className='edit' src={EditIcon} onClick={()=>toggleEditCategory(category)}/>
+                            <img className='delete' src={DeleteIcon} onClick={deleteCategory}/>
                         </>
                     }
                 </TableCell>

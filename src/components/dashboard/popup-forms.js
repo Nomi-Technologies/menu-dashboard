@@ -10,7 +10,7 @@ import Client from '../../util/client'
 import styled from "styled-components"
 
 const StyledModal = styled.div`
-    margin-top: 40px;
+    top: 100px;
     position: absolute;
     width: 80%;
     z-index: 100;

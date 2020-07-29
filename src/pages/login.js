@@ -19,7 +19,7 @@ const Login = () => (
   <Layout>
       <Container>
           <Column width='45%'>
-            <HeroText>New to Nomi?</HeroText>
+            <HeroText>Dine Confidently</HeroText>
             <LoginForm></LoginForm>
           </Column>
           <ImageColumn width='55%' background={ RestaurantBackgroundImage }></ImageColumn>
