@@ -14,7 +14,6 @@ export default class Client {
 
     static getDishes = () => {
         let token = retrieveUserToken(); // get user auth token
-        console.log(ROOT_URL + '/dishes-by-category')
         return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
     }
 

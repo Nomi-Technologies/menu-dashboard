@@ -362,4 +362,28 @@ const EditCategoryForm = (props) => {
     )
 }
 
-export {NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm}
+
+let StyledDeleteConfirmation = styled.div`
+    ${StyledModal} {
+        width: 50%;
+        top: 350px;
+    }
+`
+
+const DeleteConfirmation = ({ closeForm }) => (
+    <StyledDeleteConfirmation>
+        <ModalBackground/>
+        <StyledModal>
+            <Container>
+                Are you sure you want to delete this item?
+                <ButtonRow>
+                    <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>    
+                    <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>    
+                </ButtonRow>
+            </Container>
+            
+        </StyledModal>
+    </StyledDeleteConfirmation>
+)
+
+export {NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation}

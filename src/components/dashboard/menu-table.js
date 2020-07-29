@@ -13,7 +13,7 @@ import EditIconOrange from "../../assets/img/edit-orange.png"
 import EditIcon from "../../assets/img/edit-icon.png"
 import DeleteIcon from "../../assets/img/delete-icon.png"
 
-import {NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm} from "./popup-forms"
+import { NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation } from "./popup-forms"
 
 const StyledMenuTable = styled.div`
     width: 100%;
@@ -112,21 +112,11 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ item, updateMenu, catId, toggleEditDish }) => {
+const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
     const [name, setName] = useState(item.name)
     const [description, setDescription] = useState(item.description)
     const [id, setId] = useState(item.id)
     const [categoryId, setCategoryId] = useState(catId);
-
-    const deleteItem = () => {
-        console.log("in delete item")
-        Client.deleteDish(id).then((res) => {
-            console.log(res);
-            updateMenu(categoryId)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
 
     return (
         <StyledItemRow className='opened'>
@@ -143,7 +133,7 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish }) => {
                     </TableCell>
                     <TableCell>
                         <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
-                        <img className='delete' src={DeleteIcon} onClick={deleteItem}/>
+                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(id, "dish") }}/>
                     </TableCell> 
                 </>
             }
@@ -222,7 +212,7 @@ const StyledTableCategory = styled.div`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish }) => {
+const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation }) => {
     const [name, setName] = useState(category.name)
     const [open, setOpen] = useState(false);
     const [id, setId] = useState(category.id)
@@ -235,16 +225,6 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
         }
     }
 
-    const deleteCategory = () => {
-        console.log("in delete category")
-        Client.deleteCategory(id).then((res) => {
-            console.log(res);
-            updateMenu()
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-
     return (
         <StyledTableCategory className={ open ? 'open' : '' }>
             <CategoryHeaderRow>
@@ -254,7 +234,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                         <>
                             {name}
                             <img className='edit' src={EditIcon} onClick={()=>toggleEditCategory(category)}/>
-                            <img className='delete' src={DeleteIcon} onClick={deleteCategory}/>
+                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")}/>
                         </>
                     }
                 </TableCell>
@@ -264,7 +244,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                     category ? 
                     category.dishes.map((item, index) => (
                         <ItemRow key={index} item={item} updateMenu={updateMenu}
-                            catId={id} toggleEditDish={toggleEditDish}/>
+                            catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation}/>
                     )) : 
                     ''
                 }
@@ -317,6 +297,16 @@ const MenuControls = styled.div`
     }
 `
 
+function useAsyncState(initialValue) {
+    const [value, setValue] = useState(initialValue);
+    const setter = x =>
+      new Promise(resolve => {
+        setValue(x);
+        resolve(x);
+      });
+    return [value, setter];
+  }
+
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
     const [menuData, setMenuData] = useState()
@@ -325,7 +315,8 @@ const MenuTable = () => {
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false); 
-
+    const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false); 
+    const [toDelete, setToDelete] = useAsyncState({})
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
 
@@ -337,8 +328,6 @@ const MenuTable = () => {
 
     const updateMenu = (categoryId) => {
         Client.getDishes().then((res) => {
-            console.log("update menu")
-            console.log(res.data)
             setMenuData(null)
             setMenuData(res.data)            
         })
@@ -371,11 +360,51 @@ const MenuTable = () => {
         setEditCategoryForm(!showEditCategoryForm)
     }
 
+    const openDeleteConfirmation = (id, type) => {
+        if (!showDeleteConfirmation) {
+            closeAllForms() //if about to open form
+            setToDelete({id: id, type: type}).then(() => {
+                console.log("Set currentOnDelete")
+                setDeleteConfirmation(true)
+            })
+        }
+    }
+
+    const closeDeleteConfirmation = (shouldDelete) => {
+        if(shouldDelete) {
+            if(toDelete.type == "category") {
+                Client.deleteCategory(toDelete.id).then(() => {
+                    setToDelete({}).then(() => {
+                        setDeleteConfirmation(false).then(() => {
+                            updateMenu()
+                        })
+                    }).catch((err) => {
+                        console.error(err)
+                    })
+                })
+            }
+
+            if(toDelete.type == "dish") {
+                Client.deleteDish(toDelete.id).then(() => {
+                    setToDelete({}).then(() => {
+                        setDeleteConfirmation(false)
+                    })
+                }).catch((err) => {
+                    console.error(err)
+                })
+            }
+        } else {
+            setDeleteConfirmation(false)
+        }
+    }
+
+
     const closeAllForms = () => {
         setNewDishForm(false)
         setNewCategoryForm(false)
         setEditDishForm(false)
         setEditCategoryForm(false)
+        setDeleteConfirmation(false)
     }
 
     return (
@@ -409,6 +438,11 @@ const MenuTable = () => {
                         category={selectedCategory}/>
                 ) : null
             }
+            {
+                showDeleteConfirmation ? (
+                    <DeleteConfirmation closeForm={closeDeleteConfirmation}/>
+                ) : null
+            }
             <StyledMenuTable>
                 <HeaderRow>
                     <TableCell>
@@ -424,7 +458,7 @@ const MenuTable = () => {
                    { 
                         menuData ? menuData.map((item) => (
                             <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                                toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                                toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
                     }
             </StyledMenuTable>
