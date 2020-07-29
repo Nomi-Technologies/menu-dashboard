@@ -387,7 +387,9 @@ const MenuTable = () => {
             if(toDelete.type == "dish") {
                 Client.deleteDish(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
-                        setDeleteConfirmation(false)
+                        setDeleteConfirmation(false).then(() => {
+                            updateMenu()
+                        })
                     })
                 }).catch((err) => {
                     console.error(err)
