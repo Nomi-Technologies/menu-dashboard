@@ -255,6 +255,10 @@ const MenuControls = styled.div`
     justify-content: space-between;
     width: 100%;
 
+    .searchForm {
+        flex-basis: 50%;
+    }
+
     .search {
         padding: 10px 20px;
         background-color: #F9F9F9;
@@ -262,7 +266,7 @@ const MenuControls = styled.div`
         padding-left: 10px;
         border-radius: 8px;
         border: 2px #E3EBF2 solid;
-        flex-basis: 50%;
+        width: 100%;
     }
 
     .buttons {
@@ -316,6 +320,8 @@ const MenuTable = (props) => {
     const [selectedCategory, setSelectedCategory] = useState()
 
     const [selectedFile, setSelectedFile] = useState(null)
+
+    const [searchResults, setSearchResults] = useState(null)
     let fileReader
 
     useEffect(() => {
@@ -440,14 +446,58 @@ const MenuTable = (props) => {
       })
     }
 
+    const renderTableOutput = () => {
+        let displaySearchResults = false;
+        if (searchResults) {
+            displaySearchResults = (searchResults.length != 0);
+        }
+
+        return (displaySearchResults ? 
+            <div id="searchResults" > 
+                {
+                    searchResults.map((item, index) => (
+                        <ItemRow key={index} item={item} updateMenu={updateMenu}
+                            catId={item.category.id} toggleEditDish={toggleEditDishForm}/>
+                    ))
+                }
+            </div>
+            :
+            <div id='menuTable'>
+                {
+                    menuData ? menuData.map((item) => (
+                        <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
+                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                    )) : ''
+                }
+            </div>
+        )      
+    }
+ 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (document.getElementById('searchBox').value.trim() == '') {
+            setSearchResults(null);
+        } else {
+            Client.searchDishes(document.getElementById('searchBox').value)
+            .then((res) => {
+                setSearchResults(null);
+                setSearchResults(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
+    }
+
     return (
         <>
             <MenuControls>
-                {/* <input className='search' name='search' placeholder='DISH SEARCH'/>  */}
+                <form onSubmit={handleSearch} className='searchForm'>
+                    <input className='search' name='search' placeholder='Search Dishes...' id='searchBox' type='text' />
+                </form>
                 <div className='buttons'>
                     <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
-                    <input type="file" accept=".csv" onChange={ onFileChange }/ >
                 </div>
             </MenuControls>
             {
@@ -495,6 +545,10 @@ const MenuTable = (props) => {
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
                     }
+
+                   { 
+                    renderTableOutput() // show output for search
+                   }
             </StyledMenuTable>
         </>
     )
