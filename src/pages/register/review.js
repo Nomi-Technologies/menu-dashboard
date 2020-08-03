@@ -3,6 +3,11 @@ import styled from "styled-components"
 
 import Layout from "../../components/layout"
 
+import { navigate } from "@reach/router"
+
+import Client from '../../util/client'
+import { saveUserToken } from "../../util/auth"
+
 import { Container, Column, ImageColumn } from "../../components/grid"
 
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, DoneButton, FormControls, PrevButton } from "../../components/form"
@@ -49,73 +54,97 @@ let InfoBox = styled.div`
     }
 `
 
-let adminInfo = {
-    firstName: "Pratima",
-    lastName: "Manga",
-    email: "pratima@dinewithnomi.com",
-    phone: "(323) 123-4567"
-}
+const Review = (props) => 
+{
+    if(props.location.state == null || props.location.state.contactInfo == null) {
+        navigate('/register/contact-info')
+    } else {
+        if(props.location.state == null || props.location.state.restaurantDetails == null) {
+            navigate('/register/restaurant-details')
+        }
+    }
 
-let restaurantInfo = {
-    name: "Thai Cuising Express",
-    address: "1234 University Ave.",
-    city: "Los Angeles",
-    state: "CA",
-    zip: "90089",
-    phone: "(408) 123-4567",
-    url: "yelp.com/biz/thai-cuisine-express"
-}
 
-const Review = () => (
-    <Layout>
-        <Container>
-            <SideBar width='33%' style={{ "background-color": "white"}}>
-                {/* TODO: Add restaurant progress later */}
-                {/* <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress> */}
-            </SideBar>
-            <FormColumn>
-                <FormContainer>
-                    <FormTitle>Review setup information</FormTitle>
-                    <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
-                        <InfoBox>
-                            <p className = 'infoTitle'>Admin Info</p>
-                            <p>
-                                { adminInfo.firstName } { adminInfo.lastName }
-                            </p>
-                            <p>
-                                { adminInfo.email }
-                            </p>
-                            <p>
-                                { adminInfo.phone }
-                            </p>
-                        </InfoBox>
-                        <InfoBox>
-                            <p className = 'infoTitle'>Restaurant Info</p>
-                            <p>
-                                { restaurantInfo.name }
-                            </p>
-                            <p>
-                                { restaurantInfo.address }
-                            </p>
-                            <p>
-                                { restaurantInfo.city } { restaurantInfo.state } { restaurantInfo.zip }
-                            </p>
-                            <p>
-                                { restaurantInfo.phone }
-                            </p>
-                            <p>
-                                { restaurantInfo.url }
-                            </p>
-                        </InfoBox>
-                    <FormControls>
-                        <PrevButton destination='restaurant-details'/>
-                        <DoneButton destination='/'/>
-                    </FormControls>
-                </FormContainer>
-            </FormColumn>
-        </Container>
-    </Layout>
-  )
-  
-  export default Review
-  
+    const submitRegistration = () => {
+        Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
+            const restaurantId = response.data.id
+
+            console.log(response)
+
+            const userData = { 
+                ...props.location.state.contactInfo,
+                restaurantId: restaurantId,
+                role: "admin"
+            }
+
+            // register user
+            Client.registerUser(userData).then(() => {
+                let { email, password } = props.location.state.contactInfo
+                // log user in
+                Client.login(email, password).then((response) => {
+                    console.log(response.data)
+                    saveUserToken(response.data['token'])
+                    navigate('/dashboard/menu')
+                })
+            })
+        })
+    }
+
+    return (
+        <Layout>
+            <Container>
+                <SideBar width='33%' style={{ "background-color": "white"}}>
+                    {/* TODO: Add restaurant progress later */}
+                    {/* <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress> */}
+                </SideBar>
+                <FormColumn>
+                    <FormContainer>
+                        <FormTitle>Review setup information</FormTitle>
+                        <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
+                        { 
+                                    props.location.state ? (
+                                        <>
+                                        <InfoBox>
+                                            <p className = 'infoTitle'>Admin Info</p>
+                                            <p>
+                                                { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
+                                            </p>
+                                            <p>
+                                                { props.location.state.contactInfo.email }
+                                            </p>
+                                            <p>
+                                                { props.location.state.contactInfo.phone }
+                                            </p>
+                                        </InfoBox>
+                                        <InfoBox>
+                                            <p className = 'infoTitle'>Restaurant Info</p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.name }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.streetAddress }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.phone }
+                                            </p>
+                                            <p>
+                                                { props.location.state.restaurantDetails.yelp }
+                                            </p>
+                                        </InfoBox> 
+                                        </>
+                                    ) : null
+                        }   
+                        <FormControls>
+                            <PrevButton destination='restaurant-details'/>
+                            <DoneButton onClick={ submitRegistration }/>
+                        </FormControls>
+                    </FormContainer>
+                </FormColumn>
+            </Container>
+        </Layout>
+    )
+}
+export default Review;

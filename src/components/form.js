@@ -1,4 +1,4 @@
-import React from "React"
+import React from "react"
 import styled from "styled-components"
 
 import RightArrowIcon from "../assets/img/right-arrow.png"
@@ -31,28 +31,32 @@ let FloatingLabel = styled.span`
 `
 
 let StyledInput = styled.input`
-  display: block;
-  width: 100%;
-  border: 1px solid #acadae;
-  border-radius: 3px;
-  background-color: #ffffff;
-  font-size: 18px;
-  padding: 8px;
-  padding-top: 26px;
+    display: block;
+    width: 100%;
+    border: 1px solid #ACADAE;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    font-size: 18px;
+    padding: 8px;
+    padding-top: 26px;
+    box-sizing: border-box; 
+    
 
-  &:focus ~ ${FloatingLabel} {
-    top: 10px;
-    bottom: 30px;
-    font-size: 12px;
-    opacity: 1;
-  }
+    &:focus ~ ${ FloatingLabel }
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
 
-  &:valid ~ ${FloatingLabel} {
-    top: 10px;
-    bottom: 30px;
-    font-size: 12px;
-    opacity: 1;
-  }
+    &:valid ~ ${ FloatingLabel }
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
 `
 
 let FormContainer = styled.div`
@@ -101,17 +105,17 @@ let StyledNextButton = styled.button`
   }
 `
 
-let NextButton = props => (
-  <StyledNextButton onClick={() => navigate(props.destination)}>
-    NEXT
-    <img src={RightArrowIcon}></img>
-  </StyledNextButton>
+let NextButton = (props) => (
+    <StyledNextButton onClick = { props.onClick }>
+        NEXT
+        <img src={ RightArrowIcon }></img>
+    </StyledNextButton>
 )
 
-let DoneButton = props => (
-  <StyledNextButton onClick={() => navigate(props.destination)}>
-    DONE
-  </StyledNextButton>
+let DoneButton = (props) => (
+    <StyledNextButton onClick = { props.onClick }>
+        DONE
+    </StyledNextButton>
 )
 
 let StyledPrevButton = styled.button`
@@ -122,32 +126,22 @@ let StyledPrevButton = styled.button`
   font-size: 18px;
 `
 
-let PrevButton = props => (
-  <StyledPrevButton onClick={() => navigate(props.destination)}>
-    PREVIOUS STEP
-  </StyledPrevButton>
+let PrevButton = (props) => (
+    <StyledPrevButton  onClick = { () => navigate(props.destination, {state: props.state}) }>
+        PREVIOUS STEP
+    </StyledPrevButton>
 )
 
-let FormInput = props => (
-  <StyledFormInput width={props.width}>
-    <StyledInput
-      type={props.type}
-      onChange={props.onChange}
-      required
-      value={props.value}
-    ></StyledInput>
-    <FloatingLabel>{props.placeholder}</FloatingLabel>
-  </StyledFormInput>
+let FormInput = (props) => (
+    <StyledFormInput width={ props.width }>
+        <StyledInput type={ props.type } onChange={ props.onChange } value={ props.value } required></StyledInput>
+        <FloatingLabel>{ props.placeholder }</FloatingLabel>
+    </StyledFormInput>
 )
 
-export {
-  FormInput,
-  FormContainer,
-  FormTitle,
-  FormSubtitle,
-  FormRow,
-  NextButton,
-  PrevButton,
-  DoneButton,
-  FormControls,
-}
+let FormError = styled.p`
+    color: red;
+    margin: 0px;
+`
+
+export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}

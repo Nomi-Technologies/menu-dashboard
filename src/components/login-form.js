@@ -36,6 +36,10 @@ const Container = styled.div`
         padding: 0;
         margin: 0;
     }
+
+    ${ButtonRow} {
+        justify-content: space-between;
+    }
 `
 
 const InputField = styled.input`
@@ -75,7 +79,7 @@ const LoginForm = () => {
             <ForgotPassword>Forgot password?</ForgotPassword>  
             <ButtonRow>
                 <FormButton text='Login' onClick={ loginUser }/>    
-                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('register/contact-info') } />    
+                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info') } />    
             </ButtonRow>
         </Container>
     )

@@ -16,16 +16,13 @@ const HeroText = styled.p`
 
 const Login = () => (
   <Layout>
-    <Container>
-      <Column width="45%">
-        <HeroText>New to Nomi?</HeroText>
-        <LoginForm></LoginForm>
-      </Column>
-      <ImageColumn
-        width="55%"
-        background={RestaurantBackgroundImage}
-      ></ImageColumn>
-    </Container>
+      <Container>
+          <Column width='45%'>
+              <HeroText>Dine Confidently</HeroText>
+              <LoginForm></LoginForm>
+          </Column>
+          <ImageColumn width='55%' background={ RestaurantBackgroundImage }></ImageColumn>
+      </Container>
   </Layout>
 )
 

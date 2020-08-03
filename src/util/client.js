@@ -1,69 +1,117 @@
 import axios from "axios"
 import { retrieveUserToken } from "./auth"
 
-// const ROOT_URL = 'https://dashboard.heroku.com/apps/nomi-menu-service/api'
-const ROOT_URL = "http://localhost:3000/api"
+const ROOT_URL = process.env.GATSBY_API_URL
 
 export default class Client {
-  static login = (email, pass) => {
-    return axios.post(ROOT_URL + "/user/login", {
-      email: email,
-      password: pass,
-    })
-  }
+    static login = (email, pass) => {
+        return axios.post(ROOT_URL + '/user/login', {
+            email: email,
+            password: pass
+        })
+    }
 
-  static getDishes = () => {
-    let token = retrieveUserToken() // get user auth token
-    return axios.get(ROOT_URL + "/dishes-by-category", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static getDishes = () => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
+    }
 
-  static getDish = id => {
-    let token = retrieveUserToken() // get user auth token
-    return axios.get(ROOT_URL + "/dishes/" + id, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static getDish = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
 
-  static updateDish = (id, data) => {
-    let token = retrieveUserToken() // get user auth token
-    console.log(
-      axios.put(ROOT_URL + "/dishes/" + id, data, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    )
-    return axios.put(ROOT_URL + "/dishes/" + id, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static updateDish = (id, data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.put(ROOT_URL + '/dishes/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
+    }
 
-  static getPersonalInfo = () => {
+    static createDish = (data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.post(ROOT_URL + '/dishes/', data, {headers: {Authorization: `Bearer ${token}`}})
+    }  
+    
+    static deleteDish = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.delete(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static updateCategory = (id, data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.put(ROOT_URL + '/categories/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static createCategory = (data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.post(ROOT_URL + '/categories/', data, {headers: {Authorization: `Bearer ${token}`}})
+    }  
+    
+    static deleteCategory = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.delete(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static getCategory = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static getTags = () => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/tags', {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static setMenu = (data) => {
+        let token = retrieveUserToken();
+        return axios.post(ROOT_URL + '/uploadMenuCSV',
+            {
+            data: data
+            },
+            {
+            headers: {Authorization: `Bearer ${token}`}
+            }
+        )
+    }
+
+    static registerRestaurant = (data) => {
+        return axios.post(ROOT_URL + '/restaurants/register', data)
+    }
+
+    static registerUser = (data) => {
+        return axios.post(ROOT_URL + '/user/register', data)
+    }
+
+    static checkEmail = (email) => {
+        return axios.get(ROOT_URL + '/user/check-email', { params: { email: email } })
+    }
+
+    static getPersonalInfo = () => {
     let token = retrieveUserToken() // get user auth token
     return axios.get(ROOT_URL + "/user/details/", {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
 
-  static updatePersonalInfo = (id, data) => {
-    console.log("data", data)
-    let token = retrieveUserToken() // get user auth token
-    return axios.put(ROOT_URL + "/user/details/" + id, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static updatePersonalInfo = (id, data) => {
+      console.log("data", data)
+      let token = retrieveUserToken() // get user auth token
+      return axios.put(ROOT_URL + "/user/details/" + id, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    }
 
-  static getRestaurantInfo = id => {
-    let token = retrieveUserToken() // get user auth token
-    return axios.get(ROOT_URL + "/restaurants/me", id, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static getRestaurantInfo = id => {
+      let token = retrieveUserToken() // get user auth token
+      return axios.get(ROOT_URL + "/restaurants/me", id, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    }
 
-  static updateRestaurantInfo = (id, data) => {
-    let token = retrieveUserToken() // get user auth token
-    return axios.put(ROOT_URL + "/restaurants/me/" + id, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
+    static updateRestaurantInfo = (id, data) => {
+      let token = retrieveUserToken() // get user auth token
+      return axios.put(ROOT_URL + "/restaurants/me/" + id, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    }
+    
 }

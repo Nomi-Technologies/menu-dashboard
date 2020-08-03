@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Component } from 'react';
+import ReactDOM from 'react-dom'
 
 import Client from "../../util/client"
 
@@ -9,8 +10,10 @@ import ArrowIcon from "../../assets/img/arrow_icon.png"
 import EditIconGrey from "../../assets/img/edit-grey.png"
 import EditIconOrange from "../../assets/img/edit-orange.png"
 
-import CheckIconGrey from "../../assets/img/check-black.png"
-import CheckIconOrange from "../../assets/img/check-orange.png"
+import EditIcon from "../../assets/img/edit-icon.png"
+import DeleteIcon from "../../assets/img/delete-icon.png"
+
+import { NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation } from "./popup-forms"
 
 const StyledMenuTable = styled.div`
   width: 100%;
@@ -54,38 +57,49 @@ const TableCell = styled.div`
 `
 
 const TableRow = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  min-width: 0px;
-  flex-direction: row;
-  box-sizing: border-box;
-  padding-left: 52px;
-  background-color: #f9f9f9;
+    position: relative;
+    width: 100%;
+    display: flex;
+    min-width: 0px;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding-left: 52px;
+    background-color: #f9f9f9;
+    
 
-  ${TableCell}:nth-child(1) {
-    flex-basis: 20%;
-  }
+    ${TableCell}:nth-child(1) {
+        flex-basis: 20%;
+    }
 
-  ${TableCell}:nth-child(2) {
-    flex-basis: 50%;
-  }
+    ${TableCell}:nth-child(2) {
+        flex-basis: 40%;
+    }
 
-  ${TableCell}:nth-child(3) {
-    flex-basis: 30%;
-  }
+    ${TableCell}:nth-child(3) {
+        flex-basis: 30%;
+    }
 
-  &:last-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
+    ${TableCell}:nth-child(4) {
+        flex-basis: 10%;
+    }    
 
-  .edit {
-    position: absolute;
-    width: 11px;
-    right: 20px;
-    cursor: pointer;
-  }
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .edit {
+        position: absolute;
+        width: 15px;
+        right: 50px;
+        cursor: pointer;
+    }
+    .delete {
+        position: absolute;
+        width: 15px;
+        right: 20px;
+        cursor: pointer;
+    }
 `
 
 const StyledItemRow = styled(TableRow)`
@@ -98,87 +112,33 @@ const StyledItemRow = styled(TableRow)`
   }
 `
 
-const ItemRow = ({ item }) => {
-  const [displayMenu, setDisplayMenu] = useState(false)
-  const [editMode, setEditMode] = useState(false)
-  const [name, setName] = useState(item.name)
-  const [description, setDescription] = useState(item.description)
+const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
+    const [name, setName] = useState(item.name)
+    const [description, setDescription] = useState(item.description)
+    const [id, setId] = useState(item.id)
+    const [categoryId, setCategoryId] = useState(catId);
 
-  const toggleMenu = () => {
-    if (!displayMenu) {
-      setDisplayMenu(true)
-    } else {
-      setDisplayMenu(false)
-    }
-
-    console.log(displayMenu)
-  }
-
-  const enableEdit = () => {
-    setEditMode(true)
-    toggleMenu()
-  }
-
-  const submit = () => {
-    // send update to API from edit field
-    Client.updateDish(item.id, { name: name, description: description })
-      .then(() => {
-        setEditMode(false)
-      })
-      .catch(err => {
-        Client.getDish(item.id).then(oldItem => {
-          setName(oldItem.name)
-          setDescription(oldItem.description)
-        })
-        console.error(err)
-      })
-  }
-
-  return (
-    <StyledItemRow className="opened">
-      {!editMode ? (
-        <>
-          <TableCell>
-            <p>{name}</p>
-          </TableCell>
-          <TableCell>
-            <p>{description}</p>
-          </TableCell>
-          <TableCell>
-            <p>{allergen_list(item.tags)}</p>
-
-            <img className="edit" src={EditIconGrey} onClick={toggleMenu} />
-          </TableCell>
-        </>
-      ) : (
-        <>
-          <TableCell>
-            <input
-              name="name"
-              defaultValue={name}
-              onChange={event => {
-                setName(event.target.value)
-              }}
-            />
-          </TableCell>
-          <TableCell>
-            <textarea
-              name="description"
-              defaultValue={description}
-              onChange={event => {
-                setDescription(event.target.value)
-              }}
-            />
-          </TableCell>
-          <TableCell>
-            {allergen_list(item.tags)}
-            <img className="edit" src={CheckIconGrey} onClick={submit} />
-          </TableCell>
-        </>
-      )}
-      <OptionMenu display={displayMenu} onEdit={enableEdit} />
-    </StyledItemRow>
-  )
+    return (
+        <StyledItemRow className='opened'>
+            {
+                <>
+                    <TableCell>
+                        <p>{name}</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>{description}</p>
+                    </TableCell>
+                    <TableCell>
+                        <p>{allergen_list(item.tags)}</p>
+                    </TableCell>
+                    <TableCell>
+                        <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
+                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(id, "dish") }}/>
+                    </TableCell> 
+                </>
+            }
+        </StyledItemRow>
+    )
 }
 
 const HeaderRow = styled(TableRow)`
@@ -205,22 +165,23 @@ const CategoryHeaderRow = styled(TableRow)`
   }
 `
 
-const allergen_list = allergens => {
-  if (allergens.length == 0) {
-    return "--"
-  }
-
-  let list = ""
-
-  allergens.forEach((element, idx) => {
-    if (idx != allergens.length - 1) {
-      list += element.name + ", "
-    } else {
-      list += element.name
+const allergen_list = ( allergens ) => {
+    if(allergens.length === 0) {
+        return '--'
     }
   })
 
-  return list
+    let list = ''
+    
+    allergens.forEach((element, idx) => {
+        if(idx !== allergens.length - 1) {
+            list += element.name + ', '
+        } else {
+            list += element.name
+        }
+    });
+
+    return list
 }
 
 const StyledTableCategory = styled.div`
@@ -251,109 +212,45 @@ const StyledTableCategory = styled.div`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ category, categoryTitle }) => {
-  const [open, setOpen] = useState(false)
-  const [displayMenu, setDisplayMenu] = useState(false)
-  const [editMode, setEditMode] = useState(false)
+const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation }) => {
+    const [name, setName] = useState(category.name)
+    const [open, setOpen] = useState(false);
+    const [id, setId] = useState(category.id)
 
-  const toggleOpen = () => {
-    if (open) {
-      setOpen(false)
-    } else {
-      setOpen(true)
+    const toggleOpen = () => {
+        if(open) {
+            setOpen(false)
+        } else {
+            setOpen(true)
+        }
     }
-  }
 
-  const toggleMenu = () => {
-    if (!displayMenu) {
-      setDisplayMenu(true)
-    } else {
-      setDisplayMenu(false)
-    }
-  }
-
-  const enableEdit = () => {
-    setEditMode(true)
-    toggleMenu()
-  }
-
-  const submit = () => {
-    // send update to API from edit field
-    setEditMode(false)
-  }
-
-  return (
-    <StyledTableCategory className={open ? "open" : ""}>
-      <CategoryHeaderRow>
-        <TableCell>
-          <img className="collapse-icon" src={ArrowIcon} onClick={toggleOpen} />
-          {!editMode ? (
-            <>
-              {categoryTitle}
-              <img className="edit" src={EditIconOrange} onClick={toggleMenu} />
-            </>
-          ) : (
-            <>
-              <input
-                className="edit-field"
-                defaultValue={categoryTitle}
-              ></input>
-              <img className="edit" src={CheckIconOrange} onClick={submit} />
-            </>
-          )}
-        </TableCell>
-        <OptionMenu display={displayMenu} onEdit={enableEdit} />
-      </CategoryHeaderRow>
-      <div className="items">
-        {category
-          ? category.dishes.map((item, index) => (
-              <ItemRow key={index} item={item} />
-            ))
-          : ""}
-      </div>
-    </StyledTableCategory>
-  )
-}
-
-const StyledOptionMenu = styled.div`
-  position: absolute;
-  background-color: white;
-  border-radius: 8px;
-  color: black;
-  box-shadow: 2px 2px 2px grey;
-  font-size: 14px;
-  right: -20px;
-  top: 40px;
-  overflow: hidden;
-  z-index: 4;
-
-  display: ${({ shouldDisplay }) => (shouldDisplay ? "block" : "none")};
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    padding: 5px 10px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  }
-`
-
-const OptionMenu = ({ display, onEdit }) => {
-  return (
-    <StyledOptionMenu shouldDisplay={display}>
-      <ul>
-        <li onClick={onEdit}>Edit</li>
-        <li>Delete</li>
-      </ul>
-    </StyledOptionMenu>
-  )
+    return (
+        <StyledTableCategory className={ open ? 'open' : '' }>
+            <CategoryHeaderRow>
+                <TableCell>
+                    <img className='collapse-icon' src={ ArrowIcon } onClick={ toggleOpen }/>
+                    {
+                        <>
+                            {name}
+                            <img className='edit' src={EditIcon} onClick={()=>toggleEditCategory(category)}/>
+                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")}/>
+                        </>
+                    }
+                </TableCell>
+            </CategoryHeaderRow>
+            <div className='items'>
+                {
+                    category ? 
+                    category.dishes.map((item, index) => (
+                        <ItemRow key={index} item={item} updateMenu={updateMenu}
+                            catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation}/>
+                    )) : 
+                    ''
+                }
+            </div>
+        </StyledTableCategory>
+    )
 }
 
 const MenuControls = styled.div`
@@ -400,37 +297,175 @@ const MenuControls = styled.div`
   }
 `
 
-// Overall component which renders the table as a list of menu categories
-const MenuTable = ({ menu }) => {
-  return (
-    <>
-      <MenuControls>
-        <input className="search" name="search" placeholder="DISH SEARCH" />
-        <div className="buttons">
-          <div className="new-category">New Menu Category</div>
-          <div className="new-dish">New Dish</div>
-        </div>
-      </MenuControls>
-      <StyledMenuTable>
-        <HeaderRow>
-          <TableCell>Title</TableCell>
-          <TableCell>Description</TableCell>
-          <TableCell>Allergens</TableCell>
-        </HeaderRow>
-        {/* <TableCategory categoryTitle='Appetizers' category={ menu['Appetizers'] }></TableCategory>
-                <TableCategory categoryTitle='Pastas' category={ menu['Pastas'] }></TableCategory> */}
+function useAsyncState(initialValue) {
+    const [value, setValue] = useState(initialValue);
+    const setter = x =>
+      new Promise(resolve => {
+        setValue(x);
+        resolve(x);
+      });
+    return [value, setter];
+  }
 
-        {menu
-          ? menu.map(item => (
-              <TableCategory
-                categoryTitle={item.name}
-                category={item}
-              ></TableCategory>
-            ))
-          : ""}
-      </StyledMenuTable>
-    </>
-  )
+// Overall component which renders the table as a list of menu categories
+const MenuTable = () => {
+    const [menuData, setMenuData] = useState()
+
+    const [showNewDishForm, setNewDishForm] = useState(false);
+    const [showNewCategoryForm, setNewCategoryForm] = useState(false);
+    const [showEditDishForm, setEditDishForm] = useState(false);
+    const [showEditCategoryForm, setEditCategoryForm] = useState(false); 
+    const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false); 
+    const [toDelete, setToDelete] = useAsyncState({})
+    const [selectedDish, setSelectedDish] = useState()
+    const [selectedCategory, setSelectedCategory] = useState()
+
+    useEffect(() => {
+        Client.getDishes().then((response) => {
+            setMenuData(response.data)
+        })
+    }, [])
+
+    const updateMenu = (categoryId) => {
+        Client.getDishes().then((res) => {
+            setMenuData(null)
+            setMenuData(res.data)            
+        })
+    };
+
+    const toggleNewDishForm = () => {
+        console.log("toggle new dish form")
+        if (!showNewDishForm) closeAllForms() //if about to open form
+        setNewDishForm(!showNewDishForm)
+    }
+
+    const toggleNewCategoryForm = () => {
+        console.log("toggle new category form")
+        if (!showNewCategoryForm) closeAllForms() //if about to open form
+        setNewCategoryForm(!showNewCategoryForm)
+    }
+
+    const toggleEditDishForm = (dish) => {
+        console.log("toggle edit dish form")
+        console.log(dish)
+        if (typeof dish !== 'undefined') setSelectedDish(dish)
+        if (!showEditDishForm) closeAllForms() //if about to open form
+        setEditDishForm(!showEditDishForm)
+    }
+
+    const toggleEditCategoryForm = (category) => {
+        console.log("toggle edit category form")
+        if (typeof category !== 'undefined') setSelectedCategory(category)
+        if (!showEditCategoryForm) closeAllForms() //if about to open form
+        setEditCategoryForm(!showEditCategoryForm)
+    }
+
+    const openDeleteConfirmation = (id, type) => {
+        if (!showDeleteConfirmation) {
+            closeAllForms() //if about to open form
+            setToDelete({id: id, type: type}).then(() => {
+                console.log("Set currentOnDelete")
+                setDeleteConfirmation(true)
+            })
+        }
+    }
+
+    const closeDeleteConfirmation = (shouldDelete) => {
+        if(shouldDelete) {
+            if(toDelete.type == "category") {
+                Client.deleteCategory(toDelete.id).then(() => {
+                    setToDelete({}).then(() => {
+                        setDeleteConfirmation(false).then(() => {
+                            updateMenu()
+                        })
+                    }).catch((err) => {
+                        console.error(err)
+                    })
+                })
+            }
+
+            if(toDelete.type == "dish") {
+                Client.deleteDish(toDelete.id).then(() => {
+                    setToDelete({}).then(() => {
+                        setDeleteConfirmation(false).then(() => {
+                            updateMenu()
+                        })
+                    })
+                }).catch((err) => {
+                    console.error(err)
+                })
+            }
+        } else {
+            setDeleteConfirmation(false)
+        }
+    }
+
+
+    const closeAllForms = () => {
+        setNewDishForm(false)
+        setNewCategoryForm(false)
+        setEditDishForm(false)
+        setEditCategoryForm(false)
+        setDeleteConfirmation(false)
+    }
+
+    return (
+        <>
+            <MenuControls>
+                {/* <input className='search' name='search' placeholder='DISH SEARCH'/>  */}
+                <div className='buttons'>
+                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div> 
+                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>               
+                </div>
+            </MenuControls>  
+            {
+                showNewDishForm ? (
+                    <NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu}/>
+                ) : null
+            }
+            {
+                showNewCategoryForm ? (
+                    <NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu}/>
+                ) : null
+            }
+            {
+                showEditDishForm ? (
+                    <EditDishForm toggleForm={toggleEditDishForm} updateMenu={updateMenu}
+                        dish={selectedDish}/>
+                ) : null
+            }
+            {
+                showEditCategoryForm ? (
+                    <EditCategoryForm toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
+                        category={selectedCategory}/>
+                ) : null
+            }
+            {
+                showDeleteConfirmation ? (
+                    <DeleteConfirmation closeForm={closeDeleteConfirmation}/>
+                ) : null
+            }
+            <StyledMenuTable>
+                <HeaderRow>
+                    <TableCell>
+                        Title
+                    </TableCell>
+                    <TableCell>
+                        Description
+                    </TableCell>
+                    <TableCell>
+                        Allergens
+                    </TableCell>
+                </HeaderRow>
+                   { 
+                        menuData ? menuData.map((item) => (
+                            <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
+                                toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
+                        )) : ''
+                    }
+            </StyledMenuTable>
+        </>
+    )
 }
 
 export { MenuTable }
