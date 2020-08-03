@@ -38,9 +38,9 @@ class Dropdown extends React.Component {
         this.showDropdown = this.showDropdown.bind(this)
         this.hideDropdown = this.hideDropdown.bind(this)
 
-        Client.getDishes().then((res) => {
+        Client.getMenu(props.menuId).then((res) => {
             console.log(res.data)
-            this.state.data = res.data
+            this.state.data = res.data[0].categories
         })
 
         if (typeof this.props.categoryId !== 'undefined') {

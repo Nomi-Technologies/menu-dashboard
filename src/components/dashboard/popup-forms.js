@@ -161,7 +161,8 @@ const NewDishForm = (props) => {
             name: name,
             description: description,
             categoryId: categoryId,
-            dishTags: dishTags
+            dishTags: dishTags,
+            menuId: props.menuId,
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -192,7 +193,7 @@ const NewDishForm = (props) => {
             <StyledModal>
                 <Container>
                     <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                    <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection}/>
+                    <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection} menuId={props.menuId}/>
                     <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
                     <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                     <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
@@ -229,7 +230,8 @@ const EditDishForm = (props) => {
             name: name,
             description: description,
             categoryId: categoryId,
-            dishTags: dishTags
+            dishTags: dishTags,
+            menuId: props.menuId,
         }
         console.log(dishData)
         if (name !== '' && description !== '' && categoryId !== 0) {
@@ -265,7 +267,7 @@ const EditDishForm = (props) => {
             <StyledModal>
                 <Container>
                     <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                    <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection}/>
+                    <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId}/>
                     <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
                     <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
                     <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
@@ -285,6 +287,7 @@ const NewCategoryForm = (props) => {
     const createCategory = () => {
         let categoryData = {
             name: name,
+            menuId: props.menuId,
         }
         console.log(categoryData)
         if (name !== '') {
@@ -325,6 +328,7 @@ const EditCategoryForm = (props) => {
     const updateCategory = () => {
         let categoryData = {
             name: name,
+            menuId: props.menuId,
         }
         console.log(categoryData)
         if (name !== '') {
