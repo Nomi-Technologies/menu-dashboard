@@ -113,27 +113,22 @@ const StyledItemRow = styled(TableRow)`
 `
 
 const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
-    const [name, setName] = useState(item.name)
-    const [description, setDescription] = useState(item.description)
-    const [id, setId] = useState(item.id)
-    const [categoryId, setCategoryId] = useState(catId);
-
     return (
         <StyledItemRow className='opened'>
             {
                 <>
                     <TableCell>
-                        <p>{name}</p>
+                        <p>{item.Dish.name}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{description}</p>
+                        <p>{item.Dish.description}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{allergen_list(item.tags)}</p>
+                        <p>{allergen_list(item.Dish.Tags)}</p>
                     </TableCell>
                     <TableCell>
                         <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
-                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(id, "dish") }}/>
+                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }}/>
                     </TableCell> 
                 </>
             }
@@ -242,7 +237,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
             <div className='items'>
                 {
                     category ? 
-                    category.dishes.map((item, index) => (
+                    category.Dishes.map((item, index) => (
                         <ItemRow key={index} item={item} updateMenu={updateMenu}
                             catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation}/>
                     )) : 
@@ -322,16 +317,15 @@ const MenuTable = (props) => {
 
     useEffect(() => {
         Client.getMenu(menuId).then((res) => {
-            console.log(menuId)
-            setMenuData(res.data[0].categories)
-            console.log(res.data[0].categories)
+            console.log(res.data)
+            setMenuData(res.data.Categories)
         })
     }, [])
 
     const updateMenu = (categoryId) => {
         Client.getMenu(menuId).then((res) => {
             setMenuData(null)
-            setMenuData(res.data[0].categories)            
+            setMenuData(res.data.Categories)            
         })
     };
 

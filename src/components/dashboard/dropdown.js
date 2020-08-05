@@ -40,7 +40,7 @@ class Dropdown extends React.Component {
 
         Client.getMenu(props.menuId).then((res) => {
             console.log(res.data)
-            this.state.data = res.data[0].categories
+            this.state.data = res.data.Categories
         })
 
         if (typeof this.props.categoryId !== 'undefined') {

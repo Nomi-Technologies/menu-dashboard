@@ -208,12 +208,12 @@ const NewDishForm = (props) => {
 }
 
 const EditDishForm = (props) => {
-    const [name, setName] = useState(props.dish.name);
+    const [name, setName] = useState(props.dish.Dish.name);
     const [category, setCategory] = useState('');
-    const [description, setDescription] = useState(props.dish.description);
+    const [description, setDescription] = useState(props.dish.Dish.description);
     const [price, setPrice] = useState(0);
     const [categoryId, setCategoryId] = useState(props.dish.categoryId);
-    const [dishTags, setDishTags] = useState(props.dish.tags);
+    const [dishTags, setDishTags] = useState(props.dish.Tags);
 
     console.log(props)
 
