@@ -308,9 +308,9 @@ function useAsyncState(initialValue) {
   }
 
 // Overall component which renders the table as a list of menu categories
-const MenuTable = () => {
+const MenuTable = (props) => {
     const [menuData, setMenuData] = useState()
-
+    const [menuId, setMenuId] = useState(props.menuId)
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
@@ -321,15 +321,17 @@ const MenuTable = () => {
     const [selectedCategory, setSelectedCategory] = useState()
 
     useEffect(() => {
-        Client.getDishes().then((response) => {
-            setMenuData(response.data)
+        Client.getMenu(menuId).then((res) => {
+            console.log(menuId)
+            setMenuData(res.data[0].categories)
+            console.log(res.data[0].categories)
         })
     }, [])
 
     const updateMenu = (categoryId) => {
-        Client.getDishes().then((res) => {
+        Client.getMenu(menuId).then((res) => {
             setMenuData(null)
-            setMenuData(res.data)            
+            setMenuData(res.data[0].categories)            
         })
     };
 
@@ -420,24 +422,24 @@ const MenuTable = () => {
             </MenuControls>  
             {
                 showNewDishForm ? (
-                    <NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu}/>
+                    <NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={menuId}/>
                 ) : null
             }
             {
                 showNewCategoryForm ? (
-                    <NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu}/>
+                    <NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={menuId}/>
                 ) : null
             }
             {
                 showEditDishForm ? (
                     <EditDishForm toggleForm={toggleEditDishForm} updateMenu={updateMenu}
-                        dish={selectedDish}/>
+                        dish={selectedDish} menuId={menuId}/>
                 ) : null
             }
             {
                 showEditCategoryForm ? (
                     <EditCategoryForm toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
-                        category={selectedCategory}/>
+                        category={selectedCategory} menuId={menuId}/>
                 ) : null
             }
             {

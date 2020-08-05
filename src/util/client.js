@@ -12,11 +12,6 @@ export default class Client {
         })
     }
 
-    static getDishes = () => {
-        let token = retrieveUserToken(); // get user auth token
-        return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
-    }
-
     static getDish = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
@@ -55,6 +50,26 @@ export default class Client {
     static getCategory = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static updateMenu = (id, data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.put(ROOT_URL + '/menus/' + id, data, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static createMenu = (data) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.post(ROOT_URL + '/menus/', data, {headers: {Authorization: `Bearer ${token}`}})
+    }  
+    
+    static deleteMenu = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.delete(ROOT_URL + '/menus/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static getMenu = (id) => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/menus/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
 
     static getTags = () => {

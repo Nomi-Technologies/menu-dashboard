@@ -38,6 +38,7 @@ let Content = styled.div`
 
 const MenuPage = () => {
     const [menuData, setMenuData] = useState()
+    const [menuId, setMenuId] = useState(1)
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader
 
@@ -69,11 +70,6 @@ const MenuPage = () => {
         }
     }
 
-    useEffect(() => {
-        Client.getDishes().then((response) => {
-            setMenuData(response.data)
-        })
-    }, [])
     return (
         <Layout>
             <Container>
@@ -83,7 +79,7 @@ const MenuPage = () => {
                     <Content>
                         <MenuTitle >{ MenuTitleText }</MenuTitle>
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menu={ menuData }/>
+                        <MenuTable menuId={menuId}/>
                     </Content>
                 </Column>
             </Container>
