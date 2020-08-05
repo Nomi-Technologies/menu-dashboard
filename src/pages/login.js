@@ -14,13 +14,12 @@ const HeroText = styled.p`
   margin-top: 180px;
 `
 
-
 const Login = () => (
   <Layout>
       <Container>
           <Column width='45%'>
-            <HeroText>Dine Confidently</HeroText>
-            <LoginForm></LoginForm>
+              <HeroText>Dine Confidently</HeroText>
+              <LoginForm></LoginForm>
           </Column>
           <ImageColumn width='55%' background={ RestaurantBackgroundImage }></ImageColumn>
       </Container>

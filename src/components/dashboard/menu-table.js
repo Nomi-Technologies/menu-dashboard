@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Component } from 'react';
 import ReactDOM from 'react-dom'
 
-import Client from '../../util/client'
+import Client from "../../util/client"
 
 import styled from "styled-components"
-import { Column, Table } from 'react-virtualized'
+import { Column, Table } from "react-virtualized"
 import ArrowIcon from "../../assets/img/arrow_icon.png"
 
 import EditIconGrey from "../../assets/img/edit-grey.png"
@@ -16,42 +16,44 @@ import DeleteIcon from "../../assets/img/delete-icon.png"
 import { NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation } from "./popup-forms"
 
 const StyledMenuTable = styled.div`
-    width: 100%;
-    max-width: 100%;
-    transition: 0.5s ease-in-out all;
-    margin-bottom: 20px;
+  width: 100%;
+  max-width: 100%;
+  transition: 0.5s ease-in-out all;
+  margin-bottom: 20px;
 `
 
 const TableCell = styled.div`
-    display: flex;
-    min-height: 48px;
-    box-sizing: border-box;
-    align-items: center;
-    padding-right: 10px;
+  display: flex;
+  min-height: 48px;
+  box-sizing: border-box;
+  align-items: center;
+  padding-right: 10px;
+  text-overflow: ellipsis;
+  min-width: 0px;
+  max-width: 100%;
+
+  input,
+  textarea {
+    width: 100%;
+    height: 50%;
+    padding-left: 8px;
+    font-size: 16px;
+    resize: none;
+  }
+
+  input,
+  textarea:focus {
+    position: relative;
+    height: auto;
+    overflow: wrap;
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0px;
-    max-width: 100%;
-
-    input, textarea {
-        width: 100%;
-        height: 50%;
-        padding-left: 8px;
-        font-size: 16px;
-        resize: none;
-    }
-
-    input, textarea:focus {
-        position: relative;
-        height: auto;
-        overflow: wrap;
-    }
-
-    p {
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  }
 `
 
 const TableRow = styled.div`
@@ -101,15 +103,13 @@ const TableRow = styled.div`
 `
 
 const StyledItemRow = styled(TableRow)`
+  &.opened {
+    height: inherit;
+  }
 
-    &.opened {
-        height: inherit;
-    }
-
-    &:not(:first-child) {
-        border-top: 1px #88929E solid;
-    }
-
+  &:not(:first-child) {
+    border-top: 1px #88929e solid;
+  }
 `
 
 const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
@@ -136,35 +136,35 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
     )
 }
 
-
 const HeaderRow = styled(TableRow)`
-    background-color: #C4C4C4;
-    color: white;
-    text-transform: uppercase;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+  background-color: #c4c4c4;
+  color: white;
+  text-transform: uppercase;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 `
 
 const CategoryHeaderRow = styled(TableRow)`
-    background: #FEEBDA;
-    color: #F3A35C;
+  background: #feebda;
+  color: #f3a35c;
 
-    .collapse-icon {
-        position: absolute;
-        width: 12px;
-        height: 6px;
-        margin-left: -38px;
-        padding: 9px 7px;
-        background-color: #F3A35C;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+  .collapse-icon {
+    position: absolute;
+    width: 12px;
+    height: 6px;
+    margin-left: -38px;
+    padding: 9px 7px;
+    background-color: #f3a35c;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 `
 
 const allergen_list = ( allergens ) => {
     if(allergens.length === 0) {
         return '--'
     }
+  })
 
     let list = ''
     
@@ -180,29 +180,29 @@ const allergen_list = ( allergens ) => {
 }
 
 const StyledTableCategory = styled.div`
-    transition: 0.4s ease all;
+  transition: 0.4s ease all;
+
+  .collapse-icon {
+    transform: rotate(180deg);
+    transition: 0.2s ease-in-out all;
+  }
+
+  .items {
+    display: none;
+    max-height: 0;
+    transition: 0.5s ease-in-out all;
+  }
+
+  &.open {
+    .items {
+      max-height: none;
+      display: block;
+    }
 
     .collapse-icon {
-        transform: rotate(180deg);
-        transition: 0.2s ease-in-out all;
+      transform: none;
     }
-
-    .items {
-        display: none;
-        max-height: 0;
-        transition: 0.5s ease-in-out all;
-    }
-
-    &.open {
-        .items {
-            max-height: none;
-            display: block;
-        }
-        
-        .collapse-icon {
-            transform: none;
-        }
-    }
+  }
 `
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
@@ -249,47 +249,47 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
 }
 
 const MenuControls = styled.div`
+  display: flex;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  width: 100%;
+
+  .search {
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    padding-left: 10px;
+    border-radius: 8px;
+    border: 2px #e3ebf2 solid;
+    flex-basis: 50%;
+  }
+
+  .buttons {
     display: flex;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    justify-content: space-between;
-    width: 100%;
+    color: white;
+    align-self: flex-end;
+    text-align: center;
+    font-size: 14px;
 
-    .search {
-        padding: 10px 20px;
-        background-color: #F9F9F9;
-        font-size: 14px;
-        padding-left: 10px;
-        border-radius: 8px;
-        border: 2px #E3EBF2 solid;
-        flex-basis: 50%;
+    .new-dish {
+      background-color: #f3a35c;
+      padding: 10px 20px;
+      text-align: center;
+      border: 2px solid #f3a35c;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    .buttons {
-        display: flex;
-        color: white;
-        align-self: flex-end;
-        text-align: center;
-        font-size: 14px;
-
-        .new-dish {
-            background-color: #F3A35C;
-            padding: 10px 20px;
-            text-align: center;
-            border: 2px solid #F3A35C;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .new-category {
-            border: 2px solid #F3A35C;
-            padding: 10px 20px;
-            color: #F3A35C;
-            border-radius: 8px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
+    .new-category {
+      border: 2px solid #f3a35c;
+      padding: 10px 20px;
+      color: #f3a35c;
+      border-radius: 8px;
+      margin-right: 10px;
+      cursor: pointer;
     }
+  }
 `
 
 function useAsyncState(initialValue) {
@@ -464,4 +464,4 @@ const MenuTable = (props) => {
     )
 }
 
-export { MenuTable } 
+export { MenuTable }
