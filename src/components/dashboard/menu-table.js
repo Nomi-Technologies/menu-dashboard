@@ -118,13 +118,13 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
             {
                 <>
                     <TableCell>
-                        <p>{item.Dish.name}</p>
+                        <p>{item.name}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{item.Dish.description}</p>
+                        <p>{item.description}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{allergen_list(item.Dish.Tags)}</p>
+                        <p>{allergen_list(item.Tags)}</p>
                     </TableCell>
                     <TableCell>
                         <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
