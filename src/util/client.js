@@ -72,12 +72,17 @@ export default class Client {
         return axios.get(ROOT_URL + '/menus/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
 
+    static getAllMenus = () => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/all-menus/', {headers: {Authorization: `Bearer ${token}`}})
+    }
+
     static getTags = () => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/tags', {headers: {Authorization: `Bearer ${token}`}})
     }
 
-    static setMenu = (data) => {
+    static uploadMenu = (data) => {
         let token = retrieveUserToken();
         return axios.post(ROOT_URL + '/uploadMenuCSV',
             {

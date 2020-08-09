@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { FormInput } from "../form"
-import { FormButton } from "../buttons"
+import { FormInput } from "../../form"
+import { FormButton } from "../../buttons"
 
 import {Dropdown} from "./dropdown"
 
-import Client from '../../util/client'
+import Client from '../../../util/client'
 
 import styled from "styled-components"
 

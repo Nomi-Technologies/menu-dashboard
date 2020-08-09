@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import {FormInput} from "../form"
-import { FormButton, ButtonRow } from "../buttons" 
+import {FormInput} from "../../form"
+import { FormButton, ButtonRow } from "../../buttons" 
 
-import Client from '../../util/client'
+import Client from '../../../util/client'
 
 import styled from "styled-components"
 
