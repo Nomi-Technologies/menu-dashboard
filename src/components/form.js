@@ -4,6 +4,7 @@ import styled from "styled-components"
 import RightArrowIcon from "../assets/img/right-arrow.png"
 
 import { navigate } from "@reach/router"
+import "../pages/index.css"
 
 let FormTitle = styled.h1`
     padding-top: 120px;
@@ -47,8 +48,7 @@ let StyledInput = styled.input`
     padding-top: 26px;
     box-sizing: border-box; 
     
-
-    &:focus ~ ${ FloatingLabel }
+    &:focus ~ ${ FloatingLabel}
     {
         top: 10px;
         bottom: 30px;
@@ -56,7 +56,7 @@ let StyledInput = styled.input`
         opacity: 1;
     }
 
-    &:valid ~ ${ FloatingLabel }
+    &:valid ~ ${ FloatingLabel}
     {
         top: 10px;
         bottom: 30px;
@@ -91,7 +91,7 @@ let FormControls = styled.div`
 
 let StyledFormInput = styled.div`
     position: relative;
-    flex-basis: ${({width}) => width ? width : 'auto'};
+    flex-basis: ${({ width }) => width ? width : 'auto'};
     margin: 20px 0;
 `
 
@@ -113,14 +113,14 @@ let StyledNextButton = styled.button`
 `
 
 let NextButton = (props) => (
-    <StyledNextButton onClick = { props.onClick }>
+    <StyledNextButton onClick={props.onClick}>
         NEXT
-        <img src={ RightArrowIcon }></img>
+        <img src={RightArrowIcon}></img>
     </StyledNextButton>
 )
 
 let DoneButton = (props) => (
-    <StyledNextButton onClick = { props.onClick }>
+    <StyledNextButton onClick={props.onClick}>
         DONE
     </StyledNextButton>
 )
@@ -134,15 +134,15 @@ let StyledPrevButton = styled.button`
 `
 
 let PrevButton = (props) => (
-    <StyledPrevButton  onClick = { () => navigate(props.destination, {state: props.state}) }>
+    <StyledPrevButton onClick={() => navigate(props.destination, { state: props.state })}>
         PREVIOUS STEP
     </StyledPrevButton>
 )
 
 let FormInput = (props) => (
-    <StyledFormInput width={ props.width }>
-        <StyledInput type={ props.type } onChange={ props.onChange } value={ props.value } required></StyledInput>
-        <FloatingLabel>{ props.placeholder }</FloatingLabel>
+    <StyledFormInput width={props.width}>
+        <StyledInput type={props.type} onChange={props.onChange} value={props.value} required></StyledInput>
+        <FloatingLabel>{props.placeholder}</FloatingLabel>
     </StyledFormInput>
 )
 
@@ -151,4 +151,56 @@ let FormError = styled.p`
     margin: 0px;
 `
 
-export { FormInput, FormContainer, FormTitle, PopupFormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}
+let Floating = styled.span`
+    position: absolute;
+    pointer-events: none;
+    left: 10px;
+    top: 20px;
+    transition: 0.2s ease all;
+    font-size: 18px;
+    font-family: HK Grotesk Regular;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #8A9DB7;
+`
+
+let StyledNewInput = styled.input`
+    width: 100%;
+    border-radius: 6px;
+    background: #E1E7EC;
+    opacity: 0.75;
+    font-size: 18px;
+    padding: 8px;
+    padding-top: 26px;
+    font-family: HK Grotesk Regular;
+    &:focus ~ ${ Floating}
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
+
+    &:valid ~ ${ Floating}
+    {
+        top: 10px;
+        bottom: 30px;
+        font-size: 12px;
+        opacity: 1;
+    }
+`
+
+let StyledDishFormInput = styled.div`
+    position: relative;
+    flex-basis: ${({ width }) => width ? width : 'auto'};
+    margin: 10px 0;
+`
+let DishFormInput = (props) => (
+    <StyledDishFormInput width={props.width}>
+        <StyledNewInput type={props.type} onChange={props.onChange} value={props.value} required></StyledNewInput>
+        <Floating>{props.placeholder}</Floating>
+    </StyledDishFormInput>
+)
+export { FormInput, DishFormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError }
