@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Component } from 'react';
 import ReactDOM from 'react-dom'
 
-import Client from '../../util/client'
+import Client from '../../../util/client'
 
 import styled from "styled-components"
-import ArrowIcon from "../../assets/img/arrow_icon.png"
+import ArrowIcon from "../../../assets/img/arrow_icon.png"
 
 import * as Forms from "./popup-forms"
 import * as Table from "./table"
@@ -76,8 +76,7 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
-    const [menuData, setMenuData] = useState()
-    const [menuId, setMenuId] = useState(props.menuId)
+    const [menuData, setMenuData] = useState(props.menuData)
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
@@ -93,14 +92,14 @@ const MenuTable = (props) => {
     let fileReader
 
     useEffect(() => {
-        Client.getMenu(menuId).then((res) => {
+        Client.getMenu(props.menuId).then((res) => {
             console.log(res.data)
             setMenuData(res.data.Categories)
         })
-    }, [])
+    }, [props.menuId])
 
     const updateMenu = () => {
-        Client.getMenu(menuId).then((res) => {
+        Client.getMenu(props.menuId).then((res) => {
             setMenuData(null)
             setMenuData(res.data.Categories)            
         })
@@ -146,6 +145,7 @@ const MenuTable = (props) => {
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
+                Console.log(toDelete)
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -270,24 +270,24 @@ const MenuTable = (props) => {
             </MenuControls>
             {
                 showNewDishForm ? (
-                    <Forms.NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={menuId}/>
+                    <Forms.NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showNewCategoryForm ? (
-                    <Forms.NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={menuId}/>
+                    <Forms.NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showEditDishForm ? (
                     <Forms.EditDishForm toggleForm={toggleEditDishForm} updateMenu={updateMenu}
-                        dish={selectedDish} menuId={menuId}/>
+                        dish={selectedDish} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showEditCategoryForm ? (
                     <Forms.EditCategoryForm toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
-                        category={selectedCategory} menuId={menuId}/>
+                        category={selectedCategory} menuId={props.menuId}/>
                 ) : null
             }
             {
