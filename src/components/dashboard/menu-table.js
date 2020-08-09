@@ -63,7 +63,7 @@ const TableRow = styled.div`
     box-sizing: border-box;
     padding-left: 52px;
     background-color: #f9f9f9;
-    
+
 
     ${TableCell}:nth-child(1) {
         flex-basis: 20%;
@@ -79,7 +79,7 @@ const TableRow = styled.div`
 
     ${TableCell}:nth-child(4) {
         flex-basis: 10%;
-    }    
+    }
 
     &:last-child {
         border-bottom-left-radius: 8px;
@@ -167,7 +167,7 @@ const allergen_list = ( allergens ) => {
     }
 
     let list = ''
-    
+
     allergens.forEach((element, idx) => {
         if(idx !== allergens.length - 1) {
             list += element.name + ', '
@@ -198,7 +198,7 @@ const StyledTableCategory = styled.div`
             max-height: none;
             display: block;
         }
-        
+
         .collapse-icon {
             transform: none;
         }
@@ -255,6 +255,10 @@ const MenuControls = styled.div`
     justify-content: space-between;
     width: 100%;
 
+    .searchForm {
+        flex-basis: 50%;
+    }
+
     .search {
         padding: 10px 20px;
         background-color: #F9F9F9;
@@ -262,7 +266,7 @@ const MenuControls = styled.div`
         padding-left: 10px;
         border-radius: 8px;
         border: 2px #E3EBF2 solid;
-        flex-basis: 50%;
+        width: 100%;
     }
 
     .buttons {
@@ -314,6 +318,11 @@ const MenuTable = (props) => {
     const [toDelete, setToDelete] = useAsyncState({})
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
+
+    const [selectedFile, setSelectedFile] = useState(null)
+
+    const [searchResults, setSearchResults] = useState(null)
+    let fileReader
 
     useEffect(() => {
         Client.getMenu(menuId).then((res) => {
@@ -405,15 +414,92 @@ const MenuTable = (props) => {
         setDeleteConfirmation(false)
     }
 
+    const onFileChange = (event) => {
+        if(event.target.files){
+          setSelectedFile(event.target.files[0]);
+          fileReader = new FileReader();
+          fileReader.onloadend = parseFile;
+          fileReader.readAsText(event.target.files[0]);
+        }
+    }
+
+    const parseFile = () => {
+      const content = fileReader.result;
+      var allTextLines = content.split(/\r\n|\n/);
+      var headers = allTextLines[0].split(',');
+      var lines = [];
+
+      for (var i = 1; i < allTextLines.length; i++) {
+          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+          if (data.length == headers.length) {
+              var tarr = []
+              for (var j = 0; j < headers.length; j++) {
+                  tarr.push(data[j].replace(/['"]+/g, ''));
+              }
+              lines.push(tarr);
+          }
+      }
+      Client.setMenu(lines).then((res) => {
+          updateMenu();
+      }).catch((err) => {
+          console.log(err)
+      })
+    }
+
+    const renderTableOutput = () => {
+        let displaySearchResults = false;
+        if (searchResults) {
+            displaySearchResults = (searchResults.length != 0);
+        }
+
+        return (displaySearchResults ? 
+            <div id="searchResults" > 
+                {
+                    searchResults.map((item, index) => (
+                        <ItemRow key={index} item={item} updateMenu={updateMenu}
+                            catId={item.category.id} toggleEditDish={toggleEditDishForm}/>
+                    ))
+                }
+            </div>
+            :
+            <div id='menuTable'>
+                {
+                    menuData ? menuData.map((item) => (
+                        <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
+                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                    )) : ''
+                }
+            </div>
+        )      
+    }
+ 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (document.getElementById('searchBox').value.trim() == '') {
+            setSearchResults(null);
+        } else {
+            Client.searchDishes(document.getElementById('searchBox').value)
+            .then((res) => {
+                setSearchResults(null);
+                setSearchResults(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
+    }
+
     return (
         <>
             <MenuControls>
-                {/* <input className='search' name='search' placeholder='DISH SEARCH'/>  */}
+                <form onSubmit={handleSearch} className='searchForm'>
+                    <input className='search' name='search' placeholder='Search Dishes...' id='searchBox' type='text' />
+                </form>
                 <div className='buttons'>
-                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div> 
-                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>               
+                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
+                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
                 </div>
-            </MenuControls>  
+            </MenuControls>
             {
                 showNewDishForm ? (
                     <NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={menuId}/>
@@ -453,15 +539,19 @@ const MenuTable = (props) => {
                         Allergens
                     </TableCell>
                 </HeaderRow>
-                   { 
+                   {
                         menuData ? menuData.map((item) => (
                             <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
                     }
+
+                   { 
+                    renderTableOutput() // show output for search
+                   }
             </StyledMenuTable>
         </>
     )
 }
 
-export { MenuTable } 
+export { MenuTable }
