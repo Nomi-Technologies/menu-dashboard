@@ -80,6 +80,7 @@ const MenuPage = () => {
                 <SideBar width='280px'>
                 </SideBar>
                 <Column>
+<<<<<<< HEAD
                     <MenuContainer>
                         <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
@@ -87,6 +88,12 @@ const MenuPage = () => {
                         <MenuCreator />
                         <StyledFloatingMenu/>
                     </MenuContainer>
+=======
+                    <Content>
+                        <MenuTitle>{ MenuTitleText }</MenuTitle>
+                        <MenuTable menuId={menuId}/>
+                    </Content>
+>>>>>>> d5ebf7b... wip csv upload
                 </Column>
             </Container>
         </Layout>

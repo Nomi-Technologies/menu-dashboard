@@ -8,8 +8,18 @@ import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 
+<<<<<<< HEAD:src/components/dashboard/menu-table/menu-table.js
 import * as Forms from "./popup-forms"
 import * as Table from "./table"
+=======
+import EditIconGrey from "../../assets/img/edit-grey.png"
+import EditIconOrange from "../../assets/img/edit-orange.png"
+
+import EditIcon from "../../assets/img/edit-icon.png"
+import DeleteIcon from "../../assets/img/delete-icon.png"
+
+import { NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation, UploadCSVModal } from "./popup-forms"
+>>>>>>> d5ebf7b... wip csv upload:src/components/dashboard/menu-table.js
 
 const StyledMenuTable = styled.div`
     width: 100%;
@@ -61,6 +71,16 @@ const MenuControls = styled.div`
         text-align: center;
         font-size: 14px;
 
+        
+
+        .new-category {
+            border: 2px solid #F3A35C;
+            padding: 10px 20px;
+            color: #F3A35C;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         .new-dish {
             background-color: #F3A35C;
             padding: 10px 20px;
@@ -68,15 +88,16 @@ const MenuControls = styled.div`
             border: 2px solid #F3A35C;
             border-radius: 8px;
             cursor: pointer;
+            margin-left: 10px;
         }
 
-        .new-category {
+        .upload-csv {
             border: 2px solid #F3A35C;
             padding: 10px 20px;
             color: #F3A35C;
             border-radius: 8px;
-            margin-right: 10px;
             cursor: pointer;
+            margin-left: 10px;
         }
     }
 `
@@ -100,6 +121,9 @@ const MenuTable = (props) => {
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({})
+
+    const [showUploadCSVModal, setShowUploadCSVModal] = useState(false);
+
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
 
@@ -162,6 +186,11 @@ const MenuTable = (props) => {
         }
     }
 
+    const toggleUploadCSVModal = () => {
+        closeAllForms()
+        setShowUploadCSVModal(!showUploadCSVModal)
+    }
+
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
@@ -192,6 +221,8 @@ const MenuTable = (props) => {
             setDeleteConfirmation(false)
         }
     }
+
+    
 
 
     const closeAllForms = () => {
@@ -284,6 +315,10 @@ const MenuTable = (props) => {
         }
     }
 
+    const uploadCSV = ({ overwrite, file }) => {
+        console.log(overwrite)
+    }
+
     return (
         <>
             <MenuControls>
@@ -309,6 +344,7 @@ const MenuTable = (props) => {
                 <div className='buttons'>
                     <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
+                    <div className='upload-csv' onClick={toggleUploadCSVModal}>Upload Menu CSV</div>
                 </div>
             </MenuControls>
             {
@@ -338,6 +374,9 @@ const MenuTable = (props) => {
                     <Forms.DeleteConfirmation closeForm={closeDeleteConfirmation}/>
                 ) : null
             }
+
+            <UploadCSVModal show={ showUploadCSVModal } close={ toggleUploadCSVModal } uploadCSV={ uploadCSV }/>
+
             <StyledMenuTable>
                 <Table.HeaderRow>
                     <Table.TableCell>

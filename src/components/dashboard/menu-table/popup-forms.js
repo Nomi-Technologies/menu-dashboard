@@ -436,6 +436,77 @@ const QRCodeForm = (props) => {
     );
 }
 
+
+
+const Modal = ({ children, show, close, actionName, action, params }) => {
+    
+    return (
+        <>
+            { 
+                show ? (
+                    <>
+                        <ModalBackground/>
+                        <StyledModal>
+                            <Container>
+                                { children }
+                                <ButtonRow>
+                                    <FormButton text='Cancel' theme='light' onClick={ () => {
+                                        close()
+                                        
+                                    } }
+                                    />    
+                                    <FormButton text={ actionName } onClick={ () => { 
+                                            close() 
+                                            action(params)
+                                        } }
+                                    />    
+                                </ButtonRow>
+                            </Container>
+                        </StyledModal>
+                    </>
+                ) : "" 
+            }
+        </>
+    )
+}
+
+const StyledUploadCSVModal = styled.div`
+    input[type="checkbox"] {
+        display: inline-block;
+    }
+
+    input[type="file"] {
+
+    }
+
+    p {
+        margin-left: 20px;
+        display: inline-block;
+    }
+`
+
+const UploadCSVModal = (props) => {
+    let { show, close, uploadCSV } = props
+    let [overwrite, setOverwrite] = useState(false)
+    let [file, setFile] = useState(null)
+
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    }
+
+    return (
+        <Modal show={ show } close={ close } actionName="Upload CSV" action={ uploadCSV } params={{ overwrite: overwrite, file: file }}>
+            <StyledUploadCSVModal>
+                <input type="file" accept=".csv" onChange={ handleFileChange }/> <br/>
+                <input type="checkbox" checked={ overwrite } onChange={ (event) => {
+                    setOverwrite(event.target.checked)
+                } }/>
+                <p>Overwrite Existing Dishes?</p>
+            </StyledUploadCSVModal>
+        </Modal>
+    )
+}
+
 export {
     NewDishForm,
     NewCategoryForm,
@@ -443,4 +514,5 @@ export {
     EditCategoryForm,
     DeleteConfirmation,
     QRCodeForm,
+    UploadCSVModal
 }
