@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import {FormInput} from "../../form"
-import { FormButton, ButtonRow } from "../../buttons" 
+import { FormInput } from "../form"
+import { FormButton, ButtonRow } from "../buttons"
 
 import Client from '../../../util/client'
 
@@ -25,7 +25,7 @@ const Categories = styled.div`
     }
 `
 
-class Dropdown extends React.Component {
+class OldDropdown extends React.Component {
     constructor(props) {
         super(props);
 
@@ -53,22 +53,22 @@ class Dropdown extends React.Component {
         }
     }
 
-    showDropdown (event) {
+    showDropdown(event) {
         event.preventDefault()
         console.log("showDropdown")
-        this.setState({displayList: true}, () => {
+        this.setState({ displayList: true }, () => {
             document.addEventListener('click', this.hideDropdown)
         });
     }
 
-    hideDropdown () {
-        this.setState({displayList: false}, () => {
+    hideDropdown() {
+        this.setState({ displayList: false }, () => {
             document.removeEventListener('click', this.hideDropdown)
         });
     }
 
-    select (item) {
-        this.setState({currentSelection: item.name});
+    select(item) {
+        this.setState({ currentSelection: item.name });
         this.props.updateSelection(item)
     }
 
@@ -77,19 +77,19 @@ class Dropdown extends React.Component {
             <>
                 <FormButton text={this.state.currentSelection} onClick={this.showDropdown} />
                 {
-                this.state.displayList ? (
-                    <Categories>
-                        {
-                            this.state.data.map((item) => (
-                                <div className='category' key={item.id} onClick={()=>this.select(item)}>{item.name}</div>
-                            ))
-                        }
-                    </Categories>
-                ) : null
+                    this.state.displayList ? (
+                        <Categories>
+                            {
+                                this.state.data.map((item) => (
+                                    <div className='category' key={item.id} onClick={() => this.select(item)}>{item.name}</div>
+                                ))
+                            }
+                        </Categories>
+                    ) : null
                 }
             </>
         )
     }
 }
 
-export {Dropdown}
+export { OldDropdown }

@@ -7,6 +7,8 @@ import styled from "styled-components"
 import { useQRCode } from 'react-qrcode'
 import { useDropzone } from 'react-dropzone'
 import "../../pages/index.css"
+import { Dropdown } from 'semantic-ui-react'
+import _ from "lodash";
 
 const StyledModal = styled.div`
     top: 100px;
@@ -166,6 +168,18 @@ const TagsForm = ({ tags, setTags }) => {
         }
     }, [])
 
+    let allergenNames = new Array(allTags.length);
+    for (let index = 0; index < allTags.length; index++) {
+        allergenNames[index] = allTags[index].name;
+    }
+
+    const allergenOptions = _.map(allergenNames, (allergen, index) => ({
+        key: allergen,
+        text: allergen,
+        value: allergen
+    }));
+    console.log("allergen result: ", allergenOptions);
+
     // update tags based on checkbox
     const updateSelectedTags = (tagId) => {
         let newSelectedTags = [...selectedTags]
@@ -199,6 +213,14 @@ const TagsForm = ({ tags, setTags }) => {
                 }
             </div>
         </StyledTagsForm>
+        // <Dropdown
+        //     placeholder='Start typing to begin...'
+        //     fluid
+        //     multiple
+        //     search
+        //     selection
+        //     options={allergenOptions}
+        // />
     )
 }
 
@@ -218,8 +240,8 @@ const NewDishForm = (props) => {
             price: price,
             menuId: props.menuId,
         }
-        console.log(dishData)
-        if (name !== '' && categoryId !== 0) {
+        console.log("Dishdata", dishData)
+        if (name !== '' && description !== '' && categoryId !== 0) {
             Client.createDish(dishData).then((res) => {
                 console.log("dish created")
                 console.log(res.data)
@@ -234,7 +256,7 @@ const NewDishForm = (props) => {
             //show some error
         }
     }
-
+    console.log("tags", dishTags);
     const updateCategorySelection = (category) => {
         console.log("category selection updated")
         console.log(category)

@@ -11,17 +11,19 @@ import { retrieveUserToken } from "../util/auth"
 
 import "./index.css"
 
+import "semantic-ui-css/semantic.min.css"
+
 const IndexPage = () => {
 
   useEffect(() => {
-    if(retrieveUserToken() != null) {
+    if (retrieveUserToken() != null) {
       navigate("/dashboard/menu")
     } else {
       navigate("/login")
     }
   }, [])
 
-  return(<></>)
+  return (<></>)
 }
 
 export default IndexPage
