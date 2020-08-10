@@ -136,7 +136,6 @@ const MenuTable = (props) => {
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
-                Console.log(toDelete)
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
