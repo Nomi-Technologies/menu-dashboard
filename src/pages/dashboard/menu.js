@@ -6,10 +6,12 @@ import Layout from "../../components/layout"
 import styled from "styled-components"
 import SEO from "../../components/seo"
 
+import { FormButton, ButtonRow } from "../../components/buttons" 
 import { Container, Column, ImageColumn } from "../../components/grid"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
+import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
 
 import Client from "../../util/client"
 
@@ -24,36 +26,14 @@ let MenuContainer = styled.div`
     max-width: 1200px;
 `
 
-// let StyledMenuSelector = styled.h1`
-//     text-transform: uppercase;
-//     font-size: 32px;
-//     line-height: 38px;
-//     padding-top: 104px;
-// `
-
-// const MenuSelector = (props) => {
-//     const [menuTitle, setMenuTitle] = useState("")
-
-//     useEffect(() => {
-//         Client.getMenu(props.menuId).then((res) => {
-//             console.log(res.data.name)
-//             setMenuTitle(res.data.name)
-//         })
-//     }, [])
-
-//     const updateSelection = (menu) => {
-//         props.updateMenuSelection(menu)
-//     }
-
-//     return(
-//         <StyledMenuSelector>
-//             <Dropdown placeholder={menuTitle} updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
-//         </StyledMenuSelector>
+// const MenuCreator = () => {
+//     return (
+//         <FormButton text="+" />
 //     )
 // }
 
 const MenuPage = () => {
-    const [menuId, setMenuId] = useState(0)
+    const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader
@@ -102,6 +82,7 @@ const MenuPage = () => {
                         <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                         <MenuTable menuId={menuId} menuData={menuData}/>
+                        <MenuCreator />
                     </MenuContainer>
                 </Column>
             </Container>

@@ -29,7 +29,7 @@ const MenuSelector = (props) => {
 
     return(
         <StyledMenuSelector>
-            <Dropdown placeholder={menuTitle} updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
+            <Dropdown updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
         </StyledMenuSelector>
     )
 }

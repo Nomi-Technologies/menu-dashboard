@@ -234,7 +234,8 @@ const MenuTable = (props) => {
                 {
                     menuData ? menuData.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}
+                            openDeleteConfirmation={openDeleteConfirmation} />
                     )) : ''
                 }
             </div>
