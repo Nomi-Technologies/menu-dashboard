@@ -12,6 +12,11 @@ export default class Client {
         })
     }
 
+    static getDishes = () => {
+        let token = retrieveUserToken(); // get user auth token
+        return axios.get(ROOT_URL + '/dishes-by-category', {headers: {Authorization: `Bearer ${token}`}})
+    }
+
     static getDish = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.get(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
@@ -30,6 +35,22 @@ export default class Client {
     static deleteDish = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.delete(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
+    }
+
+    static setMenu = (data) => {
+        let token = retrieveUserToken();
+        return axios.post(ROOT_URL + '/upload-menu-csv', { data: data }, {headers: {Authorization: `Bearer ${token}`}});
+    }
+
+    static searchDishes = (data) => {
+        let token = retrieveUserToken();
+        let config = {
+            headers: {'Authorization': `Bearer ${token}`},
+            params: {
+                searchInput: data,
+            },
+          }
+        return axios.get(ROOT_URL + '/dishes-by-name', config);
     }
 
     static updateCategory = (id, data) => {

@@ -8,8 +8,8 @@ import SEO from "../../components/seo"
 
 import { Container, Column, ImageColumn } from "../../components/grid"
 
+import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
-import { Dropdown } from "../../components/dashboard/menu-selector/dropdown";
 
 import Client from "../../util/client"
 
@@ -24,36 +24,36 @@ let MenuContainer = styled.div`
     max-width: 1200px;
 `
 
-let StyledMenuSelector = styled.h1`
-    text-transform: uppercase;
-    font-size: 32px;
-    line-height: 38px;
-    padding-top: 104px;
-`
+// let StyledMenuSelector = styled.h1`
+//     text-transform: uppercase;
+//     font-size: 32px;
+//     line-height: 38px;
+//     padding-top: 104px;
+// `
 
-const MenuSelector = (props) => {
-    const [menuTitle, setMenuTitle] = useState("")
+// const MenuSelector = (props) => {
+//     const [menuTitle, setMenuTitle] = useState("")
 
-    useEffect(() => {
-        Client.getMenu(props.menuId).then((res) => {
-            console.log(res.data.name)
-            setMenuTitle(res.data.name)
-        })
-    }, [])
+//     useEffect(() => {
+//         Client.getMenu(props.menuId).then((res) => {
+//             console.log(res.data.name)
+//             setMenuTitle(res.data.name)
+//         })
+//     }, [])
 
-    const updateSelection = (menu) => {
-        props.updateMenuSelection(menu)
-    }
+//     const updateSelection = (menu) => {
+//         props.updateMenuSelection(menu)
+//     }
 
-    return(
-        <StyledMenuSelector>
-            <Dropdown placeholder={menuTitle} updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
-        </StyledMenuSelector>
-    )
-}
+//     return(
+//         <StyledMenuSelector>
+//             <Dropdown placeholder={menuTitle} updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
+//         </StyledMenuSelector>
+//     )
+// }
 
 const MenuPage = () => {
-    const [menuId, setMenuId] = useState(2)
+    const [menuId, setMenuId] = useState(0)
     const [menuData, setMenuData] = useState()
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader

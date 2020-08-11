@@ -23,6 +23,13 @@ const MenuControls = styled.div`
     justify-content: space-between;
     width: 100%;
 
+<<<<<<< HEAD
+=======
+    .searchForm {
+        flex-basis: 50%;
+    }
+
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
     .search {
         padding: 10px 20px;
         background-color: #F9F9F9;
@@ -30,7 +37,11 @@ const MenuControls = styled.div`
         padding-left: 10px;
         border-radius: 8px;
         border: 2px #E3EBF2 solid;
+<<<<<<< HEAD
         flex-basis: 50%;
+=======
+        width: 100%;
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
     }
 
     .buttons {
@@ -82,6 +93,14 @@ const MenuTable = (props) => {
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
 
+<<<<<<< HEAD
+=======
+    const [selectedFile, setSelectedFile] = useState(null)
+
+    const [searchResults, setSearchResults] = useState(null)
+    let fileReader
+
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
     useEffect(() => {
         Client.getMenu(props.menuId).then((res) => {
             console.log(res.data)
@@ -136,6 +155,10 @@ const MenuTable = (props) => {
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
+<<<<<<< HEAD
+=======
+                Console.log(toDelete)
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -172,6 +195,7 @@ const MenuTable = (props) => {
         setDeleteConfirmation(false)
     }
 
+<<<<<<< HEAD
     return (
         <>
             <MenuControls>
@@ -181,6 +205,94 @@ const MenuTable = (props) => {
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>               
                 </div>
             </MenuControls>  
+=======
+    const onFileChange = (event) => {
+        if(event.target.files){
+          setSelectedFile(event.target.files[0]);
+          fileReader = new FileReader();
+          fileReader.onloadend = parseFile;
+          fileReader.readAsText(event.target.files[0]);
+        }
+    }
+
+    const parseFile = () => {
+      const content = fileReader.result;
+      var allTextLines = content.split(/\r\n|\n/);
+      var headers = allTextLines[0].split(',');
+      var lines = [];
+
+      for (var i = 1; i < allTextLines.length; i++) {
+          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+          if (data.length == headers.length) {
+              var tarr = []
+              for (var j = 0; j < headers.length; j++) {
+                  tarr.push(data[j].replace(/['"]+/g, ''));
+              }
+              lines.push(tarr);
+          }
+      }
+      Client.setMenu(lines).then((res) => {
+          updateMenu();
+      }).catch((err) => {
+          console.log(err)
+      })
+    }
+
+    const renderTableOutput = () => {
+        let displaySearchResults = false;
+        if (searchResults) {
+            displaySearchResults = (searchResults.length != 0);
+        }
+
+        return (displaySearchResults ? 
+            <div id="searchResults" > 
+                {
+                    searchResults.map((item, index) => (
+                        <ItemRow key={index} item={item} updateMenu={updateMenu}
+                            catId={item.category.id} toggleEditDish={toggleEditDishForm}/>
+                    ))
+                }
+            </div>
+            :
+            <div id='menuTable'>
+                {
+                    menuData ? menuData.map((item) => (
+                        <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
+                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                    )) : ''
+                }
+            </div>
+        )      
+    }
+ 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (document.getElementById('searchBox').value.trim() == '') {
+            setSearchResults(null);
+        } else {
+            Client.searchDishes(document.getElementById('searchBox').value)
+            .then((res) => {
+                setSearchResults(null);
+                setSearchResults(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
+    }
+
+    return (
+        <>
+            <MenuControls>
+                <form onSubmit={handleSearch} className='searchForm'>
+                    <input className='search' name='search' placeholder='Search Dishes...' id='searchBox' type='text' />
+                </form>
+                <div className='buttons'>
+                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
+                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
+                </div>
+            </MenuControls>
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
             {
                 showNewDishForm ? (
                     <Forms.NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
@@ -226,9 +338,20 @@ const MenuTable = (props) => {
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
                     }
+<<<<<<< HEAD
+=======
+
+                   { 
+                    renderTableOutput() // show output for search
+                   }
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
             </StyledMenuTable>
         </>
     )
 }
 
+<<<<<<< HEAD
 export { MenuTable } 
+=======
+export { MenuTable }
+>>>>>>> fe730aa57a24dd670497a4e164df72f3f8847500
