@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { FormInput } from "../form"
-import { FormButton } from "../buttons"
+import { FormInput } from "../../form"
+import { FormButton } from "../../buttons"
 
 import {Dropdown} from "./dropdown"
 
-import Client from '../../util/client'
+import Client from '../../../util/client'
 
 import styled from "styled-components"
 
@@ -170,7 +170,7 @@ const NewDishForm = (props) => {
                 console.log("dish created")
                 console.log(res.data)
                 props.toggleForm()
-                props.updateMenu(categoryId)
+                props.updateMenu()
             }).catch((err) => {
                 console.log("error creating dish")
                 //show some error on form
@@ -239,7 +239,7 @@ const EditDishForm = (props) => {
                 console.log("dish updated")
                 console.log(res.data)
                 props.toggleForm()
-                props.updateMenu(categoryId)
+                props.updateMenu()
             }).catch((err) => {
                 Client.getDish(props.dish.id).then((oldItem) => {
                     setName(oldItem.name)

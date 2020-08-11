@@ -8,37 +8,53 @@ import SEO from "../../components/seo"
 
 import { Container, Column, ImageColumn } from "../../components/grid"
 
-import { MenuTable } from "../../components/dashboard/menu-table"
+import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
+import { Dropdown } from "../../components/dashboard/menu-selector/dropdown";
 
 import Client from "../../util/client"
-
-
 
 let SideBar = styled(Column)`
     background-color: #F3A35C;
 `
 
-let MenuTitleText = 'Spring 2020 Menu'
+let MenuContainer = styled.div`
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    max-width: 1200px;
+`
 
-let MenuTitle = styled.h1`
+let StyledMenuSelector = styled.h1`
     text-transform: uppercase;
     font-size: 32px;
     line-height: 38px;
     padding-top: 104px;
 `
 
-let Content = styled.div`
-    position: relative;
-    width: 90%;
-    margin: 0 auto;
-    max-width: 1200px;
+const MenuSelector = (props) => {
+    const [menuTitle, setMenuTitle] = useState("")
 
+    useEffect(() => {
+        Client.getMenu(props.menuId).then((res) => {
+            console.log(res.data.name)
+            setMenuTitle(res.data.name)
+        })
+    }, [])
 
-`
+    const updateSelection = (menu) => {
+        props.updateMenuSelection(menu)
+    }
+
+    return(
+        <StyledMenuSelector>
+            <Dropdown placeholder={menuTitle} updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
+        </StyledMenuSelector>
+    )
+}
 
 const MenuPage = () => {
+    const [menuId, setMenuId] = useState(2)
     const [menuData, setMenuData] = useState()
-    const [menuId, setMenuId] = useState(1)
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader
 
@@ -58,7 +74,7 @@ const MenuPage = () => {
               lines.push(tarr);
           }
       }
-      Client.setMenu(lines)
+      Client.uploadMenu(lines)
     }
 
     function onFileChange(event) {
@@ -70,17 +86,23 @@ const MenuPage = () => {
         }
     }
 
+    const updateMenuSelection = (menu) => {
+        console.log("new menu selected")
+        console.log(menu)
+        setMenuId(menu.id)
+    }
+
     return (
         <Layout>
             <Container>
                 <SideBar width='280px'>
                 </SideBar>
                 <Column>
-                    <Content>
-                        <MenuTitle >{ MenuTitleText }</MenuTitle>
+                    <MenuContainer>
+                        <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menuId={menuId}/>
-                    </Content>
+                        <MenuTable menuId={menuId} menuData={menuData}/>
+                    </MenuContainer>
                 </Column>
             </Container>
         </Layout>
