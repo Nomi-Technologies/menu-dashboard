@@ -52,12 +52,22 @@ class Dropdown extends React.Component {
                 }
             }
             else {
-                if (this.props.menuId !== null) { //menu already select
+                if (this.props.menuId !== null) { //menu already selected
                     Client.getMenu(this.props.menuId).then((res) => {
                         this.state.currentSelection = res.data.name
                     })
                 }
             }
+        })
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.menuId)
+        Client.getMenu(this.props.menuId).then((res) => {
+            this.state.currentSelection = res.data.name
+        })
+        Client.getAllMenus().then((res) => {
+            this.state.data = res.data
         })
     }
 

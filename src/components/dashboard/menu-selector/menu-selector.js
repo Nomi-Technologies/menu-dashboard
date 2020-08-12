@@ -21,16 +21,18 @@ const MenuSelector = (props) => {
             console.log(res.data.name)
             setMenuTitle(res.data.name)
         })
-    }, [])
+    }, [props.menuId])
 
     const updateSelection = (menu) => {
         props.updateMenuSelection(menu)
     }
 
     return(
-        <StyledMenuSelector>
-            <Dropdown updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
-        </StyledMenuSelector>
+        <>
+            <StyledMenuSelector>
+                <Dropdown updateSelection={updateSelection} menuId={props.menuId}></Dropdown>
+            </StyledMenuSelector>
+        </>
     )
 }
 

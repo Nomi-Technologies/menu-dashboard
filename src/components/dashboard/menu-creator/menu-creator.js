@@ -17,10 +17,10 @@ const MenuCreator = (props) => {
     
     return (
         <>
-            <FormButton text="+" onClick={toggleNewMenuForm} />
+            <FormButton text="New Menu" onClick={toggleNewMenuForm} />
             {
                 showNewMenuForm ? (
-                    <NewMenuForm toggleForm={toggleNewMenuForm}/>
+                    <NewMenuForm toggleForm={toggleNewMenuForm} updateMenuSelection={props.updateMenuSelection}/>
                 ) : null
             }
         </>

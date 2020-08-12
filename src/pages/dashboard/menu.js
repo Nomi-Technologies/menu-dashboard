@@ -25,16 +25,8 @@ let MenuContainer = styled.div`
     margin: 0 auto;
     max-width: 1200px;
 `
-
-// const MenuCreator = () => {
-//     return (
-//         <FormButton text="+" />
-//     )
-// }
-
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
-    const [menuData, setMenuData] = useState()
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader
 
@@ -81,8 +73,8 @@ const MenuPage = () => {
                     <MenuContainer>
                         <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menuId={menuId} menuData={menuData}/>
-                        <MenuCreator />
+                        <MenuTable menuId={menuId}/>
+                        <MenuCreator updateMenuSelection={updateMenuSelection} />
                     </MenuContainer>
                 </Column>
             </Container>
