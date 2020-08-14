@@ -8,6 +8,7 @@ import SEO from "../../components/seo"
 
 import { FormButton, ButtonRow } from "../../components/buttons" 
 import { Container, Column, ImageColumn } from "../../components/grid"
+import FloatingMenu from "../../components/floating-menu"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
@@ -26,11 +27,12 @@ let MenuContainer = styled.div`
     max-width: 1200px;
 `
 
-// const MenuCreator = () => {
-//     return (
-//         <FormButton text="+" />
-//     )
-// }
+let StyledFloatingMenu = styled(FloatingMenu)`
+    position: fixed;
+    right: 64px;
+    bottom: 56px;
+`;
+
 
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
@@ -85,6 +87,7 @@ const MenuPage = () => {
                         <MenuCreator />
                     </MenuContainer>
                 </Column>
+                <StyledFloatingMenu/>
             </Container>
         </Layout>
     )
