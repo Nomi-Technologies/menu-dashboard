@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
-import { FormInput, FormContainer, FormRow } from "../form"
+import { FormInput, FormContainer, FormRow } from "../../form"
 
-import Client from "../../util/client"
+import Client from "../../../util/client"
 
 let SaveButton = styled.div`
   float: right;
@@ -12,7 +12,7 @@ let SaveButton = styled.div`
   border: none;
   font-size: 18px;
   color: white;
-  padding: 21px 75px;
+  padding: 10px 75px;
   margin-top: 100px;
 `
 
@@ -21,7 +21,7 @@ let ChangeButton = styled.div`
   background-color: #f2994a;
   font-size: 18px;
   color: #f2994a;
-  padding: 19px 31px;
+  padding: 10px 31px;
   margin-top: 100px;
   background: rgba(255, 255, 255, 0.25);
   border: 2px solid #f3a35c;
@@ -30,16 +30,16 @@ let ChangeButton = styled.div`
 `
 
 const PopulatePersonal = () => {
-  const [firstname, setFirstname] = useState(false)
-  const [lastname, setLastname] = useState(false)
-  const [email, setEmail] = useState(false)
-  const [phone, setPhone] = useState(false)
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
 
-  const [id, setId] = useState(false)
+  const [id, setId] = useState("")
   const [save, setSave] = useState(false)
 
   useEffect(() => {
-    console.log("use effect")
+
     Client.getPersonalInfo().then(response => {
       console.log(response.data)
       setFirstname(response.data.firstname)

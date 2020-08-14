@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
-import { FormInput, FormContainer, FormRow } from "../form"
+import { FormInput, FormContainer, FormRow } from "../../form"
 
-import Client from "../../util/client"
+import Client from "../../../util/client"
 
 let SaveButton = styled.div`
   float: right;
@@ -42,9 +42,7 @@ const PopulateRestaurant = () => {
   const [save, setSave] = useState(false)
 
   useEffect(() => {
-    console.log("use effect")
     Client.getRestaurantInfo().then(response => {
-      console.log(response.data)
       setRestaurant(response.data.name)
       setAddress(response.data.streetAddress)
       setCity(response.data.city)

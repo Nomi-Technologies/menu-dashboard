@@ -136,7 +136,6 @@ export default class Client {
       }
 
     static updatePersonalInfo = (id, data) => {
-        console.log("data", data)
         let token = retrieveUserToken() // get user auth token
         return axios.put(ROOT_URL + "/user/details/" + id, data, {
         headers: { Authorization: `Bearer ${token}` },
@@ -145,14 +144,14 @@ export default class Client {
 
     static getRestaurantInfo = id => {
         let token = retrieveUserToken() // get user auth token
-        return axios.get(ROOT_URL + "/restaurants/me", id, {
+        return axios.get(ROOT_URL + "/restaurants/me/", {
         headers: { Authorization: `Bearer ${token}` },
         })
     }
 
     static updateRestaurantInfo = (id, data) => {
         let token = retrieveUserToken() // get user auth token
-        return axios.put(ROOT_URL + "/restaurants/me/" + id, data, {
+        return axios.put(ROOT_URL + "/restaurants/me/", data, {
         headers: { Authorization: `Bearer ${token}` },
         })
     }
