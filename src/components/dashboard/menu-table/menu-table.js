@@ -145,7 +145,7 @@ const MenuTable = (props) => {
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
-                Console.log(toDelete)
+                console.log(toDelete)
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -224,7 +224,7 @@ const MenuTable = (props) => {
             <div id="searchResults" > 
                 {
                     searchResults.map((item, index) => (
-                        <ItemRow key={index} item={item} updateMenu={updateMenu}
+                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu}
                             catId={item.category.id} toggleEditDish={toggleEditDishForm}/>
                     ))
                 }
@@ -233,8 +233,9 @@ const MenuTable = (props) => {
             <div id='menuTable'>
                 {
                     menuData ? menuData.map((item) => (
-                        <TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}/>
+                        <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
+                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}
+                            openDeleteConfirmation={openDeleteConfirmation} />
                     )) : ''
                 }
             </div>
@@ -307,15 +308,15 @@ const MenuTable = (props) => {
                         Allergens
                     </Table.TableCell>
                 </Table.HeaderRow>
-                   { 
+                   {/* { 
                         menuData ? menuData.map((item) => (
                             <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
-                    }
+                    } */}
 
                    { 
-                    renderTableOutput() // show output for search
+                    renderTableOutput()
                    }
             </StyledMenuTable>
         </>

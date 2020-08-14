@@ -39,19 +39,26 @@ class Dropdown extends React.Component {
         this.hideDropdown = this.hideDropdown.bind(this)
 
         Client.getAllMenus().then((res) => {
+            console.log(props)
             console.log(res.data)
             this.state.data = res.data
-        })
 
-        if (typeof this.props.menuId !== 'undefined') {
-            Client.getMenu(this.props.menuId).then((res) => {
-                console.log(res.data)
-                this.state.currentSelection = res.data.name
-            })
-        }
-        else {
-            this.state.currentSelection = this.props.placeholder
-        }
+            if (this.props.menuId === null) { //first render, no menu selected
+                if (res.data.length === 0) { //no menu created yet
+                }
+                else { //display first menu
+                    this.setState({currentSelection: res.data[0].name});
+                    this.props.updateSelection(res.data[0])
+                }
+            }
+            else {
+                if (this.props.menuId !== null) { //menu already select
+                    Client.getMenu(this.props.menuId).then((res) => {
+                        this.state.currentSelection = res.data.name
+                    })
+                }
+            }
+        })
     }
 
     showDropdown (event) {

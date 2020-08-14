@@ -390,4 +390,10 @@ const DeleteConfirmation = ({ closeForm }) => (
     </StyledDeleteConfirmation>
 )
 
-export {NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation}
+export {
+    NewDishForm,
+    NewCategoryForm,
+    EditDishForm,
+    EditCategoryForm,
+    DeleteConfirmation,
+}
