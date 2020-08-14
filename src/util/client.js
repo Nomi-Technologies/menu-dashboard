@@ -127,5 +127,35 @@ export default class Client {
         return axios.get(ROOT_URL + '/user/check-email', { params: { email: email } })
     }
 
+
+    static getPersonalInfo = () => {
+        let token = retrieveUserToken() // get user auth token
+        return axios.get(ROOT_URL + "/user/details/", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      }
+
+    static updatePersonalInfo = (id, data) => {
+        console.log("data", data)
+        let token = retrieveUserToken() // get user auth token
+        return axios.put(ROOT_URL + "/user/details/" + id, data, {
+        headers: { Authorization: `Bearer ${token}` },
+        })
+    }
+
+    static getRestaurantInfo = id => {
+        let token = retrieveUserToken() // get user auth token
+        return axios.get(ROOT_URL + "/restaurants/me", id, {
+        headers: { Authorization: `Bearer ${token}` },
+        })
+    }
+
+    static updateRestaurantInfo = (id, data) => {
+        let token = retrieveUserToken() // get user auth token
+        return axios.put(ROOT_URL + "/restaurants/me/" + id, data, {
+        headers: { Authorization: `Bearer ${token}` },
+        })
+    }
+
     
 }
