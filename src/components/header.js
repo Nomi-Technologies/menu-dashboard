@@ -65,7 +65,7 @@ export default () => {
     <Header>
       { loggedIn ? 
         (
-          <LoginButton to='profile'>Your Profile</LoginButton>
+          <LoginButton to='dashboard/personal'>Your Profile</LoginButton>
         ) : (
           <LoginButton to='login'>Member Login</LoginButton>
         )
