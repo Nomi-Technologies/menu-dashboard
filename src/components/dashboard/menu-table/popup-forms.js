@@ -415,7 +415,7 @@ const QRCodeForm = (props) => {
             <StyledModal>
                 <Container>
                     <FormInput
-                        placeholder='QRCode-filename'
+                        placeholder='QRCode image filename'
                         name='file-name'
                         onChange={event => setFileName(event.target.value)}
                     />
