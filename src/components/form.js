@@ -169,7 +169,7 @@ let Floating = styled.span`
 let StyledNewInput = styled.input`
     width: 100%;
     border-radius: 6px;
-    background: #E1E7EC;
+    background-color: #E1E7EC;
     opacity: 0.75;
     font-size: 18px;
     padding: 8px;

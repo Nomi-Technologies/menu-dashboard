@@ -260,7 +260,7 @@ const NewDishForm = (props) => {
     const updateCategorySelection = (category) => {
         console.log("category selection updated")
         console.log(category)
-        setCategoryId(category.id)
+        setCategoryId(category)
     }
 
     return (
@@ -346,7 +346,7 @@ const EditDishForm = (props) => {
     const updateCategorySelection = (category) => {
         console.log("category selection updated")
         console.log(category)
-        setCategoryId(category.id)
+        setCategoryId(category)
     }
 
     return (
