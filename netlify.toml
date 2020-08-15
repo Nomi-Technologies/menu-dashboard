@@ -4,8 +4,12 @@ GATSBY_API_URL = "https://nomi-menu-service.herokuapp.com/api"
 
 [context.deploy-preview.environment]
 NODE_ENV = "production"
-GATSBY_API_URL = "https://nomi-menu-service-staging.herokuapp.com/api"
+GATSBY_API_URL = "https://nomi-menu-service-testing.herokuapp.com/api"
 
-[context.branch-deploy.environment]
+[context.master.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service-staging.herokuapp.com/api"
+
+[context.develop.environment]
+NODE_ENV = "production"
+GATSBY_API_URL = "https://nomi-menu-service-testing.herokuapp.com/api"
