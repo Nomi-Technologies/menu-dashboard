@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
+
+import { QRCodeForm } from "../components/dashboard/menu-table/popup-forms";
 
 const FloatingMenuButton = styled.div`
     position: absolute;
@@ -61,36 +64,46 @@ const HorizontalSeparator = styled.div`
 
 const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [showQRCodeForm, setShowQRCodeForm] = useState(false);
 
     function onClickMenu() {
         setIsOpen(!isOpen);
     }
     
     return (
-        <div {...props}>
-            <Menu isOpen={isOpen}>
-                <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
-                <HorizontalSeparator/>
-                <OrangeTextMenuItem>Upload Spreadsheet</OrangeTextMenuItem>
-                <HorizontalSeparator/>
-                <OrangeTextMenuItem>Duplicate Menu</OrangeTextMenuItem>
-                <HorizontalSeparator/>
-                <OrangeTextMenuItem>Create QR Code</OrangeTextMenuItem>
-                <HorizontalSeparator/>
-                <RedTextMenuItem>Delete Menu</RedTextMenuItem>
-            </Menu>
-            <FloatingMenuButton onClick={onClickMenu}>
-                <StyledHamburger
-                    isOpen={isOpen}
-                    menuClicked={() => {}}
-                    width={26}
-                    height={24}
-                    borderRadius={2}
-                    color='white'
-                    strokeWidth={4}
-                />
-            </FloatingMenuButton>
-        </div>
+        <>
+            <div {...props}>
+                <Menu isOpen={isOpen}>
+                    <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
+                    <HorizontalSeparator/>
+                    <OrangeTextMenuItem>Upload Spreadsheet</OrangeTextMenuItem>
+                    <HorizontalSeparator/>
+                    <OrangeTextMenuItem>Duplicate Menu</OrangeTextMenuItem>
+                    <HorizontalSeparator/>
+                    <OrangeTextMenuItem
+                        onClick={() => setShowQRCodeForm(true)}
+                    >Create QR Code</OrangeTextMenuItem>
+                    <HorizontalSeparator/>
+                    <RedTextMenuItem>Delete Menu</RedTextMenuItem>
+                </Menu>
+                <FloatingMenuButton onClick={onClickMenu}>
+                    <StyledHamburger
+                        isOpen={isOpen}
+                        menuClicked={() => {}}
+                        width={26}
+                        height={24}
+                        borderRadius={2}
+                        color='white'
+                        strokeWidth={4}
+                        />
+                </FloatingMenuButton>
+            </div>
+            {
+                showQRCodeForm ? (
+                    <QRCodeForm closeForm={() => setShowQRCodeForm(false)}/>
+                ) : <></>
+            }
+        </>
     )
 }
 

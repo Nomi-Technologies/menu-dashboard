@@ -85,9 +85,9 @@ const MenuPage = () => {
                         {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                         <MenuTable menuId={menuId} menuData={menuData}/>
                         <MenuCreator />
+                        <StyledFloatingMenu/>
                     </MenuContainer>
                 </Column>
-                <StyledFloatingMenu/>
             </Container>
         </Layout>
     )
