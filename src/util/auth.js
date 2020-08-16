@@ -1,8 +1,8 @@
 export const saveUserToken = (token) => {
-    localStorage.setItem('authToken', token);
+    typeof window !== 'undefined' && localStorage.setItem('authToken', token);
 }
 
 export const retrieveUserToken = () => {
-    const token = localStorage.getItem('authToken')
+    const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
     return token ? token : null
 }
