@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
 
 import { QRCodeForm } from "../components/dashboard/menu-table/popup-forms";
+import Client from "../util/client"
 
 const FloatingMenuButton = styled.div`
     position: absolute;
@@ -65,6 +66,15 @@ const HorizontalSeparator = styled.div`
 const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showQRCodeForm, setShowQRCodeForm] = useState(false);
+    const [uniqueName, setUniqueName] = useState(null);
+
+    useEffect(() => {
+        // TODO(Tony): use global context for restaurant info
+        // Currently put here to avoid multiple requests
+        Client.getRestaurantInfo().then(res => {
+            setUniqueName(res.data.uniqueName);
+        });
+    }, []);
 
     function onClickMenu() {
         setIsOpen(!isOpen);
@@ -100,7 +110,10 @@ const FloatingMenu = (props) => {
             </div>
             {
                 showQRCodeForm ? (
-                    <QRCodeForm closeForm={() => setShowQRCodeForm(false)}/>
+                    <QRCodeForm 
+                        uniqueName={uniqueName}
+                        closeForm={() => setShowQRCodeForm(false)}
+                    />
                 ) : <></>
             }
         </>

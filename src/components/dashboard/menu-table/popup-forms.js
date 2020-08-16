@@ -391,7 +391,7 @@ const DeleteConfirmation = ({ closeForm }) => (
     </StyledDeleteConfirmation>
 )
 
-const QRCode = styled.img`
+const QRCode = styled.div`
     display: block;
     margin: 0 auto;
     width: 250px;
@@ -400,8 +400,9 @@ const QRCode = styled.img`
 
 const QRCodeForm = (props) => {
 
-    const url = 'https://google.com';
     const [fileName, setFileName] = useState('');
+
+    const url = `https://nomi-smart-menu.netlify.app/${props.uniqueName}`
     const qrCodeDataUrl = useQRCode({ 
         value: url,
         scale: 128,
@@ -419,7 +420,12 @@ const QRCodeForm = (props) => {
                         name='file-name'
                         onChange={event => setFileName(event.target.value)}
                     />
-                    <QRCode src={qrCodeDataUrl}/>
+                    {
+                        props.uniqueName === null ?
+                        <QRCode>Generating QR code...</QRCode>
+                        :
+                        <QRCode as='img' src={qrCodeDataUrl}/>
+                    }
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.closeForm}/>
                         <a
