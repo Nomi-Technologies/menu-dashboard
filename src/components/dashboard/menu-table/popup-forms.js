@@ -8,6 +8,7 @@ import {Dropdown} from "./dropdown"
 import Client from '../../../util/client'
 
 import styled from "styled-components"
+import { useQRCode } from 'react-qrcode'
 
 const StyledModal = styled.div`
     top: 100px;
@@ -390,10 +391,53 @@ const DeleteConfirmation = ({ closeForm }) => (
     </StyledDeleteConfirmation>
 )
 
+const QRCode = styled.img`
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+`;
+
+const QRCodeForm = (props) => {
+
+    const url = 'https://google.com';
+    const [fileName, setFileName] = useState('');
+    const qrCodeDataUrl = useQRCode({ 
+        value: url,
+        scale: 128,
+        margin: 0,
+        type: 'image/jpeg',
+    });
+
+    return (
+        <>
+            <ModalBackground/>
+            <StyledModal>
+                <Container>
+                    <FormInput
+                        placeholder='QRCode image filename'
+                        name='file-name'
+                        onChange={event => setFileName(event.target.value)}
+                    />
+                    <QRCode src={qrCodeDataUrl}/>
+                    <ButtonRow>
+                        <FormButton text='Cancel' theme='light' onClick={props.closeForm}/>
+                        <a
+                            href={qrCodeDataUrl}
+                            download={fileName}
+                        ><FormButton text='Download as JPEG' onClick={() => {}}/></a>
+                    </ButtonRow>
+                </Container>
+            </StyledModal>
+        </>
+    );
+}
+
 export {
     NewDishForm,
     NewCategoryForm,
     EditDishForm,
     EditCategoryForm,
     DeleteConfirmation,
+    QRCodeForm,
 }
