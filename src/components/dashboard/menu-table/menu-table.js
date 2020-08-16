@@ -5,6 +5,8 @@ import Client from '../../../util/client'
 
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
+import SearchIcon from "../../../assets/img/search.png"
+import CancelIcon from "../../../assets/img/delete-icon.png"
 
 import * as Forms from "./popup-forms"
 import * as Table from "./table"
@@ -25,6 +27,7 @@ const MenuControls = styled.div`
 
     .searchForm {
         flex-basis: 50%;
+        position: relative;
     }
 
     .search {
@@ -35,6 +38,19 @@ const MenuControls = styled.div`
         border-radius: 8px;
         border: 2px #E3EBF2 solid;
         width: 100%;
+    }
+
+    .cancelSearch {
+        top: 30%;
+        position: absolute;
+        left: 100%;
+        height: 40%;
+    }
+
+    .submitSearch {
+        top: 25%;
+        position: absolute;
+        left: 100%;
     }
 
     .buttons {
@@ -88,7 +104,8 @@ const MenuTable = (props) => {
 
     const [selectedFile, setSelectedFile] = useState(null)
 
-    const [searchResults, setSearchResults] = useState(null)
+    const [searchResults, setSearchResults] = useState(null);
+    const [isSearching, setIsSearching] = useState(false);
     let fileReader
 
     useEffect(() => {
@@ -215,22 +232,9 @@ const MenuTable = (props) => {
     }
 
     const renderTableOutput = () => {
-        let displaySearchResults = false;
-        if (searchResults) {
-            displaySearchResults = (searchResults.length != 0);
-        }
-
-        return (displaySearchResults ? 
-            <div id="searchResults" > 
-                {
-                    searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu}
-                            catId={item.category.id} toggleEditDish={toggleEditDishForm}/>
-                    ))
-                }
-            </div>
-            :
-            <div id='menuTable'>
+        if(!isSearching) {
+            return (
+                <div id='menuTable'>
                 {
                     menuData ? menuData.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
@@ -238,8 +242,28 @@ const MenuTable = (props) => {
                             openDeleteConfirmation={openDeleteConfirmation} />
                     )) : ''
                 }
+                </div>
+            );
+        } else if (searchResults ==  null || searchResults.length == 0) {
+            return (
+                <div id="searchResults" > 
+                    {
+                        <Table.TableCell>
+                            No items found
+                        </Table.TableCell>
+                    }
+                </div>
+            );
+        }
+        return (
+            <div id="searchResults" > 
+                {
+                    searchResults.map((item, index) => (
+                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} toggleEditDish={toggleEditDishForm}/>
+                    ))
+                }
             </div>
-        )      
+        );      
     }
  
     const handleSearch = (e) => {
@@ -251,6 +275,7 @@ const MenuTable = (props) => {
             .then((res) => {
                 setSearchResults(null);
                 setSearchResults(res.data);
+                setIsSearching(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -263,6 +288,16 @@ const MenuTable = (props) => {
             <MenuControls>
                 <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' name='search' placeholder='Search Dishes...' id='searchBox' type='text' />
+                    { 
+                        isSearching ? 
+                        <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => { 
+                            e.preventDefault();
+                            document.getElementById('searchBox').value ='';
+                            setIsSearching(false); 
+                        }}/> :
+                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon}/>
+                    }
+
                 </form>
                 <div className='buttons'>
                     <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
