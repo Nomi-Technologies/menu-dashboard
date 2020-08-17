@@ -74,7 +74,7 @@ const Review = (props) =>
             const userData = { 
                 ...props.location.state.contactInfo,
                 restaurantId: restaurantId,
-                role: "admin"
+                role: 1,
             }
 
             // register user
