@@ -41,9 +41,9 @@ const MenuControls = styled.div`
     }
 
     .cancelSearch {
-        top: 30%;
+        top: 28%;
         position: absolute;
-        left: 100%;
+        left: 95%;
         height: 40%;
     }
 
@@ -51,6 +51,7 @@ const MenuControls = styled.div`
         top: 25%;
         position: absolute;
         left: 100%;
+        height: 50%;
     }
 
     .buttons {
@@ -106,6 +107,7 @@ const MenuTable = (props) => {
 
     const [searchResults, setSearchResults] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
+    const [searchBoxValue, setSearchBoxValue] = useState(null);
     let fileReader
 
     useEffect(() => {
@@ -268,10 +270,11 @@ const MenuTable = (props) => {
  
     const handleSearch = (e) => {
         e.preventDefault();
-        if (document.getElementById('searchBox').value.trim() == '') {
+        console.log(searchBoxValue);
+        if (searchBoxValue.trim() == '') {
             setSearchResults(null);
         } else {
-            Client.searchDishes(document.getElementById('searchBox').value)
+            Client.searchDishes(searchBoxValue)
             .then((res) => {
                 setSearchResults(null);
                 setSearchResults(res.data);
@@ -287,16 +290,16 @@ const MenuTable = (props) => {
         <>
             <MenuControls>
                 <form onSubmit={handleSearch} className='searchForm'>
-                    <input className='search' name='search' placeholder='Search Dishes...' id='searchBox' type='text' />
+                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue} onChange={(e) => setSearchBoxValue(e.target.value)} />
                     { 
-                        isSearching ? 
+                        (isSearching && searchBoxValue != null) ? 
                         <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => { 
                             e.preventDefault();
-                            document.getElementById('searchBox').value ='';
+                            setSearchBoxValue('');
                             setIsSearching(false); 
-                        }}/> :
-                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon}/>
+                        }}/> : null
                     }
+                    <input className='submitSearch' type='image' alt="Submit" src={SearchIcon}/>
 
                 </form>
                 <div className='buttons'>
