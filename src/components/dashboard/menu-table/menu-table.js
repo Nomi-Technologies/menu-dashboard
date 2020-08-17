@@ -270,7 +270,6 @@ const MenuTable = (props) => {
  
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log(searchBoxValue);
         if (searchBoxValue.trim() == '') {
             setSearchResults(null);
         } else {
