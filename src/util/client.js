@@ -4,11 +4,9 @@ import { retrieveUserToken } from './auth'
 const ROOT_URL = process.env.GATSBY_API_URL
 
 axios.interceptors.response.use(response => {
-  console.log("response");
-  console.log(response);
   return response;
 }, error => {
-console.log("error: " + error);
+  console.log("error: " + error);
   if (error.response.status === 401) {
     navigate("/login");
   }
