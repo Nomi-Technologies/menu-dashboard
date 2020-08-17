@@ -105,7 +105,7 @@ const MenuTable = (props) => {
 
     const [selectedFile, setSelectedFile] = useState(null)
 
-    const [searchResults, setSearchResults] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [searchBoxValue, setSearchBoxValue] = useState(null);
     let fileReader
@@ -246,36 +246,31 @@ const MenuTable = (props) => {
                 }
                 </div>
             );
-        } else if (searchResults ==  null || searchResults.length == 0) {
+        } else if (searchResults.length == 0) {
             return (
-                <div id="searchResults" > 
-                    {
-                        <Table.TableCell>
-                            No items found
-                        </Table.TableCell>
-                    }
-                </div>
+                <Table.TableCell>
+                    No items found
+                </Table.TableCell>
             );
         }
         return (
-            <div id="searchResults" > 
+            <>
                 {
                     searchResults.map((item, index) => (
                         <Table.ItemRow key={index} item={item} updateMenu={updateMenu} toggleEditDish={toggleEditDishForm}/>
                     ))
                 }
-            </div>
+            </>
         );      
     }
  
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchBoxValue.trim() == '') {
-            setSearchResults(null);
+            setSearchResults([]);
         } else {
             Client.searchDishes(searchBoxValue)
             .then((res) => {
-                setSearchResults(null);
                 setSearchResults(res.data);
                 setIsSearching(true);
             })
