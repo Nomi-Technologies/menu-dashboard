@@ -168,6 +168,14 @@ const TagsForm = ({ tags, setTags }) => {
         }
     }, [])
 
+    console.log("existing allergen tags", existTags);
+    const defaultTags = [];
+    if (typeof existTags !== 'undefined') { //only used for update dish
+        for (let idx = 0; idx < existTags.length; idx++) {
+            defaultTags[idx] = existTags[idx].name;
+        }
+    }
+
     let allergenNames = new Array(allTags.length);
     for (let index = 0; index < allTags.length; index++) {
         allergenNames[index] = allTags[index].name;
@@ -198,29 +206,19 @@ const TagsForm = ({ tags, setTags }) => {
     }
 
     return (
-        <StyledTagsForm>
-            <h1 className='header'>
-                Allergens
-            </h1>
-            <div className='tags'>
-                {
-                    allTags ? allTags.map((item, index) => (
-                        <div key={item.id} className='tag'>
-                            <input type="checkbox" name={item.id} key={item.id} checked={selectedTags.includes(item.id) ? true : false} onChange={(event) => { updateSelectedTags(item.id) }} />
-                            <p>{item.name}</p>
-                        </div>
-                    )) : null
-                }
-            </div>
-        </StyledTagsForm>
-        // <Dropdown
-        //     placeholder='Start typing to begin...'
-        //     fluid
-        //     multiple
-        //     search
-        //     selection
-        //     options={allergenOptions}
-        // />
+        <Dropdown
+            style={{
+                marginTop: "10px",
+            }}
+            placeholder='Start typing to begin...'
+            fluid
+            search
+            selection
+            multiple
+            options={allergenOptions}
+            onChange={getAllergen}
+            defaultValue={defaultTags}
+        />
     )
 }
 
@@ -310,6 +308,7 @@ const EditDishForm = (props) => {
         })
     }, []);
 
+
     const updateDish = () => {
         console.log("here")
         let dishData = {
@@ -343,6 +342,8 @@ const EditDishForm = (props) => {
         }
     }
 
+    console.log("dishtags", dishTags)
+
     const updateCategorySelection = (category) => {
         console.log("category selection updated")
         console.log(category)
@@ -354,11 +355,21 @@ const EditDishForm = (props) => {
             <ModalBackground />
             <StyledModal>
                 <Container>
-                    <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
-                    <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId}/>
-                    <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
-                    <FormInput placeholder="Price" name='price' onChange={ (event) => { setPrice(event.target.value)} }/>
-                    <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
+                    <DishFormTitle>Update Dish</DishFormTitle>
+                    <DishFormSubtitle>Dish Name</DishFormSubtitle>
+                    <DishFormInput placeholder="Change dish name..." value={name} name='name' onChange={(event) => { setName(event.target.value) }} />
+                    <Divider color="#DCE2E9" />
+                    <DishFormSubtitle>Menu Category</DishFormSubtitle>
+                    <OldDropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId} />
+                    <Divider color="#DCE2E9" />
+                    <DishFormSubtitle>Description</DishFormSubtitle>
+                    <DishFormInput placeholder="Change description..." value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
+                    <Divider color="#DCE2E9" />
+                    <DishFormSubtitle>Price</DishFormSubtitle>
+                    <DishFormInput placeholder="Change price..." name='price' onChange={(event) => { setPrice(event.target.value) }} />
+                    <Divider color="#DCE2E9" />
+                    <DishFormSubtitle>Allergen Search</DishFormSubtitle>
+                    <TagsForm tags={dishTags} setTags={setDishTags} existTags={props.dish.Tags}></TagsForm>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
                         <FormButton text='Submit' onClick = {updateDish} />
