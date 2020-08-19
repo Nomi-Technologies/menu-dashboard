@@ -1,8 +1,8 @@
+import { FormButton } from "../../buttons"
 import React, { useState, useEffect, useCallback } from 'react';
 import { FormInput, PopupFormTitle, DishFormInput} from "../../form"
-import { FormButton } from "../../buttons"
-import { Dropdown } from "./dropdown"
-import Client from '../../../util/client'
+import { CategoryDropdown } from "./dropdown"
+import Client from '../../util/client'
 import styled from "styled-components"
 import { useQRCode } from 'react-qrcode'
 import { useDropzone } from 'react-dropzone'
@@ -168,7 +168,6 @@ const TagsForm = ({ tags, setTags }) => {
         }
     }, [])
 
-    console.log("existing allergen tags", existTags);
     const defaultTags = [];
     if (typeof existTags !== 'undefined') { //only used for update dish
         for (let idx = 0; idx < existTags.length; idx++) {
@@ -186,23 +185,17 @@ const TagsForm = ({ tags, setTags }) => {
         text: allergen,
         value: allergen
     }));
-    console.log("allergen result: ", allergenOptions);
 
-    // update tags based on checkbox
-    const updateSelectedTags = (tagId) => {
-        let newSelectedTags = [...selectedTags]
-        if (!selectedTags.includes(tagId)) {
-            newSelectedTags.push(tagId)
-            setSelectedTags(newSelectedTags)
-        } else {
-            const index = selectedTags.indexOf(tagId);
-            if (index > -1) {
-                newSelectedTags.splice(index, 1);
-                setSelectedTags(newSelectedTags)
-            }
+    const getAllergen = (event, { value }) => {
+        let newAllergen = event.target.textContent;
+        console.log(newAllergen);
+        let arr = []
+        for (let i = 0; i < value.length; i++) {
+            let arrIdx = allergenNames.indexOf(value[i]) + 1;
+            arr.push(arrIdx)
         }
-        // update dishes tags
-        setTags(newSelectedTags)
+        setSelectedTags(arr);
+        setTags(arr);
     }
 
     return (
@@ -271,7 +264,7 @@ const NewDishForm = (props) => {
                     <DishFormInput placeholder='Type dish name...' name='name' onChange={(event) => { setName(event.target.value) }} />
                     <Divider color="#DCE2E9" />
                     <DishFormSubtitle>Menu Category</DishFormSubtitle>
-                    <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection} menuId={props.menuId} />
+                    <CategoryDropdown placeholder='*select category*' updateSelection={updateCategorySelection} menuId={props.menuId} />
                     <Divider color="#DCE2E9" />
                     <DishFormSubtitle>Description</DishFormSubtitle>
                     <DishFormInput placeholder='Type description...' name='category' onChange={(event) => { setDescription(event.target.value) }} />
@@ -341,9 +334,6 @@ const EditDishForm = (props) => {
             //show some error
         }
     }
-
-    console.log("dishtags", dishTags)
-
     const updateCategorySelection = (category) => {
         console.log("category selection updated")
         console.log(category)
@@ -360,7 +350,7 @@ const EditDishForm = (props) => {
                     <DishFormInput placeholder="Change dish name..." value={name} name='name' onChange={(event) => { setName(event.target.value) }} />
                     <Divider color="#DCE2E9" />
                     <DishFormSubtitle>Menu Category</DishFormSubtitle>
-                    <OldDropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId} />
+                    <CategoryDropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId} />
                     <Divider color="#DCE2E9" />
                     <DishFormSubtitle>Description</DishFormSubtitle>
                     <DishFormInput placeholder="Change description..." value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />

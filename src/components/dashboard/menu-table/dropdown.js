@@ -27,7 +27,7 @@ const Categories = styled.div`
     }
 `
 
-class OldDropdown extends React.Component {
+class CategoryDropdown extends React.Component {
     constructor(props) {
         super(props);
 
@@ -48,7 +48,6 @@ class OldDropdown extends React.Component {
         Client.getMenu(props.menuId).then((res) => {
             console.log("client ", res.data)
             this.state.data = res.data.Categories
-            console.log("getting data", this.state.data);
 
             for (let i = 0; i < res.data.Categories.length; i++) {
                 this.state.categoryNames[i] = res.data.Categories[i].name;
@@ -58,13 +57,7 @@ class OldDropdown extends React.Component {
                 text: category,
                 value: category
             }));
-            console.log(this.state.categoryOptions);
-
-            console.log("pass in category id", props.categoryId);
-            console.log("input", this.state.categoryNames[props.categoryId - 1]);
-            //this.state.currCategory = this.state.categoryNames[props.categoryId - 1];
             this.setState({ currCategory: this.state.categoryNames[props.categoryId - 1] });
-            console.log("curr cate", this.state.currCategory);
         })
 
         if (typeof this.props.categoryId !== 'undefined') {
@@ -78,11 +71,11 @@ class OldDropdown extends React.Component {
     }
 
     getCategory = (event, { value }) => {
-        console.log("dropdown arr", value);
         let categoryId = this.state.categoryNames.indexOf(value) + 1;
-        console.log("id is", categoryId);
         this.props.updateSelection(categoryId);
+        this.state.currCategory = this.state.categoryNames[categoryId - 1];
     }
+
     render() {
         return (
             < Dropdown
@@ -93,7 +86,7 @@ class OldDropdown extends React.Component {
                 fluid
                 search
                 selection
-                defaultValue={this.state.currCategory}
+                value={this.state.currCategory}
                 options={this.state.categoryOptions}
                 onChange={this.getCategory}
             />
@@ -101,4 +94,4 @@ class OldDropdown extends React.Component {
     }
 }
 
-export { OldDropdown }
+export { CategoryDropdown }
