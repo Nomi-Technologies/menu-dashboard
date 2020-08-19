@@ -48,9 +48,13 @@ export default class Client {
         return axios.delete(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
     }
 
-    static setMenu = (data) => {
+    static uploadCSV = (data, menuId, overwrite) => {
         let token = retrieveUserToken();
-        return axios.post(ROOT_URL + '/upload-menu-csv', { data: data }, {headers: {Authorization: `Bearer ${token}`}});
+        let body = {
+            data: data,
+            overwrite: overwrite
+        }
+        return axios.post(ROOT_URL + `/menus/${menuId}/uploadCSV/`, body, {headers: {Authorization: `Bearer ${token}`}});
     }
 
     static searchDishes = (data, menuId) => {

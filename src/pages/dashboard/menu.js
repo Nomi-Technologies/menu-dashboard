@@ -37,42 +37,23 @@ let StyledFloatingMenu = styled(FloatingMenu)`
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
-    const [selectedFile, setSelectedFile] = useState(null)
-    let fileReader
-
-    function parseFile() {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
-
-      for (var i=1; i<allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j=0; j<headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''))
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.uploadMenu(lines)
-    }
-
-    function onFileChange(event) {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
-        }
-    }
 
     const updateMenuSelection = (menu) => {
-        console.log("new menu selected")
-        console.log(menu)
-        setMenuId(menu.id)
+        if(menu.id) {
+            setMenuId(menu.id)
+
+            Client.getMenu(menu.id).then((res) => {
+                setMenuData(res.data.Categories)            
+            })
+        }
+        
     }
+    const updateMenu = () => {
+        console.log("updating menu")
+        Client.getMenu(menuId).then((res) => {
+            setMenuData(res.data.Categories)            
+        })
+    };
 
     return (
         <Layout>
@@ -80,20 +61,12 @@ const MenuPage = () => {
                 <SideBar width='280px'>
                 </SideBar>
                 <Column>
-<<<<<<< HEAD
                     <MenuContainer>
                         <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
-                        {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menuId={menuId} menuData={menuData}/>
+                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
                         <MenuCreator />
-                        <StyledFloatingMenu/>
+                        <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu}/>
                     </MenuContainer>
-=======
-                    <Content>
-                        <MenuTitle>{ MenuTitleText }</MenuTitle>
-                        <MenuTable menuId={menuId}/>
-                    </Content>
->>>>>>> d5ebf7b... wip csv upload
                 </Column>
             </Container>
         </Layout>

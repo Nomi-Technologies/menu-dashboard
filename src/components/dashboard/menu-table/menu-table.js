@@ -8,18 +8,8 @@ import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 
-<<<<<<< HEAD:src/components/dashboard/menu-table/menu-table.js
 import * as Forms from "./popup-forms"
 import * as Table from "./table"
-=======
-import EditIconGrey from "../../assets/img/edit-grey.png"
-import EditIconOrange from "../../assets/img/edit-orange.png"
-
-import EditIcon from "../../assets/img/edit-icon.png"
-import DeleteIcon from "../../assets/img/delete-icon.png"
-
-import { NewDishForm, NewCategoryForm, EditDishForm, EditCategoryForm, DeleteConfirmation, UploadCSVModal } from "./popup-forms"
->>>>>>> d5ebf7b... wip csv upload:src/components/dashboard/menu-table.js
 
 const StyledMenuTable = styled.div`
     width: 100%;
@@ -114,15 +104,15 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
-    const [menuData, setMenuData] = useState(props.menuData)
+    // const [menuData, setMenuData] = useState(props.menuData)
+    let menuData = props.menuData
+    let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({})
-
-    const [showUploadCSVModal, setShowUploadCSVModal] = useState(false);
 
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
@@ -135,6 +125,7 @@ const MenuTable = (props) => {
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
 
+<<<<<<< HEAD
     useEffect(() => {
         Client.getMenu(props.menuId).then((res) => {
             console.log(res.data)
@@ -149,28 +140,25 @@ const MenuTable = (props) => {
         })
     };
 
+=======
+>>>>>>> d59b32a... redo csv parse
     const toggleNewDishForm = () => {
-        console.log("toggle new dish form")
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
     }
 
     const toggleNewCategoryForm = () => {
-        console.log("toggle new category form")
         if (!showNewCategoryForm) closeAllForms() //if about to open form
         setNewCategoryForm(!showNewCategoryForm)
     }
 
     const toggleEditDishForm = (dish) => {
-        console.log("toggle edit dish form")
-        console.log(dish)
         if (typeof dish !== 'undefined') setSelectedDish(dish)
         if (!showEditDishForm) closeAllForms() //if about to open form
         setEditDishForm(!showEditDishForm)
     }
 
     const toggleEditCategoryForm = (category) => {
-        console.log("toggle edit category form")
         if (typeof category !== 'undefined') setSelectedCategory(category)
         if (!showEditCategoryForm) closeAllForms() //if about to open form
         setEditCategoryForm(!showEditCategoryForm)
@@ -180,21 +168,14 @@ const MenuTable = (props) => {
         if (!showDeleteConfirmation) {
             closeAllForms() //if about to open form
             setToDelete({id: id, type: type}).then(() => {
-                console.log("Set currentOnDelete")
                 setDeleteConfirmation(true)
             })
         }
     }
 
-    const toggleUploadCSVModal = () => {
-        closeAllForms()
-        setShowUploadCSVModal(!showUploadCSVModal)
-    }
-
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
-                console.log(toDelete)
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -222,47 +203,12 @@ const MenuTable = (props) => {
         }
     }
 
-    
-
-
     const closeAllForms = () => {
         setNewDishForm(false)
         setNewCategoryForm(false)
         setEditDishForm(false)
         setEditCategoryForm(false)
         setDeleteConfirmation(false)
-    }
-
-    const onFileChange = (event) => {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
-        }
-    }
-
-    const parseFile = () => {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
-
-      for (var i = 1; i < allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j = 0; j < headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''));
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.setMenu(lines).then((res) => {
-          updateMenu();
-      }).catch((err) => {
-          console.log(err)
-      })
     }
 
     const renderTableOutput = () => {
@@ -315,10 +261,6 @@ const MenuTable = (props) => {
         }
     }
 
-    const uploadCSV = ({ overwrite, file }) => {
-        console.log(overwrite)
-    }
-
     return (
         <>
             <MenuControls>
@@ -344,7 +286,6 @@ const MenuTable = (props) => {
                 <div className='buttons'>
                     <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
-                    <div className='upload-csv' onClick={toggleUploadCSVModal}>Upload Menu CSV</div>
                 </div>
             </MenuControls>
             {
@@ -374,8 +315,6 @@ const MenuTable = (props) => {
                     <Forms.DeleteConfirmation closeForm={closeDeleteConfirmation}/>
                 ) : null
             }
-
-            <UploadCSVModal show={ showUploadCSVModal } close={ toggleUploadCSVModal } uploadCSV={ uploadCSV }/>
 
             <StyledMenuTable>
                 <Table.HeaderRow>
