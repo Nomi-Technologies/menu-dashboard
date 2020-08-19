@@ -1,8 +1,19 @@
 import axios from 'axios'
 import { retrieveUserToken } from './auth'
+import { navigate } from "@reach/router"
 
 const ROOT_URL = process.env.GATSBY_API_URL
 
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  console.log("error: " + error);
+  if (error.response.status === 401) {
+    navigate("/login");
+  }
+
+  return Promise.reject(error);
+});
 
 export default class Client {
     static login = (email, pass) => {
@@ -30,8 +41,8 @@ export default class Client {
     static createDish = (data) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.post(ROOT_URL + '/dishes/', data, {headers: {Authorization: `Bearer ${token}`}})
-    }  
-    
+    }
+
     static deleteDish = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.delete(ROOT_URL + '/dishes/' + id, {headers: {Authorization: `Bearer ${token}`}})
@@ -61,8 +72,8 @@ export default class Client {
     static createCategory = (data) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.post(ROOT_URL + '/categories/', data, {headers: {Authorization: `Bearer ${token}`}})
-    }  
-    
+    }
+
     static deleteCategory = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.delete(ROOT_URL + '/categories/' + id, {headers: {Authorization: `Bearer ${token}`}})
@@ -81,8 +92,8 @@ export default class Client {
     static createMenu = (data) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.post(ROOT_URL + '/menus/', data, {headers: {Authorization: `Bearer ${token}`}})
-    }  
-    
+    }
+
     static deleteMenu = (id) => {
         let token = retrieveUserToken(); // get user auth token
         return axios.delete(ROOT_URL + '/menus/' + id, {headers: {Authorization: `Bearer ${token}`}})
@@ -156,5 +167,5 @@ export default class Client {
         })
     }
 
-    
+
 }
