@@ -25,6 +25,7 @@ const StyledHamburger = styled(HamburgerMenu)`
 
 const Menu = styled.div`
     position: absolute;
+    background-color: white;
     width: 250px;
     bottom: 36px;
     right: 100px;
@@ -41,7 +42,7 @@ const MenuItem = styled.div`
     font-weight: bold;
     text-align: center;
     line-height: 60px;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
     &:hover {
         background: rgba(242, 153, 74, 0.1);
     }
