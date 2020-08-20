@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FormInput, PopupFormTitle } from "../../form"
 import { FormButton } from "../../buttons"
 
-import {Dropdown} from "./dropdown"
+import { Dropdown } from "./dropdown"
 
 import Client from '../../../util/client'
 
@@ -439,14 +439,6 @@ const QRCodeForm = (props) => {
 }
 
 const StyledUploadCSVModal = styled.div`
-    input[type="checkbox"] {
-        display: inline-block;
-    }
-
-    input[type="file"] {
-
-    }
-
     .file-input {
         display: flex;
         justify-content: center;
@@ -465,8 +457,6 @@ const StyledUploadCSVModal = styled.div`
         color: red;
     }
     
-
-
     p {
         margin-left: 20px;
         display: inline-block;

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Client from '../../../util/client'
 
 import styled from "styled-components"
-import ArrowIcon from "../../../assets/img/arrow_icon.png"
+// import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 
@@ -117,31 +117,13 @@ const MenuTable = (props) => {
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
 
-    const [selectedFile, setSelectedFile] = useState(null)
-
     const [searchResults, setSearchResults] = useState([]);
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
+    const [searchBoxValue, setSearchBoxValue] = useState(null);
 
-<<<<<<< HEAD
-    useEffect(() => {
-        Client.getMenu(props.menuId).then((res) => {
-            console.log(res.data)
-            setMenuData(res.data.Categories)
-        })
-    }, [props.menuId])
-
-    const updateMenu = () => {
-        Client.getMenu(props.menuId).then((res) => {
-            setMenuData(null)
-            setMenuData(res.data.Categories)
-        })
-    };
-
-=======
->>>>>>> d59b32a... redo csv parse
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
