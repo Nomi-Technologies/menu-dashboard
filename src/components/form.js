@@ -12,6 +12,12 @@ let FormTitle = styled.h1`
     margin: 0;
 `
 
+let PopupFormTitle = styled.h1`
+    font-size: 36px;
+    line-height: 43px;
+    margin: 0;
+`;
+
 let FormSubtitle = styled.p`
     font-size: 16px;
     line-height: 19px;
@@ -145,4 +151,4 @@ let FormError = styled.p`
     margin: 0px;
 `
 
-export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}
+export { FormInput, FormContainer, FormTitle, PopupFormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}

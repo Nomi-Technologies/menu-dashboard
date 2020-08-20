@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { FormInput } from "../../form"
+import { FormInput, PopupFormTitle } from "../../form"
 import { FormButton } from "../../buttons"
 
 import {Dropdown} from "./dropdown"
@@ -393,21 +393,19 @@ const DeleteConfirmation = ({ closeForm }) => (
 
 const QRCode = styled.div`
     display: block;
-    margin: 0 auto;
+    margin: 50px auto;
     width: 250px;
     height: 250px;
 `;
 
 const QRCodeForm = (props) => {
 
-    const [fileName, setFileName] = useState('');
-
-    const url = `https://nomi-smart-menu.netlify.app/${props.uniqueName}`
+    const url = `${process.env.GATSBY_SMART_MENU_URL}/${props.uniqueName}`
     const qrCodeDataUrl = useQRCode({ 
         value: url,
         scale: 128,
         margin: 0,
-        type: 'image/jpeg',
+        type: 'image/png',
     });
 
     return (
@@ -415,11 +413,7 @@ const QRCodeForm = (props) => {
             <ModalBackground/>
             <StyledModal>
                 <Container>
-                    <FormInput
-                        placeholder='QRCode image filename'
-                        name='file-name'
-                        onChange={event => setFileName(event.target.value)}
-                    />
+                    <PopupFormTitle>Download QRCode for {props.name}</PopupFormTitle>
                     {
                         props.uniqueName === null ?
                         <QRCode>Generating QR code...</QRCode>
@@ -430,8 +424,8 @@ const QRCodeForm = (props) => {
                         <FormButton text='Cancel' theme='light' onClick={props.closeForm}/>
                         <a
                             href={qrCodeDataUrl}
-                            download={fileName}
-                        ><FormButton text='Download as JPEG' onClick={() => {}}/></a>
+                            download={`${props.uniqueName}-QRCode`}
+                        ><FormButton text='Download as PNG' onClick={() => {}}/></a>
                     </ButtonRow>
                 </Container>
             </StyledModal>

@@ -67,12 +67,14 @@ const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showQRCodeForm, setShowQRCodeForm] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
+    const [restaurantName, setRestaurantName] = useState(null);
 
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
         // Currently put here to avoid multiple requests
         Client.getRestaurantInfo().then(res => {
             setUniqueName(res.data.uniqueName);
+            setRestaurantName(res.data.name);
         });
     }, []);
 
@@ -112,6 +114,7 @@ const FloatingMenu = (props) => {
                 showQRCodeForm ? (
                     <QRCodeForm 
                         uniqueName={uniqueName}
+                        name={restaurantName}
                         closeForm={() => setShowQRCodeForm(false)}
                     />
                 ) : <></>
