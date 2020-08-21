@@ -97,8 +97,8 @@ const MenuTable = (props) => {
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
-    const [showEditCategoryForm, setEditCategoryForm] = useState(false); 
-    const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false); 
+    const [showEditCategoryForm, setEditCategoryForm] = useState(false);
+    const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({})
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
@@ -120,7 +120,7 @@ const MenuTable = (props) => {
     const updateMenu = () => {
         Client.getMenu(props.menuId).then((res) => {
             setMenuData(null)
-            setMenuData(res.data.Categories)            
+            setMenuData(res.data.Categories)
         })
     };
 
@@ -261,9 +261,9 @@ const MenuTable = (props) => {
                     ))
                 }
             </>
-        );      
+        );
     }
- 
+
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchBoxValue.trim() == '') {
@@ -285,12 +285,12 @@ const MenuTable = (props) => {
             <MenuControls>
                 <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue} onChange={(e) => setSearchBoxValue(e.target.value)} />
-                    { 
-                        (isSearching && searchBoxValue != null) ? 
-                        <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => { 
+                    {
+                        (isSearching && searchBoxValue != null) ?
+                        <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
                             e.preventDefault();
                             setSearchBoxValue('');
-                            setIsSearching(false); 
+                            setIsSearching(false);
                         }}/> : null
                     }
                     <input className='submitSearch' type='image' alt="Submit" src={SearchIcon}/>
@@ -337,17 +337,20 @@ const MenuTable = (props) => {
                         Description
                     </Table.TableCell>
                     <Table.TableCell>
+                        Price
+                    </Table.TableCell>
+                    <Table.TableCell>
                         Allergens
                     </Table.TableCell>
                 </Table.HeaderRow>
-                   {/* { 
+                   {/* {
                         menuData ? menuData.map((item) => (
                             <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                                 toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
                         )) : ''
                     } */}
 
-                   { 
+                   {
                     renderTableOutput()
                    }
             </StyledMenuTable>

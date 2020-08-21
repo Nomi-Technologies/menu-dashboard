@@ -51,7 +51,7 @@ const TableRow = styled.div`
     box-sizing: border-box;
     padding-left: 52px;
     background-color: #f9f9f9;
-    
+
 
     ${TableCell}:nth-child(1) {
         flex-basis: 20%;
@@ -67,7 +67,7 @@ const TableRow = styled.div`
 
     ${TableCell}:nth-child(4) {
         flex-basis: 10%;
-    }    
+    }
 
     &:last-child {
         border-bottom-left-radius: 8px;
@@ -112,12 +112,15 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
                         <p>{item.description}</p>
                     </TableCell>
                     <TableCell>
+                        <p>{item.price}</p>
+                    </TableCell>
+                    <TableCell>
                         <p>{allergen_list(item.Tags)}</p>
                     </TableCell>
                     <TableCell>
                         <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
                         <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }}/>
-                    </TableCell> 
+                    </TableCell>
                 </>
             }
         </StyledItemRow>
@@ -154,7 +157,7 @@ const allergen_list = ( allergens ) => {
     }
 
     let list = ''
-    
+
     allergens.forEach((element, idx) => {
         if(idx !== allergens.length - 1) {
             list += element.name + ', '
@@ -185,7 +188,7 @@ const StyledTableCategory = styled.div`
             max-height: none;
             display: block;
         }
-        
+
         .collapse-icon {
             transform: none;
         }
@@ -223,11 +226,11 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
             </CategoryHeaderRow>
             <div className='items'>
                 {
-                    category ? 
+                    category ?
                     category.Dishes.map((item, index) => (
                         <ItemRow key={index} item={item} updateMenu={updateMenu}
                             catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation}/>
-                    )) : 
+                    )) :
                     ''
                 }
             </div>
