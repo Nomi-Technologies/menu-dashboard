@@ -167,7 +167,7 @@ const NewDishForm = (props) => {
             menuId: props.menuId,
         }
         console.log(dishData)
-        if (name !== '' && description !== '' && categoryId !== 0 && price != 0) {
+        if (name !== '' && description !== '' && categoryId !== 0 && price != '') {
             Client.createDish(dishData).then((res) => {
                 console.log("dish created")
                 console.log(res.data)
