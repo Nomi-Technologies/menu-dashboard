@@ -167,7 +167,7 @@ const NewDishForm = (props) => {
             menuId: props.menuId,
         }
         console.log(dishData)
-        if (name !== '' && description !== '' && categoryId !== 0 && price != '') {
+        if (name !== '' && categoryId !== 0) {
             Client.createDish(dishData).then((res) => {
                 console.log("dish created")
                 console.log(res.data)
@@ -237,7 +237,7 @@ const EditDishForm = (props) => {
             menuId: props.menuId,
         }
         console.log(dishData)
-        if (name !== '' && description !== '' && categoryId !== 0 && price != '') {
+        if (name !== '' && categoryId !== 0) {
             Client.updateDish(props.dish.id, dishData).then((res) => {
                 console.log("dish updated")
                 console.log(res.data)
