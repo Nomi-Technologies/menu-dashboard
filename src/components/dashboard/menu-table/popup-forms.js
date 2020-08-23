@@ -40,7 +40,7 @@ const Container = styled.div`
         padding: 0;
         margin: 0;
     }
-` 
+`
 
 const ButtonRow = styled.div`
     display: flex;
@@ -80,11 +80,11 @@ const StyledTagsForm = styled.div`
             justify-content: middle;
             box-sizing: border-box;
             padding: 5px 0;
-    
+
             input {
                 display: inline-block;
             }
-        
+
             p {
                 padding-left: 10px;
                 display: inline-block;
@@ -131,7 +131,7 @@ const TagsForm = ({ tags, setTags }) => {
         setTags(newSelectedTags)
     }
 
-    return( 
+    return(
         <StyledTagsForm>
             <h1 className='header'>
                 Allergens
@@ -163,10 +163,11 @@ const NewDishForm = (props) => {
             description: description,
             categoryId: categoryId,
             dishTags: dishTags,
+            price: price,
             menuId: props.menuId,
         }
         console.log(dishData)
-        if (name !== '' && description !== '' && categoryId !== 0) {
+        if (name !== '' && categoryId !== 0) {
             Client.createDish(dishData).then((res) => {
                 console.log("dish created")
                 console.log(res.data)
@@ -196,11 +197,11 @@ const NewDishForm = (props) => {
                     <FormInput placeholder='dish name' name='name' onChange={ (event) => {setName(event.target.value)} }/>
                     <Dropdown placeholder='*select category*' updateSelection={updateCategorySelection} menuId={props.menuId}/>
                     <FormInput placeholder='description' name='category' onChange={ (event) => {setDescription(event.target.value)} }/>
-                    <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                    <FormInput placeholder="Price" name='price' onChange={ (event) => { setPrice(event.target.value)} }/>
                     <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Submit' onClick = {createDish} />    
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
+                        <FormButton text='Submit' onClick = {createDish} />
                     </ButtonRow>
                 </Container>
             </StyledModal>
@@ -232,10 +233,11 @@ const EditDishForm = (props) => {
             description: description,
             categoryId: categoryId,
             dishTags: dishTags,
+            price: price,
             menuId: props.menuId,
         }
         console.log(dishData)
-        if (name !== '' && description !== '' && categoryId !== 0) {
+        if (name !== '' && categoryId !== 0) {
             Client.updateDish(props.dish.id, dishData).then((res) => {
                 console.log("dish updated")
                 console.log(res.data)
@@ -246,6 +248,7 @@ const EditDishForm = (props) => {
                     setName(oldItem.name)
                     setDescription(oldItem.description)
                     setCategoryId(oldItem.categoryId)
+                    setPrice(oldItem.price)
                 })
                 console.log("error updating dish")
                 //show some error on form
@@ -270,11 +273,11 @@ const EditDishForm = (props) => {
                     <FormInput placeholder="Dish Name" value={name} name='name' onChange={ (event) => {setName(event.target.value)} }/>
                     <Dropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId}/>
                     <FormInput placeholder="Description" value={ description } name='description' onChange={ (event) => {setDescription(event.target.value)} }/>
-                    <FormInput placeholder="Price" name='price' onChange={ (event) => {setPrice(event.target.value)} }/>
+                    <FormInput placeholder="Price" name='price' onChange={ (event) => { setPrice(event.target.value)} }/>
                     <TagsForm tags={ dishTags } setTags={ setDishTags }></TagsForm>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Submit' onClick = {updateDish} />    
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
+                        <FormButton text='Submit' onClick = {updateDish} />
                     </ButtonRow>
                 </Container>
             </StyledModal>
@@ -314,8 +317,8 @@ const NewCategoryForm = (props) => {
                 <Container>
                     <FormInput placeholder='category' name='category' onChange={ (event) => {setName(event.target.value)} }/>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Submit' onClick = {createCategory} />    
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
+                        <FormButton text='Submit' onClick = {createCategory} />
                     </ButtonRow>
                 </Container>
             </StyledModal>
@@ -358,8 +361,8 @@ const EditCategoryForm = (props) => {
                 <Container>
                     <FormInput placeholder="Name" name='category' value={name} onChange={ (event) => {setName(event.target.value)} }/>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Submit' onClick = {updateCategory} />    
+                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
+                        <FormButton text='Submit' onClick = {updateCategory} />
                     </ButtonRow>
                 </Container>
             </StyledModal>
@@ -382,11 +385,11 @@ const DeleteConfirmation = ({ closeForm }) => (
             <Container>
                 Are you sure you want to delete this item?
                 <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>    
-                    <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>    
+                    <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
+                    <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
                 </ButtonRow>
             </Container>
-            
+
         </StyledModal>
     </StyledDeleteConfirmation>
 )
@@ -401,7 +404,7 @@ const QRCode = styled.div`
 const QRCodeForm = (props) => {
 
     const url = `${process.env.GATSBY_SMART_MENU_URL}/${props.uniqueName}`
-    const qrCodeDataUrl = useQRCode({ 
+    const qrCodeDataUrl = useQRCode({
         value: url,
         scale: 128,
         margin: 0,
