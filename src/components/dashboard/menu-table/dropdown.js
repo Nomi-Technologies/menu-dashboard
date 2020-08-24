@@ -8,6 +8,7 @@ import Client from '../../../util/client'
 import styled from "styled-components"
 import { Dropdown } from 'semantic-ui-react'
 import _ from "lodash";
+import { Multiselect } from 'multiselect-react-dropdown'
 
 const Categories = styled.div`
     display: flex;
@@ -33,47 +34,47 @@ class CategoryDropdown extends React.Component {
 
         this.state = {
             displayList: false,
-            data: [],
-            currentSelection: '',
             categoryOptions: [],
-            categoryNames: [],
             currCategory: '',
+            categoryObjects: {},
         }
 
-        this.showDropdown = this.showDropdown.bind(this)
-        this.hideDropdown = this.hideDropdown.bind(this)
-
-        //let categoryOptions = [];
+        Client.getAllCategoriesByMenu(props.menuId).then((res) => {
+            let obj = {};
+            for (let i = 0; i < res.data.length; i++) {
+                obj[res.data[i].name] = res.data[i].id;
+            }
+            this.setState({ categoryObjects: obj });
+        })
 
         Client.getMenu(props.menuId).then((res) => {
             console.log("client ", res.data)
-            this.state.data = res.data.Categories
-
-            for (let i = 0; i < res.data.Categories.length; i++) {
-                this.state.categoryNames[i] = res.data.Categories[i].name;
+            let data_category = res.data.Categories
+            let nameArr = new Array(data_category.length)
+            let currname;
+            for (let i = 0; i < data_category.length; i++) {
+                nameArr[i] = data_category[i].name;
+                if (data_category[i].id === props.categoryId) {
+                    currname = data_category[i].name
+                }
             }
-            this.state.categoryOptions = _.map(this.state.categoryNames, (category, index) => ({
+            this.setState({ currCategory: currname });
+            console.log("this.state.currCategory", this.state.currCategory)
+            let options = _.map(nameArr, (category, index) => ({
                 key: index + 1,
                 text: category,
                 value: category
             }));
-            this.setState({ currCategory: this.state.categoryNames[props.categoryId - 1] });
+            this.setState({ categoryOptions: options, currCategory: currname });
         })
 
-        if (typeof this.props.categoryId !== 'undefined') {
-            Client.getCategory(this.props.categoryId).then((res) => {
-                this.state.currentSelection = res.data.name
-            })
-        }
-        else {
-            this.state.currentSelection = this.props.placeholder
-        }
+
     }
 
     getCategory = (event, { value }) => {
-        let categoryId = this.state.categoryNames.indexOf(value) + 1;
-        this.props.updateSelection(categoryId);
-        this.state.currCategory = this.state.categoryNames[categoryId - 1];
+        let categoryId = this.state.categoryObjects[value];
+        this.props.updateSelection(categoryId); //id
+        this.setState({ currCategory: value }); //name
     }
 
     render() {

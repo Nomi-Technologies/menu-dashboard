@@ -47,7 +47,8 @@ const TableRow = styled.div`
     box-sizing: border-box;
     padding-left: 52px;
     background-color: #f9f9f9;
-
+    font-family: HK Grotesk Regular;
+    font-size:18px;
 
     ${TableCell}:nth-child(1) {
         flex-basis: 15%;
@@ -116,8 +117,8 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
                         <p>{allergen_list(item.Tags)}</p>
                     </TableCell>
                     <TableCell>
-                        <img className='edit' src={EditIcon} onClick={()=>toggleEditDish(item)}/>
-                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }}/>
+                        <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} />
+                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} />
                     </TableCell>
                 </>
             }
@@ -136,28 +137,30 @@ const HeaderRow = styled(TableRow)`
 const CategoryHeaderRow = styled(TableRow)`
     background: #FEEBDA;
     color: #F3A35C;
-
-    .collapse-icon {
+    .collapse-icon { 
         position: absolute;
-        width: 12px;
-        height: 6px;
+        width: 30px;
+        height: 15px;
         margin-left: -38px;
-        padding: 9px 7px;
+        margin-right:10px;
+        //padding: 9px 7px;
+        border-style: solid;
+        border-width: 4px;
         background-color: #F3A35C;
         border-radius: 4px;
         cursor: pointer;
     }
 `
 
-const allergen_list = ( allergens ) => {
-    if(allergens.length === 0) {
+const allergen_list = (allergens) => {
+    if (allergens.length === 0) {
         return '--'
     }
 
     let list = ''
 
     allergens.forEach((element, idx) => {
-        if(idx !== allergens.length - 1) {
+        if (idx !== allergens.length - 1) {
             list += element.name + ', '
         } else {
             list += element.name
@@ -201,7 +204,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     const [id, setId] = useState(category.id)
 
     const toggleOpen = () => {
-        if(open) {
+        if (open) {
             setOpen(false)
         } else {
             setOpen(true)
@@ -209,27 +212,29 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     }
 
     return (
-        <StyledTableCategory className={ open ? 'open' : '' }>
+        <StyledTableCategory className={open ? 'open' : ''}>
             <CategoryHeaderRow>
                 <TableCell>
-                    <img className='collapse-icon' src={ ArrowIcon } onClick={ toggleOpen }/>
-                    {
-                        <>
-                            {name}
-                            <img className='edit' src={EditIcon} onClick={()=>toggleEditCategory(category)}/>
-                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")}/>
-                        </>
-                    }
+                    <div className="orange-box">
+                        <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
+                        {
+                            <>
+                                {name}
+                                <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
+                                <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")} />
+                            </>
+                        }
+                    </div>
                 </TableCell>
             </CategoryHeaderRow>
             <div className='items'>
                 {
                     category ?
-                    category.Dishes.map((item, index) => (
-                        <ItemRow key={index} item={item} updateMenu={updateMenu}
-                            catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation}/>
-                    )) :
-                    ''
+                        category.Dishes.map((item, index) => (
+                            <ItemRow key={index} item={item} updateMenu={updateMenu}
+                                catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation} />
+                        )) :
+                        ''
                 }
             </div>
         </StyledTableCategory>

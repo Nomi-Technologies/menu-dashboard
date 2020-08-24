@@ -9,6 +9,7 @@ import { useDropzone } from 'react-dropzone'
 import "../../pages/index.css"
 import { Dropdown } from 'semantic-ui-react'
 import _ from "lodash";
+import { useQRCode } from 'react-qrcode'
 
 const StyledModal = styled.div`
     top: 100px;
@@ -101,8 +102,6 @@ const DishFormTitle = styled.div`
     left: 20px;
     top: 20px;
     font-family: HK Grotesk Bold;
-    // font-style: normal;
-    //font-weight: bold;
     font-size: 28px;
     line-height: 34px;
     display: flex;
@@ -149,9 +148,30 @@ const Divider = ({ color }) => (
     />
 );
 
+let StyledButton = styled.button`
+    display: block;
+    margin: 20px 0;
+    font-size: 18px;
+    line-height: 22px;
+    color: ${ props => props.theme === 'light' ? "#F3A35C" : "white"};
+    padding: 10px 86px;
+    background: ${ props => props.theme === 'light' ? "white" : "#F3A35C"};
+    border-radius: 8px;
+    border: 2px solid #F3A35C;
+    transition: 0.3s ease-in-out;
+    font-family: HK Grotesk;
+    font-size:14px;
+    &:hover {
+        background: rgba(242, 153, 74, 0.2);
+    }
+`
+
+const FormButton = (props) => (
+    <StyledButton theme={props.theme} onClick={props.onClick}>{props.text}</StyledButton>
+)
+
 const TagsForm = ({ tags, setTags }) => {
     const [allTags, setAllTags] = useState([])
-    const [selectedTags, setSelectedTags] = useState([])
 
     useEffect(() => {
         Client.getTags().then((response) => {
@@ -164,14 +184,14 @@ const TagsForm = ({ tags, setTags }) => {
                 builtSelectedTags.push(tag.id)
             })
 
-            setSelectedTags(builtSelectedTags)
+            setTags(builtSelectedTags)
         }
     }, [])
 
-    const defaultTags = [];
-    if (typeof existTags !== 'undefined') { //only used for update dish
-        for (let idx = 0; idx < existTags.length; idx++) {
-            defaultTags[idx] = existTags[idx].name;
+    const defaultTags = []
+    if (tags.length) {
+        for (let idx = 0; idx < tags.length; idx++) {
+            defaultTags[idx] = tags[idx].name;
         }
     }
 
@@ -188,13 +208,11 @@ const TagsForm = ({ tags, setTags }) => {
 
     const getAllergen = (event, { value }) => {
         let newAllergen = event.target.textContent;
-        console.log(newAllergen);
         let arr = []
         for (let i = 0; i < value.length; i++) {
             let arrIdx = allergenNames.indexOf(value[i]) + 1;
             arr.push(arrIdx)
         }
-        setSelectedTags(arr);
         setTags(arr);
     }
 
@@ -303,7 +321,6 @@ const EditDishForm = (props) => {
 
 
     const updateDish = () => {
-        console.log("here")
         let dishData = {
             name: name,
             description: description,
@@ -359,7 +376,7 @@ const EditDishForm = (props) => {
                     <DishFormInput placeholder="Change price..." name='price' onChange={(event) => { setPrice(event.target.value) }} />
                     <Divider color="#DCE2E9" />
                     <DishFormSubtitle>Allergen Search</DishFormSubtitle>
-                    <TagsForm tags={dishTags} setTags={setDishTags} existTags={props.dish.Tags}></TagsForm>
+                    <TagsForm tags={dishTags} setTags={setDishTags}></TagsForm>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
                         <FormButton text='Submit' onClick = {updateDish} />
