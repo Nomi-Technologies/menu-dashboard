@@ -222,9 +222,8 @@ const MenuTable = (props) => {
         );
     }
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
-        console.log('executing search');
         e.target.firstChild.blur();
         setSearchBoxFocused(false)
         if (searchBoxValue.trim() == '') {
@@ -251,9 +250,14 @@ const MenuTable = (props) => {
                             setSearchBoxFocused(true); 
                             e.target.select(); // highlight text when focus on element
                         }} 
+                        onBlur={(e) => {
+                            if (searchBoxValue.trim() == '') { 
+                                setSearchBoxFocused(false); 
+                            }
+                        }}
                     />
                     {
-                        (isSearching && searchBoxValue != '' && !searchBoxFocused) ?
+                        (isSearching && !searchBoxFocused) ?
                         <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
                             e.preventDefault();
                             setSearchBoxValue('');
