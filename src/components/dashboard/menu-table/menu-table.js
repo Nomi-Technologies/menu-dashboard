@@ -109,7 +109,6 @@ const MenuTable = (props) => {
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    const [afterSubmit, setAfterSubmit] = useState(false);
     let fileReader
 
     useEffect(() => {
@@ -268,9 +267,11 @@ const MenuTable = (props) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
+        console.log('executing search');
         e.target.firstChild.blur();
+        setSearchBoxFocused(false)
         if (searchBoxValue.trim() == '') {
-            setSearchResults([]);
+            setIsSearching(false);
         } else {
             Client.searchDishes(searchBoxValue, props.menuId)
             .then((res) => {
@@ -292,21 +293,16 @@ const MenuTable = (props) => {
                         onFocus={(e) => {
                             setSearchBoxFocused(true); 
                             e.target.select(); // highlight text when focus on element
-                            setAfterSubmit(false);
                         }} 
-                        onBlur={(e) => setSearchBoxFocused(false)}
                     />
                     {
-                        (afterSubmit && searchBoxValue != '' && !searchBoxFocused) ?
+                        (isSearching && searchBoxValue != '' && !searchBoxFocused) ?
                         <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
                             e.preventDefault();
                             setSearchBoxValue('');
                             setIsSearching(false);
-                            setAfterSubmit(false);
                         }}/> : 
-                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} onClick={(e) => {
-                            setAfterSubmit(true);
-                        }}/>
+                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
 
                 </form>
