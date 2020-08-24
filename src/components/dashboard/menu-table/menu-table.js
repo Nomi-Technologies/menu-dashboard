@@ -43,7 +43,7 @@ const MenuControls = styled.div`
     .cancelSearch {
         top: 28%;
         position: absolute;
-        left: 95%;
+        left: 100%;
         height: 40%;
     }
 
@@ -106,8 +106,9 @@ const MenuTable = (props) => {
     const [selectedFile, setSelectedFile] = useState(null)
 
     const [searchResults, setSearchResults] = useState([]);
+    const [searchBoxValue, setSearchBoxValue] = useState('');
+    const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    const [searchBoxValue, setSearchBoxValue] = useState(null);
     let fileReader
 
     useEffect(() => {
@@ -266,10 +267,13 @@ const MenuTable = (props) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
+        console.log('executing search');
+        e.target.firstChild.blur();
+        setSearchBoxFocused(false)
         if (searchBoxValue.trim() == '') {
-            setSearchResults([]);
+            setIsSearching(false);
         } else {
-            Client.searchDishes(searchBoxValue)
+            Client.searchDishes(searchBoxValue, props.menuId)
             .then((res) => {
                 setSearchResults(res.data);
                 setIsSearching(true);
@@ -284,16 +288,22 @@ const MenuTable = (props) => {
         <>
             <MenuControls>
                 <form onSubmit={handleSearch} className='searchForm'>
-                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue} onChange={(e) => setSearchBoxValue(e.target.value)} />
+                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue} 
+                        onChange={(e) => setSearchBoxValue(e.target.value)} 
+                        onFocus={(e) => {
+                            setSearchBoxFocused(true); 
+                            e.target.select(); // highlight text when focus on element
+                        }} 
+                    />
                     {
-                        (isSearching && searchBoxValue != null) ?
+                        (isSearching && searchBoxValue != '' && !searchBoxFocused) ?
                         <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
                             e.preventDefault();
                             setSearchBoxValue('');
                             setIsSearching(false);
-                        }}/> : null
+                        }}/> : 
+                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
-                    <input className='submitSearch' type='image' alt="Submit" src={SearchIcon}/>
 
                 </form>
                 <div className='buttons'>
