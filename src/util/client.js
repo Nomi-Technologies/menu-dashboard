@@ -53,12 +53,13 @@ export default class Client {
         return axios.post(ROOT_URL + '/upload-menu-csv', { data: data }, {headers: {Authorization: `Bearer ${token}`}});
     }
 
-    static searchDishes = (data) => {
+    static searchDishes = (data, menuId) => {
         let token = retrieveUserToken();
         let config = {
             headers: {'Authorization': `Bearer ${token}`},
             params: {
                 searchInput: data,
+                menuId: menuId,
             },
           }
         return axios.get(ROOT_URL + '/dishes-by-name', config);
