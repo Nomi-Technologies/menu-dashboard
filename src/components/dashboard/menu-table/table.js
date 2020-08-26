@@ -54,19 +54,19 @@ const TableRow = styled.div`
 
 
     ${TableCell}:nth-child(1) {
-        flex-basis: 20%;
+        flex-basis: 15%;
     }
 
     ${TableCell}:nth-child(2) {
-        flex-basis: 40%;
+        flex-basis: 35%;
     }
 
     ${TableCell}:nth-child(3) {
-        flex-basis: 30%;
+        flex-basis: 10%;
     }
 
     ${TableCell}:nth-child(4) {
-        flex-basis: 10%;
+        flex-basis: 30%;
     }
 
     &:last-child {
@@ -112,7 +112,9 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
                         <p>{item.description}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{item.price}</p>
+                        <p>
+                            { item.price ? item.price : "--" }
+                        </p>
                     </TableCell>
                     <TableCell>
                         <p>{allergen_list(item.Tags)}</p>
