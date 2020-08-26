@@ -124,6 +124,23 @@ const MenuTable = (props) => {
     let fileReader
     const [searchBoxValue, setSearchBoxValue] = useState(null);
 
+<<<<<<< HEAD
+=======
+    useEffect(() => {
+        Client.getMenu(props.menuId).then((res) => {
+            console.log(res.data)
+            setMenuData(res.data.Categories)
+        })
+    }, [props.menuId])
+
+    const updateMenu = () => {
+        Client.getMenu(props.menuId).then((res) => {
+            setMenuData(null)
+            setMenuData(res.data.Categories)
+        })
+    };
+
+>>>>>>> f2b63a5... remove git markers
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
