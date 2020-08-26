@@ -122,7 +122,6 @@ const MenuTable = (props) => {
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
-    const [searchBoxValue, setSearchBoxValue] = useState(null);
 
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
