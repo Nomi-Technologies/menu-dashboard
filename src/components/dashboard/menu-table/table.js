@@ -1,10 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
-import ReactDOM from 'react-dom'
-
-import Client from '../../../util/client'
 
 import styled from "styled-components"
-import { Column, Table } from 'react-virtualized'
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
 
 import EditIcon from "../../../assets/img/edit-icon.png"
