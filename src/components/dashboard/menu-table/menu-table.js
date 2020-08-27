@@ -104,9 +104,9 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
-    // const [menuData, setMenuData] = useState(props.menuData)
-    let menuData = props.menuData
-    let updateMenu = props.updateMenu
+    const [menuData, setMenuData] = useState(props.menuData)
+    // let menuData = props.menuData
+    // let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
@@ -123,7 +123,6 @@ const MenuTable = (props) => {
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
 
-<<<<<<< HEAD
     useEffect(() => {
         if (props.menuId !== null) {
             Client.getMenu(props.menuId).then((res) => {
@@ -142,8 +141,6 @@ const MenuTable = (props) => {
         }
     };
 
-=======
->>>>>>> e3c1f1b8378afe64b2cf1f91140b311c8056e19a
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
