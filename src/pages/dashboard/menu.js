@@ -16,6 +16,8 @@ import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creato
 
 import Client from "../../util/client"
 
+import NoMenuIcon from "../../assets/img/no-menu-icon.png"
+
 let SideBar = styled(Column)`
     background-color: #F3A35C;
 `
@@ -25,6 +27,7 @@ let MenuContainer = styled.div`
     width: 90%;
     margin: 0 auto;
     max-width: 1200px;
+    padding-top: 104px;
 `
 
 let StyledFloatingMenu = styled(FloatingMenu)`
@@ -37,23 +40,38 @@ let StyledFloatingMenu = styled(FloatingMenu)`
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
+    const [hasMenu, setHasMenu] = useState(true)
+    const [menuSelectorData, setMenuSelectorData] = useState([])
+
+    useEffect(() => {
+        updateMenu()
+    }, [menuId])
 
     const updateMenuSelection = (menu) => {
-        if(menu.id) {
+        console.log("new menu selected")
+        console.log(menu)
+        if (typeof menu === 'undefined') {
+            setMenuId(null)
+        }
+        else {
             setMenuId(menu.id)
+        }
+    }
 
-            Client.getMenu(menu.id).then((res) => {
-                setMenuData(res.data.Categories)            
+    async function updateMenu () {
+        if (menuId !== null) {
+            console.log("updating menu")
+            await Client.getMenu(menuId).then((res) => {
+                setMenuData(null)
+                setMenuData(res.data.Categories)
             })
         }
-        
-    }
-    const updateMenu = () => {
-        console.log("updating menu")
-        Client.getMenu(menuId).then((res) => {
-            setMenuData(res.data.Categories)            
-        })
     };
+
+    const updateHasMenu = (hasMenu) => {
+        console.log("has menu: " + hasMenu)
+        setHasMenu(hasMenu)
+    }
 
     return (
         <Layout>
@@ -61,12 +79,22 @@ const MenuPage = () => {
                 <SideBar width='280px'>
                 </SideBar>
                 <Column>
-                    <MenuContainer>
-                        <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
-                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
-                        <MenuCreator />
-                        <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu}/>
-                    </MenuContainer>
+                {
+                    hasMenu ? (
+                        <MenuContainer>
+                            <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                updateHasMenu={updateHasMenu} data={menuSelectorData} />
+                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                            <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                            <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                        </MenuContainer>
+                    ) : (
+                        <MenuContainer>
+                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                            <img src={NoMenuIcon} />
+                        </MenuContainer>
+                    )
+                }
                 </Column>
             </Container>
         </Layout>
