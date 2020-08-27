@@ -76,10 +76,19 @@ const FloatingMenu = (props) => {
             setUniqueName(res.data.uniqueName);
             setRestaurantName(res.data.name);
         });
-    }, []);
+
+        console.log(props.menuId)
+    }, [props.menuId]);
 
     function onClickMenu() {
         setIsOpen(!isOpen);
+    }
+
+    function deleteMenu(id) {
+        Client.deleteMenu(id).then((res) => {
+            console.log("menu deleted")
+        })
+        onClickMenu();
     }
     
     return (
@@ -96,7 +105,7 @@ const FloatingMenu = (props) => {
                         onClick={() => setShowQRCodeForm(true)}
                     >Create QR Code</OrangeTextMenuItem>
                     <HorizontalSeparator/>
-                    <RedTextMenuItem>Delete Menu</RedTextMenuItem>
+                    <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
                 </Menu>
                 <FloatingMenuButton onClick={onClickMenu}>
                     <StyledHamburger
