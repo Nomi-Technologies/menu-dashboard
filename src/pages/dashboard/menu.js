@@ -85,15 +85,6 @@ const MenuPage = () => {
       Client.uploadMenu(lines)
     }
 
-    function onFileChange(event) {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
-        }
-    }
-
     const updateMenuSelection = (menu) => {
         console.log("new menu selected")
         console.log(menu)
@@ -122,7 +113,6 @@ const MenuPage = () => {
                             <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
                                 updateHasMenu={updateHasMenu} data={menuSelectorData} />
                             <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                             <MenuTable menuId={menuId} menuData={menuData}/>
                             <StyledFloatingMenu menuId={menuId} updateMenuSelection={updateMenuSelection}/>
                         </MenuContainer>

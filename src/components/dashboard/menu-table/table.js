@@ -1,10 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
-import ReactDOM from 'react-dom'
-
-import Client from '../../../util/client'
 
 import styled from "styled-components"
-import { Column, Table } from 'react-virtualized'
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
 
 import EditIcon from "../../../assets/img/edit-icon.png"
@@ -54,19 +50,19 @@ const TableRow = styled.div`
 
 
     ${TableCell}:nth-child(1) {
-        flex-basis: 20%;
+        flex-basis: 15%;
     }
 
     ${TableCell}:nth-child(2) {
-        flex-basis: 40%;
+        flex-basis: 35%;
     }
 
     ${TableCell}:nth-child(3) {
-        flex-basis: 30%;
+        flex-basis: 10%;
     }
 
     ${TableCell}:nth-child(4) {
-        flex-basis: 10%;
+        flex-basis: 30%;
     }
 
     &:last-child {
@@ -112,7 +108,9 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
                         <p>{item.description}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{item.price}</p>
+                        <p>
+                            { item.price ? item.price : "--" }
+                        </p>
                     </TableCell>
                     <TableCell>
                         <p>{allergen_list(item.Tags)}</p>

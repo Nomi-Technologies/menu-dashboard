@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
-
-import { QRCodeForm } from "../components/dashboard/menu-table/popup-forms";
-import Client from "../util/client"
+import Client from "../util/client";
+import { QRCodeForm, UploadCSVModal } from "../components/dashboard/menu-table/popup-forms";
 
 const FloatingMenuButton = styled.div`
     position: absolute;
-    width: 72px;
-    height: 72px;
+    width: 62px;
+    height: 62px;
     right: 0;
     bottom: 0;
     border-radius: 36px;
@@ -26,6 +25,7 @@ const StyledHamburger = styled(HamburgerMenu)`
 
 const Menu = styled.div`
     position: absolute;
+    background-color: white;
     width: 250px;
     bottom: 36px;
     right: 100px;
@@ -42,7 +42,7 @@ const MenuItem = styled.div`
     font-weight: bold;
     text-align: center;
     line-height: 60px;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
     &:hover {
         background: rgba(242, 153, 74, 0.1);
     }
@@ -68,6 +68,7 @@ const FloatingMenu = (props) => {
     const [showQRCodeForm, setShowQRCodeForm] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
+    const [showCSVUploadForm, setShowCSVUploadForm] = useState(false);
 
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
@@ -98,7 +99,9 @@ const FloatingMenu = (props) => {
                 <Menu isOpen={isOpen}>
                     <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
                     <HorizontalSeparator/>
-                    <OrangeTextMenuItem>Upload Spreadsheet</OrangeTextMenuItem>
+                    <OrangeTextMenuItem
+                        onClick={() => setShowCSVUploadForm(true)}
+                    >Upload Spreadsheet</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem>Duplicate Menu</OrangeTextMenuItem>
                     <HorizontalSeparator/>
@@ -120,6 +123,7 @@ const FloatingMenu = (props) => {
                         />
                 </FloatingMenuButton>
             </div>
+            <UploadCSVModal show={ showCSVUploadForm } close={() => setShowCSVUploadForm(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
             {
                 showQRCodeForm ? (
                     <QRCodeForm 

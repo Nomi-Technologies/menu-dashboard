@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Client from '../../../util/client'
 
 import styled from "styled-components"
-import ArrowIcon from "../../../assets/img/arrow_icon.png"
+// import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 
@@ -61,6 +61,16 @@ const MenuControls = styled.div`
         text-align: center;
         font-size: 14px;
 
+        
+
+        .new-category {
+            border: 2px solid #F3A35C;
+            padding: 10px 20px;
+            color: #F3A35C;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         .new-dish {
             background-color: #F3A35C;
             padding: 10px 20px;
@@ -68,15 +78,16 @@ const MenuControls = styled.div`
             border: 2px solid #F3A35C;
             border-radius: 8px;
             cursor: pointer;
+            margin-left: 10px;
         }
 
-        .new-category {
+        .upload-csv {
             border: 2px solid #F3A35C;
             padding: 10px 20px;
             color: #F3A35C;
             border-radius: 8px;
-            margin-right: 10px;
             cursor: pointer;
+            margin-left: 10px;
         }
     }
 `
@@ -93,17 +104,18 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
-    const [menuData, setMenuData] = useState(props.menuData)
+    // const [menuData, setMenuData] = useState(props.menuData)
+    let menuData = props.menuData
+    let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({})
+
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
-
-    const [selectedFile, setSelectedFile] = useState(null)
 
     const [searchResults, setSearchResults] = useState([]);
     const [searchBoxValue, setSearchBoxValue] = useState('');
@@ -111,6 +123,7 @@ const MenuTable = (props) => {
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
 
+<<<<<<< HEAD
     useEffect(() => {
         if (props.menuId !== null) {
             Client.getMenu(props.menuId).then((res) => {
@@ -129,28 +142,25 @@ const MenuTable = (props) => {
         }
     };
 
+=======
+>>>>>>> e3c1f1b8378afe64b2cf1f91140b311c8056e19a
     const toggleNewDishForm = () => {
-        console.log("toggle new dish form")
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
     }
 
     const toggleNewCategoryForm = () => {
-        console.log("toggle new category form")
         if (!showNewCategoryForm) closeAllForms() //if about to open form
         setNewCategoryForm(!showNewCategoryForm)
     }
 
     const toggleEditDishForm = (dish) => {
-        console.log("toggle edit dish form")
-        console.log(dish)
         if (typeof dish !== 'undefined') setSelectedDish(dish)
         if (!showEditDishForm) closeAllForms() //if about to open form
         setEditDishForm(!showEditDishForm)
     }
 
     const toggleEditCategoryForm = (category) => {
-        console.log("toggle edit category form")
         if (typeof category !== 'undefined') setSelectedCategory(category)
         if (!showEditCategoryForm) closeAllForms() //if about to open form
         setEditCategoryForm(!showEditCategoryForm)
@@ -160,7 +170,6 @@ const MenuTable = (props) => {
         if (!showDeleteConfirmation) {
             closeAllForms() //if about to open form
             setToDelete({id: id, type: type}).then(() => {
-                console.log("Set currentOnDelete")
                 setDeleteConfirmation(true)
             })
         }
@@ -169,7 +178,6 @@ const MenuTable = (props) => {
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type == "category") {
-                console.log(toDelete)
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -197,45 +205,12 @@ const MenuTable = (props) => {
         }
     }
 
-
     const closeAllForms = () => {
         setNewDishForm(false)
         setNewCategoryForm(false)
         setEditDishForm(false)
         setEditCategoryForm(false)
         setDeleteConfirmation(false)
-    }
-
-    const onFileChange = (event) => {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
-        }
-    }
-
-    const parseFile = () => {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
-
-      for (var i = 1; i < allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j = 0; j < headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''));
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.setMenu(lines).then((res) => {
-          updateMenu();
-      }).catch((err) => {
-          console.log(err)
-      })
     }
 
     const renderTableOutput = () => {
@@ -342,6 +317,7 @@ const MenuTable = (props) => {
                     <Forms.DeleteConfirmation closeForm={closeDeleteConfirmation}/>
                 ) : null
             }
+
             <StyledMenuTable>
                 <Table.HeaderRow>
                     <Table.TableCell>
