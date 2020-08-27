@@ -89,6 +89,7 @@ const FloatingMenu = (props) => {
             console.log("menu deleted")
         })
         onClickMenu();
+        props.updateMenuSelection();
     }
     
     return (

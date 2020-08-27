@@ -97,7 +97,12 @@ const MenuPage = () => {
     const updateMenuSelection = (menu) => {
         console.log("new menu selected")
         console.log(menu)
-        setMenuId(menu.id)
+        if (typeof menu === 'undefined') {
+            setMenuId(null)
+        }
+        else {
+            setMenuId(menu.id)
+        }
     }
 
     const updateHasMenu = (hasMenu) => {
@@ -116,10 +121,10 @@ const MenuPage = () => {
                         <MenuContainer>
                             <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
                                 updateHasMenu={updateHasMenu} data={menuSelectorData} />
-                            <MenuCreator updateHasMenu={updateHasMenu}/>
+                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
                             {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
                             <MenuTable menuId={menuId} menuData={menuData}/>
-                            <StyledFloatingMenu menuId={menuId}/>
+                            <StyledFloatingMenu menuId={menuId} updateMenuSelection={updateMenuSelection}/>
                         </MenuContainer>
                     ) : (
                         <MenuContainer>

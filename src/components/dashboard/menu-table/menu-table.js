@@ -112,17 +112,21 @@ const MenuTable = (props) => {
     let fileReader
 
     useEffect(() => {
-        Client.getMenu(props.menuId).then((res) => {
-            console.log(res.data)
-            setMenuData(res.data.Categories)
-        })
+        if (props.menuId !== null) {
+            Client.getMenu(props.menuId).then((res) => {
+                console.log(res.data)
+                setMenuData(res.data.Categories)
+            })
+        }
     }, [props.menuId])
 
     const updateMenu = () => {
-        Client.getMenu(props.menuId).then((res) => {
-            setMenuData(null)
-            setMenuData(res.data.Categories)
-        })
+        if (props.menuId !== null) {
+            Client.getMenu(props.menuId).then((res) => {
+                setMenuData(null)
+                setMenuData(res.data.Categories)
+            })
+        }
     };
 
     const toggleNewDishForm = () => {

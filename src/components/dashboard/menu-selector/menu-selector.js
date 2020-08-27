@@ -37,10 +37,21 @@ class MenuSelector extends React.Component {
             selectedMenuId: this.props.selectedMenuId,
         }
 
+        this.updateData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedMenuId != prevProps.selectedMenuId) {
+            this.updateData();
+        }
+    }
+
+    updateData() {
         Client.getAllMenus().then((res) => {
-            console.log(props)
+            console.log(this.props)
             console.log(res.data)
-            this.state.data = res.data
+            this.setState({data: res.data, selectedMenuId: this.props.selectedMenuId})
+            console.log(this.state)
 
             if (this.props.selectedMenuId === null) { //first render, no menu selected
                 if (res.data.length === 0) { //no menu created yet
@@ -54,7 +65,7 @@ class MenuSelector extends React.Component {
                 }
             }
             else {
-                if (this.props.menuId !== null) { //menu already selected
+                if (this.props.selectedMenuId !== null) { //menu already selected
                     
                 }
             }
