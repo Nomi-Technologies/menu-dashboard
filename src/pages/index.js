@@ -11,8 +11,6 @@ import { retrieveUserToken } from "../util/auth"
 
 import "./index.css"
 
-import "semantic-ui-css/semantic.min.css"
-
 const IndexPage = () => {
 
   useEffect(() => {

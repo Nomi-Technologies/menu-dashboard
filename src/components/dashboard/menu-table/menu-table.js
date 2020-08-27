@@ -191,6 +191,29 @@ const MenuTable = (props) => {
         setEditCategoryForm(false)
         setDeleteConfirmation(false)
     }
+  
+    const renderTableOutput = () => {
+      if (!isSearching) {
+        return (
+          <div id="menuTable">
+            {menuData
+              ? menuData.map(item => (
+                  <Table.TableCategory
+                    key={item.id}
+                    category={item}
+                    updateMenu={updateMenu}
+                    toggleEditCategory={toggleEditCategoryForm}
+                    toggleEditDish={toggleEditDishForm}
+                    openDeleteConfirmation={openDeleteConfirmation}
+                  />
+                ))
+              : ""}
+          </div>
+        )
+      } else if (searchResults.length == 0) {
+        return <Table.TableCell>No items found</Table.TableCell>
+      }
+    }
 
     const renderTableOutput = () => {
         if(!isSearching) {

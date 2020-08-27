@@ -151,56 +151,42 @@ let FormError = styled.p`
     margin: 0px;
 `
 
-let Floating = styled.span`
-    position: absolute;
-    pointer-events: none;
-    left: 10px;
-    top: 20px;
-    transition: 0.2s ease all;
-    font-size: 18px;
-    font-family: HK Grotesk Regular;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #8A9DB7;
-`
-
 let StyledNewInput = styled.input`
     width: 100%;
     border-radius: 6px;
     background-color: #E1E7EC;
     opacity: 0.75;
-    font-size: 18px;
-    padding: 8px;
-    padding-top: 26px;
+    font-size: 14px;
+    padding: 14px;
+    padding-left: 20px;
     font-family: HK Grotesk Regular;
-    &:focus ~ ${ Floating}
-    {
-        top: 10px;
-        bottom: 30px;
-        font-size: 12px;
-        opacity: 1;
-    }
-
-    &:valid ~ ${ Floating}
-    {
-        top: 10px;
-        bottom: 30px;
-        font-size: 12px;
-        opacity: 1;
-    }
-`
-
-let StyledDishFormInput = styled.div`
-    position: relative;
-    flex-basis: ${({ width }) => width ? width : 'auto'};
+    box-sizing: border-box;
     margin: 10px 0;
 `
+
 let DishFormInput = (props) => (
-    <StyledDishFormInput width={props.width}>
-        <StyledNewInput type={props.type} onChange={props.onChange} value={props.value} required></StyledNewInput>
-        <Floating>{props.placeholder}</Floating>
-    </StyledDishFormInput>
+    <StyledNewInput type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>    
 )
-export { FormInput, DishFormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError }
+
+
+let StyledNewTextArea = styled.textarea`
+    width: 100%;
+    border-radius: 6px;
+    background-color: #E1E7EC;
+    opacity: 0.75;
+    font-size: 14px;
+    padding: 14px;
+    padding-left: 20px;
+    font-family: HK Grotesk Regular;
+    box-sizing: border-box;
+    resize: none;
+    border: none;
+    height: 70px;
+    margin: 10px 0;
+`
+
+let DishFormTextArea = (props) => (
+    <StyledNewTextArea type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>
+)
+
+export { FormInput, DishFormInput, DishFormTextArea, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError }

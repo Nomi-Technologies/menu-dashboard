@@ -133,29 +133,24 @@ const HeaderRow = styled(TableRow)`
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 `
-
 const CategoryHeaderRow = styled(TableRow)`
-    background: #FEEBDA;
-    color: #F3A35C;
+    background: #F0F2F7;
+    color: black;
+
     .collapse-icon { 
         position: absolute;
-        width: 30px;
-        height: 15px;
-        margin-left: -38px;
-        margin-right:10px;
-        //padding: 9px 7px;
-        border-style: solid;
-        border-width: 4px;
-        background-color: #F3A35C;
-        border-radius: 4px;
+        width: 12px;
+        height: 6px;
+        left: 20px;
+        top: 45%;
         cursor: pointer;
     }
 `
 
-const allergen_list = (allergens) => {
-    if (allergens.length === 0) {
-        return '--'
-    }
+const allergen_list = allergens => {
+  if (allergens.length === 0) {
+    return "--"
+  }
 
     let list = ''
 
