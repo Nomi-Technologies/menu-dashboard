@@ -43,27 +43,6 @@ const MenuPage = () => {
     const [hasMenu, setHasMenu] = useState(true)
     const [menuSelectorData, setMenuSelectorData] = useState([])
 
-    // useEffect(() => {
-    //     Client.getAllMenus().then((res) => {
-    //         console.log(res.data)
-    //         setMenuSelectorData(res.data)
-    //         console.log(menuSelectorData)
-    
-    //         if (menuId === null) { //first render, no menu selected
-    //             if (res.data.length === 0) { //no menu created yet
-    //             }
-    //             else { //display first menu
-    //                 updateMenuSelection(res.data[0])
-    //             }
-    //         }
-    //         else {
-    //             if (menuId !== null) { //menu already selected
-                    
-    //             }
-    //         }
-    //     })
-    // }, []) 
-
     useEffect(() => {
         updateMenu()
     }, [menuId])
