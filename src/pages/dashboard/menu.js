@@ -42,8 +42,6 @@ const MenuPage = () => {
     const [menuData, setMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
     const [menuSelectorData, setMenuSelectorData] = useState([])
-    const [selectedFile, setSelectedFile] = useState(null)
-    let fileReader
 
     // useEffect(() => {
     //     Client.getAllMenus().then((res) => {
@@ -65,25 +63,6 @@ const MenuPage = () => {
     //         }
     //     })
     // }, []) 
-
-    function parseFile() {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
-
-      for (var i=1; i<allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j=0; j<headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''))
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.uploadMenu(lines)
-    }
 
     useEffect(() => {
         updateMenu()
