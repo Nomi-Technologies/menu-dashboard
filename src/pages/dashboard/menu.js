@@ -16,6 +16,8 @@ import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creato
 
 import Client from "../../util/client"
 
+import NoMenuIcon from "../../assets/img/no-menu-icon.png"
+
 let SideBar = styled(Column)`
     background-color: #F3A35C;
 `
@@ -25,6 +27,7 @@ let MenuContainer = styled.div`
     width: 90%;
     margin: 0 auto;
     max-width: 1200px;
+    padding-top: 104px;
 `
 
 let StyledFloatingMenu = styled(FloatingMenu)`
@@ -37,8 +40,31 @@ let StyledFloatingMenu = styled(FloatingMenu)`
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
+    const [hasMenu, setHasMenu] = useState(true)
+    const [menuSelectorData, setMenuSelectorData] = useState([])
     const [selectedFile, setSelectedFile] = useState(null)
     let fileReader
+
+    // useEffect(() => {
+    //     Client.getAllMenus().then((res) => {
+    //         console.log(res.data)
+    //         setMenuSelectorData(res.data)
+    //         console.log(menuSelectorData)
+    
+    //         if (menuId === null) { //first render, no menu selected
+    //             if (res.data.length === 0) { //no menu created yet
+    //             }
+    //             else { //display first menu
+    //                 updateMenuSelection(res.data[0])
+    //             }
+    //         }
+    //         else {
+    //             if (menuId !== null) { //menu already selected
+                    
+    //             }
+    //         }
+    //     })
+    // }, []) 
 
     function parseFile() {
       const content = fileReader.result;
@@ -74,19 +100,34 @@ const MenuPage = () => {
         setMenuId(menu.id)
     }
 
+    const updateHasMenu = (hasMenu) => {
+        console.log(hasMenu)
+        setHasMenu(hasMenu)
+    }
+
     return (
         <Layout>
             <Container>
                 <SideBar width='280px'>
                 </SideBar>
                 <Column>
-                    <MenuContainer>
-                        <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
-                        {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menuId={menuId} menuData={menuData}/>
-                        <MenuCreator />
-                        <StyledFloatingMenu/>
-                    </MenuContainer>
+                {
+                    hasMenu ? (
+                        <MenuContainer>
+                            <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                updateHasMenu={updateHasMenu} data={menuSelectorData} />
+                            <MenuCreator updateHasMenu={updateHasMenu}/>
+                            {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
+                            <MenuTable menuId={menuId} menuData={menuData}/>
+                            <StyledFloatingMenu/>
+                        </MenuContainer>
+                    ) : (
+                        <MenuContainer>
+                            <MenuCreator updateHasMenu={updateHasMenu}/>
+                            <img src={NoMenuIcon} />
+                        </MenuContainer>
+                    )
+                }
                 </Column>
             </Container>
         </Layout>
