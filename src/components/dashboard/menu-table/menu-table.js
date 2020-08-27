@@ -104,9 +104,9 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
-    const [menuData, setMenuData] = useState(props.menuData)
-    // let menuData = props.menuData
-    // let updateMenu = props.updateMenu
+    // const [menuData, setMenuData] = useState(props.menuData)
+    let menuData = props.menuData
+    let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
@@ -123,23 +123,23 @@ const MenuTable = (props) => {
     const [isSearching, setIsSearching] = useState(false);
     let fileReader
 
-    useEffect(() => {
-        if (props.menuId !== null) {
-            Client.getMenu(props.menuId).then((res) => {
-                console.log(res.data)
-                setMenuData(res.data.Categories)
-            })
-        }
-    }, [props.menuId])
+    // useEffect(() => {
+    //     if (props.menuId !== null) {
+    //         Client.getMenu(props.menuId).then((res) => {
+    //             console.log(res.data)
+    //             menuData = res.data
+    //         })
+    //     }
+    // }, [props.menuId])
 
-    const updateMenu = () => {
-        if (props.menuId !== null) {
-            Client.getMenu(props.menuId).then((res) => {
-                setMenuData(null)
-                setMenuData(res.data.Categories)
-            })
-        }
-    };
+    // const updateMenu = () => {
+    //     if (props.menuId !== null) {
+    //         Client.getMenu(props.menuId).then((res) => {
+    //             setMenuData(null)
+    //             setMenuData(res.data.Categories)
+    //         })
+    //     }
+    // };
 
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form

@@ -85,6 +85,10 @@ const MenuPage = () => {
       Client.uploadMenu(lines)
     }
 
+    useEffect(() => {
+        updateMenu()
+    }, [menuId])
+
     const updateMenuSelection = (menu) => {
         console.log("new menu selected")
         console.log(menu)
@@ -96,8 +100,18 @@ const MenuPage = () => {
         }
     }
 
+    async function updateMenu () {
+        if (menuId !== null) {
+            console.log("updating menu")
+            await Client.getMenu(menuId).then((res) => {
+                setMenuData(null)
+                setMenuData(res.data.Categories)
+            })
+        }
+    };
+
     const updateHasMenu = (hasMenu) => {
-        console.log(hasMenu)
+        console.log("has menu: " + hasMenu)
         setHasMenu(hasMenu)
     }
 
@@ -113,12 +127,12 @@ const MenuPage = () => {
                             <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
                                 updateHasMenu={updateHasMenu} data={menuSelectorData} />
                             <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            <MenuTable menuId={menuId} menuData={menuData}/>
-                            <StyledFloatingMenu menuId={menuId} updateMenuSelection={updateMenuSelection}/>
+                            <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                            <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                         </MenuContainer>
                     ) : (
                         <MenuContainer>
-                            <MenuCreator updateHasMenu={updateHasMenu}/>
+                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
                             <img src={NoMenuIcon} />
                         </MenuContainer>
                     )

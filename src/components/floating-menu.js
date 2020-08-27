@@ -78,15 +78,15 @@ const FloatingMenu = (props) => {
             setRestaurantName(res.data.name);
         });
 
-        console.log(props.menuId)
+        console.log("selected menuId:" + props.menuId)
     }, [props.menuId]);
 
     function onClickMenu() {
         setIsOpen(!isOpen);
     }
 
-    function deleteMenu(id) {
-        Client.deleteMenu(id).then((res) => {
+    async function deleteMenu(id) {
+        await Client.deleteMenu(id).then((res) => {
             console.log("menu deleted")
         })
         onClickMenu();
