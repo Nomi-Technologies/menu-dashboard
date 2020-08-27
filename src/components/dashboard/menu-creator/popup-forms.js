@@ -72,6 +72,7 @@ const NewMenuForm = (props) => {
                 console.log("menu created")
                 console.log(res.data)
                 props.toggleForm()
+                props.updateHasMenu(true)
             }).catch((err) => {
                 console.log("error creating menu")
                 //show some error on form
