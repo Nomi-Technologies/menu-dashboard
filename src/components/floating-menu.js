@@ -95,7 +95,7 @@ const FloatingMenu = (props) => {
     
     return (
         <>
-            <div {...props}>
+            <div className={props.className}>
                 <Menu isOpen={isOpen}>
                     <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
                     <HorizontalSeparator/>
