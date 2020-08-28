@@ -182,15 +182,17 @@ const TagsForm = ({ tags, setTags }) => {
 const NewDishForm = props => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState("")
   const [dishTags, setDishTags] = useState([])
-  const [categoryId, setCategoryId] = useState()
+  const [categoryId, setCategoryId] = useState(0)
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
     Client.getAllCategoriesByMenu(props.menuId).then(response => {
-        setCategories(response.data)
-        setCategoryId(response.data[0].id)
+        if (response.data.length > 0) {
+            setCategories(response.data)
+            setCategoryId(response.data[0].id)
+        }
     })
 }, [])
 

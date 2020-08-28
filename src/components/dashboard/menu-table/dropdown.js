@@ -41,9 +41,12 @@ let CategoryDropdown = (props) => {
         <StyledCategoryDropdown>
             <select onChange={ (event) => props.updateSelection(event.target.value) } value={ props.categoryId }>
                 {
+                    props.categories.length > 0 ? 
                     props.categories.map((category) => 
                         <option value={ category.id }>{ category.name }</option>
                     )
+                    :
+                    <option value={0}>Please create a category first.</option>
                 }
             </select>
         </StyledCategoryDropdown>
