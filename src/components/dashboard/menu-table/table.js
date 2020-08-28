@@ -210,16 +210,14 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
         <StyledTableCategory className={open ? 'open' : ''}>
             <CategoryHeaderRow>
                 <TableCell>
-                    <div className="orange-box">
-                        <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
-                        {
-                            <>
-                                {name}
-                                <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
-                                <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")} />
-                            </>
-                        }
-                    </div>
+                    <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
+                    {
+                        <>
+                            {name}
+                            <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
+                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")} />
+                        </>
+                    }
                 </TableCell>
             </CategoryHeaderRow>
             <div className='items'>
