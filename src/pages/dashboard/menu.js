@@ -29,6 +29,11 @@ let MenuContainer = styled.div`
     padding-top: 104px;
 `
 
+let MenuController = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
 let StyledFloatingMenu = styled(FloatingMenu)`
     position: fixed;
     right: 64px;
@@ -81,9 +86,11 @@ const MenuPage = () => {
                 {
                     hasMenu ? (
                         <MenuContainer>
-                            <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                updateHasMenu={updateHasMenu} data={menuSelectorData} />
-                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                            <MenuController>
+                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                    updateHasMenu={updateHasMenu} data={menuSelectorData} />
+                                <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                            </MenuController>
                             <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
                             <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                         </MenuContainer>
@@ -99,4 +106,5 @@ const MenuPage = () => {
         </Layout>
     )
 }
+
 export default MenuPage
