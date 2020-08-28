@@ -13,10 +13,9 @@ import FloatingMenu from "../../components/floating-menu"
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
+import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
 
 import Client from "../../util/client"
-
-import NoMenuIcon from "../../assets/img/no-menu-icon.png"
 
 let SideBar = styled(Column)`
     background-color: #F3A35C;
@@ -91,7 +90,7 @@ const MenuPage = () => {
                     ) : (
                         <MenuContainer>
                             <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            <img src={NoMenuIcon} />
+                            <FirstMenuSetup />
                         </MenuContainer>
                     )
                 }
