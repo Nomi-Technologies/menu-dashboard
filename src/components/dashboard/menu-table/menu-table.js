@@ -191,7 +191,6 @@ const MenuTable = (props) => {
         setEditCategoryForm(false)
         setDeleteConfirmation(false)
     }
-
     const renderTableOutput = () => {
         if(!isSearching) {
             return (

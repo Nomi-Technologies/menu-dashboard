@@ -20,8 +20,6 @@ let StyledButton = styled.button`
     }
 `
 
-
-
 let ButtonRow = styled.div`
     display: flex;
     flex-direction: row;
@@ -32,8 +30,5 @@ let ButtonRow = styled.div`
 const FormButton = (props) => (
     <StyledButton theme={props.theme} onClick={ props.onClick }>{ props.text }</StyledButton>
 )
-
-
-
 
 export { FormButton, ButtonRow } 

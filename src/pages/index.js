@@ -14,14 +14,14 @@ import "./index.css"
 const IndexPage = () => {
 
   useEffect(() => {
-    if(retrieveUserToken() != null) {
+    if (retrieveUserToken() != null) {
       navigate("/dashboard/menu")
     } else {
       navigate("/login")
     }
   }, [])
 
-  return(<></>)
+  return (<></>)
 }
 
 export default IndexPage

@@ -29,7 +29,7 @@ const Container = styled.div`
 
     input {
         border: none;
-        background-color: #F4F4F4;
+        background-color: #E1E7EC;
     }
 
     .error {

@@ -1,95 +1,56 @@
-import React, { useState, useEffect } from 'react';
-
-import {FormInput} from "../../form"
-import { FormButton, ButtonRow } from "../../buttons" 
-
-import Client from '../../../util/client'
-
+import React, { useState, useEffect } from "react"
+import Client from "../../../util/client"
 import styled from "styled-components"
+import _ from "lodash"
+import DropdownArrow from "../../../assets/img/dropdown-arrow.png"
 
-const Categories = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+let StyledCategoryDropdown = styled.div`
+    position: relative;
 
-    .category {
-        padding: 5px 10px;
-        margin: 5px 0;
-        border: 2px solid #F3A35C;
+    &::after {
+        content: '';
+        position: absolute;
+        top: 45%;
+        right: 10px;
+        height: 10px;
+        width: 20px;
+        background-repeat: no-repeat;
+        background-image: url(${ DropdownArrow });
+    }
+ 
+    select {
+        width: 100%;
+        border-radius: 6px;
+        background-color: #E1E7EC;
+        opacity: 0.75;
+        font-size: 14px;
+        padding: 14px;
+        padding-left: 20px;
+        font-family: HK Grotesk Regular;
         box-sizing: border-box;
-        flex-basis: 45%; 
-        border-radius: 5px;   
-        cursor: pointer;
-        color: #F3A35C;
+        border: none;
+        margin: 10px 0;
+        -webkit-appearance:none;
+        -moz-appearance:none;
     }
 `
 
-class Dropdown extends React.Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            displayList: false,
-            data: [],
-            currentSelection: '',
-        }
-
-        this.showDropdown = this.showDropdown.bind(this)
-        this.hideDropdown = this.hideDropdown.bind(this)
-
-        Client.getMenu(props.menuId).then((res) => {
-            console.log(res.data)
-            this.state.data = res.data.Categories
-        })
-
-        if (typeof this.props.categoryId !== 'undefined') {
-            Client.getCategory(this.props.categoryId).then((res) => {
-                this.state.currentSelection = res.data.name
-            })
-        }
-        else {
-            this.state.currentSelection = this.props.placeholder
-        }
-    }
-
-    showDropdown (event) {
-        event.preventDefault()
-        console.log("showDropdown")
-        this.setState({displayList: true}, () => {
-            document.addEventListener('click', this.hideDropdown)
-        });
-    }
-
-    hideDropdown () {
-        this.setState({displayList: false}, () => {
-            document.removeEventListener('click', this.hideDropdown)
-        });
-    }
-
-    select (item) {
-        this.setState({currentSelection: item.name});
-        this.props.updateSelection(item)
-    }
-
-    render() {
-        return (
-            <>
-                <FormButton text={this.state.currentSelection} onClick={this.showDropdown} />
+let CategoryDropdown = (props) => {
+    return (
+        <StyledCategoryDropdown>
+            <select onChange={ (event) => props.updateSelection(event.target.value) } value={ props.categoryId }>
                 {
-                this.state.displayList ? (
-                    <Categories>
-                        {
-                            this.state.data.map((item) => (
-                                <div className='category' key={item.id} onClick={()=>this.select(item)}>{item.name}</div>
-                            ))
-                        }
-                    </Categories>
-                ) : null
+                    props.categories.length > 0 ? 
+                    props.categories.map((category) => 
+                        <option value={ category.id }>{ category.name }</option>
+                    )
+                    :
+                    <option value={0}>Please create a category first.</option>
                 }
-            </>
-        )
-    }
+            </select>
+        </StyledCategoryDropdown>
+    )
 }
 
-export {Dropdown}
+export { CategoryDropdown }
