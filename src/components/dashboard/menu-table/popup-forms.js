@@ -7,7 +7,11 @@ import styled from "styled-components"
 import { useDropzone } from 'react-dropzone'
 import _ from "lodash";
 import { useQRCode } from 'react-qrcode'
-import { Multiselect } from 'multiselect-react-dropdown';
+let MultiSelectDropdown;
+if (typeof window !== `undefined`) {
+    const { Multiselect } = require('multiselect-react-dropdown');
+    MultiSelectDropdown = Multiselect;
+}
 
 const StyledModal = styled.div`
     top: 100px;
@@ -162,7 +166,7 @@ const TagsForm = ({ tags, setTags }) => {
   }
 
   return (
-    <Multiselect
+    <MultiSelectDropdown
       options={ allTags }
       selectedValues={ tags }
       displayValue="name"
