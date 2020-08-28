@@ -6,8 +6,13 @@ import Client from "../../../util/client"
 
 let StyledMenuSelector = styled.h1`
     text-transform: uppercase;
-    font-size: 32px;
-    line-height: 38px;
+    font-size: 24px;
+    line-height: 12px;
+    font-family: HK Grotesk;
+    font-style: normal;
+    font-weight: bold;
+    font-feature-settings: 'cpsp' on;
+    letter-spacing: 0.1em;
 `
 
 const Menus = styled.div`
@@ -18,7 +23,7 @@ const Menus = styled.div`
 
 const MenuTab = styled.div`
     padding-bottom: 15px;
-    margin-right: 30px;
+    margin-right: 50px;
     box-sizing: border-box;
     flex-basis: 15%; 
     border-radius: 5px;   
