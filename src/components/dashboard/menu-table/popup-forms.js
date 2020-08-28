@@ -1,15 +1,13 @@
 import { FormButton } from "../../buttons"
 import React, { useState, useEffect, useCallback } from 'react';
-import { FormInput, PopupFormTitle, DishFormInput} from "../../form"
+import { FormInput, PopupFormTitle, DishFormInput, DishFormTextArea } from "../../form"
 import { CategoryDropdown } from "./dropdown"
-import Client from '../../util/client'
+import Client from '../../../util/client'
 import styled from "styled-components"
-import { useQRCode } from 'react-qrcode'
 import { useDropzone } from 'react-dropzone'
-import "../../pages/index.css"
-import { Dropdown } from 'semantic-ui-react'
 import _ from "lodash";
 import { useQRCode } from 'react-qrcode'
+import { Multiselect } from 'multiselect-react-dropdown';
 
 const StyledModal = styled.div`
     top: 100px;
@@ -114,11 +112,6 @@ let StyledButton = styled.button`
     background: rgba(242, 153, 74, 0.2);
   }
 `
-
-const FormButton = (props) => (
-    <StyledButton theme={props.theme} onClick={props.onClick}>{props.text}</StyledButton>
-)
-
 const TagsForm = ({ tags, setTags }) => {
   const [allTags, setAllTags] = useState([])
 
@@ -187,12 +180,13 @@ const NewDishForm = props => {
   const [description, setDescription] = useState("")
   const [price, setPrice] = useState(0)
   const [dishTags, setDishTags] = useState([])
-  const [categoryId, setCategoryId] = useState([])
+  const [categoryId, setCategoryId] = useState()
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
     Client.getAllCategoriesByMenu(props.menuId).then(response => {
         setCategories(response.data)
+        setCategoryId(response.data[0].id)
     })
 }, [])
 
@@ -251,6 +245,7 @@ const NewDishForm = props => {
             updateSelection={updateCategorySelection}
             menuId={props.menuId}
             categories={ categories }
+            categoryId={ categoryId }
           />
           <Divider color="#DCE2E9" />
           <DishFormSubtitle>Description</DishFormSubtitle>
@@ -395,91 +390,6 @@ const EditDishForm = props => {
   )
 }
 
-const EditDishForm = (props) => {
-    const [name, setName] = useState(props.dish.name);
-    const [category, setCategory] = useState('');
-    const [description, setDescription] = useState(props.dish.description);
-    const [price, setPrice] = useState(0);
-    const [categoryId, setCategoryId] = useState(props.dish.categoryId);
-    const [dishTags, setDishTags] = useState(props.dish.Tags);
-
-    console.log(props)
-
-    useEffect(() => {
-        Client.getCategory(categoryId).then((res) => {
-            console.log(res.data)
-            setCategory(res.data.name)
-        })
-    }, []);
-
-
-    const updateDish = () => {
-        let dishData = {
-            name: name,
-            description: description,
-            categoryId: categoryId,
-            dishTags: dishTags,
-            price: price,
-            menuId: props.menuId,
-        }
-        console.log(dishData)
-        if (name !== '' && categoryId !== 0) {
-            Client.updateDish(props.dish.id, dishData).then((res) => {
-                console.log("dish updated")
-                console.log(res.data)
-                props.toggleForm()
-                props.updateMenu()
-            }).catch((err) => {
-                Client.getDish(props.dish.id).then((oldItem) => {
-                    setName(oldItem.name)
-                    setDescription(oldItem.description)
-                    setCategoryId(oldItem.categoryId)
-                    setPrice(oldItem.price)
-                })
-                console.log("error updating dish")
-                //show some error on form
-            })
-        } else {
-            console.log("missing field")
-            //show some error
-        }
-    }
-    const updateCategorySelection = (category) => {
-        console.log("category selection updated")
-        console.log(category)
-        setCategoryId(category)
-    }
-
-    return (
-        <>
-            <ModalBackground />
-            <StyledModal>
-                <Container>
-                    <DishFormTitle>Update Dish</DishFormTitle>
-                    <DishFormSubtitle>Dish Name</DishFormSubtitle>
-                    <DishFormInput placeholder="Change dish name..." value={name} name='name' onChange={(event) => { setName(event.target.value) }} />
-                    <Divider color="#DCE2E9" />
-                    <DishFormSubtitle>Menu Category</DishFormSubtitle>
-                    <CategoryDropdown categoryId={categoryId} updateSelection={updateCategorySelection} menuId={props.menuId} />
-                    <Divider color="#DCE2E9" />
-                    <DishFormSubtitle>Description</DishFormSubtitle>
-                    <DishFormInput placeholder="Change description..." value={description} name='description' onChange={(event) => { setDescription(event.target.value) }} />
-                    <Divider color="#DCE2E9" />
-                    <DishFormSubtitle>Price</DishFormSubtitle>
-                    <DishFormInput placeholder="Change price..." name='price' onChange={(event) => { setPrice(event.target.value) }} />
-                    <Divider color="#DCE2E9" />
-                    <DishFormSubtitle>Allergen Search</DishFormSubtitle>
-                    <TagsForm tags={dishTags} setTags={setDishTags}></TagsForm>
-                    <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>
-                        <FormButton text='Submit' onClick = {updateDish} />
-                    </ButtonRow>
-                </Container>
-            </StyledModal>
-        </>
-    )
-}
-
 const NewCategoryForm = (props) => {
     const [name, setName] = useState('');
 
@@ -597,7 +507,6 @@ const QRCode = styled.div`
 `;
 
 const QRCodeForm = (props) => {
-
     const url = `${process.env.GATSBY_SMART_MENU_URL}/${props.uniqueName}`
     const qrCodeDataUrl = useQRCode({
         value: url,
