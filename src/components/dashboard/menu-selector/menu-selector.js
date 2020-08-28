@@ -2,30 +2,35 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 import styled from "styled-components"
 
+import { MenuCreator } from "../menu-creator/menu-creator"
+
 import Client from "../../../util/client"
 
-let StyledMenuSelector = styled.h1`
+let StyledMenuSelector = styled.div`
     text-transform: uppercase;
     font-size: 24px;
     line-height: 12px;
-    font-family: HK Grotesk;
+    font-family: HK Grotesk regular;
     font-style: normal;
     font-weight: bold;
     font-feature-settings: 'cpsp' on;
     letter-spacing: 0.1em;
+    width: 100%;
+    padding-bottom: 20px;
 `
 
 const Menus = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    .menu-creator {
+        display: inline-block;
+        width: auto;
+    }
 `
 
 const MenuTab = styled.div`
+    display: inline-block;
     padding-bottom: 15px;
     margin-right: 50px;
     box-sizing: border-box;
-    flex-basis: 15%; 
     border-radius: 5px;   
     cursor: pointer;
     color: black;
@@ -95,6 +100,7 @@ class MenuSelector extends React.Component {
                             </MenuTab>
                        ))
                     }
+                    <MenuCreator className="menu-creator" updateMenuSelection={this.props.updateMenuSelection} updateHasMenu={this.props.updateHasMenu}/>
                 </Menus>
             </StyledMenuSelector>
         )
