@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone'
 
-import { FormInput } from "../../form"
+import { FormInput, PopupFormTitle, DishFormInput, DishFormTextArea } from "../../form"
 import { FormButton } from "../../buttons"
 
 import Client from '../../../util/client'
@@ -59,8 +60,111 @@ const ModalBackground = styled.div`
     z-index: 1;
 `
 
+const FormTitle = styled.div`
+    position: static;
+    width: 800px;
+    
+    left: 20px;
+    top: 20px;
+    font-family: HK Grotesk Bold;
+    font-size: 28px;
+    line-height: 34px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.02em;
+    color: #000000;
+    
+    align-self: flex-start;
+`
+
+const FormSubtitle = styled.div`
+  position: static;
+  width: 800px;
+  height: 12px;
+  left: 20px;
+  font-family: HK Grotesk Regular;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000000;
+  margin-top: 10px;
+`
+
+const StyledUploadCSVModal = styled.div`
+    .file-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        margin-bottom: 20px;
+        border: 2px dashed grey;
+        border-radius: 15px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .error-msg {
+        color: red;
+    }
+    
+    p {
+        margin-left: 20px;
+        display: inline-block;
+    }
+`
+
+let Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #DCE2E9;
+`
+
 const NewMenuForm = (props) => {
     const [name, setName] = useState('');
+    let { show, close, uploadCSV } = props
+    let [overwrite, setOverwrite] = useState(false)
+    let [content, setContent] = useState(null)
+    let [fileName, setFileName] = useState(null)
+    let [errorMessage, setErrorMessage] = useState(null)
+    
+    const onDrop = useCallback(acceptedFiles => {
+        acceptedFiles.forEach((file) => {
+            const reader = new FileReader()      
+            reader.onabort = () => console.error('file reading was aborted')
+            reader.onerror = () => {
+                console.error('file reading has failed')
+                setErrorMessage("Error uploading file")
+            }
+            reader.onload = () => {
+            // Do whatever you want with the file contents
+              const fileContent = reader.result
+              setContent(fileContent)
+              setFileName(file.path)
+            }
+
+            if(file.path.includes(".csv")) {
+                setErrorMessage(null)
+                reader.readAsText(file)
+            } else {
+                console.error("Incorrect file type chosen")
+                setErrorMessage("Incorrect file uploaded, please choose a .csv file")
+            }
+          })
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
+    const postCSVFile = () => {
+        Client.uploadCSV(content, props.menuId, overwrite).then(() => {
+            setErrorMessage(null)
+            setFileName(null)
+            setContent(null)
+            props.updateMenu()
+            props.close()
+        })
+    }
 
     const createMenu = () => {
         let menuData = {
@@ -89,10 +193,41 @@ const NewMenuForm = (props) => {
             <ModalBackground/>
             <StyledModal>
                 <Container>
-                    <FormInput placeholder='menu' name='menu' onChange={ (event) => {setName(event.target.value)} }/>
+                    <FormTitle>New Menu</FormTitle>
+                    <FormSubtitle>Menu Name</FormSubtitle>
+                    <DishFormInput
+                        placeholder="Type menu name..."
+                        name="name"
+                        onChange={event => {
+                        setName(event.target.value)
+                        }}
+                    />
+                    <Divider color="#DCE2E9" />
+                    <FormSubtitle>CSV Upload (Optional)</FormSubtitle>
+                    <StyledUploadCSVModal>
+                        {
+                            errorMessage ? <p className='error-msg'>{ errorMessage }</p> : <></>
+                        }
+                        {
+                            content ? 
+                            <div>
+                                <p>Selected File: { fileName }</p>
+                            </div>
+                            : 
+                            <div className='file-input' {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                {console.log(isDragActive)}
+                                {
+                                    isDragActive ?
+                                    <p>Drop the .csv file here ...</p> :
+                                    <p>Drag and drop a .csv file here, or click to select a file</p>
+                                }
+                            </div>
+                        }
+                    </StyledUploadCSVModal>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Submit' onClick = {createMenu} />    
+                        <FormButton text='Create Menu' onClick = {createMenu} />    
                     </ButtonRow>
                 </Container>
             </StyledModal>
