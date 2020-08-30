@@ -86,6 +86,7 @@ const TableRow = styled.div`
 `
 
 const StyledItemRow = styled(TableRow)`
+    font-family: HK Grotesk Light;
 
     &.opened {
         height: inherit;
