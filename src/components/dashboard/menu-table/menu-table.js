@@ -198,8 +198,10 @@ const MenuTable = (props) => {
                 {
                     menuData ? menuData.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}
-                            openDeleteConfirmation={openDeleteConfirmation} />
+                            toggleEditCategory={toggleEditCategoryForm} 
+                            toggleEditDish={toggleEditDishForm}
+                            openDeleteConfirmation={openDeleteConfirmation} 
+                        />
                     )) : ''
                 }
                 </div>
@@ -215,7 +217,11 @@ const MenuTable = (props) => {
             <>
                 {
                     searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} toggleEditDish={toggleEditDishForm}/>
+                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} 
+                            toggleEditDish={toggleEditDishForm} 
+                            openDeleteConfirmation={openDeleteConfirmation}
+                            toggleEditCategory={toggleEditCategoryForm}
+                        />
                     ))
                 }
             </>
@@ -224,7 +230,6 @@ const MenuTable = (props) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log('executing search');
         e.target.firstChild.blur();
         setSearchBoxFocused(false)
         if (searchBoxValue.trim() == '') {
@@ -250,10 +255,10 @@ const MenuTable = (props) => {
                         onFocus={(e) => {
                             setSearchBoxFocused(true); 
                             e.target.select(); // highlight text when focus on element
-                        }} 
+                        }}
                     />
                     {
-                        (isSearching && searchBoxValue != '' && !searchBoxFocused) ?
+                        (isSearching && !searchBoxFocused) ?
                         <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
                             e.preventDefault();
                             setSearchBoxValue('');
