@@ -9,7 +9,7 @@ import { NewMenuForm } from "../../../components/dashboard/menu-creator/popup-fo
 import Client from "../../../util/client"
 
 let StyledMenuCreator = styled.div`
-    display: flex;
+    display: inline-flex;
     color: white;
     text-align: center;
     font-size: 24px;
@@ -19,7 +19,7 @@ let StyledMenuCreator = styled.div`
         color: #F3A35C;
         cursor: pointer;
 
-        font-family: HK Grotesk;
+        font-family: HK Grotesk regular;
         font-style: normal;
         font-weight: bold;
         letter-spacing: 0.1em;
