@@ -198,8 +198,10 @@ const MenuTable = (props) => {
                 {
                     menuData ? menuData.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                            toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm}
-                            openDeleteConfirmation={openDeleteConfirmation} />
+                            toggleEditCategory={toggleEditCategoryForm} 
+                            toggleEditDish={toggleEditDishForm}
+                            openDeleteConfirmation={openDeleteConfirmation} 
+                        />
                     )) : ''
                 }
                 </div>
@@ -215,7 +217,11 @@ const MenuTable = (props) => {
             <>
                 {
                     searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} toggleEditDish={toggleEditDishForm}/>
+                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} 
+                            toggleEditDish={toggleEditDishForm} 
+                            openDeleteConfirmation={openDeleteConfirmation}
+                            toggleEditCategory={toggleEditCategoryForm}
+                        />
                     ))
                 }
             </>
