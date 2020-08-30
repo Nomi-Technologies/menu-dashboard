@@ -8,6 +8,8 @@ import Client from '../../../util/client'
 
 import styled from "styled-components"
 
+import CSVUploadIcon from "../../../assets/img/csv-upload-icon.png"
+
 const StyledModal = styled.div`
     top: 100px;
     position: absolute;
@@ -226,7 +228,10 @@ const NewMenuForm = (props) => {
                                 {
                                     isDragActive ?
                                     <p>Drop the .csv file here ...</p> :
-                                    <p>Drag and drop a .csv file here, or click to select a file</p>
+                                    <div>
+                                        <img src={CSVUploadIcon} />
+                                        <p>Drag and drop a .csv file here, or click to select a file</p>
+                                     </div>
                                 }
                             </div>
                         }
