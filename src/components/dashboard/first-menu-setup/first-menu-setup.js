@@ -12,15 +12,18 @@ let StyledFirstMenuSetup = styled.div`
 `
 
 let StyledNoMenuIcon = styled.div`
-    width: 200px;
-    height: 197px;
-    margin-left: 489px;
+    width: 100%;
     margin-top: 118px;
     margin-bottom: 56px;
+
+    img {
+        margin: 0 auto;
+        display: block;
+    }
 `
 
 let StyledNoMenuText = styled.h1`
-    font-family: HK Grotesk;
+    font-family: HK Grotesk regular;
     font-style: normal;
     font-weight: bold;
     font-size: 28px;
