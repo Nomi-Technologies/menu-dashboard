@@ -222,7 +222,7 @@ const MenuTable = (props) => {
         );
     }
 
-    const handleSearch = async (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
         e.target.firstChild.blur();
         setSearchBoxFocused(false)
@@ -251,9 +251,7 @@ const MenuTable = (props) => {
                             e.target.select(); // highlight text when focus on element
                         }} 
                         onBlur={(e) => {
-                            if (searchBoxValue.trim() == '') { 
-                                setSearchBoxFocused(false); 
-                            }
+                            setSearchBoxFocused(false); 
                         }}
                     />
                     {
