@@ -255,7 +255,7 @@ const MenuTable = (props) => {
                         onFocus={(e) => {
                             setSearchBoxFocused(true); 
                             e.target.select(); // highlight text when focus on element
-                        }} 
+                        }}
                     />
                     {
                         (isSearching && !searchBoxFocused) ?
