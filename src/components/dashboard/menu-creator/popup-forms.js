@@ -78,17 +78,17 @@ const FormTitle = styled.div`
 `
 
 const FormSubtitle = styled.div`
-  position: static;
-  width: 800px;
-  height: 12px;
-  left: 20px;
-  font-family: HK Grotesk Regular;
-  font-size: 10px;
-  line-height: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #000000;
-  margin-top: 10px;
+    position: static;
+    width: 800px;
+    height: 12px;
+    left: 20px;
+    font-family: HK Grotesk Regular;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #000000;
+    margin-top: 10px;
 `
 
 const StyledUploadCSVModal = styled.div`
@@ -97,7 +97,7 @@ const StyledUploadCSVModal = styled.div`
         justify-content: center;
         align-items: center;
         height: 200px;
-        margin-bottom: 20px;
+        margin: 10px 0px;
         border: 2px dashed grey;
         border-radius: 15px;
 
@@ -113,6 +113,13 @@ const StyledUploadCSVModal = styled.div`
     p {
         margin-left: 20px;
         display: inline-block;
+
+        font-size: 14px;
+        line-height: 12px;
+        font-family: HK Grotesk regular;
+        font-style: normal;
+        font-weight: bold;
+        color: #8A9DB7;
     }
 `
 
@@ -199,7 +206,7 @@ const NewMenuForm = (props) => {
                         placeholder="Type menu name..."
                         name="name"
                         onChange={event => {
-                        setName(event.target.value)
+                            setName(event.target.value)
                         }}
                     />
                     <Divider color="#DCE2E9" />
@@ -216,7 +223,6 @@ const NewMenuForm = (props) => {
                             : 
                             <div className='file-input' {...getRootProps()}>
                                 <input {...getInputProps()} />
-                                {console.log(isDragActive)}
                                 {
                                     isDragActive ?
                                     <p>Drop the .csv file here ...</p> :
