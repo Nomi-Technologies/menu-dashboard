@@ -28,7 +28,8 @@ const Menus = styled.div`
 
 const MenuTab = styled.div`
     display: inline-block;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
     margin-right: 50px;
     box-sizing: border-box;
     border-radius: 5px;   
