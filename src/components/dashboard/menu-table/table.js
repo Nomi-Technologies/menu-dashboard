@@ -86,6 +86,7 @@ const TableRow = styled.div`
 `
 
 const StyledItemRow = styled(TableRow)`
+    font-family: HK Grotesk Light;
 
     &.opened {
         height: inherit;
@@ -191,12 +192,15 @@ const StyledTableCategory = styled.div`
     }
 `
 
+const CategoryDescription = styled.p`
+    color: #8A9DB7;
+    font-family: HK Grotesk Light;
+`
+
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
 const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation }) => {
-    const [name, setName] = useState(category.name)
     const [open, setOpen] = useState(false);
-    const [id, setId] = useState(category.id)
 
     const toggleOpen = () => {
         if (open) {
@@ -213,9 +217,19 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                     <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
                     {
                         <>
-                            {name}
+                            { category.name }
+                        </>
+                    }
+                </TableCell>
+                <TableCell>
+                    {
+                        <>
+                            <CategoryDescription>
+                                { category.description }
+                            </CategoryDescription>
+                            
                             <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
-                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(id, "category")} />
+                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} />
                         </>
                     }
                 </TableCell>
@@ -225,7 +239,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                     category ?
                         category.Dishes.map((item, index) => (
                             <ItemRow key={index} item={item} updateMenu={updateMenu}
-                                catId={id} toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation} />
+                                catId={ category.id } toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation} />
                         )) :
                         ''
                 }

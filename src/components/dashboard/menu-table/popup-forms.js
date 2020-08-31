@@ -35,7 +35,10 @@ const Container = styled.div`
 
     input {
         border: none;
-        background-color: #F4F4F4;
+
+        &::placeholder {
+          color: grey;
+        }   
     }
 
     .error {
@@ -398,25 +401,25 @@ const EditDishForm = props => {
 
 const NewCategoryForm = (props) => {
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
 
     const createCategory = () => {
         let categoryData = {
             name: name,
-            menuId: props.menuId,
+            description: description,
+            menuId: props.menuId
         }
         console.log(categoryData)
         if (name !== '') {
             Client.createCategory(categoryData).then((res) => {
-                console.log("category created")
-                console.log(res.data)
                 props.toggleForm()
                 props.updateMenu()
             }).catch((err) => {
-                console.log("error creating category")
+                console.error("error creating category")
                 //show some error on form
             })
         } else {
-            console.log("missing field")
+            console.error("missing field")
             //show some error
         }
     }
@@ -426,7 +429,19 @@ const NewCategoryForm = (props) => {
             <ModalBackground />
             <StyledModal>
                 <Container>
-                    <FormInput placeholder='category' name='category' onChange={(event) => { setName(event.target.value) }} />
+                    <DishFormTitle>Add Category</DishFormTitle>
+                    <DishFormSubtitle>Category Name</DishFormSubtitle>
+                    <DishFormInput placeholder='Type a category name (e.g. Appetizers, Entrees)...' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
+                    <Divider/>
+                    <DishFormSubtitle>Description (Optional)</DishFormSubtitle>
+                    <DishFormTextArea
+                      placeholder="Change description..."
+                      value={ description }
+                      name="description"
+                      onChange={event => {
+                        setDescription(event.target.value)
+                      }}
+                    />
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm} />
                         <FormButton text='Submit' onClick={createCategory} />
@@ -439,29 +454,27 @@ const NewCategoryForm = (props) => {
 
 const EditCategoryForm = (props) => {
     const [name, setName] = useState(props.category.name);
+    const [description, setDescription] = useState(props.category.description);
 
     const updateCategory = () => {
         let categoryData = {
-            name: name,
-            menuId: props.menuId,
+          name: name,
+          description: description,
+          menuId: props.menuId
         }
-        console.log(categoryData)
         if (name !== '') {
             Client.updateCategory(props.category.id, categoryData).then((res) => {
-                console.log("category updated")
-                console.log(res.data)
                 props.toggleForm()
                 props.updateMenu()
             }).catch((err) => {
                 Client.getCategory(props.category.id).then((oldCategory) => {
                     setName(oldCategory.name)
+                    setDescription(oldCategory.description)
                 })
-                console.log("error updating category")
-                //show some error on form
+                console.error("error updating category")
             })
         } else {
-            console.log("missing field")
-            //show some error
+            console.error("missing field")
         }
     }
 
@@ -470,7 +483,19 @@ const EditCategoryForm = (props) => {
             <ModalBackground />
             <StyledModal>
                 <Container>
-                    <FormInput placeholder="Name" name='category' value={name} onChange={(event) => { setName(event.target.value) }} />
+                    <DishFormTitle>Edit Category</DishFormTitle>
+                    <DishFormSubtitle>Category Name</DishFormSubtitle>
+                    <DishFormInput placeholder='Type a category name (e.g. Appetizers, Entrees)...' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
+                    <Divider/>
+                    <DishFormSubtitle>Description (Optional)</DishFormSubtitle>
+                    <DishFormTextArea
+                      placeholder="Change description..."
+                      value={ description }
+                      name="description"
+                      onChange={event => {
+                        setDescription(event.target.value)
+                      }}
+                    />
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm} />
                         <FormButton text='Submit' onClick={updateCategory} />

@@ -10,7 +10,7 @@ let StyledMenuSelector = styled.div`
     text-transform: uppercase;
     font-size: 24px;
     line-height: 12px;
-    font-family: HK Grotesk regular;
+    font-family: HK Grotesk Regular;
     font-style: normal;
     font-weight: bold;
     font-feature-settings: 'cpsp' on;
