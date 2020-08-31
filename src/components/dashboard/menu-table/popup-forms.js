@@ -433,7 +433,7 @@ const NewCategoryForm = (props) => {
                     <DishFormSubtitle>Category Name</DishFormSubtitle>
                     <DishFormInput placeholder='Type a category name (e.g. Appetizers, Entrees)...' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
                     <Divider/>
-                    <DishFormSubtitle>Description</DishFormSubtitle>
+                    <DishFormSubtitle>Description (Optional)</DishFormSubtitle>
                     <DishFormTextArea
                       placeholder="Change description..."
                       value={ description }
@@ -487,7 +487,7 @@ const EditCategoryForm = (props) => {
                     <DishFormSubtitle>Category Name</DishFormSubtitle>
                     <DishFormInput placeholder='Type a category name (e.g. Appetizers, Entrees)...' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
                     <Divider/>
-                    <DishFormSubtitle>Description</DishFormSubtitle>
+                    <DishFormSubtitle>Description (Optional)</DishFormSubtitle>
                     <DishFormTextArea
                       placeholder="Change description..."
                       value={ description }
