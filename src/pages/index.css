@@ -1,4 +1,9 @@
 @font-face {
+    font-family: 'HK Grotesk Light';
+    src: url("../assets/fonts/hk-grotesk/HKGrotesk-Regular.otf");
+}
+
+@font-face {
     font-family: 'HK Grotesk Regular';
     src: url("../assets/fonts/hk-grotesk/HKGrotesk-SemiBold.otf");
 }
