@@ -165,23 +165,14 @@ const NewMenuForm = (props) => {
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
-    const postCSVFile = () => {
-        Client.uploadCSV(content, props.menuId, overwrite).then(() => {
-            setErrorMessage(null)
-            setFileName(null)
-            setContent(null)
-            props.updateMenu()
-            props.close()
-        })
-    }
-
-    const createMenu = () => {
+    async function createMenu () {
         let menuData = {
             name: name,
+            csv: content,
         }
         console.log(menuData)
         if (name !== '') {
-            Client.createMenu(menuData).then((res) => {
+            await Client.createMenu(menuData).then((res) => {
                 console.log("menu created")
                 console.log(res.data)
                 props.toggleForm()
