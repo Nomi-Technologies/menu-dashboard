@@ -188,4 +188,18 @@ let DishFormTextArea = (props) => (
     <StyledNewTextArea type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>
 )
 
-export { FormInput, DishFormInput, DishFormTextArea, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError, PopupFormTitle }
+export { 
+    FormInput,
+    DishFormInput,
+    DishFormTextArea,
+    FormContainer,
+    FormTitle,
+    FormSubtitle,
+    FormRow,
+    NextButton,
+    PrevButton,
+    DoneButton,
+    FormControls,
+    FormError,
+    PopupFormTitle
+}

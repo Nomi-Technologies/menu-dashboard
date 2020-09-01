@@ -43,7 +43,7 @@ let CategoryDropdown = (props) => {
                 {
                     props.categories.length > 0 ? 
                     props.categories.map((category) => 
-                        <option value={ category.id }>{ category.name }</option>
+                        <option key={category.id} value={ category.id }>{ category.name }</option>
                     )
                     :
                     <option value={0}>Please create a category first.</option>
