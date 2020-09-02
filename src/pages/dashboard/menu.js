@@ -47,8 +47,6 @@ const MenuPage = () => {
     }, [menuId])
 
     const updateMenuSelection = (menu) => {
-        console.log("new menu selected")
-        console.log(menu)
         if (typeof menu === 'undefined') {
             setMenuId(null)
         }
@@ -59,7 +57,6 @@ const MenuPage = () => {
 
     async function updateMenu () {
         if (menuId !== null) {
-            console.log("updating menu")
             await Client.getMenu(menuId).then((res) => {
                 setMenuData(null)
                 setMenuData(res.data.Categories)
@@ -68,7 +65,6 @@ const MenuPage = () => {
     };
 
     const updateHasMenu = (hasMenu) => {
-        console.log("has menu: " + hasMenu)
         setHasMenu(hasMenu)
     }
 

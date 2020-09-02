@@ -11,7 +11,8 @@ import Client from "../../../util/client"
 let StyledMenuCreator = styled.div`
     display: inline-flex;
     color: white;
-    font-size: 24px;
+    text-align: center;
+    font-size: 14px;
     margin-top: 8px;
 
     .new-menu-button {
