@@ -12,7 +12,6 @@ import styled from "styled-components"
  const Column = styled.div`
    flex-basis: ${({width}) => width ? width : 'auto'};
    flex-grow: ${({width}) => width ? 0 : 1};
-   padding: 0 50px;
    box-sizing: border-box;
  `
 

@@ -23,8 +23,10 @@ let SideBar = styled(Column)`
 `
 
 let MenuContainer = styled.div`
+    box-sizing: border-box;
     position: relative;
     margin: 0 auto;
+    padding: 0 50px;
     padding-top: 30px;
 `
 
