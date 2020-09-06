@@ -303,16 +303,16 @@ const MenuTable = (props) => {
 
             <StyledMenuTable>
                 <Table.HeaderRow>
-                    <Table.TableCell>
+                    <Table.TableCell className='title'>
                         Title
                     </Table.TableCell>
-                    <Table.TableCell>
+                    <Table.TableCell className='description'>
                         Description
                     </Table.TableCell>
-                    <Table.TableCell>
+                    <Table.TableCell className='price'>
                         Price
                     </Table.TableCell>
-                    <Table.TableCell>
+                    <Table.TableCell className='tags'>
                         Allergens
                     </Table.TableCell>
                 </Table.HeaderRow>
