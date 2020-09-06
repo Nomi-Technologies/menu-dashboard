@@ -44,8 +44,8 @@ class MenuSelector extends React.Component {
         super(props);
 
         this.state = {
-            data: this.props.data,
-            selectedMenuId: this.props.selectedMenuId,
+            data: [],
+            selectedMenuId: this.props.selectedMenuId
         }
 
         this.updateData();
@@ -61,8 +61,6 @@ class MenuSelector extends React.Component {
 
     updateData() {
         Client.getAllMenus().then((res) => {
-            console.log(this.props)
-            console.log(res.data)
             this.setState({data: res.data, selectedMenuId: this.props.selectedMenuId})
             console.log(this.state)
 

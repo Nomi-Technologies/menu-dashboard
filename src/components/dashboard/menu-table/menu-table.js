@@ -191,7 +191,8 @@ const MenuTable = (props) => {
         setEditCategoryForm(false)
         setDeleteConfirmation(false)
     }
-    const renderTableOutput = () => {
+
+    const renderTableContents = () => {
         if(!isSearching) {
             return (
                 <div id='menuTable'>
@@ -316,16 +317,9 @@ const MenuTable = (props) => {
                         Allergens
                     </Table.TableCell>
                 </Table.HeaderRow>
-                   {/* {
-                        menuData ? menuData.map((item) => (
-                            <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                                toggleEditCategory={toggleEditCategoryForm} toggleEditDish={toggleEditDishForm} openDeleteConfirmation={openDeleteConfirmation}/>
-                        )) : ''
-                    } */}
-
-                   {
-                    renderTableOutput()
-                   }
+                {
+                    renderTableContents()
+                }
             </StyledMenuTable>
         </>
     )

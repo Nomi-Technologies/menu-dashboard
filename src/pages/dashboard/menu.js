@@ -14,6 +14,7 @@ import { MenuSelector } from "../../components/dashboard/menu-selector/menu-sele
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
 import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
+import TopBar from "../../components/top-bar"
 
 import Client from "../../util/client"
 
@@ -23,10 +24,8 @@ let SideBar = styled(Column)`
 
 let MenuContainer = styled.div`
     position: relative;
-    width: 90%;
     margin: 0 auto;
-    max-width: 1200px;
-    padding-top: 104px;
+    padding-top: 30px;
 `
 
 let StyledFloatingMenu = styled(FloatingMenu)`
@@ -40,7 +39,6 @@ const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
-    const [menuSelectorData, setMenuSelectorData] = useState([])
 
     useEffect(() => {
         updateMenu()
@@ -71,17 +69,19 @@ const MenuPage = () => {
     return (
         <Layout>
             <Container>
-                <SideBar width='280px'>
-                </SideBar>
                 <Column>
                 {
                     hasMenu ? (
-                        <MenuContainer>
-                            <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                updateHasMenu={updateHasMenu} data={menuSelectorData} />
-                            <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
-                            <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
-                        </MenuContainer>
+                        <>
+                            <TopBar title="Menu Management"> 
+                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                    updateHasMenu={updateHasMenu}/>
+                            </TopBar>
+                            <MenuContainer>                            
+                                <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                                <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                            </MenuContainer>
+                        </>
                     ) : (
                         <MenuContainer>
                             <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>

@@ -273,6 +273,8 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     )
 }
 
+
+
 export {
     TableCell,
     TableRow,
