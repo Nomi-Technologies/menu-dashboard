@@ -39,11 +39,10 @@ const PopulatePersonal = () => {
   const [save, setSave] = useState(false)
 
   useEffect(() => {
-
     Client.getPersonalInfo().then(response => {
       console.log(response.data)
-      setFirstname(response.data.firstname)
-      setLastname(response.data.lastname)
+      setFirstname(response.data.firstName)
+      setLastname(response.data.lastName)
       setEmail(response.data.email)
       setPhone(response.data.phone)
       setSave(false)
@@ -52,8 +51,8 @@ const PopulatePersonal = () => {
 
   const submit = () => {
     Client.updatePersonalInfo(id, {
-      firstname: firstname,
-      lastname: lastname,
+      firstName: firstname,
+      lastName: lastname,
       email: email,
       phone: phone,
     })
