@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState } from 'react';
 
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
@@ -125,8 +125,8 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
                 <p>{allergen_list(item.Tags)}</p>
             </TableCell>
             <RowControls>
-                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} />
-                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} />
+                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} alt="edit icon" />
+                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} alt="delete icon"/>
             </RowControls>
         </StyledItemRow>
     )
@@ -245,7 +245,7 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     return (
         <StyledTableCategory className={open ? 'open' : ''}>
             <CategoryHeaderRow>
-                <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
+                <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} alt="collapse icon"/>
                 <TableCell className='category-name'>
                     { category.name }
                 </TableCell>
@@ -255,8 +255,8 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                     </CategoryDescription>
                 </TableCell>
                 <RowControls>
-                    <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
-                    <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} />
+                    <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} alt="edit icon"/>
+                    <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} alt="delete icon"/>
                 </RowControls>
             </CategoryHeaderRow>
             <div className='items'>

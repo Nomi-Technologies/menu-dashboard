@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React  from 'react';
 
 import styled from "styled-components"
 
@@ -16,7 +16,6 @@ let StyledMenuSelector = styled.div`
     font-feature-settings: 'cpsp' on;
     letter-spacing: 0.1em;
     width: 100%;
-    padding-bottom: 20px;
 `
 
 const Menus = styled.div`
@@ -29,7 +28,6 @@ const Menus = styled.div`
 const MenuTab = styled.div`
     display: inline-block;
     padding-bottom: 10px;
-    margin-bottom: 15px;
     margin-right: 50px;
     box-sizing: border-box;
     border-radius: 5px;   
@@ -54,7 +52,7 @@ class MenuSelector extends React.Component {
     componentDidUpdate(prevProps) {
         // TODO(Tommy): avoid refreshing when only switching menus
         // Used for when creating/deleting menus but also gets called when switching
-        if (this.props.selectedMenuId != prevProps.selectedMenuId) {
+        if (this.props.selectedMenuId !== prevProps.selectedMenuId) {
             this.updateData();
         }
     }
@@ -94,7 +92,7 @@ class MenuSelector extends React.Component {
                 <Menus>
                     {
                         this.state.data.map((item) => (
-                            <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id==this.state.selectedMenuId}>
+                            <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
                                 {item.name}
                             </MenuTab>
                        ))

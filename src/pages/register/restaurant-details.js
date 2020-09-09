@@ -10,15 +10,6 @@ let SideBar = styled(Column)`
     background-color: #F2994A;
 `
 
-let SideBarText = styled.p`
-    color: white;
-    font-size: 36px;
-    line-height: 43px;
-    font-weight: bold;
-    margin: 0 64px;
-    margin-top: 124px;
-`
-
 let FormColumn = styled(Column)`
     background-color: #F7F8FA;
 `
@@ -39,7 +30,7 @@ const RestaurantDetails = (props) =>
         if(props.location.state == null || props.location.state.contactInfo == null) {
             navigate('/register/contact-info')
         }
-    }, [])
+    }, [props.location.state])
     
 
     const validateForm = () => {

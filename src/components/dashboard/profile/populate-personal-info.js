@@ -34,8 +34,6 @@ const PopulatePersonal = () => {
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
-
-  const [id, setId] = useState("")
   const [save, setSave] = useState(false)
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const PopulatePersonal = () => {
   }, [])
 
   const submit = () => {
-    Client.updatePersonalInfo(id, {
+    Client.updatePersonalInfo({
       firstName: firstname,
       lastName: lastname,
       email: email,

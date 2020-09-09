@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState  } from 'react';
 
 import styled from "styled-components"
-
-import { FormButton, ButtonRow } from "../../../components/buttons" 
-
-import { NewMenuForm } from "../../../components/dashboard/menu-creator/popup-forms";
-
-import Client from "../../../util/client"
+import { NewMenuModal } from "../../../components/dashboard/modal/new-menu";
 
 let StyledMenuCreator = styled.div`
     display: inline-flex;
@@ -44,7 +39,7 @@ const MenuCreator = (props) => {
             </div>
             {
                 showNewMenuForm ? (
-                    <NewMenuForm updateMenuSelection={props.updateMenuSelection} updateHasMenu={props.updateHasMenu} toggleForm={toggleNewMenuForm}/>
+                    <NewMenuModal updateMenuSelection={props.updateMenuSelection} updateHasMenu={props.updateHasMenu} toggleForm={toggleNewMenuForm}/>
                 ) : null
             }
         </StyledMenuCreator>

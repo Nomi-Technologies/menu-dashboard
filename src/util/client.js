@@ -195,9 +195,9 @@ export default class Client {
     })
   }
 
-  static updatePersonalInfo = (id, data) => {
+  static updatePersonalInfo = (data) => {
     let token = retrieveUserToken() // get user auth token
-    return axios.put(ROOT_URL + "/user/details/" + id, data, {
+    return axios.put(ROOT_URL + "/user/details/", data, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }

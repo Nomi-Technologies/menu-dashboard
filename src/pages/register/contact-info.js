@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components"
 
 import Layout from "../../components/layout"
 
 import Client from '../../util/client'
 
-import { Container, Column, ImageColumn } from "../../components/grid"
+import { Container, Column } from "../../components/grid"
 
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, FormError } from "../../components/form"
 import { navigate } from 'gatsby';
@@ -45,7 +45,7 @@ const ContactInfo = () =>
 
         let invalid = false
         Object.keys(contactInfo).forEach(function(key) {
-            if(contactInfo[key] == "")
+            if(contactInfo[key] === "")
             {
                 invalid = true;
             }

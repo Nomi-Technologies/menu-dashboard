@@ -1,9 +1,5 @@
-import React from "react"
 import styled from "styled-components"
-import { navigate } from "@reach/router"
-import Layout from "../../layout"
-import { Container, Column, ImageColumn } from "../../grid"
-import PopulatePersonal from "./populate-personal-info"
+import { Column } from "../../grid"
 import { Link } from "gatsby"
 
 let InfoTitle = styled.p`

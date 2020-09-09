@@ -1,5 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
-import ReactDOM from 'react-dom'
+import React, { useState } from 'react';
 
 import Client from '../../../util/client'
 
@@ -7,8 +6,10 @@ import styled from "styled-components"
 // import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
+import { DeleteConfirmationModal } from "../modal/delete"
+import { NewDishModal, EditDishModal } from "../modal/dish"
+import { NewCategoryModal, EditCategoryModal } from "../modal/category"
 
-import * as Forms from "./popup-forms"
 import * as Table from "./table"
 
 const StyledMenuTable = styled.div`
@@ -121,8 +122,7 @@ const MenuTable = (props) => {
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    let fileReader
-
+    
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
@@ -156,7 +156,7 @@ const MenuTable = (props) => {
 
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
-            if(toDelete.type == "category") {
+            if(toDelete.type === "category") {
                 Client.deleteCategory(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -168,7 +168,7 @@ const MenuTable = (props) => {
                 })
             }
 
-            if(toDelete.type == "dish") {
+            if(toDelete.type === "dish") {
                 Client.deleteDish(toDelete.id).then(() => {
                     setToDelete({}).then(() => {
                         setDeleteConfirmation(false).then(() => {
@@ -207,7 +207,7 @@ const MenuTable = (props) => {
                 }
                 </div>
             );
-        } else if (searchResults.length == 0) {
+        } else if (searchResults.length === 0) {
             return (
                 <Table.TableCell>
                     No items found
@@ -233,7 +233,7 @@ const MenuTable = (props) => {
         e.preventDefault();
         e.target.firstChild.blur();
         setSearchBoxFocused(false)
-        if (searchBoxValue.trim() == '') {
+        if (searchBoxValue.trim() === '') {
             setIsSearching(false);
         } else {
             Client.searchDishes(searchBoxValue, props.menuId)
@@ -270,35 +270,35 @@ const MenuTable = (props) => {
 
                 </form>
                 <div className='buttons'>
-                    <div className='new-category' onClick={toggleNewCategoryForm}>New Menu Category</div>
+                    <div className='new-category' onClick={toggleNewCategoryForm} role="button">New Menu Category</div>
                     <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
                 </div>
             </MenuControls>
             {
                 showNewDishForm ? (
-                    <Forms.NewDishForm toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                    <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showNewCategoryForm ? (
-                    <Forms.NewCategoryForm toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                    <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showEditDishForm ? (
-                    <Forms.EditDishForm toggleForm={toggleEditDishForm} updateMenu={updateMenu}
+                    <EditDishModal toggleForm={toggleEditDishForm} updateMenu={updateMenu}
                         dish={selectedDish} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showEditCategoryForm ? (
-                    <Forms.EditCategoryForm toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
+                    <EditCategoryModal toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
                         category={selectedCategory} menuId={props.menuId}/>
                 ) : null
             }
             {
                 showDeleteConfirmation ? (
-                    <Forms.DeleteConfirmation closeForm={closeDeleteConfirmation}/>
+                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation}/>
                 ) : null
             }
 

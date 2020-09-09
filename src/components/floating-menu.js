@@ -137,4 +137,4 @@ const FloatingMenu = (props) => {
     )
 }
 
-export default FloatingMenu;
+export { FloatingMenu };

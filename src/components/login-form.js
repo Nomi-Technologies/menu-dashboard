@@ -1,14 +1,12 @@
 import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import styled from "styled-components"
 import { FormButton, ButtonRow } from "./buttons"
 import { navigate } from "@reach/router"
-import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls } from "../components/form"
+import { FormInput } from "../components/form"
 import Client from "../util/client"
 import { saveUserToken } from "../util/auth"
-
 
 
 const ForgotPassword = styled(Link)`
@@ -40,17 +38,6 @@ const Container = styled.div`
     ${ButtonRow} {
         justify-content: space-between;
     }
-`
-
-const InputField = styled.input`
-    font-size: 18px;
-    line-height: 22px;
-    padding: 18px 32px;
-    display: block;
-    background-color: #F4F4F4;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 24px;
 `
 
 const LoginForm = () => {

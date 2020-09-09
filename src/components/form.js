@@ -114,7 +114,7 @@ let StyledNextButton = styled.button`
 let NextButton = (props) => (
     <StyledNextButton onClick={props.onClick}>
         NEXT
-        <img src={RightArrowIcon}></img>
+        <img alt="Right Arrow Icon" src={RightArrowIcon}></img>
     </StyledNextButton>
 )
 
