@@ -7,14 +7,6 @@ import { MenuCreator } from "../menu-creator/menu-creator"
 import Client from "../../../util/client"
 
 let StyledMenuSelector = styled.div`
-    text-transform: uppercase;
-    font-size: 14px;
-    line-height: 12px;
-    font-family: HK Grotesk Regular;
-    font-style: normal;
-    font-weight: bold;
-    font-feature-settings: 'cpsp' on;
-    letter-spacing: 0.1em;
     width: 100%;
 `
 
@@ -26,6 +18,14 @@ const Menus = styled.div`
 `
 
 const MenuTab = styled.div`
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 12px;
+    font-family: HK Grotesk Regular;
+    font-style: normal;
+    font-weight: bold;
+    font-feature-settings: 'cpsp' on;
+    letter-spacing: 0.1em;
     display: inline-block;
     padding-bottom: 10px;
     margin-right: 50px;

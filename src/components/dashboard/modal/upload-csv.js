@@ -1,75 +1,35 @@
 import { FormButton } from "../../buttons"
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
-import styled from "styled-components"
-import { useDropzone } from 'react-dropzone'
+import { FileDrop } from "../../file-drop"
 
 import {
-  Modal, Container, ButtonRow, ModalBackground
+  Modal, Container, ButtonRow, ModalBackground, FormTitle
 } from "./modal"
-
-
-const StyledUploadCSVModal = styled.div`
-    .file-input {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 200px;
-        margin-bottom: 20px;
-        border: 2px dashed grey;
-        border-radius: 15px;
-
-        &:focus {
-            outline: none;
-        }
-    }
-
-    .error-msg {
-        color: red;
-    }
-    
-    p {
-        margin-left: 20px;
-        display: inline-block;
-    }
-`
 
 const UploadCSVModal = (props) => {
     let { show, close } = props
     let [content, setContent] = useState(null)
-    let [fileName, setFileName] = useState(null)
     let [errorMessage, setErrorMessage] = useState(null)
+
+    const setFile = (file) => {
+        const reader = new FileReader()      
+        reader.readAsText(file)
+        reader.onabort = () => console.error('file reading was aborted')
+        reader.onerror = () => {
+            console.error('file reading has failed')
+            setErrorMessage("Error uploading file")
+        }
+        reader.onload = () => {
+        // Do whatever you want with the file contents
+          const fileContent = reader.result
+          setContent(fileContent)
+        }
+    }
     
-    const onDrop = useCallback(acceptedFiles => {
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader()      
-            reader.onabort = () => console.error('file reading was aborted')
-            reader.onerror = () => {
-                console.error('file reading has failed')
-                setErrorMessage("Error uploading file")
-            }
-            reader.onload = () => {
-            // Do whatever you want with the file contents
-              const fileContent = reader.result
-              setContent(fileContent)
-              setFileName(file.path)
-            }
-
-            if(file.path.includes(".csv")) {
-                setErrorMessage(null)
-                reader.readAsText(file)
-            } else {
-                console.error("Incorrect file type chosen")
-                setErrorMessage("Incorrect file uploaded, please choose a .csv file")
-            }
-          })
-    }, [])
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
     const postCSVFile = () => {
         Client.uploadCSV(content, props.menuId, false).then(() => {
             setErrorMessage(null)
-            setFileName(null)
             setContent(null)
             props.updateMenu()
             props.close()
@@ -82,27 +42,11 @@ const UploadCSVModal = (props) => {
                 <ModalBackground/>
                 <Modal>
                     <Container>
-                        <StyledUploadCSVModal>
+                        <FormTitle>Upload CSV</FormTitle>
                         {
-                            errorMessage ? <p className='error-msg'>{ errorMessage }</p> : <></>
+                            errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
                         }
-                        {
-                            content ? 
-                            <div>
-                                <p>Selected File: { fileName }</p>
-                            </div>
-                            : 
-                            <div className='file-input' {...getRootProps()}>
-                            <input {...getInputProps()} />
-                            {
-                                isDragActive ?
-                                <p>Drop the .csv file here ...</p> :
-                                <p>Drag and drop a .csv file here, or click to select a file</p>
-                            }
-                            </div>
-                        }
-
-                        </StyledUploadCSVModal>
+                        <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
                         <ButtonRow>
                             <FormButton text='Cancel' theme='light' onClick={ () => {
                                 close()

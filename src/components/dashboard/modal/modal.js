@@ -29,7 +29,7 @@ const Container = styled.div`
     .error {
         color: red;
         padding: 0;
-        margin: 0;
+        
     }
 ` 
 

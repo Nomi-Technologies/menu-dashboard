@@ -58,8 +58,6 @@ const LoginForm = () => {
 
     return (
         <Container>
-            {/* <InputField type='email' name='email' placeholder='EMAIL'/>
-            <InputField type='password' name='password' placeholder='PASSWORD'/> */}
             <p className='error'>{ loginError ? 'Could not log in with credentials provided.' : '' }</p>
             <FormInput placeholder='email' name='email' onChange={ (event) => {setEmail(event.target.value)} }/>
             <FormInput placeholder='password' name='password' type='password' onChange={ (event) => {setPassword(event.target.value)} }/>

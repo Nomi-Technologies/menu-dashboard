@@ -133,7 +133,7 @@ const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmati
 }
 
 const HeaderRow = styled(TableRow)`
-    background-color: #C4C4C4;
+    background-color: #8A9DB7;
     color: white;
     text-transform: uppercase;
     border-top-left-radius: 8px;
