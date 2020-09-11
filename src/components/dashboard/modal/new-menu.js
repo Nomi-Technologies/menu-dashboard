@@ -15,28 +15,6 @@ import {
 } from "./modal"
 
 
-
-const StyledUploadCSVModal = styled.div`
-    .file-input {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 200px;
-        margin: 10px 0px;
-        border: 2px dashed grey;
-        border-radius: 15px;
-
-        &:focus {
-            outline: none;
-        }
-    }
-
-    .error-msg {
-        color: red;
-    }
-    
-`
-
 const NewMenuModal = (props) => {
     const [name, setName] = useState('');
     let [content, setContent] = useState(null)
