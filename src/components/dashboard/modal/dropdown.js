@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react"
-import Client from "../../../util/client"
+import React from "react"
 import styled from "styled-components"
-import _ from "lodash"
 import DropdownArrow from "../../../assets/img/dropdown-arrow.png"
 
 let StyledCategoryDropdown = styled.div`

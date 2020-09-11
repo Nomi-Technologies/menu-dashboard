@@ -9,7 +9,7 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    console.log("error: " + error)
+    console.error("error: " + error)
     if (error.response.status === 401) {
       navigate("/login")
     }
@@ -195,9 +195,9 @@ export default class Client {
     })
   }
 
-  static updatePersonalInfo = (id, data) => {
+  static updatePersonalInfo = (data) => {
     let token = retrieveUserToken() // get user auth token
-    return axios.put(ROOT_URL + "/user/details/" + id, data, {
+    return axios.put(ROOT_URL + "/user/details/", data, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
