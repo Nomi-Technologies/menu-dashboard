@@ -1,7 +1,9 @@
 import styled from "styled-components"
 
 const Modal = styled.div`
-    top: 10%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
     position: absolute;
     width: 80%;
     max-width: 800px;
@@ -10,7 +12,6 @@ const Modal = styled.div`
     border-radius: 5px;
     background-color: white;
     left: 50%;
-    transform: translate(-50%, 0);
 `
 
 const Container = styled.div`
@@ -83,11 +84,15 @@ const FormSubtitle = styled.div`
     margin-top: 10px;
 `
 
+const FormMessage = styled.p`
+
+`
+
 let Divider = styled.div`
   width: 100%;
   height: 1px;
   background-color: #DCE2E9;
 `
 export {
-    Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
+    Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, FormMessage, Divider
 }

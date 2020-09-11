@@ -3,12 +3,12 @@ import React from 'react';
 import styled from 'styled-components'
 
 import {
-  Modal, Container, ButtonRow, ModalBackground, FormTitle
+  Modal, Container, ButtonRow, ModalBackground, FormTitle, FormMessage
 } from "./modal"
 
 let StyledDeleteConfirmation = styled.div`
     ${Modal} {
-        width: 50%;
+        width: 30%;
     }
 `
 
@@ -18,7 +18,9 @@ const DeleteConfirmationModal = ({ closeForm }) => (
         <Modal>
             <Container>
                 <FormTitle>Delete Confirmation</FormTitle>
-                Are you sure you want to delete this item?
+                <FormMessage>
+                    Are you sure you want to delete this item?    
+                </FormMessage>
                 <ButtonRow>
                     <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
                     <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
