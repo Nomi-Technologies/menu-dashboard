@@ -9,7 +9,6 @@ import {
 let StyledDeleteConfirmation = styled.div`
     ${Modal} {
         width: 50%;
-        top: 350px;
     }
 `
 

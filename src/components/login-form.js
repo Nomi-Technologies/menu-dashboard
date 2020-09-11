@@ -47,7 +47,6 @@ const LoginForm = () => {
 
     const loginUser = () => {
         Client.login(email, password).then((response) => {
-            console.log(response.data)
             saveUserToken(response.data['token'])
             setLoginError(false)
             navigate('/')

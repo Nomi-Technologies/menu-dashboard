@@ -41,8 +41,6 @@ const ContactInfo = () =>
 
     const validateForm = () => {
         // todo more information
-        console.log("Validating form")
-
         let invalid = false
         Object.keys(contactInfo).forEach(function(key) {
             if(contactInfo[key] === "")

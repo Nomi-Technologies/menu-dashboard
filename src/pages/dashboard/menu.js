@@ -51,7 +51,6 @@ const MenuPage = () => {
     async function updateMenu () {
         if (menuId !== null) {
             await Client.getMenu(menuId).then((res) => {
-                setMenuData(null)
                 setMenuData(res.data.Categories)
             })
         }

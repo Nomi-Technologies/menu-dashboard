@@ -39,8 +39,6 @@ const RestaurantDetails = (props) =>
             contactInfo: props.location.state.contactInfo, 
             restaurantDetails: restaurantDetails 
         }
-
-        console.log(state)
         navigate('/register/review', { state: state })
     }
     

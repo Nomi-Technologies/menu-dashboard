@@ -21,7 +21,6 @@ const TagsForm = ({ tags, setTags }) => {
   useEffect(() => {
     Client.getTags().then(response => {
       setAllTags(response.data)
-      console.log(response.data)
     })
   }, [])
 
@@ -35,12 +34,10 @@ const TagsForm = ({ tags, setTags }) => {
   }
 
   const onSelect = (selectedList, selectedItem) => {
-    console.log(selectedList)
     setTags(tagIds(selectedList))
   }
 
   const onRemove = (selectedList, removedItem) => {
-    console.log(selectedList)
     setTags(tagIds(selectedList))
   }
 
@@ -104,28 +101,23 @@ const NewDishModal = props => {
       price: price,
       menuId: props.menuId,
     }
-    console.log(dishData)
     if (name !== "" && categoryId !== 0) {
       Client.createDish(dishData)
         .then(res => {
-          console.log("dish created")
-          console.log(res.data)
           props.toggleForm()
           props.updateMenu()
         })
         .catch(err => {
-          console.log("error creating dish")
+          console.error("error creating dish")
           //show some error on form
         })
     } else {
-      console.log("missing field")
+      console.error("missing field")
       //show some error
     }
   }
 
   const updateCategorySelection = category => {
-    console.log("category selection updated")
-    console.log(category)
     setCategoryId(category)
   }
 
@@ -212,7 +204,6 @@ const EditDishModal = props => {
     if (name !== "" && description !== "" && categoryId !== 0) {
       Client.updateDish(props.dish.id, dishData)
         .then(res => {
-          console.log(res.data)
           props.toggleForm()
           props.updateMenu()
         })
@@ -241,7 +232,7 @@ const EditDishModal = props => {
       <Modal>
         <Container>
           <FormTitle>Update Dish</FormTitle>
-          <FormTitle>Dish Name</FormTitle>
+          <FormSubtitle>Dish Name</FormSubtitle>
           <DishFormInput
             placeholder="Change dish name..."
             value={name}
@@ -251,7 +242,7 @@ const EditDishModal = props => {
             }}
           />
           <Divider color="#DCE2E9" />
-          <FormTitle>Menu Category</FormTitle>
+          <FormSubtitle>Menu Category</FormSubtitle>
           <CategoryDropdown
             categoryId={ categoryId }
             updateSelection={ updateCategorySelection }
@@ -259,7 +250,7 @@ const EditDishModal = props => {
             categories={ categories }
           />
           <Divider color="#DCE2E9" />
-          <FormTitle>Description</FormTitle>
+          <FormSubtitle>Description</FormSubtitle>
           <DishFormTextArea
             placeholder="Change description..."
             value={description}
@@ -269,7 +260,7 @@ const EditDishModal = props => {
             }}
           />
           <Divider color="#DCE2E9" />
-          <FormTitle>Price</FormTitle>
+          <FormSubtitle>Price</FormSubtitle>
           <DishFormInput
             placeholder="Change price..."
             name="price"
@@ -279,7 +270,7 @@ const EditDishModal = props => {
             }}
           />
           <Divider color="#DCE2E9" />
-          <FormTitle>Allergen Search</FormTitle>
+          <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm tags={props.dish.Tags} setTags={setDishTags}></TagsForm>
           <ButtonRow>
             <FormButton

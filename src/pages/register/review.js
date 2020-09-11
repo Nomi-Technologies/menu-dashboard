@@ -57,9 +57,6 @@ const Review = (props) =>
     const submitRegistration = () => {
         Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
             const restaurantId = response.data.id
-
-            console.log(response)
-
             const userData = { 
                 ...props.location.state.contactInfo,
                 restaurantId: restaurantId,
@@ -71,7 +68,6 @@ const Review = (props) =>
                 let { email, password } = props.location.state.contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
-                    console.log(response.data)
                     saveUserToken(response.data['token'])
                     navigate('/dashboard/menu')
                 })

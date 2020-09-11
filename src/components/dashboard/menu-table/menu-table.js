@@ -16,7 +16,7 @@ const StyledMenuTable = styled.div`
     width: 100%;
     max-width: 100%;
     transition: 0.5s ease-in-out all;
-    margin-bottom: 20px;
+    margin-bottom: 150px;
 `
 
 const MenuControls = styled.div`
@@ -242,7 +242,7 @@ const MenuTable = (props) => {
                 setIsSearching(true);
             })
             .catch((err) => {
-                console.log(err);
+                console.error("error searching for dishes");
             })
         }
     }

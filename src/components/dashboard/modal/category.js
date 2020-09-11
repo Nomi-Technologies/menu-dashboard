@@ -16,7 +16,6 @@ const NewCategoryModal = (props) => {
             description: description,
             menuId: props.menuId
         }
-        console.log(categoryData)
         if (name !== '') {
             Client.createCategory(categoryData).then((res) => {
                 props.toggleForm()

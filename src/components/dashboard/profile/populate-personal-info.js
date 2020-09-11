@@ -38,7 +38,6 @@ const PopulatePersonal = () => {
 
   useEffect(() => {
     Client.getPersonalInfo().then(response => {
-      console.log(response.data)
       setFirstname(response.data.firstName)
       setLastname(response.data.lastName)
       setEmail(response.data.email)

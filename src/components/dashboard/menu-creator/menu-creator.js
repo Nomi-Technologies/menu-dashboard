@@ -27,7 +27,6 @@ const MenuCreator = (props) => {
     const [showNewMenuForm, setNewMenuForm] = useState(false);
     
     const toggleNewMenuForm = () => {
-        console.log("toggle new menu form")
         //if (!showNewMenuForm) closeAllForms() //if about to open form
         setNewMenuForm(!showNewMenuForm)
     }

@@ -60,15 +60,12 @@ class MenuSelector extends React.Component {
     updateData() {
         Client.getAllMenus().then((res) => {
             this.setState({data: res.data, selectedMenuId: this.props.selectedMenuId})
-            console.log(this.state)
 
             if (this.props.selectedMenuId === null) { //first render, no menu selected
                 if (res.data.length === 0) { //no menu created yet
-                    console.log("no menu exists")
                     this.props.updateHasMenu(false)
                 }
                 else { //display first menu
-                    console.log("has menu; show first one")
                     this.setState({selectedMenuId: res.data[0].id});
                     this.props.updateMenuSelection(res.data[0])
                 }

@@ -159,13 +159,15 @@ const HeaderRow = styled(TableRow)`
 const CategoryHeaderRow = styled(TableRow)`
     background: #F0F2F7;
     color: black;
+    cursor: pointer;
 
     .collapse-icon { 
         position: absolute;
         width: 12px;
         height: 6px;
-        left: 20px;
-        top: 45%;
+        left: 0px;
+        top: 0px;
+        padding: 20px;
         cursor: pointer;
     }
 
@@ -174,7 +176,13 @@ const CategoryHeaderRow = styled(TableRow)`
     }
 
     .category-description {
-        flex-basis: 35%;
+        flex-basis: 65%;
+        box-sizing: border-box;
+        
+
+        p {
+            padding-right: 50%;
+        }
     }
 `
 
@@ -201,7 +209,6 @@ const StyledTableCategory = styled.div`
 
     .collapse-icon {
         position: absolute;
-        left: 20px;
         transform: rotate(180deg);
         transition: 0.2s ease-in-out all;
     }
@@ -245,11 +252,11 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     return (
         <StyledTableCategory className={open ? 'open' : ''}>
             <CategoryHeaderRow>
-                <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} alt="collapse icon"/>
-                <TableCell className='category-name'>
+                <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={toggleOpen}/>
+                <TableCell className='category-name' onClick={toggleOpen}>
                     { category.name }
                 </TableCell>
-                <TableCell className='category-description'>
+                <TableCell className='category-description' onClick={toggleOpen}>
                     <CategoryDescription>
                         { category.description }
                     </CategoryDescription>

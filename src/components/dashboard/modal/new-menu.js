@@ -62,20 +62,17 @@ const NewMenuModal = (props) => {
             name: name,
             csv: content,
         }
-        console.log(menuData)
         if (name !== '') {
             await Client.createMenu(menuData).then((res) => {
-                console.log("menu created")
-                console.log(res.data)
                 props.toggleForm()
                 props.updateHasMenu(true)
                 props.updateMenuSelection(res.data)
             }).catch((err) => {
-                console.log("error creating menu")
+                console.error("error creating menu")
                 //show some error on form
             })
         } else {
-            console.log("missing field")
+            console.error("missing field")
             //show some error
         }
     }

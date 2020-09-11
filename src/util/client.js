@@ -9,7 +9,7 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    console.log("error: " + error)
+    console.error("error: " + error)
     if (error.response.status === 401) {
       navigate("/login")
     }
