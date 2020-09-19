@@ -154,6 +154,16 @@ export default class Client {
     })
   }
 
+  static duplicateMenu = id => {
+    console.log('duplicating');
+    let token = retrieveUserToken() // get user auth token
+    console.log(token);
+    let data
+    return axios.post(ROOT_URL + "/menus/" + id, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static getTags = () => {
     let token = retrieveUserToken() // get user auth token
     return axios.get(ROOT_URL + "/tags", {
