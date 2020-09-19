@@ -5,10 +5,10 @@ import styled from "styled-components"
 let StyledButton = styled.button`
     display: block;
     margin: 20px 0;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 22px;
     color: ${ props => props.theme === 'light' ? "#F3A35C" : "white"};
-    padding: 10px 56px;
+    padding: 10px 46px;
     background: ${ props => props.theme === 'light' ? "white" : "#F3A35C"};
     border-radius: 4px;
     border: 2px solid #F3A35C;

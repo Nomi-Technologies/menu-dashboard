@@ -8,23 +8,12 @@ import { navigate } from "@reach/router"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
 
-import { Container, Column, ImageColumn } from "../../components/grid"
+import { Container, Column } from "../../components/grid"
 
-import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, DoneButton, FormControls, PrevButton } from "../../components/form"
-
-import { RestaurantProgress } from "../../components/registration-progress"
+import { FormContainer, FormTitle, FormSubtitle, DoneButton, FormControls, PrevButton } from "../../components/form"
 
 let SideBar = styled(Column)`
     background-color: #F2994A;
-`
-
-let SideBarText = styled.p`
-    color: white;
-    font-size: 36px;
-    line-height: 43px;
-    font-weight: bold;
-    margin: 0 64px;
-    margin-top: 124px;
 `
 
 let FormColumn = styled(Column)`
@@ -68,9 +57,6 @@ const Review = (props) =>
     const submitRegistration = () => {
         Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
             const restaurantId = response.data.id
-
-            console.log(response)
-
             const userData = { 
                 ...props.location.state.contactInfo,
                 restaurantId: restaurantId,
@@ -82,7 +68,6 @@ const Review = (props) =>
                 let { email, password } = props.location.state.contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
-                    console.log(response.data)
                     saveUserToken(response.data['token'])
                     navigate('/dashboard/menu')
                 })

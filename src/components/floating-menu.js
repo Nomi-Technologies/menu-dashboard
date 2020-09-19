@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
 import Client from "../util/client";
-import { QRCodeForm, UploadCSVModal } from "../components/dashboard/menu-table/popup-forms";
+import { QRCodeModal } from "../components/dashboard/modal/qr-code"
+import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
 
 const FloatingMenuButton = styled.div`
     position: absolute;
@@ -65,11 +66,11 @@ const HorizontalSeparator = styled.div`
 
 const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showQRCodeForm, setShowQRCodeForm] = useState(false);
+    const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+    const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
-    const [showCSVUploadForm, setShowCSVUploadForm] = useState(false);
-
+    
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
         // Currently put here to avoid multiple requests
@@ -78,7 +79,6 @@ const FloatingMenu = (props) => {
             setRestaurantName(res.data.name);
         });
 
-        console.log("selected menuId:" + props.menuId)
     }, [props.menuId]);
 
     function onClickMenu() {
@@ -86,9 +86,7 @@ const FloatingMenu = (props) => {
     }
 
     async function deleteMenu(id) {
-        await Client.deleteMenu(id).then((res) => {
-            console.log("menu deleted")
-        })
+        await Client.deleteMenu(id)
         onClickMenu();
         props.updateMenuSelection();
     }
@@ -108,7 +106,7 @@ const FloatingMenu = (props) => {
                     <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
-                        onClick={() => setShowCSVUploadForm(true)}
+                        onClick={() => setShowCSVUploadModal(true)}
                     >Upload Spreadsheet</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
@@ -116,7 +114,7 @@ const FloatingMenu = (props) => {
                     >Duplicate Menu</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
-                        onClick={() => setShowQRCodeForm(true)}
+                        onClick={() => setShowQRCodeModal(true)}
                     >Create QR Code</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
@@ -133,13 +131,13 @@ const FloatingMenu = (props) => {
                         />
                 </FloatingMenuButton>
             </div>
-            <UploadCSVModal show={ showCSVUploadForm } close={() => setShowCSVUploadForm(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
+            <UploadCSVModal show={ showCSVUploadModal } close={() => setShowCSVUploadModal(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
             {
-                showQRCodeForm ? (
-                    <QRCodeForm 
+                showQRCodeModal ? (
+                    <QRCodeModal
                         uniqueName={uniqueName}
                         name={restaurantName}
-                        closeForm={() => setShowQRCodeForm(false)}
+                        closeForm={() => setShowQRCodeModal(false)}
                     />
                 ) : <></>
             }
@@ -147,4 +145,4 @@ const FloatingMenu = (props) => {
     )
 }
 
-export default FloatingMenu;
+export { FloatingMenu };

@@ -41,7 +41,7 @@ const FirstMenuSetup = (props) => {
     return (
         <StyledFirstMenuSetup>
             <StyledNoMenuIcon>
-                <img src={NoMenuIcon} />
+                <img src={NoMenuIcon} alt="No menu icon"/>
             </StyledNoMenuIcon>
             <StyledNoMenuText>
                 {NoMenuText}

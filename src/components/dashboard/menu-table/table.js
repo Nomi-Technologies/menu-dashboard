@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState } from 'react';
 
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
@@ -8,6 +8,7 @@ import DeleteIcon from "../../../assets/img/delete-icon.png"
 
 const TableCell = styled.div`
     display: flex;
+    position: relative;
     min-height: 48px;
     box-sizing: border-box;
     align-items: center;
@@ -15,6 +16,8 @@ const TableCell = styled.div`
     text-overflow: ellipsis;
     min-width: 0px;
     max-width: 100%;
+    word-wrap: break-word;
+    overflow: hidden;
 
     input, textarea {
         width: 100%;
@@ -31,10 +34,16 @@ const TableCell = styled.div`
     }
 
     p {
-        padding: 0;
+        position: absolute;
+        box-sizing: border-box;
         margin: 0;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 100%;
+        max-height: 100%;
+        line-height: 48px;
+        white-space: nowrap;
+        padding-right: 15px;
     }
 `
 
@@ -49,38 +58,22 @@ const TableRow = styled.div`
     background-color: #f9f9f9;
     font-family: HK Grotesk Regular;
     font-size:18px;
-
-    ${TableCell}:nth-child(1) {
-        flex-basis: 15%;
-    }
-
-    ${TableCell}:nth-child(2) {
-        flex-basis: 35%;
-    }
-
-    ${TableCell}:nth-child(3) {
-        flex-basis: 10%;
-    }
-
-    ${TableCell}:nth-child(4) {
-        flex-basis: 30%;
-    }
+    align-items: center;
 
     &:last-child {
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }
+`
 
-    .edit {
-        position: absolute;
+const RowControls = styled.div`
+    position: absolute;
+    right: 10px;
+
+    img {
+        padding-right: 10px;
         width: 15px;
         right: 50px;
-        cursor: pointer;
-    }
-    .delete {
-        position: absolute;
-        width: 15px;
-        right: 20px;
         cursor: pointer;
     }
 `
@@ -96,55 +89,100 @@ const StyledItemRow = styled(TableRow)`
         border-top: 1px #88929E solid;
     }
 
+    .item-name {
+        flex-basis: 15%;
+    }
+
+    .item-description {
+        flex-basis: 35%;
+    }
+
+    .item-price {
+        flex-basis: 10%;
+    } 
+
+    .item-tags { 
+        flex-basis: 40%;
+    }
+
 `
 
 const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
     return (
         <StyledItemRow className='opened'>
-            {
-                <>
-                    <TableCell>
-                        <p>{item.name}</p>
-                    </TableCell>
-                    <TableCell>
-                        <p>{item.description}</p>
-                    </TableCell>
-                    <TableCell>
-                        <p>
-                            { item.price ? item.price : "--" }
-                        </p>
-                    </TableCell>
-                    <TableCell>
-                        <p>{allergen_list(item.Tags)}</p>
-                    </TableCell>
-                    <TableCell>
-                        <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} />
-                        <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} />
-                    </TableCell>
-                </>
-            }
+            <TableCell className='item-name'>
+                <p>{item.name}</p>
+            </TableCell>
+            <TableCell className='item-description'>
+                <p>{item.description}</p>
+            </TableCell>
+            <TableCell className='item-price'>
+                <p>
+                    { item.price ? item.price : "--" }
+                </p>
+            </TableCell>
+            <TableCell className='item-tags'>
+                <p>{allergen_list(item.Tags)}</p>
+            </TableCell>
+            <RowControls>
+                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} alt="edit icon" />
+                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} alt="delete icon"/>
+            </RowControls>
         </StyledItemRow>
     )
 }
 
 const HeaderRow = styled(TableRow)`
-    background-color: #C4C4C4;
+    background-color: #8A9DB7;
     color: white;
     text-transform: uppercase;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+
+    .title {
+        flex-basis: 15%;
+    }
+
+    .description {
+        flex-basis: 35%;
+    }
+
+    .price { 
+        flex-basis: 10%;
+    }
+
+    .tags {
+        flex-basis: 40%;
+    }
+
 `
 const CategoryHeaderRow = styled(TableRow)`
     background: #F0F2F7;
     color: black;
+    cursor: pointer;
 
     .collapse-icon { 
         position: absolute;
         width: 12px;
         height: 6px;
-        left: 20px;
-        top: 45%;
+        left: 0px;
+        top: 0px;
+        padding: 20px;
         cursor: pointer;
+    }
+
+    .category-name {
+        flex-basis: 15%;
+    }
+
+    .category-description {
+        flex-basis: 65%;
+        box-sizing: border-box;
+        
+
+        p {
+            padding-right: 50%;
+        }
     }
 `
 
@@ -170,6 +208,7 @@ const StyledTableCategory = styled.div`
     transition: 0.4s ease all;
 
     .collapse-icon {
+        position: absolute;
         transform: rotate(180deg);
         transition: 0.2s ease-in-out all;
     }
@@ -213,26 +252,19 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     return (
         <StyledTableCategory className={open ? 'open' : ''}>
             <CategoryHeaderRow>
-                <TableCell>
-                    <img className='collapse-icon' src={ArrowIcon} onClick={toggleOpen} />
-                    {
-                        <>
-                            { category.name }
-                        </>
-                    }
+                <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={toggleOpen}/>
+                <TableCell className='category-name' onClick={toggleOpen}>
+                    { category.name }
                 </TableCell>
-                <TableCell>
-                    {
-                        <>
-                            <CategoryDescription>
-                                { category.description }
-                            </CategoryDescription>
-                            
-                            <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} />
-                            <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} />
-                        </>
-                    }
+                <TableCell className='category-description' onClick={toggleOpen}>
+                    <CategoryDescription>
+                        { category.description }
+                    </CategoryDescription>
                 </TableCell>
+                <RowControls>
+                    <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} alt="edit icon"/>
+                    <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} alt="delete icon"/>
+                </RowControls>
             </CategoryHeaderRow>
             <div className='items'>
                 {
@@ -247,6 +279,8 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
         </StyledTableCategory>
     )
 }
+
+
 
 export {
     TableCell,

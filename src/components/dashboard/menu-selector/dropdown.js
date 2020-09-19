@@ -39,8 +39,6 @@ class Dropdown extends React.Component {
         this.hideDropdown = this.hideDropdown.bind(this)
 
         Client.getAllMenus().then((res) => {
-            console.log(props)
-            console.log(res.data)
             this.state.data = res.data
 
             if (this.props.menuId === null) { //first render, no menu selected
@@ -63,7 +61,6 @@ class Dropdown extends React.Component {
 
     showDropdown (event) {
         event.preventDefault()
-        console.log("showDropdown")
         this.setState({displayList: true}, () => {
             document.addEventListener('click', this.hideDropdown)
         });
@@ -76,7 +73,6 @@ class Dropdown extends React.Component {
     }
 
     select (item) {
-        console.log(item)
         this.setState({currentSelection: item.name});
         this.props.updateSelection(item)
     }
