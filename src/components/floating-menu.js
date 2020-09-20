@@ -92,11 +92,9 @@ const FloatingMenu = (props) => {
     }
 
     async function duplicateMenu(id) {
-        await Client.duplicateMenu(id).then((res) => {
-            onClickMenu();
-            props.updateMenuSelection(res.data.menu);
-        })
-        
+        const res = await Client.duplicateMenu(id);
+        onClickMenu();
+        props.updateMenuSelection(res.data.menu);
     }
     
     return (
