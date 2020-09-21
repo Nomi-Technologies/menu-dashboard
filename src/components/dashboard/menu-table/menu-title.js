@@ -68,7 +68,6 @@ class MenuTitle extends React.Component {
     changeMenuName = (e) => {
         e.preventDefault();
         if(this.state.textBoxContents && this.state.textBoxContents != this.props.menuName ) {
-            console.log('updating name');
             Client.updateMenu(this.props.menuId, {name: this.state.textBoxContents})
             .then( (res) => {
                 this.setState({
