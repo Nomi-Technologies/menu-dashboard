@@ -8,6 +8,7 @@ import { FloatingMenu } from "../../components/floating-menu"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
+import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
 import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
 import TopBar from "../../components/top-bar"
@@ -32,6 +33,7 @@ const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
+    const [menuName, setMenuName] = useState('');
 
     useEffect(() => {
         updateMenu()
@@ -50,6 +52,7 @@ const MenuPage = () => {
     async function updateMenu () {
         if (menuId !== null) {
             await Client.getMenu(menuId).then((res) => {
+                setMenuName(res.data.name)
                 setMenuData(res.data.Categories)
             })
         }
@@ -68,9 +71,10 @@ const MenuPage = () => {
                         <>
                             <TopBar title="Menu Management"> 
                                 <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu}/>
+                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
                             </TopBar>
-                            <MenuContainer>                            
+                            <MenuContainer>  
+                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>                        
                                 <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
                                 <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                             </MenuContainer>
