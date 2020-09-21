@@ -90,6 +90,12 @@ const FloatingMenu = (props) => {
         onClickMenu();
         props.updateMenuSelection();
     }
+
+    async function duplicateMenu(id) {
+        const res = await Client.duplicateMenu(id);
+        onClickMenu();
+        props.updateMenuSelection(res.data.menu);
+    }
     
     return (
         <>
@@ -101,7 +107,9 @@ const FloatingMenu = (props) => {
                         onClick={() => setShowCSVUploadModal(true)}
                     >Upload Spreadsheet</OrangeTextMenuItem>
                     <HorizontalSeparator/>
-                    <OrangeTextMenuItem>Duplicate Menu</OrangeTextMenuItem>
+                    <OrangeTextMenuItem
+                        onClick={() => duplicateMenu(props.menuId)}
+                    >Duplicate Menu</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick={() => setShowQRCodeModal(true)}
