@@ -45,14 +45,13 @@ class MenuSelector extends React.Component {
             data: [],
             selectedMenuId: this.props.selectedMenuId
         }
-
         this.updateData();
     }
 
     componentDidUpdate(prevProps) {
         // TODO(Tommy): avoid refreshing when only switching menus
         // Used for when creating/deleting menus but also gets called when switching
-        if (this.props.selectedMenuId !== prevProps.selectedMenuId) {
+        if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName) {
             this.updateData();
         }
     }
@@ -92,7 +91,7 @@ class MenuSelector extends React.Component {
                             <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
                                 {item.name}
                             </MenuTab>
-                       ))
+                        ))
                     }
                     <MenuCreator className="menu-creator" updateMenuSelection={this.props.updateMenuSelection} updateHasMenu={this.props.updateHasMenu}/>
                 </Menus>
