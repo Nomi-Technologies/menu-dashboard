@@ -3,8 +3,11 @@ import PropTypes from "prop-types"
 import styled from "styled-components"
 import { navigate } from "@reach/router"
 
+import CollapseIcon from "../../../assets/img/collapse-sidebar.png"
+import ExpandIcon from "../../../assets/img/expand-sidebar.png"
 import MenuIcon from "../../../assets/img/menu-management.png"
 import SettingsIcon from "../../../assets/img/settings.png"
+
 
 let StyledLayout = styled.div`
   display: flex;
@@ -73,6 +76,18 @@ let StyledSettingsIcon = styled.div`
   margin-right: 15px;
 `;
 
+let StyledExpandIcon = styled.div`
+  display: ${ props => props.sidebarOpen ? "none" : "inline"};
+  margin-left: 15px;
+  margin-right: 15px;
+`;
+
+let StyledCollapseIcon = styled.div`
+  display: ${ props => props.sidebarOpen ? "inline" : "none"};
+  margin-left: 65%;
+  margin-right: 15px;
+`;
+
 const SidebarLayout = ({ children }) => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -86,24 +101,24 @@ const SidebarLayout = ({ children }) => {
       <Sidebar
         sidebarOpen={sidebarOpen}
       >
-        <button onClick={handleToggleSidebar}>
-          Open sidebar
-        </button>
         <SidebarItem>
-          <StyledMenuIcon>
-              <img src={MenuIcon} />
-          </StyledMenuIcon>
-          <LinkText
+          <StyledExpandIcon
             sidebarOpen={sidebarOpen}
-            onClick={() => {navigate('/dashboard/menu')}}
+            onClick={handleToggleSidebar}
           >
-            <MenuTabText>
-            Menu
-            </MenuTabText>
-          </LinkText>
+              <img src={ExpandIcon} />
+          </StyledExpandIcon>
+          <StyledCollapseIcon
+            sidebarOpen={sidebarOpen}
+            onClick={handleToggleSidebar}
+          >
+              <img src={CollapseIcon} />
+          </StyledCollapseIcon>
         </SidebarItem>
         <SidebarItem>
-          <StyledMenuIcon>
+          <StyledMenuIcon
+            onClick={() => {navigate('/dashboard/menu')}}
+          >
               <img src={MenuIcon} />
           </StyledMenuIcon>
           <LinkText
@@ -116,7 +131,9 @@ const SidebarLayout = ({ children }) => {
           </LinkText>
         </SidebarItem>
         <SettingsSidebarItem>
-          <StyledSettingsIcon>
+          <StyledSettingsIcon
+            onClick={() => {navigate('/dashboard/personal')}}
+          >
               <img src={SettingsIcon} />
           </StyledSettingsIcon>
           <LinkText
