@@ -26,10 +26,7 @@
     "react-dropzone": "^11.0.3",
     "react-hamburger-menu": "^1.2.1",
     "react-helmet": "^6.0.0",
-    "react-pro-sidebar": "^0.4.4",
     "react-qrcode": "^0.2.5",
-    "react-router-dom": "^5.2.0",
-    "react-sidebar": "^3.0.2",
     "react-virtualized": "^9.21.2",
     "styled-components": "^5.1.1"
   },

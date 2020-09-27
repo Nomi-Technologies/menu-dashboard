@@ -1,96 +1,159 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import { navigate } from "@reach/router"
+import { useLocation, navigate } from "@reach/router"
+
 
 import CollapseIcon from "../../../assets/img/collapse-sidebar.png"
 import ExpandIcon from "../../../assets/img/expand-sidebar.png"
 import MenuIcon from "../../../assets/img/menu-management.png"
 import SettingsIcon from "../../../assets/img/settings.png"
+import SidebarActive from "../../../assets/img/sidebar-active.png"
+import SidebarActiveSettings from "../../../assets/img/sidebar-active-grey.png"
 
+let SidebarItemList = styled.div`
+  margin-top: 120px;
+`
+
+let LinkText = styled.div`
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  opacity: ${ props => props.sidebarOpen ? 1 : 0};
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  transition-delay: ${ props => props.sidebarOpen ? "0.2s" : "0s"};
+`;
+
+let StyledMenuIcon = styled.div`
+  width: 32px;
+  padding-right: 25px;
+  padding-left: 30px;
+  img {
+    margin: 0 auto;
+    display: block;
+    width: 32px;
+  }
+`;
+
+let Hamburger = styled.div`
+  margin: 30px 0;
+
+  img {
+    width: 45px;
+  }
+`
+
+let Collapse = styled.img`
+  position: absolute;
+  right: 10px;  
+`
+
+let Expand = styled.img`
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+`
+
+let ActiveIndicator = styled.img`
+  position: absolute;
+  left: 0px;
+  width: 4px;
+  height: 100%;
+`
+
+let StyledSidebarItem = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  font-family: HK Grotesk Regular;
+  position: relative;
+  color: #F3A35C;
+  cursor: pointer;
+`;
+
+const SidebarItem = ({ destination, title, icon, sidebarOpen, href }) => {
+  let active = false
+  if(href && href.includes(destination)) {
+    active = true
+  }
+
+  return(
+    <StyledSidebarItem onClick={ () => {navigate( destination )} }>
+      { active ? <ActiveIndicator src={SidebarActive}/> : "" } 
+      <StyledMenuIcon sidebarOpen={ sidebarOpen }>
+          <img src={ icon }/>
+      </StyledMenuIcon>
+        <LinkText sidebarOpen={ sidebarOpen }>{ title }</LinkText>
+    </StyledSidebarItem>
+  )
+}
+
+let StyledSettingsSidebarItem = styled.div`
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  font-family: HK Grotesk Regular;
+  color: #B2BED0;
+  cursor: pointer;
+`;
+
+
+const SettingsSidebarItem = ({ destination, title, icon, sidebarOpen, href }) => {
+  let active = false
+
+  if(href && href.includes(destination)) {
+    active = true
+  }
+
+  return(
+    <StyledSettingsSidebarItem onClick={ () => {navigate( destination )} }>
+      { active ? <ActiveIndicator src={SidebarActiveSettings}/> : "" } 
+      <StyledMenuIcon sidebarOpen={ sidebarOpen }>
+          <img src={ icon }/>
+      </StyledMenuIcon>
+      <LinkText sidebarOpen={ sidebarOpen }>{ title }</LinkText>
+    </StyledSettingsSidebarItem>
+  )
+}
 
 let StyledLayout = styled.div`
   display: flex;
   width: 100%;
+  height: 100vh;
   flex-direction: row;
 `;
 
 let PageContent = styled.div`
-  max-width: 95%;
-  width: ${ props => props.sidebarOpen ? "87%" : "95%"};
+  flex: 1;
   transition: width 0.5s ease;
 `;
 
 let Sidebar = styled.div`
-  width: ${ props => props.sidebarOpen ? "13%" : "5%"};
+  position: relative;
+  width: ${ props => props.sidebarOpen ? "290px" : "100px"};
   z-index: 10;
   transition: width 0.5s ease;
-  display: flex;
   flex-direction: column;
-  -moz-box-shadow:    1px 2px 4px 5px #ccc;
-  -webkit-box-shadow: 1px 2px 4px 5px #ccc;
-  box-shadow:         1px 2px 4px 5px #ccc;
-`;
+  -moz-box-shadow:    0px 8px 20px rgba(0, 20, 63, 0.1);
+  -webkit-box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
+  box-shadow:         0px 8px 20px rgba(0, 20, 63, 0.1);
 
-let SidebarItem = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 10px;
-  margin-top: 5%;
-  margin-bottom: 5%;
-`;
-
-let SettingsSidebarItem = styled(SidebarItem)`
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 2%;
-`;
-
-let LinkText = styled.div`
-  display: ${ props => props.sidebarOpen ? "inline" : "none"};
-  margin-left: 15px;
-  margin-right: 15px;
-  font-family: HK Grotesk;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 22px;
-`;
-
-let MenuTabText = styled.div`
-  color: #F3A35C;
-`;
-
-let SettingsTabText = styled.div`
-  color: #B2BED0;
-`;
-
-let StyledMenuIcon = styled.div`
-  margin-left: 15px;
-  margin-right: 15px;
-`;
-
-let StyledSettingsIcon = styled.div`
-  margin-left: 15px;
-  margin-right: 15px;
-`;
-
-let StyledExpandIcon = styled.div`
-  display: ${ props => props.sidebarOpen ? "none" : "inline"};
-  margin-left: 15px;
-  margin-right: 15px;
-`;
-
-let StyledCollapseIcon = styled.div`
-  display: ${ props => props.sidebarOpen ? "inline" : "none"};
-  margin-left: 65%;
-  margin-right: 15px;
+  img {
+    cursor: pointer;
+  }
 `;
 
 const SidebarLayout = ({ children }) => {
-
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const { href } = useLocation()
 
   const handleToggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
@@ -101,50 +164,18 @@ const SidebarLayout = ({ children }) => {
       <Sidebar
         sidebarOpen={sidebarOpen}
       >
-        <SidebarItem>
-          <StyledExpandIcon
-            sidebarOpen={sidebarOpen}
-            onClick={handleToggleSidebar}
-          >
-              <img src={ExpandIcon} />
-          </StyledExpandIcon>
-          <StyledCollapseIcon
-            sidebarOpen={sidebarOpen}
-            onClick={handleToggleSidebar}
-          >
-              <img src={CollapseIcon} />
-          </StyledCollapseIcon>
-        </SidebarItem>
-        <SidebarItem>
-          <StyledMenuIcon
-            onClick={() => {navigate('/dashboard/menu')}}
-          >
-              <img src={MenuIcon} />
-          </StyledMenuIcon>
-          <LinkText
-            sidebarOpen={sidebarOpen}
-            onClick={() => {navigate('/dashboard/menu')}}
-          >
-            <MenuTabText>
-            Menu
-            </MenuTabText>
-          </LinkText>
-        </SidebarItem>
-        <SettingsSidebarItem>
-          <StyledSettingsIcon
-            onClick={() => {navigate('/dashboard/personal')}}
-          >
-              <img src={SettingsIcon} />
-          </StyledSettingsIcon>
-          <LinkText
-            sidebarOpen={sidebarOpen}
-            onClick={() => {navigate('/dashboard/personal')}}
-          >
-            <SettingsTabText>
-              Settings
-            </SettingsTabText>
-          </LinkText>
-        </SettingsSidebarItem>
+        <Hamburger onClick={ handleToggleSidebar }>
+          {
+            sidebarOpen ? <Collapse src={CollapseIcon}/> : <Expand src={ExpandIcon}/>
+          }
+        </Hamburger>
+
+        <SidebarItemList>
+          <SidebarItem destination='/dashboard/menu' title='Menu Management' icon={ MenuIcon } sidebarOpen={ sidebarOpen } href={ href }/>
+        </SidebarItemList>
+        <SettingsSidebarItem destination='/dashboard/personal' title='Settings' icon={ SettingsIcon } sidebarOpen={ sidebarOpen } href={ href }/>
+        
+        
       </Sidebar>
       <PageContent
         sidebarOpen={sidebarOpen}
