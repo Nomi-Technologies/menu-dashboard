@@ -4,7 +4,7 @@ import styled from "styled-components"
     display: flex;
     min-height: 100vh;
     height: 100%;
-    width: 100vw;
+    /* width: 100vw; */
     flex-direction: row;
  `
 
@@ -12,6 +12,7 @@ import styled from "styled-components"
    flex-basis: ${({width}) => width ? width : 'auto'};
    flex-grow: ${({width}) => width ? 0 : 1};
    box-sizing: border-box;
+   /* max-width: 88%; */
  `
 
  const ImageColumn = styled(Column)`

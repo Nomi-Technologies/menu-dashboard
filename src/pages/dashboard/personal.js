@@ -1,6 +1,6 @@
 import React from "react"
 
-import Layout from "../../components/layout"
+import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
 import { Container } from "../../components/grid"
 import PopulatePersonal from "../../components/dashboard/profile/populate-personal-info"
 import corner from "../../images/corner.png"
@@ -28,36 +28,16 @@ let styles = {
 }
 
 const Personal = () => (
-  <Layout>
+  <SidebarLayout>
     <Wrapper>
       <Container>
-        <SideBar width="25%">
-          <Link to="/dashboard/menu">
-            <Back>Back</Back>
-          </Link>
-          <MarginTop>
-            <SideTitle>
-              <LinkToAnotherPage to="/dashboard/personal/">
-                <Orange>Personal Info</Orange>
-              </LinkToAnotherPage>
-            </SideTitle>
-          </MarginTop>
-          <SideTitle>
-            <LinkToAnotherPage to="/dashboard/restaurant/">
-              Restaurant Info
-            </LinkToAnotherPage>
-          </SideTitle>
-
-          <img src={corner} alt="corner" style={styles.corner}></img>
-        </SideBar>
-
         <GreyBar>
           <InfoTitle>Personal Info</InfoTitle>
           <PopulatePersonal></PopulatePersonal>
         </GreyBar>
       </Container>
     </Wrapper>
-  </Layout>
+  </SidebarLayout>
 )
 
 export default Personal
