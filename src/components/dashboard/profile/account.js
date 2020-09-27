@@ -1,12 +1,5 @@
-import React from "React"
 import styled from "styled-components"
-
-// import RightArrowIcon from "../../assets/img/right-arrow.png"
-
-import { navigate } from "@reach/router"
-import Layout from "../../layout"
-import { Container, Column, ImageColumn } from "../../grid"
-import PopulatePersonal from "./populate-personal-info"
+import { Column } from "../../grid"
 import { Link } from "gatsby"
 
 let InfoTitle = styled.p`
@@ -42,13 +35,16 @@ let Wrapper = styled.div`
 `
 
 let Back = styled.p`
-  margin-left: 80px;
+  margin-left: 60px;
   font-family: HK Grotesk Regular;
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 29px;
-  color: #c4cedb;
+  color: #8a9db7;
+  :hover {
+    color: orange;
+  }
 `
 let MarginTop = styled.div`
   margin-top: 100px;

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 
 import Layout from "../../components/layout"
-import { Container, Column, ImageColumn } from "../../components/grid"
+import { Container } from "../../components/grid"
 import PopulateRestaurant from "../../components/dashboard/profile/populate-restaurant-info"
 
 import corner from "../../images/corner.png"
+import { Link } from "gatsby"
+
 import {
   InfoTitle,
   SideTitle,
@@ -31,7 +33,9 @@ const Restaurant = () => (
     <Wrapper>
       <Container>
         <SideBar width="25%">
-          <Back>Back</Back>
+          <Link to="/dashboard/menu">
+            <Back>Back</Back>
+          </Link>
           <MarginTop>
             <SideTitle>
               <LinkToAnotherPage to="/dashboard/personal/">
@@ -44,9 +48,6 @@ const Restaurant = () => (
               <Orange>Restaurant Info</Orange>
             </LinkToAnotherPage>
           </SideTitle>
-          <SideTitle>Internet Accounts</SideTitle>
-          <SideTitle>Payment</SideTitle>
-          <SideTitle>Security</SideTitle>
 
           <img src={corner} alt="corner" style={styles.corner}></img>
         </SideBar>

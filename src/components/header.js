@@ -37,10 +37,6 @@ const Header = styled.div`
   }
 `
 
-const Logo = styled.img`
-
-`
-
 const LoginButton = styled(Link)`
   margin-left: auto;
   margin-right: 64px;

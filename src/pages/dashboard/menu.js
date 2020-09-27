@@ -1,30 +1,25 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-
-import { Link } from "gatsby"
+import React, { useState, useEffect } from 'react';
 
 import Layout from "../../components/layout"
 import styled from "styled-components"
-import SEO from "../../components/seo"
 
-import { FormButton, ButtonRow } from "../../components/buttons" 
-import { Container, Column, ImageColumn } from "../../components/grid"
-import FloatingMenu from "../../components/floating-menu"
+import { Container, Column } from "../../components/grid"
+import { FloatingMenu } from "../../components/floating-menu"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
+import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
+import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
+import TopBar from "../../components/top-bar"
 
 import Client from "../../util/client"
 
-let SideBar = styled(Column)`
-    background-color: #F3A35C;
-`
-
 let MenuContainer = styled.div`
-    position: relative;
-    width: 90%;
+    box-sizing: border-box;
     margin: 0 auto;
-    max-width: 1200px;
+    padding: 0 50px;
+    padding-top: 30px;
 `
 
 let StyledFloatingMenu = styled(FloatingMenu)`
@@ -37,59 +32,64 @@ let StyledFloatingMenu = styled(FloatingMenu)`
 const MenuPage = () => {
     const [menuId, setMenuId] = useState(null)
     const [menuData, setMenuData] = useState()
-    const [selectedFile, setSelectedFile] = useState(null)
-    let fileReader
+    const [hasMenu, setHasMenu] = useState(true)
+    const [menuName, setMenuName] = useState('');
 
-    function parseFile() {
-      const content = fileReader.result;
-      var allTextLines = content.split(/\r\n|\n/);
-      var headers = allTextLines[0].split(',');
-      var lines = [];
+    useEffect(() => {
+        updateMenu()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuId])
 
-      for (var i=1; i<allTextLines.length; i++) {
-          var data = allTextLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (data.length == headers.length) {
-              var tarr = []
-              for (var j=0; j<headers.length; j++) {
-                  tarr.push(data[j].replace(/['"]+/g, ''))
-              }
-              lines.push(tarr);
-          }
-      }
-      Client.uploadMenu(lines)
-    }
-
-    function onFileChange(event) {
-        if(event.target.files){
-          setSelectedFile(event.target.files[0]);
-          fileReader = new FileReader();
-          fileReader.onloadend = parseFile;
-          fileReader.readAsText(event.target.files[0]);
+    const updateMenuSelection = (menu) => {
+        if (typeof menu === 'undefined') {
+            setMenuId(null)
+        }
+        else {
+            setMenuId(menu.id)
         }
     }
 
-    const updateMenuSelection = (menu) => {
-        console.log("new menu selected")
-        console.log(menu)
-        setMenuId(menu.id)
+    async function updateMenu () {
+        if (menuId !== null) {
+            await Client.getMenu(menuId).then((res) => {
+                setMenuName(res.data.name)
+                setMenuData(res.data.Categories)
+            })
+        }
+    };
+
+    const updateHasMenu = (hasMenu) => {
+        setHasMenu(hasMenu)
     }
 
     return (
         <Layout>
             <Container>
-                <SideBar width='280px'>
-                </SideBar>
                 <Column>
-                    <MenuContainer>
-                        <MenuSelector updateMenuSelection={updateMenuSelection} menuId={menuId} />
-                        {/* <input type="file" accept=".csv" onChange={ onFileChange }/ > */}
-                        <MenuTable menuId={menuId} menuData={menuData}/>
-                        <MenuCreator />
-                        <StyledFloatingMenu/>
-                    </MenuContainer>
+                {
+                    hasMenu ? (
+                        <>
+                            <TopBar title="Menu Management"> 
+                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
+                            </TopBar>
+                            <MenuContainer>  
+                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>                        
+                                <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                                <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                            </MenuContainer>
+                        </>
+                    ) : (
+                        <MenuContainer>
+                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                            <FirstMenuSetup />
+                        </MenuContainer>
+                    )
+                }
                 </Column>
             </Container>
         </Layout>
     )
 }
+
 export default MenuPage

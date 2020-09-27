@@ -1,14 +1,12 @@
 import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import styled from "styled-components"
 import { FormButton, ButtonRow } from "./buttons"
 import { navigate } from "@reach/router"
-import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls } from "../components/form"
+import { FormInput } from "../components/form"
 import Client from "../util/client"
 import { saveUserToken } from "../util/auth"
-
 
 
 const ForgotPassword = styled(Link)`
@@ -28,7 +26,7 @@ const Container = styled.div`
 
     input {
         border: none;
-        background-color: #F4F4F4;
+        background-color: #E1E7EC;
     }
 
     .error {
@@ -42,17 +40,6 @@ const Container = styled.div`
     }
 `
 
-const InputField = styled.input`
-    font-size: 18px;
-    line-height: 22px;
-    padding: 18px 32px;
-    display: block;
-    background-color: #F4F4F4;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 24px;
-`
-
 const LoginForm = () => {
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
@@ -60,7 +47,6 @@ const LoginForm = () => {
 
     const loginUser = () => {
         Client.login(email, password).then((response) => {
-            console.log(response.data)
             saveUserToken(response.data['token'])
             setLoginError(false)
             navigate('/')
@@ -71,8 +57,6 @@ const LoginForm = () => {
 
     return (
         <Container>
-            {/* <InputField type='email' name='email' placeholder='EMAIL'/>
-            <InputField type='password' name='password' placeholder='PASSWORD'/> */}
             <p className='error'>{ loginError ? 'Could not log in with credentials provided.' : '' }</p>
             <FormInput placeholder='email' name='email' onChange={ (event) => {setEmail(event.target.value)} }/>
             <FormInput placeholder='password' name='password' type='password' onChange={ (event) => {setPassword(event.target.value)} }/>

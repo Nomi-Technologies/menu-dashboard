@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 
  const Container = styled.div`
@@ -12,7 +11,7 @@ import styled from "styled-components"
  const Column = styled.div`
    flex-basis: ${({width}) => width ? width : 'auto'};
    flex-grow: ${({width}) => width ? 0 : 1};
-   
+   box-sizing: border-box;
  `
 
  const ImageColumn = styled(Column)`

@@ -12,6 +12,12 @@ let FormTitle = styled.h1`
     margin: 0;
 `
 
+let PopupFormTitle = styled.h1`
+    font-size: 36px;
+    line-height: 43px;
+    margin: 0;
+`;
+
 let FormSubtitle = styled.p`
     font-size: 16px;
     line-height: 19px;
@@ -41,8 +47,7 @@ let StyledInput = styled.input`
     padding-top: 26px;
     box-sizing: border-box; 
     
-
-    &:focus ~ ${ FloatingLabel }
+    &:focus ~ ${ FloatingLabel}
     {
         top: 10px;
         bottom: 30px;
@@ -50,7 +55,7 @@ let StyledInput = styled.input`
         opacity: 1;
     }
 
-    &:valid ~ ${ FloatingLabel }
+    &:valid ~ ${ FloatingLabel}
     {
         top: 10px;
         bottom: 30px;
@@ -85,7 +90,7 @@ let FormControls = styled.div`
 
 let StyledFormInput = styled.div`
     position: relative;
-    flex-basis: ${({width}) => width ? width : 'auto'};
+    flex-basis: ${({ width }) => width ? width : 'auto'};
     margin: 20px 0;
 `
 
@@ -107,14 +112,14 @@ let StyledNextButton = styled.button`
 `
 
 let NextButton = (props) => (
-    <StyledNextButton onClick = { props.onClick }>
+    <StyledNextButton onClick={props.onClick}>
         NEXT
-        <img src={ RightArrowIcon }></img>
+        <img alt="Right Arrow Icon" src={RightArrowIcon}></img>
     </StyledNextButton>
 )
 
 let DoneButton = (props) => (
-    <StyledNextButton onClick = { props.onClick }>
+    <StyledNextButton onClick={props.onClick}>
         DONE
     </StyledNextButton>
 )
@@ -128,15 +133,15 @@ let StyledPrevButton = styled.button`
 `
 
 let PrevButton = (props) => (
-    <StyledPrevButton  onClick = { () => navigate(props.destination, {state: props.state}) }>
+    <StyledPrevButton onClick={() => navigate(props.destination, { state: props.state })}>
         PREVIOUS STEP
     </StyledPrevButton>
 )
 
 let FormInput = (props) => (
-    <StyledFormInput width={ props.width }>
-        <StyledInput type={ props.type } onChange={ props.onChange } value={ props.value } required></StyledInput>
-        <FloatingLabel>{ props.placeholder }</FloatingLabel>
+    <StyledFormInput width={props.width}>
+        <StyledInput type={props.type} onChange={props.onChange} value={props.value} required></StyledInput>
+        <FloatingLabel>{props.placeholder}</FloatingLabel>
     </StyledFormInput>
 )
 
@@ -145,4 +150,56 @@ let FormError = styled.p`
     margin: 0px;
 `
 
-export { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, PrevButton, DoneButton, FormControls, FormError}
+let StyledNewInput = styled.input`
+    width: 100%;
+    border-radius: 6px;
+    background-color: #E1E7EC;
+    opacity: 0.75;
+    font-size: 14px;
+    padding: 14px;
+    padding-left: 20px;
+    font-family: HK Grotesk Regular;
+    box-sizing: border-box;
+    margin: 10px 0;
+`
+
+let DishFormInput = (props) => (
+    <StyledNewInput type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>    
+)
+
+
+let StyledNewTextArea = styled.textarea`
+    width: 100%;
+    border-radius: 6px;
+    background-color: #E1E7EC;
+    opacity: 0.75;
+    font-size: 14px;
+    padding: 14px;
+    padding-left: 20px;
+    font-family: HK Grotesk Regular;
+    box-sizing: border-box;
+    resize: none;
+    border: none;
+    height: 70px;
+    margin: 10px 0;
+`
+
+let DishFormTextArea = (props) => (
+    <StyledNewTextArea type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>
+)
+
+export { 
+    FormInput,
+    DishFormInput,
+    DishFormTextArea,
+    FormContainer,
+    FormTitle,
+    FormSubtitle,
+    FormRow,
+    NextButton,
+    PrevButton,
+    DoneButton,
+    FormControls,
+    FormError,
+    PopupFormTitle
+}

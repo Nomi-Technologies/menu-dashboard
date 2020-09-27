@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
-
-import { QRCodeForm } from "../components/dashboard/menu-table/popup-forms";
+import Client from "../util/client";
+import { QRCodeModal } from "../components/dashboard/modal/qr-code"
+import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
 
 const FloatingMenuButton = styled.div`
     position: absolute;
-    width: 72px;
-    height: 72px;
+    width: 62px;
+    height: 62px;
     right: 0;
     bottom: 0;
     border-radius: 36px;
@@ -25,6 +26,7 @@ const StyledHamburger = styled(HamburgerMenu)`
 
 const Menu = styled.div`
     position: absolute;
+    background-color: white;
     width: 250px;
     bottom: 36px;
     right: 100px;
@@ -41,7 +43,7 @@ const MenuItem = styled.div`
     font-weight: bold;
     text-align: center;
     line-height: 60px;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
     &:hover {
         background: rgba(242, 153, 74, 0.1);
     }
@@ -64,27 +66,56 @@ const HorizontalSeparator = styled.div`
 
 const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showQRCodeForm, setShowQRCodeForm] = useState(false);
+    const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+    const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
+    const [uniqueName, setUniqueName] = useState(null);
+    const [restaurantName, setRestaurantName] = useState(null);
+    
+    useEffect(() => {
+        // TODO(Tony): use global context for restaurant info
+        // Currently put here to avoid multiple requests
+        Client.getRestaurantInfo().then(res => {
+            setUniqueName(res.data.uniqueName);
+            setRestaurantName(res.data.name);
+        });
+
+    }, [props.menuId]);
 
     function onClickMenu() {
         setIsOpen(!isOpen);
     }
+
+    async function deleteMenu(id) {
+        await Client.deleteMenu(id)
+        onClickMenu();
+        props.updateMenuSelection();
+    }
+
+    async function duplicateMenu(id) {
+        const res = await Client.duplicateMenu(id);
+        onClickMenu();
+        props.updateMenuSelection(res.data.menu);
+    }
     
     return (
         <>
-            <div {...props}>
+            <div className={props.className}>
                 <Menu isOpen={isOpen}>
                     <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
                     <HorizontalSeparator/>
-                    <OrangeTextMenuItem>Upload Spreadsheet</OrangeTextMenuItem>
-                    <HorizontalSeparator/>
-                    <OrangeTextMenuItem>Duplicate Menu</OrangeTextMenuItem>
+                    <OrangeTextMenuItem
+                        onClick={() => setShowCSVUploadModal(true)}
+                    >Upload Spreadsheet</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
-                        onClick={() => setShowQRCodeForm(true)}
+                        onClick={() => duplicateMenu(props.menuId)}
+                    >Duplicate Menu</OrangeTextMenuItem>
+                    <HorizontalSeparator/>
+                    <OrangeTextMenuItem
+                        onClick={() => setShowQRCodeModal(true)}
                     >Create QR Code</OrangeTextMenuItem>
                     <HorizontalSeparator/>
-                    <RedTextMenuItem>Delete Menu</RedTextMenuItem>
+                    <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
                 </Menu>
                 <FloatingMenuButton onClick={onClickMenu}>
                     <StyledHamburger
@@ -98,13 +129,18 @@ const FloatingMenu = (props) => {
                         />
                 </FloatingMenuButton>
             </div>
+            <UploadCSVModal show={ showCSVUploadModal } close={() => setShowCSVUploadModal(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
             {
-                showQRCodeForm ? (
-                    <QRCodeForm closeForm={() => setShowQRCodeForm(false)}/>
+                showQRCodeModal ? (
+                    <QRCodeModal
+                        uniqueName={uniqueName}
+                        name={restaurantName}
+                        closeForm={() => setShowQRCodeModal(false)}
+                    />
                 ) : <></>
             }
         </>
     )
 }
 
-export default FloatingMenu;
+export { FloatingMenu };
