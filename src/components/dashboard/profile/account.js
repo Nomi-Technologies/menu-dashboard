@@ -59,7 +59,6 @@ let SideBar = styled(Column)`
 `
 
 let GreyBar = styled(Column)`
-  background-color: #f7f8fa;
 `
 
 export {

@@ -1,6 +1,6 @@
 import React from "react"
 
-import Layout from "../../components/layout"
+import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
 import { Container } from "../../components/grid"
 import PopulateRestaurant from "../../components/dashboard/profile/populate-restaurant-info"
 
@@ -29,36 +29,16 @@ let styles = {
 }
 
 const Restaurant = () => (
-  <Layout>
+  <SidebarLayout>
     <Wrapper>
       <Container>
-        <SideBar width="25%">
-          <Link to="/dashboard/menu">
-            <Back>Back</Back>
-          </Link>
-          <MarginTop>
-            <SideTitle>
-              <LinkToAnotherPage to="/dashboard/personal/">
-                Personal Info
-              </LinkToAnotherPage>
-            </SideTitle>
-          </MarginTop>
-          <SideTitle>
-            <LinkToAnotherPage to="/dashboard/restaurant/">
-              <Orange>Restaurant Info</Orange>
-            </LinkToAnotherPage>
-          </SideTitle>
-
-          <img src={corner} alt="corner" style={styles.corner}></img>
-        </SideBar>
-
         <GreyBar>
           <InfoTitle>Restaurant Info</InfoTitle>
           <PopulateRestaurant></PopulateRestaurant>
         </GreyBar>
       </Container>
     </Wrapper>
-  </Layout>
+  </SidebarLayout>
 )
 
 export default Restaurant

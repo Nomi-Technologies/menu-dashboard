@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Layout from "../../components/layout"
+import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
 import styled from "styled-components"
 
 import { Container, Column } from "../../components/grid"
@@ -63,18 +63,18 @@ const MenuPage = () => {
     }
 
     return (
-        <Layout>
+        <SidebarLayout>
             <Container>
                 <Column>
                 {
                     hasMenu ? (
                         <>
-                            <TopBar title="Menu Management"> 
+                            <TopBar title="Menu Management">
                                 <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
                                     updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
                             </TopBar>
                             <MenuContainer>  
-                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>                        
+                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
                                 <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
                                 <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                             </MenuContainer>
@@ -88,7 +88,7 @@ const MenuPage = () => {
                 }
                 </Column>
             </Container>
-        </Layout>
+        </SidebarLayout>
     )
 }
 
