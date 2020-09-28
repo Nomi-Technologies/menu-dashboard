@@ -137,7 +137,7 @@ let PageContent = styled.div`
 
 let Sidebar = styled.div`
   position: relative;
-  width: ${ props => props.sidebarOpen ? "290px" : "100px"};
+  width: ${ props => props.sidebarOpen ? "290px" : "90px"};
   z-index: 10;
   transition: width 0.5s ease;
   flex-direction: column;

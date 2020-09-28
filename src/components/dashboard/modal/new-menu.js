@@ -19,6 +19,7 @@ const NewMenuModal = (props) => {
     const [name, setName] = useState('');
     let [content, setContent] = useState(null)
     let [errorMessage, setErrorMessage] = useState(null)
+    let [loading, setLoading] = useState(false)
 
     const setFile = (file) => {
         const reader = new FileReader()      
@@ -40,19 +41,25 @@ const NewMenuModal = (props) => {
             name: name,
             csv: content,
         }
-        if (name !== '') {
+
+        // avoid creating multiple menus while loading
+        if (name !== '' && !loading) {
+            setLoading(true)
             await Client.createMenu(menuData).then((res) => {
                 props.toggleForm()
                 props.updateHasMenu(true)
                 props.updateMenuSelection(res.data)
             }).catch((err) => {
                 console.error("error creating menu")
-                //show some error on form
+                setErrorMessage("An error occured while creating the menu, please try again.")
+            }).finally(() => {
+                setLoading(false)
             })
         } else {
             console.error("missing field")
             //show some error
         }
+        
     }
 
     return (
@@ -78,7 +85,8 @@ const NewMenuModal = (props) => {
                     <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Create Menu' onClick = {createMenu} />    
+                        <FormButton text='Create Menu' onClick={createMenu} />
+                        
                     </ButtonRow>
                 </Container>
             </Modal>
