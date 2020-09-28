@@ -86,7 +86,6 @@ const NewMenuModal = (props) => {
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                         <FormButton text='Create Menu' onClick={createMenu} />
-                        
                     </ButtonRow>
                 </Container>
             </Modal>

@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 
-
 let StyledButton = styled.button`
     display: block;
     margin: 20px 0;
