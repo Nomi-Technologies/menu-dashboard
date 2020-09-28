@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
 import { FormInput, FormContainer, FormRow } from "../../form"
+import { FileDrop } from "../../file-drop"
 
 import Client from "../../../util/client"
 
@@ -12,8 +13,8 @@ let SaveButton = styled.div`
   border: none;
   font-size: 18px;
   color: white;
-  padding: 21px 75px;
-  margin-top: 100px;
+  padding: 15px 75px;
+  margin-top: 20px;
 `
 
 let ChangeButton = styled.div`
@@ -21,12 +22,16 @@ let ChangeButton = styled.div`
   background-color: #f2994a;
   font-size: 18px;
   color: #f2994a;
-  padding: 19px 31px;
-  margin-top: 100px;
+  padding: 15px 31px;
+  margin-top: 20px;
   background: rgba(255, 255, 255, 0.25);
   border: 2px solid #f3a35c;
   box-sizing: border-box;
   border-radius: 8px;
+`
+
+let Subtitle = styled.p`
+  font-size: 15px;
 `
 
 const PopulateRestaurant = () => {
@@ -40,6 +45,25 @@ const PopulateRestaurant = () => {
 
   const [id, setId] = useState(false)
   const [save, setSave] = useState(false)
+
+  let [errorMessage, setErrorMessage] = useState(null)
+  let [content, setContent] = useState(null)
+
+  console.log("inside PopulateRestaurant class")
+  const setFile = file => {
+    const reader = new FileReader()
+    reader.readAsText(file)
+    reader.onabort = () => console.error("file reading was aborted")
+    reader.onerror = () => {
+      console.error("file reading has failed")
+      setErrorMessage("Error reading file")
+    }
+    reader.onload = () => {
+      // Do whatever you want with the file contents
+      const fileContent = reader.result
+      setContent(fileContent)
+    }
+  }
 
   useEffect(() => {
     Client.getRestaurantInfo().then(response => {
@@ -157,7 +181,12 @@ const PopulateRestaurant = () => {
           }}
         ></FormInput>
       </FormRow>
-
+      <Subtitle>Upload Restaurant Logo</Subtitle>
+      <FileDrop
+        acceptedFileTypes={[".jpg", ".png"]}
+        setFile={setFile}
+        setErrorMessage={setErrorMessage}
+      />
       {!save ? (
         <SaveButton onClick={submit}>Save</SaveButton>
       ) : (

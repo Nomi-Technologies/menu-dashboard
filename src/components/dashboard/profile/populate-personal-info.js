@@ -12,8 +12,8 @@ let SaveButton = styled.div`
   border: none;
   font-size: 18px;
   color: white;
-  padding: 10px 75px;
-  margin-top: 100px;
+  padding: 15px 75px;
+  margin-top: 20px;
 `
 
 let ChangeButton = styled.div`
@@ -21,8 +21,8 @@ let ChangeButton = styled.div`
   background-color: #f2994a;
   font-size: 18px;
   color: #f2994a;
-  padding: 10px 31px;
-  margin-top: 100px;
+  padding: 15px 31px;
+  margin-top: 20px;
   background: rgba(255, 255, 255, 0.25);
   border: 2px solid #f3a35c;
   box-sizing: border-box;

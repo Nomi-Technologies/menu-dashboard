@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 
 import Layout from "../../components/layout"
 import { Container } from "../../components/grid"
@@ -16,7 +16,6 @@ import {
   MarginTop,
   Orange,
   SideBar,
-  GreyBar,
 } from "../../components/dashboard/profile/account"
 
 let styles = {
@@ -30,34 +29,32 @@ let styles = {
 
 const Restaurant = () => (
   <Layout>
-    <Wrapper>
-      <Container>
-        <SideBar width="25%">
-          <Link to="/dashboard/menu">
-            <Back>Back</Back>
-          </Link>
-          <MarginTop>
-            <SideTitle>
-              <LinkToAnotherPage to="/dashboard/personal/">
-                Personal Info
-              </LinkToAnotherPage>
-            </SideTitle>
-          </MarginTop>
+    <Container>
+      <SideBar width="25%">
+        <Link to="/dashboard/menu">
+          <Back>&#9664; Back</Back>
+        </Link>
+        <MarginTop>
           <SideTitle>
-            <LinkToAnotherPage to="/dashboard/restaurant/">
-              <Orange>Restaurant Info</Orange>
+            <LinkToAnotherPage to="/dashboard/personal/">
+              Personal Info
             </LinkToAnotherPage>
           </SideTitle>
+        </MarginTop>
+        <SideTitle>
+          <LinkToAnotherPage to="/dashboard/restaurant/">
+            <Orange>Restaurant Info</Orange>
+          </LinkToAnotherPage>
+        </SideTitle>
 
-          <img src={corner} alt="corner" style={styles.corner}></img>
-        </SideBar>
+        <img src={corner} alt="corner" style={styles.corner}></img>
+      </SideBar>
 
-        <GreyBar>
-          <InfoTitle>Restaurant Info</InfoTitle>
-          <PopulateRestaurant></PopulateRestaurant>
-        </GreyBar>
-      </Container>
-    </Wrapper>
+      <SideBar>
+        <InfoTitle>Restaurant Info</InfoTitle>
+        <PopulateRestaurant></PopulateRestaurant>
+      </SideBar>
+    </Container>
   </Layout>
 )
 

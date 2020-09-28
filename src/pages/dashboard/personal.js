@@ -15,7 +15,6 @@ import {
   MarginTop,
   Orange,
   SideBar,
-  GreyBar,
 } from "../../components/dashboard/profile/account"
 
 let styles = {
@@ -29,34 +28,32 @@ let styles = {
 
 const Personal = () => (
   <Layout>
-    <Wrapper>
-      <Container>
-        <SideBar width="25%">
-          <Link to="/dashboard/menu">
-            <Back>Back</Back>
-          </Link>
-          <MarginTop>
-            <SideTitle>
-              <LinkToAnotherPage to="/dashboard/personal/">
-                <Orange>Personal Info</Orange>
-              </LinkToAnotherPage>
-            </SideTitle>
-          </MarginTop>
+    <Container>
+      <SideBar width="25%">
+        <Link to="/dashboard/menu">
+          <Back>&#9664; Back</Back>
+        </Link>
+        <MarginTop>
           <SideTitle>
-            <LinkToAnotherPage to="/dashboard/restaurant/">
-              Restaurant Info
+            <LinkToAnotherPage to="/dashboard/personal/">
+              <Orange>Personal Info</Orange>
             </LinkToAnotherPage>
           </SideTitle>
+        </MarginTop>
+        <SideTitle>
+          <LinkToAnotherPage to="/dashboard/restaurant/">
+            Restaurant Info
+          </LinkToAnotherPage>
+        </SideTitle>
 
-          <img src={corner} alt="corner" style={styles.corner}></img>
-        </SideBar>
+        <img src={corner} alt="corner" style={styles.corner}></img>
+      </SideBar>
 
-        <GreyBar>
-          <InfoTitle>Personal Info</InfoTitle>
-          <PopulatePersonal></PopulatePersonal>
-        </GreyBar>
-      </Container>
-    </Wrapper>
+      <SideBar>
+        <InfoTitle>Personal Info</InfoTitle>
+        <PopulatePersonal></PopulatePersonal>
+      </SideBar>
+    </Container>
   </Layout>
 )
 

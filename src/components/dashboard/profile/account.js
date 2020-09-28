@@ -58,10 +58,6 @@ let SideBar = styled(Column)`
   background-color: white;
 `
 
-let GreyBar = styled(Column)`
-  background-color: #f7f8fa;
-`
-
 export {
   InfoTitle,
   SideTitle,
@@ -71,5 +67,4 @@ export {
   MarginTop,
   Orange,
   SideBar,
-  GreyBar,
 }
