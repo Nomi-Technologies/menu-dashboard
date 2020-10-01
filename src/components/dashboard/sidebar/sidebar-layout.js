@@ -20,9 +20,10 @@ let LinkText = styled.div`
   font-size: 18px;
   line-height: 22px;
   opacity: ${ props => props.sidebarOpen ? 1 : 0};
+  overflow: hidden;
   white-space: nowrap;
   transition: opacity 0.2s ease;
-  transition-delay: ${ props => props.sidebarOpen ? "0.2s" : "0s"};
+  transition-delay: ${ props => props.sidebarOpen ? "0.3s" : "0s"};
 `;
 
 let StyledMenuIcon = styled.div`

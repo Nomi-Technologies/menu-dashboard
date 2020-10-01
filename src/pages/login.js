@@ -21,7 +21,7 @@ const Login = () => (
     <Container>
       <Column width='45%'>
         <HeroText>Dine Confidently</HeroText>
-        <LoginForm></LoginForm>
+        <LoginForm/>
       </Column>
       <ImageColumn width='55%' background={RestaurantBackgroundImage}></ImageColumn>
     </Container>

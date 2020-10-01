@@ -60,7 +60,7 @@ const LoginForm = () => {
             <p className='error'>{ loginError ? 'Could not log in with credentials provided.' : '' }</p>
             <FormInput placeholder='email' name='email' onChange={ (event) => {setEmail(event.target.value)} }/>
             <FormInput placeholder='password' name='password' type='password' onChange={ (event) => {setPassword(event.target.value)} }/>
-            <ForgotPassword>Forgot password?</ForgotPassword>  
+            {/* <ForgotPassword>Forgot password?</ForgotPassword>   */}
             <ButtonRow>
                 <FormButton text='Login' onClick={ loginUser }/>    
                 <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info') } />    
