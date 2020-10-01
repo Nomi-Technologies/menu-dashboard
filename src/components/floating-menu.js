@@ -101,11 +101,11 @@ const FloatingMenu = (props) => {
         <>
             <div className={props.className}>
                 <Menu isOpen={isOpen}>
-                    <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
-                    <HorizontalSeparator/>
+                    {/* <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
+                    <HorizontalSeparator/> */}
                     <OrangeTextMenuItem
                         onClick={() => setShowCSVUploadModal(true)}
-                    >Upload Spreadsheet</OrangeTextMenuItem>
+                    >Upload .csv Menu</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick={() => duplicateMenu(props.menuId)}
