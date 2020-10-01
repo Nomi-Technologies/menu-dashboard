@@ -78,8 +78,8 @@ const MenuControls = styled.div`
             text-align: center;
             border: 2px solid #F3A35C;
             border-radius: 8px;
-            cursor: pointer;
             margin-left: 10px;
+            cursor: pointer;
         }
 
         .upload-csv {

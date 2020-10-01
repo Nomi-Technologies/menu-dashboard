@@ -201,7 +201,7 @@ const EditDishModal = props => {
       dishTags: dishTags,
       menuId: props.menuId,
     }
-    if (name !== "" && description !== "" && categoryId !== 0) {
+    if (name !== "" && categoryId !== 0) {
       Client.updateDish(props.dish.id, dishData)
         .then(res => {
           props.toggleForm()
