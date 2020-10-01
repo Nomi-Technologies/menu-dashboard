@@ -35,6 +35,10 @@ const NewMenuModal = (props) => {
           setContent(fileContent)
         }
     }
+
+    const clearFile = () => {
+        setContent(null)
+    }
     
     async function createMenu () {
         let menuData = {
@@ -82,7 +86,7 @@ const NewMenuModal = (props) => {
                     />
                     <Divider color="#DCE2E9" />
                     <FormSubtitle>CSV File (Optional)</FormSubtitle>
-                    <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
+                    <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
                     <ButtonRow>
                         <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
                         <FormButton text='Create Menu' onClick={createMenu} />
