@@ -20,9 +20,10 @@ let LinkText = styled.div`
   font-size: 18px;
   line-height: 22px;
   opacity: ${ props => props.sidebarOpen ? 1 : 0};
+  overflow: hidden;
   white-space: nowrap;
   transition: opacity 0.2s ease;
-  transition-delay: ${ props => props.sidebarOpen ? "0.2s" : "0s"};
+  transition-delay: ${ props => props.sidebarOpen ? "0.3s" : "0s"};
 `;
 
 let StyledMenuIcon = styled.div`
@@ -138,7 +139,6 @@ let PageContent = styled.div`
 let Sidebar = styled.div`
   position: relative;
   width: ${ props => props.sidebarOpen ? "290px" : "90px"};
-  z-index: 10;
   transition: width 0.5s ease;
   flex-direction: column;
   -moz-box-shadow:    0px 8px 20px rgba(0, 20, 63, 0.1);

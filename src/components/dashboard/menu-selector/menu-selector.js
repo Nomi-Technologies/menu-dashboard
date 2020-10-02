@@ -17,7 +17,19 @@ const Menus = styled.div`
     }
 `
 
+let ActiveIndicator = styled.div`
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  height: 4px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  background-color: #628DEB;
+  width: 100%;
+`
+
 const MenuTab = styled.div`
+    position: relative;
     text-transform: uppercase;
     font-size: 14px;
     line-height: 12px;
@@ -27,13 +39,12 @@ const MenuTab = styled.div`
     font-feature-settings: 'cpsp' on;
     letter-spacing: 0.1em;
     display: inline-block;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     margin-right: 50px;
     box-sizing: border-box;
     border-radius: 5px;   
     cursor: pointer;
-    color: black;
-    border-bottom: ${ props => props.selected ? "3px solid #F3A35C" : ""};
+    color: ${ props => props.selected ? "#628DEB" : "#8A9DB7"};
     text-align: center;
 `
 
@@ -88,9 +99,13 @@ class MenuSelector extends React.Component {
                 <Menus>
                     {
                         this.state.data.map((item) => (
-                            <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
-                                {item.name}
-                            </MenuTab>
+                            <>
+                                <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
+                                    {item.name}
+                                    { item.id===this.state.selectedMenuId ? <ActiveIndicator/> : "" }
+                                </MenuTab>
+                                
+                            </>
                         ))
                     }
                     <MenuCreator className="menu-creator" updateMenuSelection={this.props.updateMenuSelection} updateHasMenu={this.props.updateHasMenu}/>
