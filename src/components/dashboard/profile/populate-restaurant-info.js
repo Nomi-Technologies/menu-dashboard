@@ -1,33 +1,9 @@
 import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
-import { FormInput, FormContainer, FormRow } from "../../form"
+import { FormInput, FormContainer, FormRow, SaveButton } from "../../form"
 
 import Client from "../../../util/client"
-
-let SaveButton = styled.div`
-  float: right;
-  background-color: #f2994a;
-  border-radius: 8px;
-  border: none;
-  font-size: 18px;
-  color: white;
-  padding: 21px 75px;
-  margin-top: 100px;
-`
-
-let ChangeButton = styled.div`
-  float: right;
-  background-color: #f2994a;
-  font-size: 18px;
-  color: #f2994a;
-  padding: 19px 31px;
-  margin-top: 100px;
-  background: rgba(255, 255, 255, 0.25);
-  border: 2px solid #f3a35c;
-  box-sizing: border-box;
-  border-radius: 8px;
-`
 
 const PopulateRestaurant = () => {
   const [restaurant, setRestaurant] = useState(false)
@@ -93,6 +69,7 @@ const PopulateRestaurant = () => {
           placeholder="restaurant name"
           value={restaurant}
           onChange={event => {
+            setSave(false)
             setRestaurant(event.target.value)
           }}
         ></FormInput>
@@ -104,6 +81,7 @@ const PopulateRestaurant = () => {
           placeholder="street address"
           value={address}
           onChange={event => {
+            setSave(false)
             setAddress(event.target.value)
           }}
         ></FormInput>
@@ -115,6 +93,7 @@ const PopulateRestaurant = () => {
           placeholder="city"
           value={city}
           onChange={event => {
+            setSave(false)
             setCity(event.target.value)
           }}
         ></FormInput>
@@ -124,6 +103,7 @@ const PopulateRestaurant = () => {
           placeholder="state"
           value={state}
           onChange={event => {
+            setSave(false)
             setState(event.target.value)
           }}
         ></FormInput>
@@ -133,6 +113,7 @@ const PopulateRestaurant = () => {
           placeholder="zip code"
           value={zip}
           onChange={event => {
+            setSave(false)
             setZip(event.target.value)
           }}
         ></FormInput>
@@ -144,6 +125,7 @@ const PopulateRestaurant = () => {
           placeholder="phone number"
           value={phone}
           onChange={event => {
+            setSave(false)
             setPhone(event.target.value)
           }}
         ></FormInput>
@@ -153,16 +135,13 @@ const PopulateRestaurant = () => {
           placeholder="website (optional)"
           value={website}
           onChange={event => {
+            setSave(false)
             setWebsite(event.target.value)
           }}
         ></FormInput>
       </FormRow>
 
-      {!save ? (
-        <SaveButton onClick={submit}>Save</SaveButton>
-      ) : (
-        <ChangeButton>Changes Saved</ChangeButton>
-      )}
+      <SaveButton onClick={ submit } save={ save }/>
     </FormContainer>
   )
 }

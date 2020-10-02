@@ -26,6 +26,14 @@ export default class Client {
     })
   }
 
+  static updatePassword = (currentPassword, newPassword) => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.post(ROOT_URL + "/user/password", {
+      password: currentPassword,
+      newPassword: newPassword,
+    }, { headers: { Authorization: `Bearer ${token}` }})
+  }
+
   static getDishes = () => {
     let token = retrieveUserToken() // get user auth token
     return axios.get(ROOT_URL + "/dishes-by-category", {
