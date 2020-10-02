@@ -68,7 +68,7 @@ const ClearIcon = styled.img`
     }
 `
 
-const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage}) => {
+const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage, clearFile}) => {
     let [fileName, setFileName] = useState(null)
     const onDrop = useCallback(acceptedFiles => {
         const file = acceptedFiles[0]; // only allow single file
@@ -90,8 +90,10 @@ const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage}) => {
         }
     }, [])
 
-    const clearFile = () => {
+    const clearUploadedFile = () => {
         setFileName(null)
+        clearFile()
+
     }
 
     let {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
@@ -101,7 +103,7 @@ const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage}) => {
             {
                 fileName ? 
                 <FileContents>
-                    <p>Selected File: { fileName } </p> <ClearIcon src={ DeleteIcon } onClick={ clearFile }/>
+                    <p>Selected File: { fileName } </p> <ClearIcon src={ DeleteIcon } onClick={ clearUploadedFile }/>
                 </FileContents>
                 : 
                 <div className='file-input' {...getRootProps()}>
