@@ -2,7 +2,7 @@
 [context.production.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://web-menu-prod.netlify.app"
+GATSBY_SMART_MENU_URL = "https://nomi.menu"
 
 # PR Previews
 [context.deploy-preview.environment]
@@ -14,7 +14,7 @@ GATSBY_SMART_MENU_URL = "https://develop-web-menu-prod.netlify.app"
 [context.master.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service-staging.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://web-menu-prod.netlify.app"
+GATSBY_SMART_MENU_URL = "https://web-menu-staging.netlify.app"
 
 # Testing
 [context.develop.environment]

@@ -139,7 +139,6 @@ let PageContent = styled.div`
 let Sidebar = styled.div`
   position: relative;
   width: ${ props => props.sidebarOpen ? "290px" : "90px"};
-  z-index: 10;
   transition: width 0.5s ease;
   flex-direction: column;
   -moz-box-shadow:    0px 8px 20px rgba(0, 20, 63, 0.1);
