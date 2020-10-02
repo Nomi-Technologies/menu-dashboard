@@ -44,6 +44,7 @@ let Hamburger = styled.div`
   top: 20px;
   left: ${ props => props.sidebarOpen ? "230px" : "25px"};
   transition: left 0.5s ease;
+  width: 45px;
   img {
     width: 45px;
     position: relative;
