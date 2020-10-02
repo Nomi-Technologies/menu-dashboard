@@ -4,12 +4,13 @@ import { Link } from "gatsby"
 
 let InfoTitle = styled.p`
   position: relative;
+  margin: 10px 0;
+  margin-top: 40px;
   margin-left: 96px;
   font-family: HK Grotesk Regular;
   font-style: normal;
   font-weight: bold;
   font-size: 36px;
-  line-height: 43px;
   color: #000000;
   flex: none;
   order: 0;

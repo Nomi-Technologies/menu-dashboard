@@ -12,7 +12,7 @@ import SidebarActive from "../../../assets/img/sidebar-active.png"
 import SidebarActiveSettings from "../../../assets/img/sidebar-active-grey.png"
 
 let SidebarItemList = styled.div`
-  margin-top: 120px;
+  margin-top: 40px;
 `
 
 let LinkText = styled.div`
@@ -38,23 +38,22 @@ let StyledMenuIcon = styled.div`
 `;
 
 let Hamburger = styled.div`
-  margin: 30px 0;
-
+  position: relative;
+  display: flex;
+  align-items: center;
+  top: 20px;
+  left: ${ props => props.sidebarOpen ? "230px" : "25px"};
+  transition: left 0.5s ease;
   img {
     width: 45px;
+    position: relative;
   }
 `
 
-let Collapse = styled.img`
-  position: absolute;
-  right: 10px;  
+let Collapse = styled.img`  
 `
 
 let Expand = styled.img`
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
 `
 
 let ActiveIndicator = styled.img`
@@ -127,7 +126,7 @@ const SettingsSidebarItem = ({ destination, title, icon, sidebarOpen, href }) =>
 let StyledLayout = styled.div`
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   flex-direction: row;
 `;
 
@@ -150,6 +149,11 @@ let Sidebar = styled.div`
   }
 `;
 
+let SidebarContent = styled.div`
+  position: fixed;
+  height: 100%;
+`
+
 const SidebarLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -164,18 +168,18 @@ const SidebarLayout = ({ children }) => {
       <Sidebar
         sidebarOpen={sidebarOpen}
       >
-        <Hamburger onClick={ handleToggleSidebar }>
-          {
-            sidebarOpen ? <Collapse src={CollapseIcon}/> : <Expand src={ExpandIcon}/>
-          }
-        </Hamburger>
+        <SidebarContent>
+          <Hamburger onClick={ handleToggleSidebar } sidebarOpen={ sidebarOpen }>
+            {
+              sidebarOpen ? <Collapse src={CollapseIcon}/> : <Expand src={ExpandIcon}/>
+            }
+          </Hamburger>
 
-        <SidebarItemList>
-          <SidebarItem destination='/dashboard/menu' title='Menu Management' icon={ MenuIcon } sidebarOpen={ sidebarOpen } href={ href }/>
-        </SidebarItemList>
-        <SettingsSidebarItem destination='/dashboard/personal' title='Settings' icon={ SettingsIcon } sidebarOpen={ sidebarOpen } href={ href }/>
-        
-        
+          <SidebarItemList>
+            <SidebarItem destination='/dashboard/menu' title='Menu Management' icon={ MenuIcon } sidebarOpen={ sidebarOpen } href={ href }/>
+          </SidebarItemList>
+          <SettingsSidebarItem destination='/dashboard/settings' title='Settings' icon={ SettingsIcon } sidebarOpen={ sidebarOpen } href={ href }/>
+        </SidebarContent>
       </Sidebar>
       <PageContent
         sidebarOpen={sidebarOpen}
