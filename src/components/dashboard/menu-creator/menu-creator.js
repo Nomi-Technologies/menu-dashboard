@@ -20,6 +20,7 @@ let StyledMenuCreator = styled.div`
         letter-spacing: 0.1em;
         text-transform: uppercase;
         font-feature-settings: 'cpsp' on;
+        z-index: 4;
     }
 `
 
