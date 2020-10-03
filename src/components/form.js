@@ -66,10 +66,18 @@ let StyledInput = styled.input`
 
 let FormContainer = styled.div`
     position: relative;
-    margin: 0 auto;
-    width: 80%;
-    height: 100%;
+    margin-left: 96px;
+    button {
+        cursor: pointer;
+    }
 
+    button:focus {
+        outline: none;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
 `
 
 let FormRow = styled.div`
@@ -111,6 +119,20 @@ let StyledNextButton = styled.button`
     }
 `
 
+let StyledSaveButton = styled.button`
+  display: inline-block;
+  background-color: ${ ({ save }) => save ? "#f2994a" : "white" };
+  color: ${ ({ save }) => save ? "white" : "#f2994a" };
+  transition: background-color 0.4s ease;
+  border-radius: 8px;
+  border: 2px solid #f2994a;
+  font-size: 18px;
+  width: 200px;
+  padding: 10px 0;
+  margin-top: 20px;
+
+`
+
 let NextButton = (props) => (
     <StyledNextButton onClick={props.onClick}>
         NEXT
@@ -122,6 +144,12 @@ let DoneButton = (props) => (
     <StyledNextButton onClick={props.onClick}>
         DONE
     </StyledNextButton>
+)
+
+let SaveButton = (props) => (
+    <StyledSaveButton save={ props.save } onClick={ props.onClick }>
+        { props.save ? "Changes Saved" : "Save" }
+    </StyledSaveButton>
 )
 
 let StyledPrevButton = styled.button`
@@ -196,10 +224,11 @@ export {
     FormTitle,
     FormSubtitle,
     FormRow,
+    FormError,
     NextButton,
     PrevButton,
     DoneButton,
+    SaveButton,
     FormControls,
-    FormError,
     PopupFormTitle
 }
