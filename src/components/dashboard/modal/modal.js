@@ -51,7 +51,7 @@ const ModalBackground = styled.div`
     width: 100%;
     height: 100%;
     background-color: rgba(10, 10, 10, 0.5);
-    z-index: 1;
+    z-index: 7;
 `
 
 const FormTitle = styled.div`
