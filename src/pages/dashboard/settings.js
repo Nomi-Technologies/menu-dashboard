@@ -31,6 +31,8 @@ let styles = {
 
 
 const Wrapper = styled.div`
+  margin: 0 auto;
+  margin-right: 60px;
   margin-bottom: 60px;
 `
 
