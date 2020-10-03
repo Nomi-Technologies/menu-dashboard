@@ -6,15 +6,15 @@ import { FormInput, FormContainer, FormRow, SaveButton } from "../../form"
 import Client from "../../../util/client"
 
 const PopulateRestaurant = () => {
-  const [restaurant, setRestaurant] = useState(false)
-  const [address, setAddress] = useState(false)
-  const [city, setCity] = useState(false)
-  const [state, setState] = useState(false)
-  const [zip, setZip] = useState(false)
-  const [phone, setPhone] = useState(false)
-  const [website, setWebsite] = useState(false)
+  const [restaurant, setRestaurant] = useState("")
+  const [address, setAddress] = useState("")
+  const [city, setCity] = useState("")
+  const [state, setState] = useState("")
+  const [zip, setZip] = useState("")
+  const [phone, setPhone] = useState("")
+  const [website, setWebsite] = useState("")
 
-  const [id, setId] = useState(false)
+  const [id, setId] = useState()
   const [save, setSave] = useState(false)
 
   useEffect(() => {
