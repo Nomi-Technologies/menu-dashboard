@@ -5,6 +5,7 @@ import HamburgerMenu from 'react-hamburger-menu';
 import Client from "../util/client";
 import { QRCodeModal } from "../components/dashboard/modal/qr-code"
 import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
+import { DeleteConfirmationModal } from "../components/dashboard/modal/delete"
 
 const FloatingMenuButton = styled.div`
     position: absolute;
@@ -68,6 +69,7 @@ const FloatingMenu = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showQRCodeModal, setShowQRCodeModal] = useState(false);
     const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
     
@@ -86,15 +88,22 @@ const FloatingMenu = (props) => {
     }
 
     async function deleteMenu(id) {
-        await Client.deleteMenu(id)
         onClickMenu();
-        props.updateMenuSelection();
+        setShowDeleteConfirmationModal(true); // show delete confirmation modal
     }
 
     async function duplicateMenu(id) {
         const res = await Client.duplicateMenu(id);
         onClickMenu();
         props.updateMenuSelection(res.data.menu);
+    }
+
+    async function closeDeleteConfirmation(shouldDelete) {
+        if(shouldDelete) {
+            await Client.deleteMenu(props.menuId);
+            props.updateMenuSelection();
+        }
+        setShowDeleteConfirmationModal(false)
     }
     
     return (
@@ -138,6 +147,11 @@ const FloatingMenu = (props) => {
                         closeForm={() => setShowQRCodeModal(false)}
                     />
                 ) : <></>
+            }
+            {
+                showDeleteConfirmationModal ? (
+                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation}/>
+                ) : null
             }
         </>
     )
