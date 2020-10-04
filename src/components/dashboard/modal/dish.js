@@ -184,13 +184,21 @@ const EditDishModal = props => {
   const [description, setDescription] = useState(props.dish.description)
   const [price, setPrice] = useState(props.dish.price)
   const [categoryId, setCategoryId] = useState(props.dish.categoryId)
-  const [dishTags, setDishTags] = useState(props.dish.Tags)
+  const [dishTags, setDishTags] = useState([])
   const [categories, setCategories] = useState([])
 
   useEffect(() => {
       Client.getAllCategoriesByMenu(props.menuId).then(response => {
           setCategories(response.data)
       })
+
+      let tagIds = []
+      props.dish.Tags.forEach((tag) => {
+        tagIds.push(tag.id);
+      })
+
+      setDishTags(tagIds)
+
   }, [props.menuId])
 
   const updateDish = () => {
