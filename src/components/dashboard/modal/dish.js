@@ -207,6 +207,7 @@ const EditDishModal = props => {
       description: description,
       categoryId: categoryId,
       dishTags: dishTags,
+      price: price,
       menuId: props.menuId,
     }
     if (name !== "" && categoryId !== 0) {

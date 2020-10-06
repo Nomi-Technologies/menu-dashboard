@@ -122,7 +122,7 @@ const FloatingMenu = (props) => {
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick={() => setShowQRCodeModal(true)}
-                    >Create QR Code</OrangeTextMenuItem>
+                    >View QR Code</OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
                 </Menu>
