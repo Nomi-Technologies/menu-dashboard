@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from "styled-components"
 
 import Client from '../../../util/client'
-import { MenuContext } from "../../../context/menu-context"
+import { MenuContext } from "../menu-context"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"

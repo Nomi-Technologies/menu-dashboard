@@ -13,7 +13,7 @@ import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creato
 import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
 import TopBar from "../../components/top-bar"
 
-import { MenuContext } from "../../context/menu-context"
+import { MenuContext } from "../../components/dashboard/menu-context"
 
 import Client from "../../util/client"
 
