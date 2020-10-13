@@ -85,31 +85,31 @@ const Review = (props) =>
                     <InfoBox>
                         <p className = 'infoTitle'>Admin Info</p>
                         <p>
-                            { contactInfo.firstName } { contactInfo.lastName }
+                            { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
                         </p>
                         <p>
-                            { contactInfo.email }
+                            { props.location.state.contactInfo.email }
                         </p>
                         <p>
-                            { contactInfo.phone }
+                            { props.location.state.contactInfo.phone }
                         </p>
                     </InfoBox>
                     <InfoBox>
                         <p className = 'infoTitle'>Restaurant Info</p>
                         <p>
-                            { restaurantDetails.name }
+                            { props.location.state.restaurantDetails.name }
                         </p>
                         <p>
-                            { restaurantDetails.streetAddress }
+                            { props.location.state.restaurantDetails.streetAddress }
                         </p>
                         <p>
-                            { restaurantDetails.city } { restaurantDetails.state } { restaurantDetails.zip }
+                            { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
                         </p>
                         <p>
-                            { restaurantDetails.phone }
+                            { props.location.state.restaurantDetails.phone }
                         </p>
                         <p>
-                            { restaurantDetails.yelp }
+                            { props.location.state.restaurantDetails.yelp }
                         </p>
                     </InfoBox> 
                     </>
