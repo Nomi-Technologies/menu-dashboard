@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Client from '../../../util/client'
 
 import styled from "styled-components"
-// import ArrowIcon from "../../../assets/img/arrow_icon.png"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"

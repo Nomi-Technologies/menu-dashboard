@@ -2,9 +2,8 @@ import { Link } from "gatsby"
 import React, { useState } from 'react';
 
 import styled from "styled-components"
-import { FormButton, ButtonRow } from "./buttons"
 import { navigate } from "@reach/router"
-import { FormInput } from "../components/form"
+import { FormInput, FormButton, ButtonRow } from "../components/form"
 import Client from "../util/client"
 import { saveUserToken } from "../util/auth"
 import useEventListener from '@use-it/event-listener'

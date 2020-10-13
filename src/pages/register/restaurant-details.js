@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styled from "styled-components"
-import Layout from "../../components/layout"
+import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from 'gatsby';
-import { Container, Column } from "../../components/grid"
-import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, PrevButton } from "../../components/form"
+import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, FormButton } from "../../components/form"
 import useEventListener from '@use-it/event-listener'
-// import { RestaurantProgress } from "../../components/registration-progress"
-
-let SideBar = styled(Column)`
-    background-color: #F2994A;
-`
-
-let FormColumn = styled(Column)`
-    background-color: #F7F8FA;
-`
 
 const RestaurantDetails = (props) =>
 {
@@ -53,39 +42,29 @@ const RestaurantDetails = (props) =>
     useEventListener('keydown', handler);
 
     return (
-        <Layout>
-            <Container>
-                <SideBar width='33%' style={{ "background-color": "white"}}>
-                    {/* TODO: Add restaurant progress later */}
-                    {/* <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress> */}
-                </SideBar>
-                <FormColumn>
-                    <FormContainer>
-                        <FormTitle>Restaurant Details</FormTitle>
-                        <FormSubtitle>Details about your restaurant's location and services</FormSubtitle>
-                        <FormRow>
-                            <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}}></FormInput>
-                        </FormRow>
-                        <FormRow>
-                            <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}}></FormInput>
-                        </FormRow>
-                        <FormRow>
-                            <FormInput width='40%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}}></FormInput>
-                            <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}}></FormInput>
-                            <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}}></FormInput>
-                        </FormRow>
-                        <FormRow>
-                            <FormInput width='45%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}}></FormInput>
-                            <FormInput width='45%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}}></FormInput>
-                        </FormRow>
-                        <FormControls>
-                            <PrevButton destination='contact-info'/>
-                            <NextButton onClick={ validateForm }/>
-                        </FormControls>
-                    </FormContainer>
-                </FormColumn>
-            </Container>
-        </Layout>
+        <RegisterLayout>
+            <FormTitle>Restaurant Details</FormTitle>
+            <FormSubtitle>Details about your restaurant's location and services</FormSubtitle>
+            <FormRow>
+                <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}}></FormInput>
+            </FormRow>
+            <FormRow>
+                <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}}></FormInput>
+            </FormRow>
+            <FormRow>
+                <FormInput width='50%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}}></FormInput>
+                <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}}></FormInput>
+                <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}}></FormInput>
+            </FormRow>
+            <FormRow>
+                <FormInput width='48%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}}></FormInput>
+                <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}}></FormInput>
+            </FormRow>
+            <FormControls>
+                <FormButton destination='contact-info' text="Previous" theme="light"/>
+                <FormButton onClick={ validateForm } text="Next"/>
+            </FormControls>
+        </RegisterLayout>
     )
 }
 

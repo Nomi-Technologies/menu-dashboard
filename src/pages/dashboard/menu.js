@@ -4,7 +4,7 @@ import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
 import styled from "styled-components"
 
 import { Container, Column } from "../../components/grid"
-import { FloatingMenu } from "../../components/floating-menu"
+import { FloatingMenu } from "../../components/dashboard/floating-menu"
 import { FloatingMenuButton } from "../../components/floating-menu-button"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"

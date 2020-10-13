@@ -1,4 +1,4 @@
-import { FormButton } from "../../buttons"
+import { FormButton } from "../../form"
 import React from 'react';
 import styled from 'styled-components'
 
