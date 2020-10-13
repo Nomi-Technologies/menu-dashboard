@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import styled from "styled-components"
 
 import Client from '../../../util/client'
-
-import styled from "styled-components"
-// import ArrowIcon from "../../../assets/img/arrow_icon.png"
+import { MenuContext } from "../../../context/menu-context"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"
@@ -104,24 +103,23 @@ function useAsyncState(initialValue) {
   }
 
 // Overall component which renders the table as a list of menu categories
-const MenuTable = (props) => {
-    // const [menuData, setMenuData] = useState(props.menuData)
-    let menuData = props.menuData
-    let updateMenu = props.updateMenu
+const MenuTable = () => {
+    const menuContext = useContext(MenuContext)
+    let menuData = menuContext.menuData
+    let updateMenu = menuContext.updateMenu
+    
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({})
-
     const [selectedDish, setSelectedDish] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
-
     const [searchResults, setSearchResults] = useState([]);
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
-    const [isSearching, setIsSearching] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);    
     
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
@@ -213,20 +211,21 @@ const MenuTable = (props) => {
                     No items found
                 </Table.TableCell>
             );
+        } else {
+            return (
+                <>
+                    {
+                        searchResults.map((item, index) => (
+                            <Table.ItemRow key={index} item={item} updateMenu={updateMenu} 
+                                toggleEditDish={toggleEditDishForm} 
+                                openDeleteConfirmation={openDeleteConfirmation}
+                                toggleEditCategory={toggleEditCategoryForm}
+                            />
+                        ))
+                    }
+                </>
+            );
         }
-        return (
-            <>
-                {
-                    searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} 
-                            toggleEditDish={toggleEditDishForm} 
-                            openDeleteConfirmation={openDeleteConfirmation}
-                            toggleEditCategory={toggleEditCategoryForm}
-                        />
-                    ))
-                }
-            </>
-        );
     }
 
     const handleSearch = (e) => {
@@ -236,13 +235,13 @@ const MenuTable = (props) => {
         if (searchBoxValue.trim() === '') {
             setIsSearching(false);
         } else {
-            Client.searchDishes(searchBoxValue, props.menuId)
+            Client.searchDishes(searchBoxValue, menuContext.menuId)
             .then((res) => {
                 setSearchResults(res.data);
                 setIsSearching(true);
             })
             .catch((err) => {
-                console.error("error searching for dishes");
+                console.error("error searching for dishes: " + err);
             })
         }
     }
@@ -276,24 +275,24 @@ const MenuTable = (props) => {
             </MenuControls>
             {
                 showNewDishForm ? (
-                    <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                    <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={menuContext.menuId}/>
                 ) : null
             }
             {
                 showNewCategoryForm ? (
-                    <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                    <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={menuContext.menuId}/>
                 ) : null
             }
             {
                 showEditDishForm ? (
                     <EditDishModal toggleForm={toggleEditDishForm} updateMenu={updateMenu}
-                        dish={selectedDish} menuId={props.menuId}/>
+                        dish={selectedDish} menuId={menuContext.menuId}/>
                 ) : null
             }
             {
                 showEditCategoryForm ? (
                     <EditCategoryModal toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
-                        category={selectedCategory} menuId={props.menuId}/>
+                        category={selectedCategory} menuId={menuContext.menuId}/>
                 ) : null
             }
             {

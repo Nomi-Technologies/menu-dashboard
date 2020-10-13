@@ -13,6 +13,8 @@ import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creato
 import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/first-menu-setup"
 import TopBar from "../../components/top-bar"
 
+import { MenuContext } from "../../context/menu-context"
+
 import Client from "../../util/client"
 
 let MenuContainer = styled.div`
@@ -62,33 +64,42 @@ const MenuPage = () => {
         setHasMenu(hasMenu)
     }
 
+    let context = {
+        menuData: menuData,
+        menuId: menuId,
+        menuName: menuName,
+        updateMenu: updateMenu
+    }
+
     return (
-        <SidebarLayout>
-            <Container>
-                <Column>
-                {
-                    hasMenu ? (
-                        <>
-                            <TopBar title="Menu Management">
-                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
-                            </TopBar>
-                            <MenuContainer>  
-                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
-                                <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
-                                <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+        <MenuContext.Provider value={ context }>
+            <SidebarLayout>
+                <Container>
+                    <Column>
+                    {
+                        hasMenu ? (
+                            <>
+                                <TopBar title="Menu Management">
+                                    <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
+                                        updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
+                                </TopBar>
+                                <MenuContainer>  
+                                    <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
+                                    <MenuTable/>
+                                    <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                </MenuContainer>
+                            </>
+                        ) : (
+                            <MenuContainer>
+                                <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                                <FirstMenuSetup />
                             </MenuContainer>
-                        </>
-                    ) : (
-                        <MenuContainer>
-                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            <FirstMenuSetup />
-                        </MenuContainer>
-                    )
-                }
-                </Column>
-            </Container>
-        </SidebarLayout>
+                        )
+                    }
+                    </Column>
+                </Container>
+            </SidebarLayout>
+        </MenuContext.Provider>
     )
 }
 
