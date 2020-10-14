@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 
 import RegisterLayout from "../../components/register/register-layout"
@@ -7,6 +7,7 @@ import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
 import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
 import useEventListener from '@use-it/event-listener'
+import RegisterContext from "../../components/register/register-context"
 
 let InfoBox = styled.div`
     background-color: white;
@@ -33,27 +34,30 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    if(props.location.state === null || props.location.state.contactInfo === null) {
+    const registerContext = useContext(RegisterContext)
+    const contactInfo = registerContext.registrationData.contactInfo
+    const restaurantDetails = registerContext.registrationData.restaurantDetails
+
+    if(contactInfo == null) {
         navigate('/register/contact-info')
     } else {
-        if(props.location.state === null || props.location.state.restaurantDetails === null) {
+        if(restaurantDetails == null) {
             navigate('/register/restaurant-details')
         }
     }
 
-
     const submitRegistration = () => {
-        Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
+        Client.registerRestaurant(restaurantDetails).then((response) => {
             const restaurantId = response.data.id
             const userData = { 
-                ...props.location.state.contactInfo,
+                ...contactInfo,
                 restaurantId: restaurantId,
                 role: 1,
             }
 
             // register user
             Client.registerUser(userData).then(() => {
-                let { email, password } = props.location.state.contactInfo
+                let { email, password } = contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
                     saveUserToken(response.data['token'])
@@ -81,31 +85,31 @@ const Review = (props) =>
                     <InfoBox>
                         <p className = 'infoTitle'>Admin Info</p>
                         <p>
-                            { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
+                            { contactInfo.firstName } { contactInfo.lastName }
                         </p>
                         <p>
-                            { props.location.state.contactInfo.email }
+                            { contactInfo.email }
                         </p>
                         <p>
-                            { props.location.state.contactInfo.phone }
+                            { contactInfo.phone }
                         </p>
                     </InfoBox>
                     <InfoBox>
                         <p className = 'infoTitle'>Restaurant Info</p>
                         <p>
-                            { props.location.state.restaurantDetails.name }
+                            { restaurantDetails.name }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.streetAddress }
+                            { restaurantDetails.streetAddress }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
+                            { restaurantDetails.city } { restaurantDetails.state } { restaurantDetails.zip }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.phone }
+                            { restaurantDetails.phone }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.yelp }
+                            { restaurantDetails.yelp }
                         </p>
                     </InfoBox> 
                     </>

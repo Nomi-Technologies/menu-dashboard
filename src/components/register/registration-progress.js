@@ -62,7 +62,6 @@ let StyledStep = styled.div`
 `
 
 let Step = ({ idx, label, status }) => {
-    console.log(`${label} - ${status}`)
     return(
         <StyledStep status={ status }>
             { status === 'completed' ? 

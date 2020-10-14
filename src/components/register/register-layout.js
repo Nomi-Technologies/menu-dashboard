@@ -3,7 +3,9 @@ import styled from "styled-components"
 import { Container, Column } from "../../components/grid"
 import { RegistrationProgress } from "./registration-progress"
 import { FormContainer } from "../form"
-import { useLocation, navigate } from "@reach/router"
+import { useLocation, } from "@reach/router"
+import { RegisterContext } from "./register-context"
+
 
 const StyledRegisterLayout = styled.div`
 
@@ -20,9 +22,8 @@ let FormColumn = styled(Column)`
 `
 
 const RegisterLayout = ({ children }) => {
-    const [registrationData, setRegistrationData] = useState({})
-
     const { href } = useLocation()
+    const [registrationData, setRegistrationData] = useState({})
 
     const getCurrentIndex = () => {
         if(href.includes('contact-info')) {
@@ -34,6 +35,18 @@ const RegisterLayout = ({ children }) => {
         }
     }
 
+    const updateRegistrationData = (newFields) => {
+        setRegistrationData({
+            ...registrationData,
+            ...newFields
+        })
+    }
+
+    const registerContext = {
+        registrationData: registrationData,
+        updateRegistrationData: updateRegistrationData
+    }
+
     return (
         <StyledRegisterLayout>
             <Container>
@@ -42,11 +55,14 @@ const RegisterLayout = ({ children }) => {
                 </SideBar>
                 <FormColumn>
                     <FormContainer>
-                        { children }
+                        <RegisterContext.Provider value={ registerContext }>
+                            { children }
+                        </RegisterContext.Provider>
                     </FormContainer>
                 </FormColumn>
             </Container>
         </StyledRegisterLayout>
+        
     )
 }
 

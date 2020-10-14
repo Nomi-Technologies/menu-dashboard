@@ -3,6 +3,9 @@ import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from 'gatsby';
 import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, FormButton } from "../../components/form"
 import useEventListener from '@use-it/event-listener'
+import useEventListener from '@use-it/event-listener'
+import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, FormButton } from "../../components/form"
+
 
 const RestaurantDetails = (props) =>
 {

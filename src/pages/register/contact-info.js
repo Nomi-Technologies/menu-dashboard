@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import RegisterLayout from "../../components/register/register-layout"
 import Client from '../../util/client'
 import { FormTitle, FormSubtitle, FormRow, FormButton, FormControls, FormError, FormInput } from "../../components/form"
 import { navigate } from 'gatsby';
 import useEventListener from '@use-it/event-listener'
+import { RegisterContext } from "../../components/register/register-context"
 
 const ContactInfo = () => 
 {
@@ -16,6 +17,9 @@ const ContactInfo = () =>
     });
 
     const [error, setError] = useState("")
+
+    const registerContext = useContext(RegisterContext)
+    console.log(registerContext)
 
     const validateForm = () => {
         // todo more information
@@ -33,7 +37,8 @@ const ContactInfo = () =>
         else {
             Client.checkEmail(contactInfo.email).then((response) => {
                 if(!response.data.taken) {
-                    navigate('/register/restaurant-details', { state: { contactInfo: contactInfo }})
+                    registerContext.updateRegistrationData({ contactInfo: contactInfo })
+                    navigate('/register/restaurant-details')
                 } else {
                     if(response.data.taken) {
                         setError("Error: Email taken, please choose a different email")
