@@ -93,19 +93,28 @@ class MenuSelector extends React.Component {
         this.props.updateMenuSelection(item)
     }
 
+    viewAllMenus() {
+        this.setState({selectedMenuId: 'all-menus'});
+        this.props.updateMenuSelection('all-menus');
+    }
+
     render() {
         return (
             <StyledMenuSelector>
                 <Menus>
+                    <MenuTab onClick={()=>this.viewAllMenus()} selected={'all-menus'===this.state.selectedMenuId}>
+                        See All Menus
+                        { 'all-menus'===this.state.selectedMenuId ? <ActiveIndicator/> : "" }
+                    </MenuTab>
                     {
                         this.state.data.map((item) => (
-                            <>
-                                <MenuTab key={item.id} onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
+                            <React.Fragment key={item.id}>
+                                <MenuTab onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
                                     {item.name}
                                     { item.id===this.state.selectedMenuId ? <ActiveIndicator/> : "" }
                                 </MenuTab>
                                 
-                            </>
+                            </React.Fragment>
                         ))
                     }
                     <MenuCreator className="menu-creator" updateMenuSelection={this.props.updateMenuSelection} updateHasMenu={this.props.updateHasMenu}/>
