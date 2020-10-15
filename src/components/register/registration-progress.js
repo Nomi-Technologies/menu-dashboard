@@ -62,10 +62,6 @@ let StyledStep = styled.div`
 `
 
 let Step = ({ idx, label, status }) => {
-<<<<<<< HEAD
-=======
-    console.log(`${label} - ${status}`)
->>>>>>> 844bac7... redo registration flow
     return(
         <StyledStep status={ status }>
             { status === 'completed' ? 
