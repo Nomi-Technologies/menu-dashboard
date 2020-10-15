@@ -17,10 +17,9 @@ const ContactInfo = () =>
     });
 
     const [error, setError] = useState("")
-
     const registerContext = useContext(RegisterContext)
     console.log(registerContext)
-
+    
     const validateForm = () => {
         // todo more information
         let invalid = false

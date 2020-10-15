@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import styled from "styled-components"
 import { Container, Column } from "../../components/grid"
+import { RegisterContext } from "./register-context"
 import { RegistrationProgress } from "./registration-progress"
 import { FormContainer } from "../form"
 import { useLocation, } from "@reach/router"
-import { RegisterContext } from "./register-context"
-
 
 const StyledRegisterLayout = styled.div`
 
@@ -46,6 +45,8 @@ const RegisterLayout = ({ children }) => {
         registrationData: registrationData,
         updateRegistrationData: updateRegistrationData
     }
+
+    console.log(registerContext)
 
     return (
         <StyledRegisterLayout>
