@@ -34,30 +34,27 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    const registerContext = useContext(RegisterContext)
-    const contactInfo = registerContext.registrationData.contactInfo
-    const restaurantDetails = registerContext.registrationData.restaurantDetails
-
-    if(contactInfo == null) {
+    if(props.location.state == null || props.location.state.contactInfo == null) {
         navigate('/register/contact-info')
     } else {
-        if(restaurantDetails == null) {
+        if(props.location.state == null || props.location.state.restaurantDetails == null) {
             navigate('/register/restaurant-details')
         }
     }
 
+
     const submitRegistration = () => {
-        Client.registerRestaurant(restaurantDetails).then((response) => {
+        Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
             const restaurantId = response.data.id
             const userData = { 
-                ...contactInfo,
+                ...props.location.state.contactInfo,
                 restaurantId: restaurantId,
                 role: 1,
             }
 
             // register user
             Client.registerUser(userData).then(() => {
-                let { email, password } = contactInfo
+                let { email, password } = props.location.state.contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
                     saveUserToken(response.data['token'])

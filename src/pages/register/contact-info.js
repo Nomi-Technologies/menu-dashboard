@@ -17,9 +17,7 @@ const ContactInfo = () =>
     });
 
     const [error, setError] = useState("")
-    const registerContext = useContext(RegisterContext)
-    console.log(registerContext)
-    
+
     const validateForm = () => {
         // todo more information
         let invalid = false
@@ -36,8 +34,7 @@ const ContactInfo = () =>
         else {
             Client.checkEmail(contactInfo.email).then((response) => {
                 if(!response.data.taken) {
-                    registerContext.updateRegistrationData({ contactInfo: contactInfo })
-                    navigate('/register/restaurant-details')
+                    navigate('/register/restaurant-details', { state: { contactInfo: contactInfo }})
                 } else {
                     if(response.data.taken) {
                         setError("Error: Email taken, please choose a different email")
