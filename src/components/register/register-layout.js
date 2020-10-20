@@ -25,13 +25,16 @@ const RegisterLayout = ({ children }) => {
     const { href } = useLocation()
 
     const getCurrentIndex = () => {
-        if(href.includes('contact-info')) {
-            return 1
-        } else if (href.includes('restaurant-details')) {
-            return 2
-        } else {
-            return 3
-        }
+        if(href) {
+            if(href.includes('contact-info')) {
+                return 1
+            } else if (href.includes('restaurant-details')) {
+                return 2
+            } else {
+                return 3
+            }
+        }    
+        return -1
     }
 
     return (
