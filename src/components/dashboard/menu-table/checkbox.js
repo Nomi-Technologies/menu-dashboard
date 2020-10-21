@@ -15,7 +15,7 @@ const Checkbox = ({ handleCheckboxChange, item }) => (
     <label>
       <StyledInput
         type="checkbox"
-        // onChange={() => handleCheckboxChange(item.id)}
+        onChange={() => handleCheckboxChange(item.id)}
         className="form-check-input"
       />
     </label>

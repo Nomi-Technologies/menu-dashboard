@@ -211,33 +211,28 @@ const MenuTable = (props) => {
     }
 
     const handleCheckboxChange = (itemId) => {
-      let newSelectedDishes = selectedDishes;
+        let newSelectedDishes = selectedDishes;
 
-      if (selectedDishes.includes(itemId)) {
-        var index = newSelectedDishes.indexOf(itemId);
-        newSelectedDishes.splice(index, 1);
-      } else {
-        newSelectedDishes.push(itemId);
-      }
+        if (selectedDishes.includes(itemId)) {
+            var index = newSelectedDishes.indexOf(itemId);
+            newSelectedDishes.splice(index, 1);
+        } else {
+            newSelectedDishes.push(itemId);
+        }
 
-      console.log(newSelectedDishes);
-      setSelectedDishes(newSelectedDishes);
+        console.log(newSelectedDishes);
+        setSelectedDishes(newSelectedDishes);
     }
 
     const openDeleteConfirmation = (id, type) => {
-        console.log(type);
-        console.log(id);
         if (!showDeleteConfirmation) {
             closeAllForms() //if about to open form
 
             if (type === "dishes") {
-              if (id.length > 0) {
                 setSelectedDishes(id).then(() => {
                     setDeleteConfirmation(true)
                 })
-              }
-
-              setToDeleteType("multiple");
+                setToDeleteType("multiple");
             } else {
               setToDelete({id: id, type: type}).then(() => {
                   setDeleteConfirmation(true)
@@ -313,6 +308,8 @@ const MenuTable = (props) => {
                             toggleEditCategory={toggleEditCategoryForm}
                             toggleEditDish={toggleEditDishForm}
                             openDeleteConfirmation={openDeleteConfirmation}
+                            handleCheckboxChange={handleCheckboxChange}
+                            showEditMode={showEditMode}
                         />
                     )) : ''
                 }
@@ -390,7 +387,7 @@ const MenuTable = (props) => {
                     <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
                     <CopyNewMenuButton onClick={toggleCopyMenuForm} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
                     <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
-                    <DeleteButton onClick={() => openDeleteConfirmation([{}, {}], "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
+                    <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
                 </div>
             </MenuControls>
             {

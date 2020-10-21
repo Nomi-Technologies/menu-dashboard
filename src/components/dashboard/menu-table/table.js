@@ -250,7 +250,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation }) => {
+const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -282,8 +282,16 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                 {
                     category ?
                         category.Dishes.map((item, index) => (
-                            <ItemRow key={index} item={item} updateMenu={updateMenu}
-                                catId={ category.id } toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation} />
+                            <ItemRow 
+                                key={index} 
+                                item={item} 
+                                updateMenu={updateMenu}
+                                catId={ category.id } 
+                                toggleEditDish={toggleEditDish} 
+                                openDeleteConfirmation={openDeleteConfirmation} 
+                                handleCheckboxChange={handleCheckboxChange}
+                                showEditMode={showEditMode}    
+                            />
                         )) :
                         ''
                 }
