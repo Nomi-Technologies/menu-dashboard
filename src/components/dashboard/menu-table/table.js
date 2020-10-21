@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Checkbox from "./Checkbox";
+
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
 
@@ -99,17 +101,27 @@ const StyledItemRow = styled(TableRow)`
 
     .item-price {
         flex-basis: 10%;
-    } 
+    }
 
-    .item-tags { 
+    .item-tags {
         flex-basis: 40%;
     }
 
 `
 
-const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
+const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode }) => {
+    console.log("ItemRow");
+    console.log(showEditMode);
     return (
         <StyledItemRow className='opened'>
+          {
+            showEditMode ? <Checkbox
+              handleCheckboxChange={handleCheckboxChange}
+              item={item}
+              key={item.id}
+            />
+            : ""
+          }
             <TableCell className='item-name'>
                 <p>{item.name}</p>
             </TableCell>
@@ -147,7 +159,7 @@ const HeaderRow = styled(TableRow)`
         flex-basis: 35%;
     }
 
-    .price { 
+    .price {
         flex-basis: 10%;
     }
 
@@ -161,7 +173,7 @@ const CategoryHeaderRow = styled(TableRow)`
     color: black;
     cursor: pointer;
 
-    .collapse-icon { 
+    .collapse-icon {
         position: absolute;
         width: 12px;
         height: 6px;
@@ -178,7 +190,7 @@ const CategoryHeaderRow = styled(TableRow)`
     .category-description {
         flex-basis: 65%;
         box-sizing: border-box;
-        
+
 
         p {
             padding-right: 50%;

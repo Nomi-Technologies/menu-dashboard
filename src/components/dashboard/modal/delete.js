@@ -14,6 +14,18 @@ let StyledDeleteConfirmation = styled.div`
     }
 `
 
+let NoneSelectedFormMessage = styled(FormMessage)`
+  display: ${ props => ((props.type == "multiple" && !props.itemIds) ? "block" : "none")};
+`
+
+let SingleFormMessage = styled(FormMessage)`
+  display: ${ props => (props.type == "multiple" ? "none" : "block")};
+`
+
+let MultipleFormMessage = styled(FormMessage)`
+  display: ${ props => ((props.type == "multiple" && props.itemIds) ? "block" : "none")};
+`
+
 const DeleteConfirmationModal = ({ props, closeForm }) => {
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
@@ -26,24 +38,30 @@ const DeleteConfirmationModal = ({ props, closeForm }) => {
     }
 
     useEventListener('keydown', handler);
-    return (
-        
-    <StyledDeleteConfirmation>
-        <ModalBackground />
-        <Modal>
-            <Container>
-                <FormTitle>Delete Confirmation</FormTitle>
-                <FormMessage>
-                    Are you sure you want to delete this item?    
-                </FormMessage>
-                <ButtonRow>
-                    <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
-                    <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
-                </ButtonRow>
-            </Container>
+    return (      
+      <StyledDeleteConfirmation>
+          <ModalBackground />
+          <Modal>
+              <Container>
+                  <FormTitle>Delete Confirmation</FormTitle>
+                  <NoneSelectedFormMessage type={type}>
+                    There are currently no items selected to delete.
+                  </NoneSelectedFormMessage>
+                  <SingleFormMessage type={type}>
+                      Are you sure you want to delete this item?
+                  </SingleFormMessage>
+                  <MultipleFormMessage type={type}>
+                      Are you sure you want to delete ({itemIds.length}) items?
+                  </MultipleFormMessage>
+                  <ButtonRow>
+                      <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
+                      <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
 
-        </Modal>
-    </StyledDeleteConfirmation>
+                  </ButtonRow>
+              </Container>
+
+          </Modal>
+      </StyledDeleteConfirmation>
     )
 }
 

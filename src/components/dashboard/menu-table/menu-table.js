@@ -8,6 +8,7 @@ import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"
 import { NewDishModal, EditDishModal } from "../modal/dish"
 import { NewCategoryModal, EditCategoryModal } from "../modal/category"
+import { CopyMenuModal } from "../modal/copymenu"
 
 import * as Table from "./table"
 
@@ -63,26 +64,6 @@ const MenuControls = styled.div`
         text-align: center;
         font-size: 14px;
 
-        
-
-        .new-category {
-            border: 2px solid #F3A35C;
-            padding: 10px 20px;
-            color: #F3A35C;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .new-dish {
-            background-color: #F3A35C;
-            padding: 10px 20px;
-            text-align: center;
-            border: 2px solid #F3A35C;
-            border-radius: 8px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-
         .upload-csv {
             border: 2px solid #F3A35C;
             padding: 10px 20px;
@@ -92,6 +73,76 @@ const MenuControls = styled.div`
             margin-left: 10px;
         }
     }
+`
+
+const EditModeButton = styled.div`
+  display: ${ props => (props.showEditMode ? "none" : "block")};
+  background: #628DEB;
+  box-shadow: 0px 10px 20px rgba(83, 131, 236, 0.2);
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 10;
+  width: 50px;
+`
+
+const EditModeDoneButton = styled.div`
+  display: ${ props => (props.showEditMode ? "block" : "none")};
+  background: #628DEB;
+  box-shadow: 0px 10px 20px rgba(83, 131, 236, 0.2);
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 10;
+  width: 50px;
+`
+
+const CopyNewMenuButton = styled.div`
+  display: ${ props => (props.showEditMode ? "block" : "none")};
+  background-color: #F3A35C;
+  padding: 10px 20px;
+  text-align: center;
+  border: 2px solid #F3A35C;
+  border-radius: 6px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  width: 200px;
+`
+
+const NewCategoryButton = styled.div`
+  display: ${ props => (props.showEditMode ? "none" : "block")};
+  background-color: #F3A35C;
+  padding: 10px 20px;
+  text-align: center;
+  border: 2px solid #F3A35C;
+  border-radius: 6px;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  width: 200px;
+`
+
+const NewDishButton = styled.div`
+  display: ${ props => (props.showEditMode ? "none" : "block")};
+  border: 2px solid #F3A35C;
+  padding: 10px 20px;
+  color: #F3A35C;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100px;
+`
+
+const DeleteButton = styled.div`
+  display: ${ props => (props.showEditMode ? "block" : "none")};
+  border: 2px solid #FA3838;
+  padding: 10px 20px;
+  background: #FA3838;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100px;
 `
 
 function useAsyncState(initialValue) {
@@ -111,19 +162,23 @@ const MenuTable = (props) => {
     let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
+    const [showCopyMenuForm, setCopyMenuForm] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
+    const [showEditMode, setEditMode] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
-    const [toDelete, setToDelete] = useAsyncState({})
+    const [toDelete, setToDelete] = useAsyncState({});
+    const [selectedDishes, setSelectedDishes] = useAsyncState([]);
+    const [toDeleteType, setToDeleteType] = useAsyncState('');
 
-    const [selectedDish, setSelectedDish] = useState()
-    const [selectedCategory, setSelectedCategory] = useState()
+    const [selectedDish, setSelectedDish] = useState();
+    const [selectedCategory, setSelectedCategory] = useState();
 
     const [searchResults, setSearchResults] = useState([]);
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    
+
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
         setNewDishForm(!showNewDishForm)
@@ -132,6 +187,11 @@ const MenuTable = (props) => {
     const toggleNewCategoryForm = () => {
         if (!showNewCategoryForm) closeAllForms() //if about to open form
         setNewCategoryForm(!showNewCategoryForm)
+    }
+
+    const toggleCopyMenuForm = () => {
+        if (!showCopyMenuForm) closeAllForms() //if about to open form
+        setCopyMenuForm(!showCopyMenuForm)
     }
 
     const toggleEditDishForm = (dish) => {
@@ -146,12 +206,45 @@ const MenuTable = (props) => {
         setEditCategoryForm(!showEditCategoryForm)
     }
 
+    const toggleEditMode = () => {
+        setEditMode(!showEditMode)
+    }
+
+    const handleCheckboxChange = (itemId) => {
+      let newSelectedDishes = selectedDishes;
+
+      if (selectedDishes.includes(itemId)) {
+        var index = newSelectedDishes.indexOf(itemId);
+        newSelectedDishes.splice(index, 1);
+      } else {
+        newSelectedDishes.push(itemId);
+      }
+
+      console.log(newSelectedDishes);
+      setSelectedDishes(newSelectedDishes);
+    }
+
     const openDeleteConfirmation = (id, type) => {
+        console.log(type);
+        console.log(id);
         if (!showDeleteConfirmation) {
             closeAllForms() //if about to open form
-            setToDelete({id: id, type: type}).then(() => {
-                setDeleteConfirmation(true)
-            })
+
+            if (type === "dishes") {
+              if (id.length > 0) {
+                setSelectedDishes(id).then(() => {
+                    setDeleteConfirmation(true)
+                })
+              }
+
+              setToDeleteType("multiple");
+            } else {
+              setToDelete({id: id, type: type}).then(() => {
+                  setDeleteConfirmation(true)
+              })
+
+              setToDeleteType("single");
+            }
         }
     }
 
@@ -180,6 +273,23 @@ const MenuTable = (props) => {
                     console.error(err)
                 })
             }
+
+            if(toDelete.type === "dishes") {
+                for (let i = 0; i < selectedDishes.length; i++) {
+                  // how am i supposed to delete multiple dishes???
+                  // Client.deleteDish(selectedDishes[i].id).then(() => {
+                  //     setToDelete({}).then(() => {
+                  //         setDeleteConfirmation(false).then(() => {
+                  //             updateMenu()
+                  //         })
+                  //     })
+                  // }).catch((err) => {
+                  //     console.error(err)
+                  // })
+                }
+            }
+
+            setToDeleteType('');
         } else {
             setDeleteConfirmation(false)
         }
@@ -200,9 +310,9 @@ const MenuTable = (props) => {
                 {
                     menuData ? menuData.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
-                            toggleEditCategory={toggleEditCategoryForm} 
+                            toggleEditCategory={toggleEditCategoryForm}
                             toggleEditDish={toggleEditDishForm}
-                            openDeleteConfirmation={openDeleteConfirmation} 
+                            openDeleteConfirmation={openDeleteConfirmation}
                         />
                     )) : ''
                 }
@@ -219,10 +329,12 @@ const MenuTable = (props) => {
             <>
                 {
                     searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu} 
-                            toggleEditDish={toggleEditDishForm} 
+                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu}
+                            toggleEditDish={toggleEditDishForm}
                             openDeleteConfirmation={openDeleteConfirmation}
                             toggleEditCategory={toggleEditCategoryForm}
+                            handleCheckboxChange={handleCheckboxChange}
+                            showEditMode={showEditMode}
                         />
                     ))
                 }
@@ -251,11 +363,15 @@ const MenuTable = (props) => {
     return (
         <>
             <MenuControls>
+              <div className='buttons'>
+                  <EditModeButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Edit</EditModeButton>
+                  <EditModeDoneButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Done</EditModeDoneButton>
+              </div>
                 <form onSubmit={handleSearch} className='searchForm'>
-                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue} 
-                        onChange={(e) => setSearchBoxValue(e.target.value)} 
+                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
+                        onChange={(e) => setSearchBoxValue(e.target.value)}
                         onFocus={(e) => {
-                            setSearchBoxFocused(true); 
+                            setSearchBoxFocused(true);
                             e.target.select(); // highlight text when focus on element
                         }}
                     />
@@ -265,14 +381,16 @@ const MenuTable = (props) => {
                             e.preventDefault();
                             setSearchBoxValue('');
                             setIsSearching(false);
-                        }}/> : 
+                        }}/> :
                         <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
 
                 </form>
                 <div className='buttons'>
-                    <div className='new-category' onClick={toggleNewCategoryForm} role="button">New Menu Category</div>
-                    <div className='new-dish' onClick={toggleNewDishForm}>New Dish</div>
+                    <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
+                    <CopyNewMenuButton onClick={toggleCopyMenuForm} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
+                    <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
+                    <DeleteButton onClick={() => openDeleteConfirmation([{}, {}], "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
                 </div>
             </MenuControls>
             {
@@ -283,6 +401,11 @@ const MenuTable = (props) => {
             {
                 showNewCategoryForm ? (
                     <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                ) : null
+            }
+            {
+                showCopyMenuForm ? (
+                    <CopyMenuModal toggleForm={toggleCopyMenuForm} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
                 ) : null
             }
             {
@@ -299,7 +422,7 @@ const MenuTable = (props) => {
             }
             {
                 showDeleteConfirmation ? (
-                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation}/>
+                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation} type={toDeleteType} itemIds={selectedDishes}/>
                 ) : null
             }
 
