@@ -6,8 +6,7 @@ import { navigate } from "@reach/router"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
 import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
-import useEventListener from '@use-it/event-listener'
-import RegisterContext from "../../components/register/register-context"
+import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
 
 let InfoBox = styled.div`
     background-color: white;
@@ -34,30 +33,32 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    if(props.location.state == null || props.location.state.contactInfo == null) {
+    let registrationData = fetchRegistrationData()
+
+    if(registrationData === undefined || registrationData.contactInfo === null) {
         navigate('/register/contact-info')
     } else {
-        if(props.location.state == null || props.location.state.restaurantDetails == null) {
+        if(registrationData.restaurantDetails === null) {
             navigate('/register/restaurant-details')
         }
     }
 
-
     const submitRegistration = () => {
-        Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
+        Client.registerRestaurant(registrationData.restaurantDetails).then((response) => {
             const restaurantId = response.data.id
             const userData = { 
-                ...props.location.state.contactInfo,
+                ...registrationData.contactInfo,
                 restaurantId: restaurantId,
                 role: 1,
             }
 
             // register user
             Client.registerUser(userData).then(() => {
-                let { email, password } = props.location.state.contactInfo
+                let { email, password } = registrationData.contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
                     saveUserToken(response.data['token'])
+                    removeRegistrationData()
                     navigate('/dashboard/menu')
                 })
             })
@@ -77,36 +78,36 @@ const Review = (props) =>
             <FormTitle>Review setup information</FormTitle>
             <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
             { 
-                props.location.state ? (
+                registrationData ? (
                     <>
                     <InfoBox>
                         <p className = 'infoTitle'>Admin Info</p>
                         <p>
-                            { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
+                            { registrationData.contactInfo.firstName } { registrationData.contactInfo.lastName }
                         </p>
                         <p>
-                            { props.location.state.contactInfo.email }
+                            { registrationData.contactInfo.email }
                         </p>
                         <p>
-                            { props.location.state.contactInfo.phone }
+                            { registrationData.contactInfo.phone }
                         </p>
                     </InfoBox>
                     <InfoBox>
                         <p className = 'infoTitle'>Restaurant Info</p>
                         <p>
-                            { props.location.state.restaurantDetails.name }
+                            { registrationData.restaurantDetails.name }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.streetAddress }
+                            { registrationData.restaurantDetails.streetAddress }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
+                            { registrationData.restaurantDetails.city } { registrationData.restaurantDetails.state } { registrationData.restaurantDetails.zip }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.phone }
+                            { registrationData.restaurantDetails.phone }
                         </p>
                         <p>
-                            { props.location.state.restaurantDetails.yelp }
+                            { registrationData.restaurantDetails.yelp }
                         </p>
                     </InfoBox> 
                     </>

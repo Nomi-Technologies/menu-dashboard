@@ -6,6 +6,7 @@ import useEventListener from '@use-it/event-listener'
 import useEventListener from '@use-it/event-listener'
 import RegisterLayout from "../../components/register/register-layout"
 import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, FormButton } from "../../components/form"
+import { setRegistrationData, fetchRegistrationData } from "../../util/registration"
 
 const RestaurantDetails = (props) =>
 {
@@ -20,19 +21,24 @@ const RestaurantDetails = (props) =>
     })
 
     useEffect(() => {
-        if(props.location.state == null || props.location.state.contactInfo == null) {
+        let registrationData = fetchRegistrationData()
+        if(registrationData === undefined || registrationData.contactInfo === null) {
             navigate('/register/contact-info')
+        } 
+
+        if(registrationData.restaurantDetails !== null) {
+            setRestaurantDetails(registrationData.restaurantDetails)
         }
-    }, [props.location.state])
+    }, [])
 
 
     const validateForm = () => {
         // TODO: Add validation
-        let state = {
-            contactInfo: props.location.state.contactInfo,
+        setRegistrationData({
+            ...fetchRegistrationData(),
             restaurantDetails: restaurantDetails
-        }
-        navigate('/register/review', { state: state })
+        })
+        navigate('/register/review')
     }
 
     //press enter to navigate to the next page
@@ -49,19 +55,19 @@ const RestaurantDetails = (props) =>
             <FormTitle>Restaurant Details</FormTitle>
             <FormSubtitle>Details about your restaurant's location and services</FormSubtitle>
             <FormRow>
-                <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}}></FormInput>
+                <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}} value={ restaurantDetails.name }/>
             </FormRow>
             <FormRow>
-                <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}}></FormInput>
+                <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}} value={ restaurantDetails.streetAddress }/>
             </FormRow>
             <FormRow>
-                <FormInput width='50%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}}></FormInput>
-                <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}}></FormInput>
-                <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}}></FormInput>
+                <FormInput width='50%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}} value={ restaurantDetails.city }/>
+                <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}} value={ restaurantDetails.state }/>
+                <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}} value={ restaurantDetails.zip }/>
             </FormRow>
             <FormRow>
-                <FormInput width='48%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}}></FormInput>
-                <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}}></FormInput>
+                <FormInput width='48%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}} value={ restaurantDetails.phone }/>
+                <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}} value={ restaurantDetails.url }/>
             </FormRow>
             <FormControls>
                 <FormButton destination='contact-info' text="Previous" theme="light"/>

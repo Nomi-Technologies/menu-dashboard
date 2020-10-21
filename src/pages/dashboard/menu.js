@@ -109,10 +109,13 @@ const MenuPage = () => {
                             
                         </>
                     ) : (
-                        <MenuContainer>
-                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            <FirstMenuSetup />
-                        </MenuContainer>
+                        <>
+                            <TopBar title=""></TopBar>
+                            <MenuContainer>
+                                <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                                <FirstMenuSetup />
+                            </MenuContainer>
+                        </>
                     )
                 }
                 </Column>
