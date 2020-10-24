@@ -14,6 +14,7 @@ const Menu = styled.div`
     border-radius: 8px;
     box-shadow: 4px 4px 15px #D9D9D9;
     display: ${({ isOpen }) => isOpen ? 'block' : 'none' };
+    z-index: 3;
 `;
 
 const MenuItem = styled.div`
