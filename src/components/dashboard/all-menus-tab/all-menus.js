@@ -11,6 +11,7 @@ const StyledMenuCard = styled(MenuCard)`
     width: 30%;
     display: flex;
     height: 80px;
+    z-index: 2;
 `;
 
 const Grid = styled.div`
@@ -28,7 +29,7 @@ function CardGrid(props) {
     let rows = [];
     for (let i = 0; i < menuData.length; i += 2) {
         rows.push(
-            <Row noGutters={true} key={i}>
+            <Row key={i}>
                 <StyledMenuCard name={menuData[i].name} id={menuData[i].id} updateMenuSelection={props.updateMenuSelection} updateMenu={props.updateMenu} ></StyledMenuCard>
                 { (i+1) < menuData.length ? 
                     <StyledMenuCard name={menuData[i+1].name} id={menuData[i+1].id} updateMenuSelection={props.updateMenuSelection} updateMenu={props.updateMenu}></StyledMenuCard> 
@@ -49,7 +50,6 @@ const AllMenus = (props) => {
 
     useEffect(() => {
         updateMenuData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.menuData])
 
     const updateMenuData = () => {
