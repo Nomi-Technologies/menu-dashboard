@@ -6,6 +6,8 @@ import HeartIcon from "../../../assets/img/heart-active.png"
 import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
 import { FloatingMenu } from "../../floating-menu"
 
+import Client from "../../../util/client"
+
 const Button = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
@@ -44,6 +46,10 @@ const MenuCard = (props) => {
 
     const toggleFavorite = () => {
         setisFavorite(!isFavorite);
+        //add to database props.id and user id
+        Client.favoriteMenu(props.id).then((res) => {
+
+        })
     }
 
     const navigateToMenu = (id) => {
