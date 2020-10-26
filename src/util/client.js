@@ -80,6 +80,16 @@ export default class Client {
     })
   }
 
+  static favoriteMenu = (menuId) => {
+    let token = retrieveUserToken()
+    let body = {
+      data: "",
+    }
+    return axios.post(ROOT_URL + `/menus/${menuId}/favoriteMenu/`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static searchDishes = (data, menuId) => {
     let token = retrieveUserToken()
     let config = {
