@@ -76,10 +76,6 @@ const TagsForm = ({ tags, setTags }) => {
   )
 }
 
-//Keyboard accessbilities
-const ESCAPE_KEYS = ['27', 'Escape'];
-const ENTER_KEYS = ['13', 'Enter'];
-
 const NewDishModal = props => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
@@ -128,10 +124,10 @@ const NewDishModal = props => {
   
   //press escape to exit the form, press enter to submit
   function handler({ key }) {
-    if (ESCAPE_KEYS.includes(String(key))) {
+    if (key == 'Escape') {
       props.toggleForm()
     }
-    if(ENTER_KEYS.includes(String(key))){
+    if(key == 'Enter'){
       createDish()
     }
   }
@@ -254,10 +250,10 @@ const EditDishModal = props => {
 
   //press escape to exit the form, press enter to submit
   function handler({ key }) {
-    if (ESCAPE_KEYS.includes(String(key))) {
+    if (key == 'Escape') {
       props.toggleForm()
     }
-    if(ENTER_KEYS.includes(String(key))){
+    if (key == 'Enter') {
       updateDish()
     }
   }

@@ -13,17 +13,14 @@ let StyledDeleteConfirmation = styled.div`
         width: 30%;
     }
 `
-//Keyboard accessbilities
-const ESCAPE_KEYS = ['27', 'Escape'];
-const ENTER_KEYS = ['13', 'Enter'];
 
 const DeleteConfirmationModal = ({ props, closeForm }) => {
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
-        if (ESCAPE_KEYS.includes(String(key))) {
+        if (key == 'Escape') {
             closeForm(false)
         }
-        if(ENTER_KEYS.includes(String(key))){
+        if (key == 'Enter') {
             closeForm(true)
         }
     }
