@@ -9,6 +9,7 @@ import { Container, Column } from "../../components/grid"
 
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, FormError } from "../../components/form"
 import { navigate } from 'gatsby';
+import useEventListener from '@use-it/event-listener'
 
 let SideBar = styled(Column)`
     background-color: #F2994A;
@@ -71,6 +72,14 @@ const ContactInfo = () =>
         
     }
 
+    //press enter to navigate to the next page
+    function handler({ key }) {
+        if (key == 'Enter') {
+            validateForm()
+        }
+    }
+
+    useEventListener('keydown', handler);
     return (
         <Layout>
             <Container>

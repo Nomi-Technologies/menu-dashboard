@@ -11,6 +11,7 @@ import { saveUserToken } from "../../util/auth"
 import { Container, Column } from "../../components/grid"
 
 import { FormContainer, FormTitle, FormSubtitle, DoneButton, FormControls, PrevButton } from "../../components/form"
+import useEventListener from '@use-it/event-listener'
 
 let SideBar = styled(Column)`
     background-color: #F2994A;
@@ -74,6 +75,14 @@ const Review = (props) =>
             })
         })
     }
+
+    //press enter to finish set up
+    function handler({ key }) {
+        if (key == 'Enter') {
+            submitRegistration()
+        }
+    }
+    useEventListener('keydown', handler);
 
     return (
         <Layout>
