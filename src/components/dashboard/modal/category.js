@@ -5,6 +5,11 @@ import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
+import useEventListener from '@use-it/event-listener'
+
+//Keyboard accessbilities
+const ESCAPE_KEYS = ['27', 'Escape'];
+const ENTER_KEYS = ['13', 'Enter'];
 
 const NewCategoryModal = (props) => {
     const [name, setName] = useState('');
@@ -30,6 +35,17 @@ const NewCategoryModal = (props) => {
         }
     }
 
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (ESCAPE_KEYS.includes(String(key))) {
+            props.toggleForm()
+        }
+        if(ENTER_KEYS.includes(String(key))){
+            createCategory()
+        }
+    }
+
+    useEventListener('keydown', handler);
     return (
         <>
             <ModalBackground />
@@ -83,6 +99,18 @@ const EditCategoryModal = (props) => {
             console.error("missing field")
         }
     }
+
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (ESCAPE_KEYS.includes(String(key))) {
+            props.toggleForm()
+        }
+        if(ENTER_KEYS.includes(String(key))){
+            updateCategory()
+        }
+    }
+    
+    useEventListener('keydown', handler);
 
     return (
         <>
