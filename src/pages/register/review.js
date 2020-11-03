@@ -35,7 +35,7 @@ const Review = (props) =>
 {
     let registrationData = fetchRegistrationData()
 
-    if(registrationData === undefined || registrationData.contactInfo === null) {
+    if(registrationData === undefined || registrationData === null || registrationData.contactInfo === null) {
         navigate('/register/contact-info')
     } else {
         if(registrationData.restaurantDetails === null) {
