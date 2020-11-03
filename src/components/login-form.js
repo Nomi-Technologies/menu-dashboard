@@ -7,7 +7,7 @@ import { navigate } from "@reach/router"
 import { FormInput } from "../components/form"
 import Client from "../util/client"
 import { saveUserToken } from "../util/auth"
-
+import useEventListener from '@use-it/event-listener'
 
 const ForgotPassword = styled(Link)`
     color: rgba(242, 153, 74, 0.9);
@@ -55,6 +55,14 @@ const LoginForm = () => {
         })
     }
 
+    //press enter to login
+    function handler({ key }) {
+        if (key == 'Enter') {
+            loginUser()
+        }
+    }
+
+    useEventListener('keydown', handler);
     return (
         <Container>
             <p className='error'>{ loginError ? 'Could not log in with credentials provided.' : '' }</p>
