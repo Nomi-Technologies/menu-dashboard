@@ -4,6 +4,7 @@ import Layout from "../../components/layout"
 import { navigate } from 'gatsby';
 import { Container, Column } from "../../components/grid"
 import { FormInput, FormContainer, FormTitle, FormSubtitle, FormRow, NextButton, FormControls, PrevButton } from "../../components/form"
+import useEventListener from '@use-it/event-listener'
 // import { RestaurantProgress } from "../../components/registration-progress"
 
 let SideBar = styled(Column)`
@@ -41,6 +42,15 @@ const RestaurantDetails = (props) =>
         }
         navigate('/register/review', { state: state })
     }
+
+    //press enter to navigate to the next page
+    function handler({ key }) {
+        if (key == 'Enter') {
+            validateForm()
+        }
+    }
+
+    useEventListener('keydown', handler);
 
     return (
         <Layout>

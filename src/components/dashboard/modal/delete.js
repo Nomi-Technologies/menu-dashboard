@@ -6,13 +6,28 @@ import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormMessage
 } from "./modal"
 
+import useEventListener from '@use-it/event-listener'
+
 let StyledDeleteConfirmation = styled.div`
     ${Modal} {
         width: 30%;
     }
 `
 
-const DeleteConfirmationModal = ({ closeForm }) => (
+const DeleteConfirmationModal = ({ props, closeForm }) => {
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (key == 'Escape') {
+            closeForm(false)
+        }
+        if (key == 'Enter') {
+            closeForm(true)
+        }
+    }
+
+    useEventListener('keydown', handler);
+    return (
+        
     <StyledDeleteConfirmation>
         <ModalBackground />
         <Modal>
@@ -29,6 +44,7 @@ const DeleteConfirmationModal = ({ closeForm }) => (
 
         </Modal>
     </StyledDeleteConfirmation>
-)
+    )
+}
 
 export { DeleteConfirmationModal }
