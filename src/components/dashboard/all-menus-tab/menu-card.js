@@ -38,18 +38,9 @@ const MenuName = styled.div`
 
 const MenuCard = (props) => {
     const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
-    const [isFavorite, setisFavorite] = useState(false);
 
     const toggleFloatingMenu = () => {
         setIsFloatingMenuOpen(!isFloatingMenuOpen);
-    }
-
-    const toggleFavorite = () => {
-        setisFavorite(!isFavorite);
-        //add to database props.id and user id
-        Client.favoriteMenu(props.id).then((res) => {
-
-        })
     }
 
     const navigateToMenu = (id) => {
@@ -65,9 +56,9 @@ const MenuCard = (props) => {
                 < MenuName onClick={() => navigateToMenu(props.id)}>{props.name}</MenuName>
                 <div className='controls'>
                     {
-                        isFavorite ?
-                        <input type='image' alt="Unfavorite" src={HeartIcon} onClick={toggleFavorite}/> :
-                        <input type='image' alt="Favorite" src={HeartEmptyIcon} onClick={toggleFavorite}/>
+                        props.isFavorited ?
+                        <input type='image' alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
+                        <input type='image' alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
                     }
                     
                     <input type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>

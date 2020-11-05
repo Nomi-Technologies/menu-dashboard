@@ -62,7 +62,11 @@ class MenuSelector extends React.Component {
     componentDidUpdate(prevProps) {
         // TODO(Tommy): avoid refreshing when only switching menus
         // Used for when creating/deleting menus but also gets called when switching
-        if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName) {
+        if (prevProps.favoriteMenus.length == 0 && this.props.favoriteMenus.length > 0 && this.props.selectedMenuId != 'all-menus') { //change default menu when favorites load
+            this.setState({selectedMenuId: null});
+            this.props.updateMenuSelection(null);
+        }
+        if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName || this.props.favoriteMenus != prevProps.favoriteMenus) {
             this.updateData();
         }
     }
@@ -70,14 +74,18 @@ class MenuSelector extends React.Component {
     updateData() {
         Client.getAllMenus().then((res) => {
             this.setState({data: res.data, selectedMenuId: this.props.selectedMenuId})
-
             if (this.props.selectedMenuId === null) { //first render, no menu selected
                 if (res.data.length === 0) { //no menu created yet
                     this.props.updateHasMenu(false)
                 }
                 else { //display first menu
-                    this.setState({selectedMenuId: res.data[0].id});
-                    this.props.updateMenuSelection(res.data[0])
+                    if(this.props.favoriteMenus.length > 0 ) { //display first favorite menu
+                        this.setState({selectedMenuId: this.props.favoriteMenus[0].id});
+                        this.props.updateMenuSelection(this.props.favoriteMenus[0])
+                    } else { //no favorites, display first menu
+                        this.setState({selectedMenuId: res.data[0].id});
+                        this.props.updateMenuSelection(res.data[0])
+                    }
                 }
             }
             else {
@@ -107,6 +115,16 @@ class MenuSelector extends React.Component {
                         { 'all-menus'===this.state.selectedMenuId ? <ActiveIndicator/> : "" }
                     </MenuTab>
                     {
+                        this.props.favoriteMenus.length > 0?
+                        this.props.favoriteMenus.map((item) => (
+                            <React.Fragment key={item.id}>
+                                <MenuTab onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>
+                                    { item.name }
+                                    { item.id===this.state.selectedMenuId ? <ActiveIndicator/> : "" }
+                                </MenuTab>
+                                
+                            </React.Fragment>
+                        )) :
                         this.state.data.map((item) => (
                             <React.Fragment key={item.id}>
                                 <MenuTab onClick={()=>this.select(item)} selected={item.id===this.state.selectedMenuId}>

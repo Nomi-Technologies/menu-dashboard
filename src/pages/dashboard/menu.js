@@ -41,6 +41,7 @@ const MenuPage = () => {
     const [menuData, setMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
     const [menuName, setMenuName] = useState('');
+    const [favoriteMenus, setFavoriteMenus] = useState([]);
 
     useEffect(() => {
         updateMenu()
@@ -51,7 +52,7 @@ const MenuPage = () => {
         if(menu === 'all-menus') {
             setMenuId('all-menus')
         }
-        else if (typeof menu === 'undefined') {
+        else if (typeof menu === 'undefined' || menu === null) {
             setMenuId(null)
         }
         else {
@@ -60,6 +61,9 @@ const MenuPage = () => {
     }
 
     async function updateMenu () {
+        Client.getFavoriteMenus().then((res) => {
+            setFavoriteMenus(res.data);
+        })
         if (menuId !== null && menuId != 'all-menus') {
             await Client.getMenu(menuId).then((res) => {
                 setMenuName(res.data.name)
@@ -72,6 +76,14 @@ const MenuPage = () => {
         setHasMenu(hasMenu)
     }
 
+    const toggleFavoriteMenu = (menuId, favorite) => {
+        Client.favoriteMenu(menuId, favorite).then((res) => {
+            Client.getFavoriteMenus().then((res) => {
+                setFavoriteMenus(res.data);
+            })
+        }) 
+    }
+
     return (
         <SidebarLayout>
             <Container>
@@ -81,11 +93,11 @@ const MenuPage = () => {
                         <>
                             <TopBar title="Menu Management">
                                 <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
+                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} favoriteMenus={favoriteMenus}/>
                             </TopBar>
                             {
                                 menuId === 'all-menus' ? (
-                                    <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}></StyledAllMenus>
+                                    <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
                                     ) : (
                                     <MenuContainer>  
                                         <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
