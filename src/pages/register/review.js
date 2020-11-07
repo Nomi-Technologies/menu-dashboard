@@ -46,10 +46,10 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    if(props.location.state === null || props.location.state.contactInfo === null) {
+    if(props.location.state?.contactInfo === null) {
         navigate('/register/contact-info')
     } else {
-        if(props.location.state === null || props.location.state.restaurantDetails === null) {
+        if(props.location.state?.restaurantDetails === null) {
             navigate('/register/restaurant-details')
         }
     }
