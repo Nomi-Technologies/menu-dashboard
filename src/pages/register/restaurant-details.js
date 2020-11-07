@@ -28,7 +28,7 @@ const RestaurantDetails = (props) =>
     })
 
     useEffect(() => {
-        if(props.location.state === null || props.location.state.contactInfo === null) {
+        if(!props.location.state?.contactInfo) {
             navigate('/register/contact-info')
         }
     }, [props.location.state])
