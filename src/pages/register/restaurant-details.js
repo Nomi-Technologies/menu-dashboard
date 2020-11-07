@@ -28,7 +28,7 @@ const RestaurantDetails = (props) =>
     })
 
     useEffect(() => {
-        if(props.location.state == null || props.location.state.contactInfo == null) {
+        if(props.location.state === null || props.location.state.contactInfo === null) {
             navigate('/register/contact-info')
         }
     }, [props.location.state])
@@ -45,7 +45,7 @@ const RestaurantDetails = (props) =>
 
     //press enter to navigate to the next page
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             validateForm()
         }
     }

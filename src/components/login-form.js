@@ -57,7 +57,7 @@ const LoginForm = () => {
 
     //press enter to login
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             loginUser()
         }
     }
