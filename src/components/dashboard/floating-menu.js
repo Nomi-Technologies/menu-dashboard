@@ -95,7 +95,7 @@ const FloatingMenu = (props) => {
             }
         })
     }
-
+    
     return (
         <>
             <div className={props.className}>
