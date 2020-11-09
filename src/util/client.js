@@ -248,4 +248,14 @@ export default class Client {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
+
+  static downloadCSV = (menuId) => {
+    let token = retrieveUserToken()
+    return axios.get(ROOT_URL + `/menus/${menuId}/csv`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+
+
 }
