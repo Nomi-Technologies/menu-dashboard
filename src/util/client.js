@@ -80,6 +80,23 @@ export default class Client {
     })
   }
 
+  static favoriteMenu = (menuId, favorite) => {
+    let token = retrieveUserToken()
+    let body = {
+      favorite: favorite,
+    }
+    return axios.post(ROOT_URL + `/menus/${menuId}/favorite-menu/`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static getFavoriteMenus = () => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.get(ROOT_URL + "/user/favorite-menus" , {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static searchDishes = (data, menuId) => {
     let token = retrieveUserToken()
     let config = {

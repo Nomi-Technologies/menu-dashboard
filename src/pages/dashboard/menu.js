@@ -5,8 +5,10 @@ import styled from "styled-components"
 
 import { Container, Column } from "../../components/grid"
 import { FloatingMenu } from "../../components/floating-menu"
+import { FloatingMenuButton } from "../../components/floating-menu-button"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
+import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
@@ -21,7 +23,12 @@ let MenuContainer = styled.div`
     padding: 0 50px;
     padding-top: 30px;
 `
-
+let StyledAllMenus = styled(AllMenus)`
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 50px;
+    padding-top: 30px;
+`
 let StyledFloatingMenu = styled(FloatingMenu)`
     position: fixed;
     right: 64px;
@@ -34,6 +41,7 @@ const MenuPage = () => {
     const [menuData, setMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
     const [menuName, setMenuName] = useState('');
+    const [favoriteMenus, setFavoriteMenus] = useState([]);
 
     useEffect(() => {
         updateMenu()
@@ -41,7 +49,10 @@ const MenuPage = () => {
     }, [menuId])
 
     const updateMenuSelection = (menu) => {
-        if (typeof menu === 'undefined') {
+        if(menu === 'all-menus') {
+            setMenuId('all-menus')
+        }
+        else if (typeof menu === 'undefined' || menu === null) {
             setMenuId(null)
         }
         else {
@@ -50,7 +61,10 @@ const MenuPage = () => {
     }
 
     async function updateMenu () {
-        if (menuId !== null) {
+        Client.getFavoriteMenus().then((res) => {
+            setFavoriteMenus(res.data);
+        })
+        if (menuId !== null && menuId != 'all-menus') {
             await Client.getMenu(menuId).then((res) => {
                 setMenuName(res.data.name)
                 setMenuData(res.data.Categories)
@@ -62,6 +76,14 @@ const MenuPage = () => {
         setHasMenu(hasMenu)
     }
 
+    const toggleFavoriteMenu = (menuId, favorite) => {
+        Client.favoriteMenu(menuId, favorite).then((res) => {
+            Client.getFavoriteMenus().then((res) => {
+                setFavoriteMenus(res.data);
+            })
+        }) 
+    }
+
     return (
         <SidebarLayout>
             <Container>
@@ -71,13 +93,20 @@ const MenuPage = () => {
                         <>
                             <TopBar title="Menu Management">
                                 <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
+                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} favoriteMenus={favoriteMenus}/>
                             </TopBar>
-                            <MenuContainer>  
-                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
-                                <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
-                                <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
-                            </MenuContainer>
+                            {
+                                menuId === 'all-menus' ? (
+                                    <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
+                                    ) : (
+                                    <MenuContainer>  
+                                        <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
+                                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                                        <FloatingMenuButton menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                    </MenuContainer>
+                                    )
+                            }
+                            
                         </>
                     ) : (
                         <MenuContainer>

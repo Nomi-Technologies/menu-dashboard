@@ -7,33 +7,14 @@ import { QRCodeModal } from "../components/dashboard/modal/qr-code"
 import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
 import { DeleteConfirmationModal } from "../components/dashboard/modal/delete"
 
-const FloatingMenuButton = styled.div`
-    position: absolute;
-    width: 62px;
-    height: 62px;
-    right: 0;
-    bottom: 0;
-    border-radius: 36px;
-    background: #F3A35C;
-    box-shadow: 0px 10px 20px rgba(243, 163, 92, 0.2);
-    cursor: pointer;
-`;
-
-const StyledHamburger = styled(HamburgerMenu)`
-    margin: auto;
-    position: absolute !important; /* overrides the in-line css of hamburger menu */
-    top: 0; left: 0; bottom: 0; right: 0;
-`;
-
 const Menu = styled.div`
     position: absolute;
     background-color: white;
     width: 250px;
-    bottom: 36px;
-    right: 100px;
     border-radius: 8px;
     box-shadow: 4px 4px 15px #D9D9D9;
     display: ${({ isOpen }) => isOpen ? 'block' : 'none' };
+    z-index: 3;
 `;
 
 const MenuItem = styled.div`
@@ -66,7 +47,7 @@ const HorizontalSeparator = styled.div`
 `;
 
 const FloatingMenu = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(props.isOpen);
     const [showQRCodeModal, setShowQRCodeModal] = useState(false);
     const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
@@ -83,18 +64,14 @@ const FloatingMenu = (props) => {
 
     }, [props.menuId]);
 
-    function onClickMenu() {
-        setIsOpen(!isOpen);
-    }
-
     async function deleteMenu(id) {
-        onClickMenu();
+        props.onClickMenu();
         setShowDeleteConfirmationModal(true); // show delete confirmation modal
     }
 
     async function duplicateMenu(id) {
         const res = await Client.duplicateMenu(id);
-        onClickMenu();
+        props.onClickMenu();
         props.updateMenuSelection(res.data.menu);
     }
 
@@ -109,7 +86,7 @@ const FloatingMenu = (props) => {
     return (
         <>
             <div className={props.className}>
-                <Menu isOpen={isOpen}>
+                <Menu isOpen={props.isOpen} className={props.className}>
                     {/* <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
                     <HorizontalSeparator/> */}
                     <OrangeTextMenuItem
@@ -126,17 +103,7 @@ const FloatingMenu = (props) => {
                     <HorizontalSeparator/>
                     <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
                 </Menu>
-                <FloatingMenuButton onClick={onClickMenu}>
-                    <StyledHamburger
-                        isOpen={isOpen}
-                        menuClicked={() => {}}
-                        width={26}
-                        height={24}
-                        borderRadius={2}
-                        color='white'
-                        strokeWidth={4}
-                        />
-                </FloatingMenuButton>
+                
             </div>
             <UploadCSVModal show={ showCSVUploadModal } close={() => setShowCSVUploadModal(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
             {
