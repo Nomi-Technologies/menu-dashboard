@@ -162,7 +162,7 @@ const MenuTable = (props) => {
     let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
-    const [showCopyMenuForm, setCopyMenuForm] = useState(false);
+    const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showEditMode, setEditMode] = useState(false);
@@ -187,11 +187,6 @@ const MenuTable = (props) => {
     const toggleNewCategoryForm = () => {
         if (!showNewCategoryForm) closeAllForms() //if about to open form
         setNewCategoryForm(!showNewCategoryForm)
-    }
-
-    const toggleCopyMenuForm = () => {
-        if (!showCopyMenuForm) closeAllForms() //if about to open form
-        setCopyMenuForm(!showCopyMenuForm)
     }
 
     const toggleEditDishForm = (dish) => {
@@ -243,6 +238,16 @@ const MenuTable = (props) => {
         }
     }
 
+    const openCopyMenuConfirmation = (ids) => {
+        if (!showCopyMenuConfirmation) {
+            closeAllForms() //if about to open form
+
+            setSelectedDishes(ids).then(() => {
+                setCopyMenuConfirmation(true)
+            })
+        }
+    }
+
     const closeDeleteConfirmation = (shouldDelete) => {
         if(shouldDelete) {
             if(toDelete.type === "category") {
@@ -269,25 +274,44 @@ const MenuTable = (props) => {
                 })
             }
 
-            if(toDelete.type === "dishes") {
-                for (let i = 0; i < selectedDishes.length; i++) {
-                  // how am i supposed to delete multiple dishes???
-                  // Client.deleteDish(selectedDishes[i].id).then(() => {
-                  //     setToDelete({}).then(() => {
-                  //         setDeleteConfirmation(false).then(() => {
-                  //             updateMenu()
-                  //         })
-                  //     })
-                  // }).catch((err) => {
-                  //     console.error(err)
-                  // })
-                }
+            if(toDeleteType === "multiple") {
+              Client.bulkDeleteDish(props.menuId, selectedDishes).then(() => {
+                  setSelectedDishes([]).then(() => {
+                      setDeleteConfirmation(false).then(() => {
+                          updateMenu()
+                      })
+                  })
+              }).catch((err) => {
+                  console.error(err)
+              })
             }
 
             setToDeleteType('');
         } else {
             setDeleteConfirmation(false)
         }
+    }
+
+    const closeCopyMenuConfirmation = (shouldCopy, menuName) => {
+      if (shouldCopy) {
+
+        let createDishesData = {
+          ids: selectedDishes,
+          name: menuName,
+        }
+
+        Client.bulkCreateDish(createDishesData).then(() => {
+              setSelectedDishes([]).then(() => {
+                  setCopyMenuConfirmation(false).then(() => {
+                      updateMenu()
+                  })
+              })
+          }).catch((err) => {
+              console.error(err)
+          })
+      } else {
+          setCopyMenuConfirmation(false)
+      }
     }
 
     const closeAllForms = () => {
@@ -385,7 +409,7 @@ const MenuTable = (props) => {
                 </form>
                 <div className='buttons'>
                     <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
-                    <CopyNewMenuButton onClick={toggleCopyMenuForm} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
+                    <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
                     <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
                     <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
                 </div>
@@ -401,8 +425,8 @@ const MenuTable = (props) => {
                 ) : null
             }
             {
-                showCopyMenuForm ? (
-                    <CopyMenuModal toggleForm={toggleCopyMenuForm} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
+                showCopyMenuConfirmation ? (
+                    <CopyMenuModal closeForm={closeCopyMenuConfirmation} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
                 ) : null
             }
             {

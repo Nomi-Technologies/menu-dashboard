@@ -35,7 +35,7 @@ const DeleteConfirmationModal = ({ props, closeForm }) => {
     }
 
     useEventListener('keydown', handler);
-    
+
     return (
       <StyledDeleteConfirmation>
           <ModalBackground />

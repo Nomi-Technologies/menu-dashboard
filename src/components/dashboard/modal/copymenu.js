@@ -6,25 +6,21 @@ import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
 
-const CopyMenuModal = (props) => {
+const CopyMenuModal = ({ closeForm, itemIds }) => {
     const [name, setName] = useState('');
-// how do you know what you need to create a new menu??, API Call
-    const createMenuCopy = () => {
 
-    }
-// <FormButton text='Create Menu' onClick={createMenuCopy} />
     return (
         <>
             <ModalBackground />
             <Modal>
                 <Container>
-                    <FormTitle>Copy ({props.itemIds.length}) dishes to {name}</FormTitle>
+                    <FormTitle>Copy ({itemIds.length}) dishes to {name}</FormTitle>
                     <FormSubtitle>Menu Name</FormSubtitle>
                     <DishFormInput placeholder='Fall 2020' name='menu' value={ name } onChange={(event) => { setName(event.target.value) }}/>
                     <Divider/>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm} />
-                        <FormButton text='Create Menu' />
+                        <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false, name) } }/>
+                        <FormButton text='Create Menu' onClick={ () => { closeForm(true, name) } }/>
                     </ButtonRow>
                 </Container>
             </Modal>
