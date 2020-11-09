@@ -62,11 +62,11 @@ class MenuSelector extends React.Component {
     componentDidUpdate(prevProps) {
         // TODO(Tommy): avoid refreshing when only switching menus
         // Used for when creating/deleting menus but also gets called when switching
-        if (prevProps.favoriteMenus.length == 0 && this.props.favoriteMenus.length > 0 && this.props.selectedMenuId != 'all-menus') { //change default menu when favorites load
+        if (prevProps.favoriteMenus.length === 0 && this.props.favoriteMenus.length > 0 && this.props.selectedMenuId != 'all-menus') { //change default menu when favorites load
             this.setState({selectedMenuId: null});
             this.props.updateMenuSelection(null);
         }
-        if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName || this.props.favoriteMenus != prevProps.favoriteMenus) {
+        if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName || this.props.favoriteMenus !== prevProps.favoriteMenus) {
             this.updateData();
         }
     }
