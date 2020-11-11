@@ -7,6 +7,7 @@ import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
 import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
 import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
+import useEventListener from '@use-it/event-listener'
 
 let InfoBox = styled.div`
     background-color: white;
