@@ -46,10 +46,10 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    if(props.location.state == null || props.location.state.contactInfo == null) {
+    if(!props.location.state?.contactInfo) {
         navigate('/register/contact-info')
     } else {
-        if(props.location.state == null || props.location.state.restaurantDetails == null) {
+        if(!props.location.state?.restaurantDetails) {
             navigate('/register/restaurant-details')
         }
     }
@@ -78,7 +78,7 @@ const Review = (props) =>
 
     //press enter to finish set up
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             submitRegistration()
         }
     }
