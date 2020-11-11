@@ -83,7 +83,6 @@ export default class Client {
   }
 
   static bulkCreateDish = data => {
-    console.log(data);
     let token = retrieveUserToken() // get user auth token
     return axios.post(ROOT_URL + "/menus/bulkCreate/", data, {
       headers: { Authorization: `Bearer ${token}` },

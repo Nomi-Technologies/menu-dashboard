@@ -162,7 +162,7 @@ const MenuTable = (props) => {
     let updateMenu = props.updateMenu
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
-    const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useState(false);
+    const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
     const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showEditMode, setEditMode] = useState(false);
@@ -215,7 +215,6 @@ const MenuTable = (props) => {
             newSelectedDishes.push(itemId);
         }
 
-        console.log(newSelectedDishes);
         setSelectedDishes(newSelectedDishes);
     }
 
@@ -304,7 +303,7 @@ const MenuTable = (props) => {
               setSelectedDishes([]).then(() => {
                   setCopyMenuConfirmation(false).then(() => {
                       updateMenu()
-                  })
+                  });
               })
           }).catch((err) => {
               console.error(err)

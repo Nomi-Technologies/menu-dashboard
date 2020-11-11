@@ -110,8 +110,6 @@ const StyledItemRow = styled(TableRow)`
 `
 
 const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode }) => {
-    console.log("ItemRow");
-    console.log(showEditMode);
     return (
         <StyledItemRow className='opened'>
           {
@@ -282,15 +280,15 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                 {
                     category ?
                         category.Dishes.map((item, index) => (
-                            <ItemRow 
-                                key={index} 
-                                item={item} 
+                            <ItemRow
+                                key={index}
+                                item={item}
                                 updateMenu={updateMenu}
-                                catId={ category.id } 
-                                toggleEditDish={toggleEditDish} 
-                                openDeleteConfirmation={openDeleteConfirmation} 
+                                catId={ category.id }
+                                toggleEditDish={toggleEditDish}
+                                openDeleteConfirmation={openDeleteConfirmation}
                                 handleCheckboxChange={handleCheckboxChange}
-                                showEditMode={showEditMode}    
+                                showEditMode={showEditMode}
                             />
                         )) :
                         ''

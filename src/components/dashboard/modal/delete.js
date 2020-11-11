@@ -62,8 +62,10 @@ const DeleteConfirmationModal = ({ props, closeForm }) => {
 
                   <ButtonRow>
                       <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
-                      <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
-
+                      {
+                        type === "multiple" && itemIds && itemIds.length > 0 ?
+                        <FormButton text='Delete' onClick={ () => { closeForm(true) } }/> : ""
+                      }
                   </ButtonRow>
               </Container>
 
