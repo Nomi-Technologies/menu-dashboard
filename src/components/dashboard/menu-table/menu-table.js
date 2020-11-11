@@ -16,6 +16,8 @@ const StyledMenuTable = styled.div`
     max-width: 100%;
     transition: 0.5s ease-in-out all;
     margin-bottom: 150px;
+    border-radius: 8px;
+    overflow: hidden;
 `
 
 const MenuControls = styled.div`

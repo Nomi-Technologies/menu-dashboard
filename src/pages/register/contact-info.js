@@ -71,7 +71,7 @@ const ContactInfo = () =>
 
     //press enter to navigate to the next page
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             validateForm()
         }
     }

@@ -123,10 +123,10 @@ const NewDishModal = props => {
   
   //press escape to exit the form, press enter to submit
   function handler({ key }) {
-    if (key == 'Escape') {
+    if (key === 'Escape') {
       props.toggleForm()
     }
-    if(key == 'Enter'){
+    if(key === 'Enter'){
       createDish()
     }
   }
@@ -249,10 +249,10 @@ const EditDishModal = props => {
 
   //press escape to exit the form, press enter to submit
   function handler({ key }) {
-    if (key == 'Escape') {
+    if (key === 'Escape') {
       props.toggleForm()
     }
-    if (key == 'Enter') {
+    if (key === 'Enter') {
       updateDish()
     }
   }

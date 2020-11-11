@@ -32,10 +32,10 @@ const NewCategoryModal = (props) => {
 
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
-        if (key == 'Escape') {
+        if (key === 'Escape') {
             props.toggleForm()
         }
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             createCategory()
         }
     }
@@ -97,10 +97,10 @@ const EditCategoryModal = (props) => {
 
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
-        if (key == 'Escape') {
+        if (key === 'Escape') {
             props.toggleForm()
         }
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             updateCategory()
         }
     }

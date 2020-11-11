@@ -19,11 +19,11 @@ const RestaurantDetails = () =>
 
     useEffect(() => {
         let registrationData = fetchRegistrationData()
-        if(registrationData === undefined || registrationData.contactInfo === null) {
+        if(!registrationData?.contactInfo) {
             navigate('/register/contact-info')
         } 
 
-        if(registrationData.restaurantDetails !== null) {
+        if(registrationData?.restaurantDetails !== null) {
             setRestaurantDetails(registrationData.restaurantDetails)
         }
     }, [])
@@ -40,7 +40,7 @@ const RestaurantDetails = () =>
 
     //press enter to navigate to the next page
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             validateForm()
         }
     }

@@ -36,10 +36,10 @@ const Review = (props) =>
 {
     let registrationData = fetchRegistrationData()
 
-    if(registrationData === undefined || registrationData === null || registrationData.contactInfo === null) {
+    if(registrationData?.contactInfo === null) {
         navigate('/register/contact-info')
     } else {
-        if(registrationData.restaurantDetails === null) {
+        if(registrationData?.restaurantDetails === null) {
             navigate('/register/restaurant-details')
         }
     }
@@ -68,7 +68,7 @@ const Review = (props) =>
 
     //press enter to finish set up
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             submitRegistration()
         }
     }
