@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 
 import styled from "styled-components"
 import { navigate } from "@reach/router"
-import { FormInput, FormButton, ButtonRow } from "../components/form"
-import Client from "../util/client"
-import { saveUserToken } from "../util/auth"
+import { FormInput, FormButton, ButtonRow } from "../form"
+import Client from "../../util/client"
+import { saveUserToken } from "../../util/auth"
 import useEventListener from '@use-it/event-listener'
 
 const ForgotPassword = styled(Link)`
