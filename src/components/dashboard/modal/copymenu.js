@@ -1,4 +1,4 @@
-import { FormButton } from "../../buttons"
+import { FormButton } from "../../form"
 import React, { useState } from 'react';
 import { DishFormInput, DishFormTextArea } from "../../form"
 import Client from '../../../util/client'
@@ -6,8 +6,22 @@ import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
 
+import useEventListener from '@use-it/event-listener'
+
 const CopyMenuModal = ({ closeForm, itemIds }) => {
     const [name, setName] = useState('');
+
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (key == 'Escape') {
+            closeForm(false)
+        }
+        if (key == 'Enter') {
+            closeForm(true)
+        }
+    }
+
+    useEventListener('keydown', handler);
 
     return (
         <>

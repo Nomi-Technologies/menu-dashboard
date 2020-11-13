@@ -23,7 +23,7 @@ let SingleFormMessage = styled(FormMessage)`
 let MultipleFormMessage = styled(FormMessage)`
 `
 
-const DeleteConfirmationModal = ({ props, closeForm }) => {
+const DeleteConfirmationModal = ({ type, itemIds, closeForm }) => {
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
         if (key === 'Escape') {
