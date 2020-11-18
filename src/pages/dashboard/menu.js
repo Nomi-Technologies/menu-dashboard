@@ -32,33 +32,46 @@ let StyledAllMenus = styled(AllMenus)`
 
 
 const MenuPage = () => {
-    const [menuId, setMenuId] = useState(null)
-    const [menuData, setMenuData] = useState()
+    const [selectedMenuId, setSelectedMenuId] = useState(null) // tracks currently selected menuId
+    const [selectedMenuData, setSelectedMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
-    const [menuName, setMenuName] = useState('');
+    const [selectedMenuName, setSelectedMenuName] = useState('');
+
     const [favoriteMenus, setFavoriteMenus] = useState([]);
+    const [allMenus, setAllMenus] = useState([])
+
+    useEffect(() => {
+        getAllMenus()
+    }, [])
 
     useEffect(() => {
         updateMenu()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuId])
+    }, [selectedMenuId])
+
+    const getAllMenus = () => {
+        Client.getAllMenus().then((res) => {
+            setAllMenus(res.data);
+        })
+    }
 
     const updateMenuSelection = (menu) => {
         if(menu === 'all-menus' || typeof menu === 'undefined' || menu === null) {
-            setMenuId('all-menus')
+            setSelectedMenuId('all-menus')
         }
         else {
-            setMenuId(menu.id)
+            setSelectedMenuId(menu.id)
         }
     }
+
     let updateMenu = async () => {
         Client.getFavoriteMenus().then((res) => {
             setFavoriteMenus(res.data);
         })
-        if (menuId !== null && menuId != 'all-menus') {
-            await Client.getMenu(menuId).then((res) => {
-                setMenuName(res.data.name)
-                setMenuData(res.data.Categories)
+        if (selectedMenuId !== null && selectedMenuId != 'all-menus') {
+            await Client.getMenu(selectedMenuId).then((res) => {
+                setSelectedMenuName(res.data.name)
+                setSelectedMenuData(res.data.Categories)
             })
         }
     };
@@ -83,17 +96,17 @@ const MenuPage = () => {
                     hasMenu ? (
                         <>
                             <TopBar title="Menu Management">
-                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} favoriteMenus={favoriteMenus}/>
+                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={selectedMenuId} allMenus={allMenus} getAllMenus={getAllMenus}
+                                    updateHasMenu={updateHasMenu} selectedMenuName={selectedMenuName} favoriteMenus={favoriteMenus}/>
                             </TopBar>
                             {
-                                menuId === 'all-menus' ? (
+                                selectedMenuId === 'all-menus' ? (
                                     <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
                                     ) : (
                                     <MenuContainer>  
-                                        <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
-                                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
-                                        <FloatingMenuButton menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                        <MenuTitle menuName={selectedMenuName} menuId={selectedMenuId} updateMenu={updateMenu}/>
+                                        <MenuTable menuId={selectedMenuId} menuData={selectedMenuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                        <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                     </MenuContainer>
                                     )
                             }
