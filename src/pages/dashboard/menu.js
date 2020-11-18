@@ -29,11 +29,6 @@ let StyledAllMenus = styled(AllMenus)`
     padding: 0 50px;
     padding-top: 30px;
 `
-let StyledFloatingMenu = styled(FloatingMenu)`
-    position: fixed;
-    right: 64px;
-    bottom: 56px;
-`;
 
 
 const MenuPage = () => {
@@ -49,18 +44,14 @@ const MenuPage = () => {
     }, [menuId])
 
     const updateMenuSelection = (menu) => {
-        if(menu === 'all-menus') {
+        if(menu === 'all-menus' || typeof menu === 'undefined' || menu === null) {
             setMenuId('all-menus')
-        }
-        else if (typeof menu === 'undefined' || menu === null) {
-            setMenuId(null)
         }
         else {
             setMenuId(menu.id)
         }
     }
-
-    async function updateMenu () {
+    let updateMenu = async () => {
         Client.getFavoriteMenus().then((res) => {
             setFavoriteMenus(res.data);
         })
@@ -101,7 +92,7 @@ const MenuPage = () => {
                                     ) : (
                                     <MenuContainer>  
                                         <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
-                                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
+                                        <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                         <FloatingMenuButton menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                     </MenuContainer>
                                     )

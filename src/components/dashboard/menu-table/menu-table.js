@@ -160,6 +160,7 @@ const MenuTable = (props) => {
     // const [menuData, setMenuData] = useState(props.menuData)
     let menuData = props.menuData
     let updateMenu = props.updateMenu
+    let updateMenuSelection = props.updateMenuSelection
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
@@ -299,10 +300,11 @@ const MenuTable = (props) => {
           name: menuName,
         }
 
-        Client.bulkCreateDish(createDishesData).then(() => {
+        Client.bulkCreateDish(createDishesData).then((res) => {
               setSelectedDishes([]).then(() => {
                   setCopyMenuConfirmation(false).then(() => {
                       updateMenu()
+                      updateMenuSelection(res.data.id)
                   });
               })
           }).catch((err) => {
