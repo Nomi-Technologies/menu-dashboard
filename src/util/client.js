@@ -62,6 +62,13 @@ export default class Client {
     })
   }
 
+  static upsertDishImage = (id, data) => {
+    let token = retrieveUserToken(); // get user auth token
+    return axios.put(ROOT_URL + "/images/dishes/" + id, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   static deleteDish = id => {
     let token = retrieveUserToken() // get user auth token
     return axios.delete(ROOT_URL + "/dishes/" + id, {
