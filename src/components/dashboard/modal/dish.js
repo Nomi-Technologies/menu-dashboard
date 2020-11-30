@@ -4,7 +4,7 @@ import Client from '../../../util/client'
 import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import { FileDrop } from "../../file-drop"
 import useEventListener from '@use-it/event-listener'
-
+const { Buffer } = require('buffer');
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
@@ -237,7 +237,8 @@ const EditDishModal = props => {
       }
       reader.onload = () => {
         // Do whatever you want with the file contents
-        const fileContent = reader.result.split(';base64,')[1];
+        const base64str = reader.result.replace(/^data:image\/\w+;base64,/, "");
+        const fileContent = Buffer.from(base64str,'base64')
         setDishImage(fileContent)
       }
   }
