@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Checkbox from "./Checkbox";
+import Checkbox from "./checkbox";
 
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
