@@ -4,11 +4,9 @@ import Client from '../../../util/client'
 import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import { FileDrop } from "../../file-drop"
 import useEventListener from '@use-it/event-listener'
-const { Buffer } = require('buffer');
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
-
 let MultiSelectDropdown;
 
 if (typeof window !== `undefined`) {
@@ -96,8 +94,9 @@ const NewDishModal = props => {
       }
       reader.onload = () => {
         // Do whatever you want with the file contents
-        const fileContent = reader.result.split(';base64,')[1];
-        setDishImage(fileContent)
+        const formData = new FormData();
+        formData.append('file', file);
+        setDishImage(formData);
       }
   }
 
@@ -127,13 +126,16 @@ const NewDishModal = props => {
     if (name !== "" && categoryId !== 0) {
       Client.createDish(dishData)
         .then(res => {
-          props.toggleForm()
-          props.updateMenu()
+          props.toggleForm();
+          props.updateMenu();
+          if (dishImage) {
+            Client.upsertDishImage(res.data.id, dishImage);
+          }
         })
         .catch(err => {
-          console.error("error creating dish")
-          //show some error on form
-        })
+          console.error("error creating dish");
+          // TODO: show some error on form
+        });
     } else {
       console.error("missing field")
       //show some error
@@ -237,9 +239,9 @@ const EditDishModal = props => {
       }
       reader.onload = () => {
         // Do whatever you want with the file contents
-        const base64str = reader.result.replace(/^data:image\/\w+;base64,/, "");
-        const fileContent = Buffer.from(base64str,'base64')
-        setDishImage(fileContent)
+        const formData = new FormData();
+        formData.append('file', file);
+        setDishImage(formData);
       }
   }
 
