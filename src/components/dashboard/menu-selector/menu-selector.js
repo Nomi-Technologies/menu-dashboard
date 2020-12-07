@@ -88,6 +88,7 @@ class MenuSelector extends React.Component {
         }
         if (this.props.selectedMenuId !== prevProps.selectedMenuId || this.props.selectedMenuName !== prevProps.selectedMenuName || this.props.favoriteMenus !== prevProps.favoriteMenus) {
             this.props.getAllMenus();
+            this.setState({selectedMenuId: this.props.selectedMenuId});
         }
     }
 
