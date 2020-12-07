@@ -1,25 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 
-import Layout from "../../components/layout"
-
+import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from "@reach/router"
-
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
-
-import { Container, Column } from "../../components/grid"
-
-import { FormContainer, FormTitle, FormSubtitle, DoneButton, FormControls, PrevButton } from "../../components/form"
+import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
+import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
 import useEventListener from '@use-it/event-listener'
-
-let SideBar = styled(Column)`
-    background-color: #F2994A;
-`
-
-let FormColumn = styled(Column)`
-    background-color: #F7F8FA;
-`
 
 let InfoBox = styled.div`
     background-color: white;
@@ -46,30 +34,32 @@ let InfoBox = styled.div`
 
 const Review = (props) => 
 {
-    if(props.location.state == null || props.location.state.contactInfo == null) {
+    let registrationData = fetchRegistrationData()
+
+    if(registrationData?.contactInfo === null) {
         navigate('/register/contact-info')
     } else {
-        if(props.location.state == null || props.location.state.restaurantDetails == null) {
+        if(registrationData?.restaurantDetails === null) {
             navigate('/register/restaurant-details')
         }
     }
 
-
     const submitRegistration = () => {
-        Client.registerRestaurant(props.location.state.restaurantDetails).then((response) => {
+        Client.registerRestaurant(registrationData.restaurantDetails).then((response) => {
             const restaurantId = response.data.id
             const userData = { 
-                ...props.location.state.contactInfo,
+                ...registrationData.contactInfo,
                 restaurantId: restaurantId,
                 role: 1,
             }
 
             // register user
             Client.registerUser(userData).then(() => {
-                let { email, password } = props.location.state.contactInfo
+                let { email, password } = registrationData.contactInfo
                 // log user in
                 Client.login(email, password).then((response) => {
                     saveUserToken(response.data['token'])
+                    removeRegistrationData()
                     navigate('/dashboard/menu')
                 })
             })
@@ -78,67 +68,57 @@ const Review = (props) =>
 
     //press enter to finish set up
     function handler({ key }) {
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             submitRegistration()
         }
     }
     useEventListener('keydown', handler);
 
     return (
-        <Layout>
-            <Container>
-                <SideBar width='33%' style={{ "background-color": "white"}}>
-                    {/* TODO: Add restaurant progress later */}
-                    {/* <RestaurantProgress steps={['Contact Info', 'Restaurant Setup', 'Review']} currentIdx='1'></RestaurantProgress> */}
-                </SideBar>
-                <FormColumn>
-                    <FormContainer>
-                        <FormTitle>Review setup information</FormTitle>
-                        <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
-                        { 
-                                    props.location.state ? (
-                                        <>
-                                        <InfoBox>
-                                            <p className = 'infoTitle'>Admin Info</p>
-                                            <p>
-                                                { props.location.state.contactInfo.firstName } { props.location.state.contactInfo.lastName }
-                                            </p>
-                                            <p>
-                                                { props.location.state.contactInfo.email }
-                                            </p>
-                                            <p>
-                                                { props.location.state.contactInfo.phone }
-                                            </p>
-                                        </InfoBox>
-                                        <InfoBox>
-                                            <p className = 'infoTitle'>Restaurant Info</p>
-                                            <p>
-                                                { props.location.state.restaurantDetails.name }
-                                            </p>
-                                            <p>
-                                                { props.location.state.restaurantDetails.streetAddress }
-                                            </p>
-                                            <p>
-                                                { props.location.state.restaurantDetails.city } { props.location.state.restaurantDetails.state } { props.location.state.restaurantDetails.zip }
-                                            </p>
-                                            <p>
-                                                { props.location.state.restaurantDetails.phone }
-                                            </p>
-                                            <p>
-                                                { props.location.state.restaurantDetails.yelp }
-                                            </p>
-                                        </InfoBox> 
-                                        </>
-                                    ) : null
-                        }   
-                        <FormControls>
-                            <PrevButton destination='restaurant-details'/>
-                            <DoneButton onClick={ submitRegistration }/>
-                        </FormControls>
-                    </FormContainer>
-                </FormColumn>
-            </Container>
-        </Layout>
+        <RegisterLayout>
+            <FormTitle>Review setup information</FormTitle>
+            <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
+            { 
+                registrationData ? (
+                    <>
+                    <InfoBox>
+                        <p className = 'infoTitle'>Admin Info</p>
+                        <p>
+                            { registrationData.contactInfo.firstName } { registrationData.contactInfo.lastName }
+                        </p>
+                        <p>
+                            { registrationData.contactInfo.email }
+                        </p>
+                        <p>
+                            { registrationData.contactInfo.phone }
+                        </p>
+                    </InfoBox>
+                    <InfoBox>
+                        <p className = 'infoTitle'>Restaurant Info</p>
+                        <p>
+                            { registrationData.restaurantDetails.name }
+                        </p>
+                        <p>
+                            { registrationData.restaurantDetails.streetAddress }
+                        </p>
+                        <p>
+                            { registrationData.restaurantDetails.city } { registrationData.restaurantDetails.state } { registrationData.restaurantDetails.zip }
+                        </p>
+                        <p>
+                            { registrationData.restaurantDetails.phone }
+                        </p>
+                        <p>
+                            { registrationData.restaurantDetails.yelp }
+                        </p>
+                    </InfoBox> 
+                    </>
+                ) : null
+            }   
+            <FormControls>
+                <FormButton destination='restaurant-details' text="Previous" theme="light"/>
+                <FormButton onClick={ submitRegistration } text="Register"/>
+            </FormControls>
+        </RegisterLayout>
     )
 }
 export default Review;

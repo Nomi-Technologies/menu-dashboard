@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 
 import Layout from "../components/layout"
-import LoginForm from "../components/login-form"
+import LoginForm from "../components/register/login-form"
 
 import RestaurantBackgroundImage from "../assets/img/restaurant-background.png"
 
@@ -14,7 +14,6 @@ const HeroText = styled.div`
   margin: 200px 0px 50px;
   font-family:HK Grotesk Bold;
 `
-
 
 const Login = () => (
   <Layout>

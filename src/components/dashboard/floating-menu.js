@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
-import HamburgerMenu from 'react-hamburger-menu';
-import Client from "../util/client";
-import { QRCodeModal } from "../components/dashboard/modal/qr-code"
-import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
-import { DeleteConfirmationModal } from "../components/dashboard/modal/delete"
+import Client from "../../util/client";
+import { QRCodeModal } from "./modal/qr-code"
+import { UploadCSVModal } from "./modal/upload-csv"
+import { DeleteConfirmationModal } from "./modal/delete"
 
 const Menu = styled.div`
     position: absolute;
@@ -78,17 +77,34 @@ const FloatingMenu = (props) => {
     async function closeDeleteConfirmation(shouldDelete) {
         if(shouldDelete) {
             await Client.deleteMenu(props.menuId);
-            props.updateMenuSelection();
+            props.updateMenuSelection('all-menus');
+            props.updateMenu();
         }
         setShowDeleteConfirmationModal(false)
+    }
+
+    async function downloadCSV(){
+        Client.downloadCSV(props.menuId).then(res => {
+            if(res.status == 200 && res.data.csv){
+                var csv = res.data.csv
+                var hiddenElement = document.createElement('a');
+                hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+                hiddenElement.target = '_blank';
+                hiddenElement.download = 'menu.csv';
+                hiddenElement.click();
+            }
+        })
     }
     
     return (
         <>
             <div className={props.className}>
                 <Menu isOpen={props.isOpen} className={props.className}>
-                    {/* <OrangeTextMenuItem>Download as .csv</OrangeTextMenuItem>
-                    <HorizontalSeparator/> */}
+                    <OrangeTextMenuItem
+                        onClick = {() => downloadCSV()}
+                    >Download as .csv
+                    </OrangeTextMenuItem>
+                    <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick={() => setShowCSVUploadModal(true)}
                     >Upload .csv Menu</OrangeTextMenuItem>

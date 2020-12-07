@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Checkbox from "./checkbox";
+
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
 
@@ -99,17 +101,25 @@ const StyledItemRow = styled(TableRow)`
 
     .item-price {
         flex-basis: 10%;
-    } 
+    }
 
-    .item-tags { 
+    .item-tags {
         flex-basis: 40%;
     }
 
 `
 
-const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation }) => {
+const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode }) => {
     return (
         <StyledItemRow className='opened'>
+          {
+            showEditMode ? <Checkbox
+              handleCheckboxChange={handleCheckboxChange}
+              item={item}
+              key={item.id}
+            />
+            : ""
+          }
             <TableCell className='item-name'>
                 <p>{item.name}</p>
             </TableCell>
@@ -147,7 +157,7 @@ const HeaderRow = styled(TableRow)`
         flex-basis: 35%;
     }
 
-    .price { 
+    .price {
         flex-basis: 10%;
     }
 
@@ -161,7 +171,7 @@ const CategoryHeaderRow = styled(TableRow)`
     color: black;
     cursor: pointer;
 
-    .collapse-icon { 
+    .collapse-icon {
         position: absolute;
         width: 12px;
         height: 6px;
@@ -178,7 +188,7 @@ const CategoryHeaderRow = styled(TableRow)`
     .category-description {
         flex-basis: 65%;
         box-sizing: border-box;
-        
+
 
         p {
             padding-right: 50%;
@@ -238,7 +248,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation }) => {
+const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -270,8 +280,16 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
                 {
                     category ?
                         category.Dishes.map((item, index) => (
-                            <ItemRow key={index} item={item} updateMenu={updateMenu}
-                                catId={ category.id } toggleEditDish={toggleEditDish} openDeleteConfirmation={openDeleteConfirmation} />
+                            <ItemRow
+                                key={index}
+                                item={item}
+                                updateMenu={updateMenu}
+                                catId={ category.id }
+                                toggleEditDish={toggleEditDish}
+                                openDeleteConfirmation={openDeleteConfirmation}
+                                handleCheckboxChange={handleCheckboxChange}
+                                showEditMode={showEditMode}
+                            />
                         )) :
                         ''
                 }

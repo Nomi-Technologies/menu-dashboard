@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
-import { FloatingMenu } from "../components/floating-menu"
+import { FloatingMenu } from "../components/dashboard/floating-menu"
 
 const Button = styled.div`
     position: absolute;

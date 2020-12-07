@@ -4,11 +4,11 @@ import styled from "styled-components"
 import EditIcon from "../../../assets/img/edit-orange.png"
 import HeartIcon from "../../../assets/img/heart-active.png"
 import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
-import { FloatingMenu } from "../../floating-menu"
+import { FloatingMenu } from "../../dashboard/floating-menu"
 
 import Client from "../../../util/client"
 
-const Button = styled.div`
+const StyledMenuCard = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
     border-radius: 8px;
@@ -16,9 +16,14 @@ const Button = styled.div`
     line-height: 26px;
     justify-content: space-between;
     display: flex;
+
     input {
         margin: 5px;
+        &:focus {
+            outline: none;
+        }
     }
+
     .controls {
         margin-right: 15px;
         display: flex;
@@ -52,7 +57,7 @@ const MenuCard = (props) => {
 
     return (
         <>
-            <Button {...props}>
+            <StyledMenuCard {...props}>
                 < MenuName onClick={() => navigateToMenu(props.id)}>{props.name}</MenuName>
                 <div className='controls'>
                     {
@@ -63,7 +68,7 @@ const MenuCard = (props) => {
                     
                     <input type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
                 </div>
-            </Button>
+            </StyledMenuCard>
             <FloatingMenu 
                 isOpen={isFloatingMenuOpen} 
                 menuId={props.id} 
