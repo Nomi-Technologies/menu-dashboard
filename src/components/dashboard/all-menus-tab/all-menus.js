@@ -68,8 +68,8 @@ const AllMenus = (props) => {
         updateMenuData()
     }, [props.menuData])
 
-    const updateMenuData = () => {
-        Client.getAllMenus().then((res) => {
+    const updateMenuData = async () => {
+        await Client.getAllMenus().then((res) => {
             setMenuData(res.data);
         })
     }
