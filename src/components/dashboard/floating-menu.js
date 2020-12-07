@@ -46,13 +46,12 @@ const HorizontalSeparator = styled.div`
 `;
 
 const FloatingMenu = (props) => {
-    const [isOpen, setIsOpen] = useState(props.isOpen);
     const [showQRCodeModal, setShowQRCodeModal] = useState(false);
     const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
-    
+
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
         // Currently put here to avoid multiple requests
@@ -79,6 +78,7 @@ const FloatingMenu = (props) => {
             await Client.deleteMenu(props.menuId);
             props.updateMenuSelection('all-menus');
             props.updateMenu();
+            props.updateMenuData();
         }
         setShowDeleteConfirmationModal(false)
     }
@@ -95,7 +95,7 @@ const FloatingMenu = (props) => {
             }
         })
     }
-    
+
     return (
         <>
             <div className={props.className}>

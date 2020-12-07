@@ -37,6 +37,7 @@ function CardGrid(props) {
                     updateMenu={props.updateMenu} 
                     isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i].id)} 
                     toggleFavoriteMenu={props.toggleFavoriteMenu}
+                    updateMenuData={props.updateMenuData}
                 ></StyledMenuCard>
                 { (i+1) < menuData.length ? 
                     <StyledMenuCard 
@@ -46,6 +47,7 @@ function CardGrid(props) {
                         updateMenu={props.updateMenu} 
                         isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i+1].id)} 
                         toggleFavoriteMenu={props.toggleFavoriteMenu}
+                        updateMenuData={props.updateMenuData}
                     ></StyledMenuCard> 
                     :
                     null
