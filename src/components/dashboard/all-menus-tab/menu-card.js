@@ -4,7 +4,7 @@ import styled from "styled-components"
 import EditIcon from "../../../assets/img/edit-orange.png"
 import HeartIcon from "../../../assets/img/heart-active.png"
 import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
-import { FloatingMenu } from "../../floating-menu"
+import { FloatingMenu } from "../../dashboard/floating-menu"
 
 import Client from "../../../util/client"
 

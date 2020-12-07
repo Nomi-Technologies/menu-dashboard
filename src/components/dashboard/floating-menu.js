@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import styled from 'styled-components';
-import HamburgerMenu from 'react-hamburger-menu';
-import Client from "../util/client";
-import { QRCodeModal } from "../components/dashboard/modal/qr-code"
-import { UploadCSVModal } from "../components/dashboard/modal/upload-csv"
-import { DeleteConfirmationModal } from "../components/dashboard/modal/delete"
+import Client from "../../util/client";
+import { QRCodeModal } from "./modal/qr-code"
+import { UploadCSVModal } from "./modal/upload-csv"
+import { DeleteConfirmationModal } from "./modal/delete"
 
 const Menu = styled.div`
     position: absolute;

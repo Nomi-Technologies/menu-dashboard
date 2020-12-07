@@ -1,6 +1,5 @@
-import { FormButton } from "../../buttons"
 import React, { useState } from 'react';
-import { DishFormInput, DishFormTextArea } from "../../form"
+import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
@@ -33,10 +32,10 @@ const NewCategoryModal = (props) => {
 
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
-        if (key == 'Escape') {
+        if (key === 'Escape') {
             props.toggleForm()
         }
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             createCategory()
         }
     }
@@ -98,10 +97,10 @@ const EditCategoryModal = (props) => {
 
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
-        if (key == 'Escape') {
+        if (key === 'Escape') {
             props.toggleForm()
         }
-        if (key == 'Enter') {
+        if (key === 'Enter') {
             updateCategory()
         }
     }

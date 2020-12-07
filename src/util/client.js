@@ -69,6 +69,26 @@ export default class Client {
     })
   }
 
+  static bulkDeleteDish = (menuId, dishes) => {
+    let token = retrieveUserToken() // get user auth token
+
+    let config = {
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          dishesToDelete: dishes,
+        }
+    };
+
+    return axios.delete(ROOT_URL + `/menus/${menuId}/dishes/bulkDelete/`, config);
+  }
+
+  static bulkCreateDish = data => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.post(ROOT_URL + "/menus/bulkCreate/", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static uploadCSV = (data, menuId, overwrite) => {
     let token = retrieveUserToken()
     let body = {
