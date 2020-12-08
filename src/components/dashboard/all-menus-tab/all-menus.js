@@ -28,8 +28,10 @@ function CardGrid(props) {
     const menuData = props.menuData;
     let rows = []; 
     for (let i = 0; i < menuData.length; i += 2) {
+
         rows.push(
             <Row key={i}>
+<<<<<<< HEAD
                 <StyledMenuCard 
                     name={menuData[i].name} 
                     id={menuData[i].id}    
@@ -39,6 +41,10 @@ function CardGrid(props) {
                     toggleFavoriteMenu={props.toggleFavoriteMenu}
                     updateMenuData={props.updateMenuData}
                 ></StyledMenuCard>
+=======
+
+                <StyledMenuCard name={menuData[i].name} id={menuData[i].id} updateMenuSelection={props.updateMenuSelection} updateMenu={props.updateMenu} isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i].id)} toggleFavoriteMenu={props.toggleFavoriteMenu}></StyledMenuCard>
+>>>>>>> b1ea955... unauthorized toggle filter
                 { (i+1) < menuData.length ? 
                     <StyledMenuCard 
                         name={menuData[i+1].name} 

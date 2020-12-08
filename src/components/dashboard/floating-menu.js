@@ -5,6 +5,7 @@ import Client from "../../util/client";
 import { QRCodeModal } from "./modal/qr-code"
 import { UploadCSVModal } from "./modal/upload-csv"
 import { DeleteConfirmationModal } from "./modal/delete"
+import { checkPropTypes } from 'prop-types';
 
 const Menu = styled.div`
     position: absolute;
@@ -51,7 +52,20 @@ const FloatingMenu = (props) => {
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
+    const [menuData, setMenuData] = useState(false)
 
+    useEffect(() => {
+        updateMenuData()
+    }, [props.menuData])
+
+    const updateMenuData = () => {
+        Client.getMenu(props.menuId).then((res) => {
+            setMenuData(res.data.enableFiltering);
+        })
+    }
+
+
+    
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
         // Currently put here to avoid multiple requests
@@ -95,11 +109,34 @@ const FloatingMenu = (props) => {
             }
         })
     }
+
+
+    function toggle(){
+
+        Client.toggleFiltering(props.menuId).then(res => {
+            if(res.status == 200 && res.data){
+                //menu data should update to toggled version on its own right here
+            }
+            // console.log(res)
+        })
+        console.log(menuData)
+    }
     
     return (
         <>
             <div className={props.className}>
                 <Menu isOpen={props.isOpen} className={props.className}>
+                    <OrangeTextMenuItem
+                        onClick = {() => toggle()}
+                    > {menuData ? "Disable Filtering" : "Enable Filtering"}
+             
+
+
+ 
+                    </OrangeTextMenuItem>
+
+
+                    <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick = {() => downloadCSV()}
                     >Download as .csv
