@@ -30,9 +30,25 @@ function CardGrid(props) {
     for (let i = 0; i < menuData.length; i += 2) {
         rows.push(
             <Row key={i}>
-                <StyledMenuCard name={menuData[i].name} id={menuData[i].id} updateMenuSelection={props.updateMenuSelection} updateMenu={props.updateMenu} isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i].id)} toggleFavoriteMenu={props.toggleFavoriteMenu}></StyledMenuCard>
+                <StyledMenuCard 
+                    name={menuData[i].name} 
+                    id={menuData[i].id}    
+                    updateMenuSelection={props.updateMenuSelection} 
+                    updateMenu={props.updateMenu} 
+                    isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i].id)} 
+                    toggleFavoriteMenu={props.toggleFavoriteMenu}
+                    updateMenuData={props.updateMenuData}
+                ></StyledMenuCard>
                 { (i+1) < menuData.length ? 
-                    <StyledMenuCard name={menuData[i+1].name} id={menuData[i+1].id} updateMenuSelection={props.updateMenuSelection} updateMenu={props.updateMenu} isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i+1].id)} toggleFavoriteMenu={props.toggleFavoriteMenu}></StyledMenuCard> 
+                    <StyledMenuCard 
+                        name={menuData[i+1].name} 
+                        id={menuData[i+1].id} 
+                        updateMenuSelection={props.updateMenuSelection} 
+                        updateMenu={props.updateMenu} 
+                        isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i+1].id)} 
+                        toggleFavoriteMenu={props.toggleFavoriteMenu}
+                        updateMenuData={props.updateMenuData}
+                    ></StyledMenuCard> 
                     :
                     null
                 }
@@ -52,8 +68,8 @@ const AllMenus = (props) => {
         updateMenuData()
     }, [props.menuData])
 
-    const updateMenuData = () => {
-        Client.getAllMenus().then((res) => {
+    const updateMenuData = async () => {
+        await Client.getAllMenus().then((res) => {
             setMenuData(res.data);
         })
     }
@@ -64,6 +80,7 @@ const AllMenus = (props) => {
                 menuData ? 
                 <CardGrid
                     menuData={menuData}
+                    updateMenuData={updateMenuData}
                     {...props}
                 /> :
                 null

@@ -74,6 +74,7 @@ const MenuCard = (props) => {
                 menuId={props.id} 
                 updateMenu={props.updateMenu} 
                 updateMenuSelection={props.updateMenuSelection} 
+                updateMenuData={props.updateMenuData}
                 onClickMenu={toggleFloatingMenu}
             />
         </>
