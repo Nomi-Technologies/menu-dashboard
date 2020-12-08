@@ -52,7 +52,7 @@ const FloatingMenu = (props) => {
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [uniqueName, setUniqueName] = useState(null);
     const [restaurantName, setRestaurantName] = useState(null);
-    const [menuData, setMenuData] = useState(false)
+    const [menuData, setMenuData] = useState({})
 
     useEffect(() => {
         updateMenuData()
@@ -60,7 +60,7 @@ const FloatingMenu = (props) => {
 
     const updateMenuData = () => {
         Client.getMenu(props.menuId).then((res) => {
-            setMenuData(res.data.enableFiltering);
+            setMenuData(res.data);
         })
     }
 
@@ -112,14 +112,12 @@ const FloatingMenu = (props) => {
 
 
     function toggle(){
-
-        Client.toggleFiltering(props.menuId).then(res => {
+        Client.toggleFiltering(props.menuId, menuData.enableFiltering).then(res => {
             if(res.status == 200 && res.data){
                 //menu data should update to toggled version on its own right here
             }
             // console.log(res)
         })
-        console.log(menuData)
     }
     
     return (
@@ -128,7 +126,7 @@ const FloatingMenu = (props) => {
                 <Menu isOpen={props.isOpen} className={props.className}>
                     <OrangeTextMenuItem
                         onClick = {() => toggle()}
-                    > {menuData ? "Disable Filtering" : "Enable Filtering"}
+                    > {menuData?.enableFiltering ? "Disable Filtering" : "Enable Filtering"}
              
 
 
