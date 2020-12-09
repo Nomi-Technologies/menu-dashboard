@@ -409,7 +409,6 @@ const MenuTable = (props) => {
 
                 </form>
                 <div className='buttons'>
-                    <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
                     <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
                     <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
                     <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
@@ -466,6 +465,7 @@ const MenuTable = (props) => {
                 {
                     renderTableContents()
                 }
+                <a onClick={toggleNewCategoryForm}><Table.AddCategory></Table.AddCategory></a>
             </StyledMenuTable>
         </>
     )
