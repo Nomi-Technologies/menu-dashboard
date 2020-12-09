@@ -158,7 +158,6 @@ function useAsyncState(initialValue) {
 // Overall component which renders the table as a list of menu categories
 const MenuTable = (props) => {
     // const [menuData, setMenuData] = useState(props.menuData)
-    let menuData = props.menuData
     let updateMenu = props.updateMenu
     let updateMenuSelection = props.updateMenuSelection
     const [showNewDishForm, setNewDishForm] = useState(false);
@@ -328,7 +327,7 @@ const MenuTable = (props) => {
             return (
                 <div id='menuTable'>
                 {
-                    menuData ? menuData.map((item) => (
+                    props.menuData?.categories ? props.menuData?.categories.map((item) => (
                         <Table.TableCategory key={ item.id } category={ item } updateMenu={ updateMenu }
                             toggleEditCategory={toggleEditCategoryForm}
                             toggleEditDish={toggleEditDishForm}
