@@ -125,13 +125,7 @@ const FloatingMenu = (props) => {
                     <OrangeTextMenuItem
                         onClick = {() => toggle()}
                     > {menuData?.enableFiltering ? "Disable Filtering" : "Enable Filtering"}
-             
-
-
- 
                     </OrangeTextMenuItem>
-
-
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem
                         onClick = {() => downloadCSV()}
