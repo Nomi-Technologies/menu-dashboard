@@ -310,7 +310,7 @@ const AddCategory = () => {
             <CategoryHeaderRow>
                 <img className='plus-icon' src={PlusIcon} alt="plus icon"/>
                 <TableCell className='category-name' style={{color: "#B2BED0"}}>
-                    Add Menu Section!!!
+                    Add Menu Section...
                 </TableCell>
                 
             </CategoryHeaderRow>
