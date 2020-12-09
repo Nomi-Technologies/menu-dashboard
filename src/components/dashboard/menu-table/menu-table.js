@@ -83,7 +83,7 @@ const EditModeButton = styled.div`
   text-align: center;
   padding: 10px 20px;
   cursor: pointer;
-  z-index: 10;
+  z-index: 7;
   width: 50px;
 `
 
