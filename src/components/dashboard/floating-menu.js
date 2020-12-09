@@ -61,10 +61,9 @@ const FloatingMenu = (props) => {
     const updateMenuData = () => {
         Client.getMenu(props.menuId).then((res) => {
             setMenuData(res.data);
+            console.log(res.data.enableFiltering)
         })
     }
-
-
     
     useEffect(() => {
         // TODO(Tony): use global context for restaurant info
@@ -112,11 +111,10 @@ const FloatingMenu = (props) => {
 
 
     function toggle(){
-        Client.toggleFiltering(props.menuId, menuData.enableFiltering).then(res => {
+        Client.toggleFiltering(props.menuId, !menuData.enableFiltering).then(res => {
             if(res.status == 200 && res.data){
-                //menu data should update to toggled version on its own right here
+                updateMenuData()            
             }
-            // console.log(res)
         })
     }
     
