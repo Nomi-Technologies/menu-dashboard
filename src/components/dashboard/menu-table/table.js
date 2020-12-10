@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import update from 'immutability-helper';
 
 import Checkbox from "./checkbox";
 
@@ -109,34 +111,63 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ item, updateMenu, catId, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode }) => {
+const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveCard, getIndex }) => {
+    const dishId = dish.id
+    const index = getIndex(dishId);
+
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: "dish", id: dishId, index },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+        end: (dropResult, monitor) => {
+            const { id: droppedId, index } = monitor.getItem();
+            const didDrop = monitor.didDrop();
+            if (!didDrop) {
+                // move card back to original position
+                moveCard(droppedId, index);
+            }
+        },
+    });
+
+    const [, drop] = useDrop({
+        accept: "dish",
+        canDrop: () => false,
+        hover({ id: draggedId }) {
+            if (draggedId !== dishId) {
+                const overIndex = getIndex(dishId);
+                moveCard(draggedId, overIndex);
+            }
+        },
+    });
+
     return (
-        <StyledItemRow className='opened'>
+        <StyledItemRow ref={ (node) => drag(drop(node)) } className='opened'>
           {
             showEditMode ? <Checkbox
               handleCheckboxChange={handleCheckboxChange}
-              item={item}
-              key={item.id}
+              item={dish}
+              key={dish.id}
             />
             : ""
           }
             <TableCell className='item-name'>
-                <p>{item.name}</p>
+                <p>{dish.name}</p>
             </TableCell>
             <TableCell className='item-description'>
-                <p>{item.description}</p>
+                <p>{dish.description}</p>
             </TableCell>
             <TableCell className='item-price'>
                 <p>
-                    { item.price ? item.price : "--" }
+                    { dish.price ? dish.price : "--" }
                 </p>
             </TableCell>
             <TableCell className='item-tags'>
-                <p>{allergen_list(item.Tags)}</p>
+                <p>{allergenList(dish.Tags)}</p>
             </TableCell>
             <RowControls>
-                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(item)} alt="edit icon" />
-                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(item.id, "dish") }} alt="delete icon"/>
+                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(dish)} alt="edit icon" />
+                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(dish.id, "dish") }} alt="delete icon"/>
             </RowControls>
         </StyledItemRow>
     )
@@ -204,7 +235,7 @@ const CategoryHeaderRow = styled(TableRow)`
     }
 `
 
-const allergen_list = allergens => {
+const allergenList = allergens => {
   if (allergens.length === 0) {
     return "--"
   }
@@ -256,7 +287,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange }) => {
+const TableCategory = ({ menuContext, category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -267,8 +298,42 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
         }
     }
 
+    let dishOrder = menuContext.categoryDict[category.id]?.dishOrder
+
+    let updateDishOrder = (newDishOrder) => {
+        console.log("updating dish order")
+        let newMenuContext = {
+            ...menuContext
+        }
+
+        newMenuContext.categoryDict[category.id].dishOrder = newDishOrder
+        menuContext.updateMenuContext(newMenuContext)
+    }
+
+    const getIndex = (id) => {
+        for(let i = 0; i < dishOrder.length; i++) {
+            if(dishOrder[i] === id) {
+                return i
+            }
+        }
+    }
+
+    const moveCard = useCallback((id, atIndex) => {
+        let newDishOrder = dishOrder
+        let index = getIndex(id);
+        newDishOrder = update(newDishOrder, {
+            $splice: [
+                [index, 1],
+                [atIndex, 0, id],
+            ],
+        })
+        updateDishOrder(newDishOrder);
+    }, [dishOrder]);
+
+    const [, drop] = useDrop({ accept: "dish" });
+
     return (
-        <StyledTableCategory className={open ? 'open' : ''}>
+        <StyledTableCategory ref={ drop } className={ open ? 'open' : '' }>
             <CategoryHeaderRow>
                 <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={toggleOpen}/>
                 <TableCell className='category-name' onClick={toggleOpen}>
@@ -286,20 +351,19 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
             </CategoryHeaderRow>
             <div className='items'>
                 {
-                    category ?
-                        category.Dishes.map((item, index) => (
+                    dishOrder ?
+                        dishOrder.map((dishId, index) => (
                             <ItemRow
-                                key={index}
-                                item={item}
-                                updateMenu={updateMenu}
-                                catId={ category.id }
+                                key={dishId}
+                                dish={menuContext.dishDict[dishId]}
                                 toggleEditDish={toggleEditDish}
                                 openDeleteConfirmation={openDeleteConfirmation}
                                 handleCheckboxChange={handleCheckboxChange}
                                 showEditMode={showEditMode}
+                                moveCard={moveCard}
+                                getIndex={getIndex}
                             />
-                        )) :
-                        ''
+                        )) : ''
                 }
             </div>
         </StyledTableCategory>
@@ -325,7 +389,6 @@ export {
     ItemRow,
     HeaderRow,
     CategoryHeaderRow,
-    allergen_list,
     StyledTableCategory,
     TableCategory,
     AddCategory
