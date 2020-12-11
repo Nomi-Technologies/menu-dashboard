@@ -1,6 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import update from 'immutability-helper';
+import debounce from 'lodash.debounce';
+import Client from '../../../util/client'
 
 import Checkbox from "./checkbox";
 
@@ -111,7 +113,7 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish }) => {
+const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
     const { index, categoryId } = getDish(dish.id);
 
     const [{ isDragging }, drag] = useDrag({
@@ -125,7 +127,10 @@ const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxC
             if (!didDrop) {
                 // move card back to original position if drop did not occur on given category
                 moveDish(droppedId, index);
+            } else {
+                saveDishOrder()
             }
+
         },
     });
 
@@ -287,7 +292,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory }) => {
+const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, updateMenu }) => {
     const [open, setOpen] = useState(false);
     const [dishOrder, setDishOrder] = useState([])
 
@@ -295,7 +300,7 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
         if(menuContext.categoryDict && !isDragging) {
             setDishOrder(menuContext.categoryDict[category.id].dishOrder)    
         }
-    }, [menuContext.categoryDict[category.id]])
+    }, [menuContext.categoryDict])
 
     const toggleOpen = () => {
         if (open) {
@@ -326,6 +331,11 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
         setDishOrder(newDishOrder)
     }, [dishOrder]);
 
+    const saveDishOrder = async () => {
+        await Client.updateDishOrder(menuContext.menuData.id, dishOrder)
+        updateMenu()
+    }   
+
     const [{ isDragging }, drag] = useDrag({
         item: { type: "category", id: category.id, index },
         begin: () => { setOpen(false) }, // close category before dragging
@@ -337,7 +347,10 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
             const didDrop = monitor.didDrop();
             if(!didDrop) {
                 moveCategory(droppedId, index);
+            } else {
+                saveCategoryOrder() // save to backend
             }
+            
         }
     })
 
@@ -380,6 +393,7 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
                                 showEditMode={showEditMode}
                                 moveDish={moveDish}
                                 getDish={getDish}
+                                saveDishOrder={saveDishOrder}
                             />
                         )) : ''
                 }

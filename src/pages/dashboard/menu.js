@@ -109,7 +109,7 @@ const MenuPage = () => {
                                         <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                     </MenuContainer>
                                     )
-                            }
+                            }                
                         </>
                     ) : (
                         <>

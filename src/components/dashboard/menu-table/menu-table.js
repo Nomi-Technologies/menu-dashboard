@@ -165,6 +165,7 @@ const MenuTable = (props) => {
     // const [menuData, setMenuData] = useState(props.menuData)
     let updateMenu = props.updateMenu
     let updateMenuSelection = props.updateMenuSelection
+
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
@@ -181,6 +182,7 @@ const MenuTable = (props) => {
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
+    const [menuContext, setMenuContext] = useState({})
 
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
@@ -325,56 +327,6 @@ const MenuTable = (props) => {
         setDeleteConfirmation(false)
     }
 
-    const renderTableContents = () => {
-        if(!isSearching) {
-            return (
-                <div id='menuTable'>
-                {
-                    categoryOrder?.length > 0 ? categoryOrder.map((categoryId, index) => (
-                        <Table.TableCategory 
-                            key={ categoryId } 
-                            index={index}
-                            menuContext={ menuContext } 
-                            category={ menuContext.categoryDict[categoryId] }
-                            updateMenu={ updateMenu }
-                            toggleEditCategory={ toggleEditCategoryForm }
-                            toggleEditDish={ toggleEditDishForm }
-                            openDeleteConfirmation={ openDeleteConfirmation }
-                            handleCheckboxChange={ handleCheckboxChange }
-                            showEditMode={ showEditMode }
-                            moveCategory={moveCategory}
-                        />
-                    )) : ''
-                }
-                </div>
-            );
-        } else if (searchResults.length === 0) {
-            return (
-                <Table.TableCell>
-                    No items found
-                </Table.TableCell>
-            );
-        }
-        return (
-            <>
-                {
-                    searchResults.map((dish, index) => (
-                        <Table.ItemRow
-                            key={index}
-                            dish={dish}
-                            updateMenu={updateMenu}
-                            toggleEditDish={toggleEditDishForm}
-                            openDeleteConfirmation={openDeleteConfirmation}
-                            toggleEditCategory={toggleEditCategoryForm}
-                            handleCheckboxChange={handleCheckboxChange}
-                            showEditMode={showEditMode}
-                        />
-                    ))
-                }
-            </>
-        );
-    }
-
     // TODO: refactor search to be in browser
     const handleSearch = (e) => {
         e.preventDefault();
@@ -422,28 +374,21 @@ const MenuTable = (props) => {
         }
     }
 
-    let [menuContext, setMenuContext] = useState({})
-
     let updateMenuContext = (newMenuContext) => {
         setMenuContext(newMenuContext)
     }
 
     useEffect(() => {
-        let menuContextObj = props?.menuData && Object.keys(props.menuData).length > 0 ? {
+        let menuContextObj = props.menuData && Object.keys(props.menuData).length > 0 ? {
             ...parseMenu(props.menuData),
+            menuData: props.menuData,
             updateMenuContext: updateMenuContext
         } : {}
-
         setMenuContext(menuContextObj)
+        setCategoryOrder(menuContextObj.categoryOrder)
     }, [props.menuData])
 
     const [categoryOrder, setCategoryOrder] = useState([])
-
-    useEffect(() => {
-        if(menuContext) {
-            setCategoryOrder(menuContext.categoryOrder)
-        }
-    }, [menuContext])
 
     const moveCategory = useCallback(debounce((id, atIndex) => {
         let index = categoryOrder.indexOf(id)
@@ -454,96 +399,153 @@ const MenuTable = (props) => {
                 [atIndex, 0, id]
             ]
         })
+
         setCategoryOrder(newCategoryOrder)
     }, 5))
 
+    const saveCategoryOrder = async () => {
+        console.log(categoryOrder)
+        await Client.updateCategoryOrder(props.menuData.id, categoryOrder)
+        updateMenu()
+    } 
+
+    const renderTableContents = () => {
+        if(!isSearching) {
+            return (
+                <div id='menuTable'>
+                {
+                    categoryOrder?.length > 0 ? categoryOrder.map((categoryId, index) => (
+                        <Table.TableCategory 
+                            key={ categoryId } 
+                            index={index}
+                            menuContext={ menuContext } 
+                            category={ menuContext.categoryDict[categoryId] }
+                            updateMenu={ updateMenu }
+                            toggleEditCategory={ toggleEditCategoryForm }
+                            toggleEditDish={ toggleEditDishForm }
+                            openDeleteConfirmation={ openDeleteConfirmation }
+                            handleCheckboxChange={ handleCheckboxChange }
+                            showEditMode={ showEditMode }
+                            moveCategory={ moveCategory }
+                            saveCategoryOrder={ saveCategoryOrder }
+                            updateMenu={ updateMenu }
+                        />
+                    )) : ''
+                }
+                </div>
+            );
+        } else if (searchResults.length === 0) {
+            return (
+                <Table.TableCell>
+                    No items found
+                </Table.TableCell>
+            );
+        }
+        return (
+            <>
+                {
+                    searchResults.map((dish, index) => (
+                        <Table.ItemRow
+                            key={index}
+                            dish={dish}
+                            updateMenu={updateMenu}
+                            toggleEditDish={toggleEditDishForm}
+                            openDeleteConfirmation={openDeleteConfirmation}
+                            toggleEditCategory={toggleEditCategoryForm}
+                            handleCheckboxChange={handleCheckboxChange}
+                            showEditMode={showEditMode}
+                        />
+                    ))
+                }
+            </>
+        );
+    }
+
     return (
         <DndProvider backend={HTML5Backend}>
-            <MenuTableContext.Provider value={ menuContext }>
-                <MenuControls>
-                <div className='buttons'>
-                    <EditModeButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Edit</EditModeButton>
-                    <EditModeDoneButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Done</EditModeDoneButton>
-                </div>
-                    <form onSubmit={handleSearch} className='searchForm'>
-                        <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
-                            onChange={(e) => setSearchBoxValue(e.target.value)}
-                            onFocus={(e) => {
-                                setSearchBoxFocused(true);
-                                e.target.select(); // highlight text when focus on element
-                            }}
-                        />
-                        {
-                            (isSearching && !searchBoxFocused) ?
-                            <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
-                                e.preventDefault();
-                                setSearchBoxValue('');
-                                setIsSearching(false);
-                            }}/> :
-                            <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
-                        }
-
-                    </form>
-                    <div className='buttons'>
-                        <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
-                        <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
-                        <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
-                        <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
-                    </div>
-                </MenuControls>
-                {
-                    showNewDishForm ? (
-                        <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
-                    ) : null
-                }
-                {
-                    showNewCategoryForm ? (
-                        <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
-                    ) : null
-                }
-                {
-                    showCopyMenuConfirmation ? (
-                        <CopyMenuModal closeForm={closeCopyMenuConfirmation} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
-                    ) : null
-                }
-                {
-                    showEditDishForm ? (
-                        <EditDishModal toggleForm={toggleEditDishForm} updateMenu={updateMenu}
-                            dish={selectedDish} menuId={props.menuId}/>
-                    ) : null
-                }
-                {
-                    showEditCategoryForm ? (
-                        <EditCategoryModal toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
-                            category={selectedCategory} menuId={props.menuId}/>
-                    ) : null
-                }
-                {
-                    showDeleteConfirmation ? (
-                        <DeleteConfirmationModal closeForm={closeDeleteConfirmation} type={toDeleteType} itemIds={selectedDishes}/>
-                    ) : null
-                }
-
-                <StyledMenuTable>
-                    <Table.HeaderRow>
-                        <Table.TableCell className='title'>
-                            Title
-                        </Table.TableCell>
-                        <Table.TableCell className='description'>
-                            Description
-                        </Table.TableCell>
-                        <Table.TableCell className='price'>
-                            Price
-                        </Table.TableCell>
-                        <Table.TableCell className='tags'>
-                            Allergens
-                        </Table.TableCell>
-                    </Table.HeaderRow>
+            <MenuControls>
+            <div className='buttons'>
+                <EditModeButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Edit</EditModeButton>
+                <EditModeDoneButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Done</EditModeDoneButton>
+            </div>
+                <form onSubmit={handleSearch} className='searchForm'>
+                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
+                        onChange={(e) => setSearchBoxValue(e.target.value)}
+                        onFocus={(e) => {
+                            setSearchBoxFocused(true);
+                            e.target.select(); // highlight text when focus on element
+                        }}
+                    />
                     {
-                        renderTableContents()
+                        (isSearching && !searchBoxFocused) ?
+                        <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
+                            e.preventDefault();
+                            setSearchBoxValue('');
+                            setIsSearching(false);
+                        }}/> :
+                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
-                </StyledMenuTable>
-            </MenuTableContext.Provider>
+
+                </form>
+                <div className='buttons'>
+                    <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
+                    <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
+                    <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
+                    <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
+                </div>
+            </MenuControls>
+            {
+                showNewDishForm ? (
+                    <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                ) : null
+            }
+            {
+                showNewCategoryForm ? (
+                    <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
+                ) : null
+            }
+            {
+                showCopyMenuConfirmation ? (
+                    <CopyMenuModal closeForm={closeCopyMenuConfirmation} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
+                ) : null
+            }
+            {
+                showEditDishForm ? (
+                    <EditDishModal toggleForm={toggleEditDishForm} updateMenu={updateMenu}
+                        dish={selectedDish} menuId={props.menuId}/>
+                ) : null
+            }
+            {
+                showEditCategoryForm ? (
+                    <EditCategoryModal toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
+                        category={selectedCategory} menuId={props.menuId}/>
+                ) : null
+            }
+            {
+                showDeleteConfirmation ? (
+                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation} type={toDeleteType} itemIds={selectedDishes}/>
+                ) : null
+            }
+
+            <StyledMenuTable>
+                <Table.HeaderRow>
+                    <Table.TableCell className='title'>
+                        Title
+                    </Table.TableCell>
+                    <Table.TableCell className='description'>
+                        Description
+                    </Table.TableCell>
+                    <Table.TableCell className='price'>
+                        Price
+                    </Table.TableCell>
+                    <Table.TableCell className='tags'>
+                        Allergens
+                    </Table.TableCell>
+                </Table.HeaderRow>
+                {
+                    renderTableContents()
+                }
+            </StyledMenuTable>
         </DndProvider>
     )
 }
