@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 
@@ -111,12 +111,11 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveCard, getIndex }) => {
-    const dishId = dish.id
-    const index = getIndex(dishId);
+const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish }) => {
+    const { index, categoryId } = getDish(dish.id);
 
     const [{ isDragging }, drag] = useDrag({
-        item: { type: "dish", id: dishId, index },
+        item: { type: "dish", id: dish.id, categoryId: categoryId, index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -124,8 +123,8 @@ const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxC
             const { id: droppedId, index } = monitor.getItem();
             const didDrop = monitor.didDrop();
             if (!didDrop) {
-                // move card back to original position
-                moveCard(droppedId, index);
+                // move card back to original position if drop did not occur on given category
+                moveDish(droppedId, index);
             }
         },
     });
@@ -133,10 +132,11 @@ const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxC
     const [, drop] = useDrop({
         accept: "dish",
         canDrop: () => false,
-        hover({ id: draggedId }) {
-            if (draggedId !== dishId) {
-                const overIndex = getIndex(dishId);
-                moveCard(draggedId, overIndex);
+        hover({ id: draggedId, categoryId: draggedCategoryId }) {
+            if (draggedId !== dish.id && categoryId === draggedCategoryId) {
+                // if same category, just move within category
+                const overIndex = getDish(dish.id).index;
+                moveDish(draggedId, overIndex);
             }
         },
     });
@@ -287,8 +287,15 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ menuContext, category, updateMenu, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange }) => {
+const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory }) => {
     const [open, setOpen] = useState(false);
+    const [dishOrder, setDishOrder] = useState([])
+
+    useEffect(() => {
+        if(menuContext.categoryDict && !isDragging) {
+            setDishOrder(menuContext.categoryDict[category.id].dishOrder)    
+        }
+    }, [menuContext.categoryDict[category.id]])
 
     const toggleOpen = () => {
         if (open) {
@@ -298,42 +305,53 @@ const TableCategory = ({ menuContext, category, updateMenu, toggleEditCategory, 
         }
     }
 
-    let dishOrder = menuContext.categoryDict[category.id]?.dishOrder
-
-    let updateDishOrder = (newDishOrder) => {
-        console.log("updating dish order")
-        let newMenuContext = {
-            ...menuContext
-        }
-
-        newMenuContext.categoryDict[category.id].dishOrder = newDishOrder
-        menuContext.updateMenuContext(newMenuContext)
-    }
-
-    const getIndex = (id) => {
+    const getDish = (id) => {
         for(let i = 0; i < dishOrder.length; i++) {
             if(dishOrder[i] === id) {
-                return i
+                return { index: i, categoryId: category.id }
             }
         }
+        return { index: null, categoryId: category.id }
     }
 
-    const moveCard = useCallback((id, atIndex) => {
-        let newDishOrder = dishOrder
-        let index = getIndex(id);
-        newDishOrder = update(newDishOrder, {
+    const moveDish = useCallback((id, atIndex) => {
+        let index = getDish(id).index;
+
+        let newDishOrder = update(dishOrder, {
             $splice: [
                 [index, 1],
                 [atIndex, 0, id],
             ],
         })
-        updateDishOrder(newDishOrder);
+        setDishOrder(newDishOrder)
     }, [dishOrder]);
 
-    const [, drop] = useDrop({ accept: "dish" });
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: "category", id: category.id, index },
+        begin: () => { setOpen(false) }, // close category before dragging
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+        end: (dropResult, monitor) => {
+            const { id: droppedId, index } = monitor.getItem();
+            const didDrop = monitor.didDrop();
+            if(!didDrop) {
+                moveCategory(droppedId, index);
+            }
+        }
+    })
+
+    const [, drop] = useDrop({
+        accept: ["dish", "category"],
+        hover({ type, id: draggedId }) {
+            if(type === "category") {
+                moveCategory(draggedId, index);
+            }
+        }
+    });
 
     return (
-        <StyledTableCategory ref={ drop } className={ open ? 'open' : '' }>
+        <StyledTableCategory ref={ (node) => drag(drop(node)) } className={ open ? 'open' : '' }>
             <CategoryHeaderRow>
                 <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={toggleOpen}/>
                 <TableCell className='category-name' onClick={toggleOpen}>
@@ -351,7 +369,7 @@ const TableCategory = ({ menuContext, category, updateMenu, toggleEditCategory, 
             </CategoryHeaderRow>
             <div className='items'>
                 {
-                    dishOrder ?
+                    open && !isDragging && dishOrder ?
                         dishOrder.map((dishId, index) => (
                             <ItemRow
                                 key={dishId}
@@ -360,8 +378,8 @@ const TableCategory = ({ menuContext, category, updateMenu, toggleEditCategory, 
                                 openDeleteConfirmation={openDeleteConfirmation}
                                 handleCheckboxChange={handleCheckboxChange}
                                 showEditMode={showEditMode}
-                                moveCard={moveCard}
-                                getIndex={getIndex}
+                                moveDish={moveDish}
+                                getDish={getDish}
                             />
                         )) : ''
                 }

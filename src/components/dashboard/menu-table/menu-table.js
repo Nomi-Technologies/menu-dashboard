@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd'
+import React, { useEffect, useState, useCallback } from 'react';
+import styled from "styled-components"
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import update from 'immutability-helper';
+import debounce from 'lodash.debounce';
 
 import Client from '../../../util/client'
 
-import styled from "styled-components"
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"
@@ -328,9 +330,10 @@ const MenuTable = (props) => {
             return (
                 <div id='menuTable'>
                 {
-                    menuContext?.categoryOrder ? menuContext.categoryOrder.map((categoryId) => (
+                    categoryOrder?.length > 0 ? categoryOrder.map((categoryId, index) => (
                         <Table.TableCategory 
                             key={ categoryId } 
+                            index={index}
                             menuContext={ menuContext } 
                             category={ menuContext.categoryDict[categoryId] }
                             updateMenu={ updateMenu }
@@ -339,6 +342,7 @@ const MenuTable = (props) => {
                             openDeleteConfirmation={ openDeleteConfirmation }
                             handleCheckboxChange={ handleCheckboxChange }
                             showEditMode={ showEditMode }
+                            moveCategory={moveCategory}
                         />
                     )) : ''
                 }
@@ -354,8 +358,11 @@ const MenuTable = (props) => {
         return (
             <>
                 {
-                    searchResults.map((item, index) => (
-                        <Table.ItemRow key={index} item={item} updateMenu={updateMenu}
+                    searchResults.map((dish, index) => (
+                        <Table.ItemRow
+                            key={index}
+                            dish={dish}
+                            updateMenu={updateMenu}
                             toggleEditDish={toggleEditDishForm}
                             openDeleteConfirmation={openDeleteConfirmation}
                             toggleEditCategory={toggleEditCategoryForm}
@@ -368,6 +375,7 @@ const MenuTable = (props) => {
         );
     }
 
+    // TODO: refactor search to be in browser
     const handleSearch = (e) => {
         e.preventDefault();
         e.target.firstChild.blur();
@@ -423,12 +431,31 @@ const MenuTable = (props) => {
     useEffect(() => {
         let menuContextObj = props?.menuData && Object.keys(props.menuData).length > 0 ? {
             ...parseMenu(props.menuData),
-            menuData: props.menuData,
             updateMenuContext: updateMenuContext
         } : {}
 
         setMenuContext(menuContextObj)
     }, [props.menuData])
+
+    const [categoryOrder, setCategoryOrder] = useState([])
+
+    useEffect(() => {
+        if(menuContext) {
+            setCategoryOrder(menuContext.categoryOrder)
+        }
+    }, [menuContext])
+
+    const moveCategory = useCallback(debounce((id, atIndex) => {
+        let index = categoryOrder.indexOf(id)
+
+        let newCategoryOrder = update(categoryOrder, {
+            $splice: [
+                [index, 1],
+                [atIndex, 0, id]
+            ]
+        })
+        setCategoryOrder(newCategoryOrder)
+    }, 5))
 
     return (
         <DndProvider backend={HTML5Backend}>
