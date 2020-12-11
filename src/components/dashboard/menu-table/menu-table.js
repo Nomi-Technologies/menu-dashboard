@@ -6,15 +6,12 @@ import update from 'immutability-helper';
 import debounce from 'lodash.debounce';
 
 import Client from '../../../util/client'
-
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
 import { DeleteConfirmationModal } from "../modal/delete"
 import { NewDishModal, EditDishModal } from "../modal/dish"
 import { NewCategoryModal, EditCategoryModal } from "../modal/category"
 import { CopyMenuModal } from "../modal/copymenu"
-import { MenuTableContext } from "./menu-table-context"
-
 import * as Table from "./table"
 
 const StyledMenuTable = styled.div`
@@ -404,7 +401,6 @@ const MenuTable = (props) => {
     }, 5))
 
     const saveCategoryOrder = async () => {
-        console.log(categoryOrder)
         await Client.updateCategoryOrder(props.menuData.id, categoryOrder)
         updateMenu()
     } 
