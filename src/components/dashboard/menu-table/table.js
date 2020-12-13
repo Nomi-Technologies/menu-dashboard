@@ -186,6 +186,7 @@ const CategoryHeaderRow = styled(TableRow)`
         left: 10px;
         top: 10px;
         cursor: pointer;
+        width: 30px;
     }
 
     .category-name {
