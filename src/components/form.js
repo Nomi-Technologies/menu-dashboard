@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
+import Client from '../util/client'
 
 import RightArrowIcon from "../assets/img/right-arrow.png"
 
@@ -256,6 +257,73 @@ let DishFormTextArea = (props) => (
     <StyledNewTextArea type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>
 )
 
+let MultiSelectDropdown;
+
+if (typeof window !== `undefined`) {
+    const { Multiselect } = require('multiselect-react-dropdown');
+    MultiSelectDropdown = Multiselect;
+}
+
+const TagsForm = ({ tags, setTags }) => {
+    const [allTags, setAllTags] = useState([])
+  
+    useEffect(() => {
+      Client.getTags().then(response => {
+        setAllTags(response.data)
+      })
+    }, [])
+  
+    // convert list of tag objects to ids to set in parent form
+    const tagIds = (tagList) => {
+      let ids = []
+      tagList.forEach(tag => {
+        ids.push(tag.id)
+      })
+      return ids
+    }
+  
+    const onSelect = (selectedList, selectedItem) => {
+      setTags(tagIds(selectedList))
+    }
+  
+    const onRemove = (selectedList, removedItem) => {
+      setTags(tagIds(selectedList))
+    }
+  
+    const css = {
+      "searchBox": {
+        "border": "none",
+        "background-color": "#E1E7EC",
+        "padding": "10px",
+        "padding-left": "20px",
+        "font-size": "14px",
+        "margin": "10px 0",
+      },
+      "chips": {
+        "background-color": "#F3A35C",
+        "color": "white",
+        "padding": "8px 15px",
+        "border-radius": "5px"
+      },
+      "optionContainer": {
+        "max-height": "180px"
+      }
+    }
+  
+    return (
+      <MultiSelectDropdown
+        options={ allTags }
+        selectedValues={ tags }
+        displayValue="name"
+        placeholder="Start typing to begin..."
+        onSelect={ onSelect }
+        onRemove={ onRemove }
+        style={ css }
+        closeIcon="cancel"
+      />
+    )
+}
+
 export { 
     FormInput,
     DishFormInput,
@@ -272,5 +340,6 @@ export {
     DoneButton,
     SaveButton,
     FormControls,
-    PopupFormTitle
+    PopupFormTitle,
+    TagsForm,
 }

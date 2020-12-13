@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
+import { DishFormInput, DishFormTextArea, FormButton, TagsForm } from "../../form"
 import { CategoryDropdown } from "./dropdown"
 import Client from '../../../util/client'
 import useEventListener from '@use-it/event-listener'
@@ -7,73 +7,6 @@ import useEventListener from '@use-it/event-listener'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
-
-let MultiSelectDropdown;
-
-if (typeof window !== `undefined`) {
-    const { Multiselect } = require('multiselect-react-dropdown');
-    MultiSelectDropdown = Multiselect;
-}
-
-const TagsForm = ({ tags, setTags }) => {
-  const [allTags, setAllTags] = useState([])
-
-  useEffect(() => {
-    Client.getTags().then(response => {
-      setAllTags(response.data)
-    })
-  }, [])
-
-  // convert list of tag objects to ids to set in parent form
-  const tagIds = (tagList) => {
-    let ids = []
-    tagList.forEach(tag => {
-      ids.push(tag.id)
-    })
-    return ids
-  }
-
-  const onSelect = (selectedList, selectedItem) => {
-    setTags(tagIds(selectedList))
-  }
-
-  const onRemove = (selectedList, removedItem) => {
-    setTags(tagIds(selectedList))
-  }
-
-  const css = {
-    "searchBox": {
-      "border": "none",
-      "background-color": "#E1E7EC",
-      "padding": "10px",
-      "padding-left": "20px",
-      "font-size": "14px",
-      "margin": "10px 0",
-    },
-    "chips": {
-      "background-color": "#F3A35C",
-      "color": "white",
-      "padding": "8px 15px",
-      "border-radius": "5px"
-    },
-    "optionContainer": {
-      "max-height": "180px"
-    }
-  }
-
-  return (
-    <MultiSelectDropdown
-      options={ allTags }
-      selectedValues={ tags }
-      displayValue="name"
-      placeholder="Start typing to begin..."
-      onSelect={ onSelect }
-      onRemove={ onRemove }
-      style={ css }
-      closeIcon="cancel"
-    />
-  )
-}
 
 const NewDishModal = props => {
   const [name, setName] = useState("")
