@@ -8,6 +8,70 @@ import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
 
+
+let MultiSelectDropdown;
+
+if (typeof window !== `undefined`) {
+  const { Multiselect } = require('multiselect-react-dropdown');
+  MultiSelectDropdown = Multiselect;
+}
+
+const ModifierSelector = ({ modifiers, setModifiers }) => {
+  const [allModifiers, setAllModifiers] = useState([]);
+
+  useEffect(() => {
+    Client.getAllModifications().then((res) => {
+      setAllModifiers(res.data);
+    });
+  }, []);
+
+  const toModificationIds = (list) => {
+    return list.reduce((accumulator, current) => {
+      accumulator.push(current.id);
+      return accumulator;
+    }, []);
+  }
+
+  const onSelect = (list, item) => {
+    setModifiers(toModificationIds(list));
+  };
+
+  const onRemove = (list, item) => {
+    setModifiers(toModificationIds(list));
+  };
+
+  return (
+    <MultiSelectDropdown
+      style = {{
+        "searchBox": {
+          "border": "none",
+          "background-color": "#E1E7EC",
+          "padding": "10px",
+          "padding-left": "20px",
+          "font-size": "14px",
+          "margin": "10px 0",
+        },
+        "chips": {
+          "background-color": "#F3A35C",
+          "color": "white",
+          "padding": "8px 15px",
+          "border-radius": "5px"
+        },
+        "optionContainer": {
+          "max-height": "180px"
+        }
+      }}
+      options={ allModifiers }
+      selectedValues={ modifiers }
+      placeholder="Start typing to begin..."
+      onSelect={ onSelect }
+      onRemove={ onRemove }
+      closeIcon="cancel"
+      displayValue="name"
+    />
+  )
+}
+
 const NewDishModal = props => {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
@@ -15,6 +79,7 @@ const NewDishModal = props => {
   const [dishTags, setDishTags] = useState([])
   const [categoryId, setCategoryId] = useState(0)
   const [categories, setCategories] = useState([])
+  const [modifiers, setModifiers] = useState([]);
 
   useEffect(() => {
     Client.getAllCategoriesByMenu(props.menuId).then(response => {
@@ -23,7 +88,7 @@ const NewDishModal = props => {
             setCategoryId(response.data[0].id)
         }
     })
-}, [props.menuId])
+  }, [props.menuId])
 
   const createDish = () => {
     let dishData = {
@@ -31,6 +96,7 @@ const NewDishModal = props => {
       description: description,
       categoryId: categoryId,
       dishTags: dishTags,
+      dishModifications: modifiers,
       price: price,
       menuId: props.menuId,
     }
@@ -110,7 +176,9 @@ const NewDishModal = props => {
           <Divider color="#DCE2E9" />
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm setTags={setDishTags}></TagsForm>
-          <ButtonRow>    
+          <FormSubtitle>Dish Modifiers</FormSubtitle>
+          <ModifierSelector setModifiers={setModifiers}/>
+          <ButtonRow>
             <FormButton
               text="Cancel"
               theme="light"
@@ -131,6 +199,7 @@ const EditDishModal = props => {
   const [categoryId, setCategoryId] = useState(props.dish.categoryId)
   const [dishTags, setDishTags] = useState([])
   const [categories, setCategories] = useState([])
+  const [modifiers, setModifiers] = useState([]);
 
   useEffect(() => {
       Client.getAllCategoriesByMenu(props.menuId).then(response => {
@@ -142,7 +211,12 @@ const EditDishModal = props => {
         tagIds.push(tag.id);
       })
 
+      console.log(props.dish);
       setDishTags(tagIds)
+      setModifiers(props.dish.Modifications.reduce((accumulator, current) => {
+        accumulator.push(current.id);
+        return accumulator;
+      }, []));
 
   }, [props.menuId])
 
@@ -152,6 +226,7 @@ const EditDishModal = props => {
       description: description,
       categoryId: categoryId,
       dishTags: dishTags,
+      dishModifications: modifiers,
       price: price,
       menuId: props.menuId,
     }
@@ -238,6 +313,8 @@ const EditDishModal = props => {
           <Divider color="#DCE2E9" />
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm tags={props.dish.Tags} setTags={setDishTags}></TagsForm>
+          <FormSubtitle>Dish Modifiers</FormSubtitle>
+          <ModifierSelector modifiers={props.dish.Modifications} setModifiers={setModifiers} />
           <ButtonRow>
             <FormButton
               text="Cancel"
