@@ -47,7 +47,6 @@ const HorizontalSeparator = styled.div`
 `;
 
 const FloatingMenu = (props) => {
-    const [isOpen, setIsOpen] = useState(props.isOpen);
     const [showQRCodeModal, setShowQRCodeModal] = useState(false);
     const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
@@ -90,7 +89,9 @@ const FloatingMenu = (props) => {
     async function closeDeleteConfirmation(shouldDelete) {
         if(shouldDelete) {
             await Client.deleteMenu(props.menuId);
-            props.updateMenuSelection();
+            props.updateMenuSelection('all-menus');
+            props.updateMenu();
+            props.updateMenuData();
         }
         setShowDeleteConfirmationModal(false)
     }

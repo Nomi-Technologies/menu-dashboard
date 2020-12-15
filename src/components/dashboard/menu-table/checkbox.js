@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components"
 
+const StyledCheckbox = styled.div`
+  position: absolute;
+  left: 16px;
+`
+
 const StyledInput = styled.input`
   width: 1.5em;
   height: 1.5em;
@@ -11,7 +16,7 @@ const StyledInput = styled.input`
 `
 
 const Checkbox = ({ handleCheckboxChange, item }) => (
-  <div className="form-check">
+  <StyledCheckbox>
     <label>
       <StyledInput
         type="checkbox"
@@ -19,7 +24,7 @@ const Checkbox = ({ handleCheckboxChange, item }) => (
         className="form-check-input"
       />
     </label>
-  </div>
+  </StyledCheckbox>
 );
 
 export default Checkbox;
