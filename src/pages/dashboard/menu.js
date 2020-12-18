@@ -4,9 +4,11 @@ import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
 import styled from "styled-components"
 
 import { Container, Column } from "../../components/grid"
-import { FloatingMenu } from "../../components/floating-menu"
+import { FloatingMenu } from "../../components/dashboard/floating-menu"
+import { FloatingMenuButton } from "../../components/floating-menu-button"
 
 import { MenuSelector } from "../../components/dashboard/menu-selector/menu-selector"
+import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
 import { MenuCreator } from "../../components/dashboard/menu-creator/menu-creator"
@@ -21,45 +23,69 @@ let MenuContainer = styled.div`
     padding: 0 50px;
     padding-top: 30px;
 `
-
-let StyledFloatingMenu = styled(FloatingMenu)`
-    position: fixed;
-    right: 64px;
-    bottom: 56px;
-`;
+let StyledAllMenus = styled(AllMenus)`
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 50px;
+    padding-top: 30px;
+`
 
 
 const MenuPage = () => {
-    const [menuId, setMenuId] = useState(null)
-    const [menuData, setMenuData] = useState()
+    const [selectedMenuId, setSelectedMenuId] = useState(null) // tracks currently selected menuId
+    const [selectedMenuData, setSelectedMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
-    const [menuName, setMenuName] = useState('');
+    const [selectedMenuName, setSelectedMenuName] = useState('');
+
+    const [favoriteMenus, setFavoriteMenus] = useState([]);
+    const [allMenus, setAllMenus] = useState([])
+
+    useEffect(() => {
+        getAllMenus()
+    }, [])
 
     useEffect(() => {
         updateMenu()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuId])
+    }, [selectedMenuId])
+
+    const getAllMenus = () => {
+        Client.getAllMenus().then((res) => {
+            setAllMenus(res.data);
+        })
+    }
 
     const updateMenuSelection = (menu) => {
-        if (typeof menu === 'undefined') {
-            setMenuId(null)
+        if(menu === 'all-menus' || typeof menu === 'undefined' || menu === null) {
+            setSelectedMenuId('all-menus')
         }
         else {
-            setMenuId(menu.id)
+            setSelectedMenuId(menu.id)
         }
     }
 
-    async function updateMenu () {
-        if (menuId !== null) {
-            await Client.getMenu(menuId).then((res) => {
-                setMenuName(res.data.name)
-                setMenuData(res.data.Categories)
+    let updateMenu = async () => {
+        Client.getFavoriteMenus().then((res) => {
+            setFavoriteMenus(res.data);
+        })
+        if (selectedMenuId !== null && selectedMenuId != 'all-menus') {
+            await Client.getMenu(selectedMenuId).then((res) => {
+                setSelectedMenuName(res.data.name)
+                setSelectedMenuData(res.data.Categories)
             })
         }
     };
 
     const updateHasMenu = (hasMenu) => {
         setHasMenu(hasMenu)
+    }
+
+    const toggleFavoriteMenu = (menuId, favorite) => {
+        Client.favoriteMenu(menuId, favorite).then((res) => {
+            Client.getFavoriteMenus().then((res) => {
+                setFavoriteMenus(res.data);
+            })
+        }) 
     }
 
     return (
@@ -70,20 +96,29 @@ const MenuPage = () => {
                     hasMenu ? (
                         <>
                             <TopBar title="Menu Management">
-                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={menuId}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={menuName} />
+                                <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={selectedMenuId} allMenus={allMenus} getAllMenus={getAllMenus}
+                                    updateHasMenu={updateHasMenu} selectedMenuName={selectedMenuName} favoriteMenus={favoriteMenus}/>
                             </TopBar>
-                            <MenuContainer>  
-                                <MenuTitle menuName={menuName} menuId={menuId} updateMenu={updateMenu}/>
-                                <MenuTable menuId={menuId} menuData={menuData} updateMenu={updateMenu}/>
-                                <StyledFloatingMenu menuId={menuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
-                            </MenuContainer>
+                            {
+                                selectedMenuId === 'all-menus' ? (
+                                    <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
+                                    ) : (
+                                    <MenuContainer>  
+                                        <MenuTitle menuName={selectedMenuName} menuId={selectedMenuId} updateMenu={updateMenu}/>
+                                        <MenuTable menuId={selectedMenuId} menuData={selectedMenuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                        <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                    </MenuContainer>
+                                    )
+                            }
                         </>
                     ) : (
-                        <MenuContainer>
-                            <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
-                            <FirstMenuSetup />
-                        </MenuContainer>
+                        <>
+                            <TopBar title=""></TopBar>
+                            <MenuContainer>
+                                <MenuCreator updateMenuSelection={updateMenuSelection} updateHasMenu={updateHasMenu}/>
+                                <FirstMenuSetup />
+                            </MenuContainer>
+                        </>
                     )
                 }
                 </Column>

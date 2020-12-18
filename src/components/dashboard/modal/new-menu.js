@@ -1,13 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { useDropzone } from 'react-dropzone'
-
-import { DishFormInput} from "../../form"
-import { FormButton } from "../../buttons"
-
 import Client from '../../../util/client'
-import styled from "styled-components"
-import CSVUploadIcon from "../../../assets/img/csv-upload-icon.png"
 
+import { DishFormInput, FormButton } from "../../form"
 import { FileDrop } from "../../file-drop"
 
 import {

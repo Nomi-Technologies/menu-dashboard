@@ -69,6 +69,26 @@ export default class Client {
     })
   }
 
+  static bulkDeleteDish = (menuId, dishes) => {
+    let token = retrieveUserToken() // get user auth token
+
+    let config = {
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          dishesToDelete: dishes,
+        }
+    };
+
+    return axios.delete(ROOT_URL + `/menus/${menuId}/dishes/bulkDelete/`, config);
+  }
+
+  static bulkCreateDish = data => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.post(ROOT_URL + "/menus/bulkCreate/", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static uploadCSV = (data, menuId, overwrite) => {
     let token = retrieveUserToken()
     let body = {
@@ -76,6 +96,23 @@ export default class Client {
       overwrite: overwrite,
     }
     return axios.post(ROOT_URL + `/menus/${menuId}/uploadCSV/`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static favoriteMenu = (menuId, favorite) => {
+    let token = retrieveUserToken()
+    let body = {
+      favorite: favorite,
+    }
+    return axios.post(ROOT_URL + `/menus/${menuId}/favorite-menu/`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static getFavoriteMenus = () => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.get(ROOT_URL + "/user/favorite-menus" , {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
@@ -228,6 +265,27 @@ export default class Client {
   static updateRestaurantInfo = (id, data) => {
     let token = retrieveUserToken() // get user auth token
     return axios.put(ROOT_URL + "/restaurants/" + id, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static downloadCSV = (menuId) => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.get(ROOT_URL + `/menus/${menuId}/csv`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+
+  static toggleFiltering = (menuId, enableFiltering) => {
+    let token = retrieveUserToken() // get user auth token
+    console.log(token)
+    console.log(menuId)
+    return axios.put(ROOT_URL + `/menus/${menuId}/toggle-filtering`, 
+    {
+      enableFiltering: enableFiltering
+    },
+    {
       headers: { Authorization: `Bearer ${token}` },
     })
   }

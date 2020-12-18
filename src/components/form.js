@@ -99,8 +99,48 @@ let FormControls = styled.div`
 let StyledFormInput = styled.div`
     position: relative;
     flex-basis: ${({ width }) => width ? width : 'auto'};
-    margin: 20px 0;
+    margin: 10px 0;
 `
+
+let StyledButton = styled.button`
+    display: block;
+    margin: 20px 0;
+    font-size: 16px;
+    color: ${ props => props.theme === 'light' ? "#F3A35C" : "white"};
+    padding: 10px 46px;
+    background: ${ props => props.theme === 'light' ? "white" : "#F3A35C"};
+    border-radius: 8px;
+    border: 2px solid #F3A35C;
+    text-transform: uppercase;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(242, 153, 74, 0.2);
+    }
+`
+
+let ButtonRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: flex-end;
+`
+
+const FormButton = (props) => {
+    if(props.destination) {
+        return (
+            <StyledButton { ...props } onClick={() => navigate(props.destination, { state: props.state })}>{ props.text }</StyledButton>
+        )    
+    } else {
+        return ( 
+            <StyledButton { ...props }>{ props.text }</StyledButton>
+        )
+    }
+
+    
+}
+
 
 let StyledNextButton = styled.button`
     display: flex;
@@ -225,6 +265,8 @@ export {
     FormSubtitle,
     FormRow,
     FormError,
+    ButtonRow,
+    FormButton,
     NextButton,
     PrevButton,
     DoneButton,

@@ -1,10 +1,10 @@
-import { FormButton } from "../../buttons"
 import React, { useState } from 'react';
-import { DishFormInput, DishFormTextArea } from "../../form"
+import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
+import useEventListener from '@use-it/event-listener'
 
 const NewCategoryModal = (props) => {
     const [name, setName] = useState('');
@@ -30,6 +30,17 @@ const NewCategoryModal = (props) => {
         }
     }
 
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (key === 'Escape') {
+            props.toggleForm()
+        }
+        if (key === 'Enter') {
+            createCategory()
+        }
+    }
+
+    useEventListener('keydown', handler);
     return (
         <>
             <ModalBackground />
@@ -83,6 +94,18 @@ const EditCategoryModal = (props) => {
             console.error("missing field")
         }
     }
+
+    //press escape to exit the form, press enter to submit
+    function handler({ key }) {
+        if (key === 'Escape') {
+            props.toggleForm()
+        }
+        if (key === 'Enter') {
+            updateCategory()
+        }
+    }
+    
+    useEventListener('keydown', handler);
 
     return (
         <>

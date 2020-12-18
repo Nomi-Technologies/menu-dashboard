@@ -1,8 +1,8 @@
-import { FormButton } from "../../buttons"
 import React, { useState, useEffect } from 'react';
-import { DishFormInput, DishFormTextArea } from "../../form"
+import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import { CategoryDropdown } from "./dropdown"
 import Client from '../../../util/client'
+import useEventListener from '@use-it/event-listener'
 
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
@@ -120,6 +120,18 @@ const NewDishModal = props => {
   const updateCategorySelection = category => {
     setCategoryId(category)
   }
+  
+  //press escape to exit the form, press enter to submit
+  function handler({ key }) {
+    if (key === 'Escape') {
+      props.toggleForm()
+    }
+    if(key === 'Enter'){
+      createDish()
+    }
+  }
+
+  useEventListener('keydown', handler);
 
   return (
     <>
@@ -165,7 +177,7 @@ const NewDishModal = props => {
           <Divider color="#DCE2E9" />
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm setTags={setDishTags}></TagsForm>
-          <ButtonRow>
+          <ButtonRow>    
             <FormButton
               text="Cancel"
               theme="light"
@@ -234,6 +246,18 @@ const EditDishModal = props => {
   const updateCategorySelection = category => {
     setCategoryId(category)
   }
+
+  //press escape to exit the form, press enter to submit
+  function handler({ key }) {
+    if (key === 'Escape') {
+      props.toggleForm()
+    }
+    if (key === 'Enter') {
+      updateDish()
+    }
+  }
+
+  useEventListener('keydown', handler);
 
   return (
     <>
