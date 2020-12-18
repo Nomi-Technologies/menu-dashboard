@@ -270,12 +270,23 @@ export default class Client {
   }
 
   static downloadCSV = (menuId) => {
-    let token = retrieveUserToken()
+    let token = retrieveUserToken() // get user auth token
     return axios.get(ROOT_URL + `/menus/${menuId}/csv`, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
 
 
-
+  static toggleFiltering = (menuId, enableFiltering) => {
+    let token = retrieveUserToken() // get user auth token
+    console.log(token)
+    console.log(menuId)
+    return axios.put(ROOT_URL + `/menus/${menuId}/toggle-filtering`, 
+    {
+      enableFiltering: enableFiltering
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
 }
