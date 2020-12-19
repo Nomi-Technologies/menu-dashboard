@@ -11,7 +11,7 @@ import SettingsIcon from "../../../assets/img/settings.png"
 import SidebarActive from "../../../assets/img/sidebar-active.png"
 import SidebarActiveSettings from "../../../assets/img/sidebar-active-grey.png"
 
-import "./index.css"
+import "../../../pages/index.css"
 
 let SidebarItemList = styled.div`
   margin-top: 40px;
