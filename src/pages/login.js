@@ -16,7 +16,7 @@ const HeroText = styled.div`
 `
 
 const Login = () => (
-  <Layout>
+  // <Layout>
     <Container>
       <Column width='45%'>
         <HeroText>Dine Confidently</HeroText>
@@ -24,7 +24,7 @@ const Login = () => (
       </Column>
       <ImageColumn width='55%' background={RestaurantBackgroundImage}></ImageColumn>
     </Container>
-  </Layout>
+  // </Layout>
 )
 
 export default Login

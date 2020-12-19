@@ -5,6 +5,8 @@ import { RegistrationProgress } from "./registration-progress"
 import { FormContainer } from "../form"
 import { useLocation, navigate } from "@reach/router"
 
+import "./index.css"
+
 const StyledRegisterLayout = styled.div`
 
 `
