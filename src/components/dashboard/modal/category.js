@@ -46,13 +46,13 @@ const NewCategoryModal = (props) => {
             <ModalBackground />
             <Modal>
                 <Container>
-                    <FormTitle>Add Category</FormTitle>
-                    <FormSubtitle>Category Name</FormSubtitle>
-                    <DishFormInput placeholder='Type a category name (e.g. Appetizers, Entrees)...' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
+                    <FormTitle>New Menu Section</FormTitle>
+                    <FormSubtitle>Menu Category Name</FormSubtitle>
+                    <DishFormInput placeholder='Type menu section name... (ex: “Appetizers”, “Salads”, “Sides”)' name='category' value={ name } onChange={(event) => { setName(event.target.value) }}/>
                     <Divider/>
                     <FormSubtitle>Description (Optional)</FormSubtitle>
                     <DishFormTextArea
-                      placeholder="Change description..."
+                      placeholder="Type a description that gives customers more detail about the section of the menu... (ex: “All entrees come with a side of salad or soup.”)"
                       value={ description }
                       name="description"
                       onChange={event => {
