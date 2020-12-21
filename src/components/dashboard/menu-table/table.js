@@ -4,7 +4,7 @@ import Checkbox from "./checkbox";
 
 import styled from "styled-components"
 import ArrowIcon from "../../../assets/img/arrow_icon.png"
-
+import PlusIcon from "../../../assets/img/plus-icon.png"
 import EditIcon from "../../../assets/img/edit-icon.png"
 import DeleteIcon from "../../../assets/img/delete-icon.png"
 
@@ -181,6 +181,14 @@ const CategoryHeaderRow = styled(TableRow)`
         cursor: pointer;
     }
 
+    .plus-icon{
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        cursor: pointer;
+        width: 30px;
+    }
+
     .category-name {
         flex-basis: 15%;
     }
@@ -298,7 +306,17 @@ const TableCategory = ({ category, updateMenu, toggleEditCategory, toggleEditDis
     )
 }
 
-
+const AddCategory = () => {
+    return (
+            <CategoryHeaderRow>
+                <img className='plus-icon' src={PlusIcon} alt="plus icon"/>
+                <TableCell className='category-name' style={{color: "#B2BED0"}}>
+                    Add Menu Section...
+                </TableCell>
+                
+            </CategoryHeaderRow>
+    )
+}
 
 export {
     TableCell,
@@ -309,5 +327,6 @@ export {
     CategoryHeaderRow,
     allergen_list,
     StyledTableCategory,
-    TableCategory
+    TableCategory,
+    AddCategory
 }
