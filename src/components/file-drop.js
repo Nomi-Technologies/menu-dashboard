@@ -35,13 +35,17 @@ const StyledFileDrop = styled.div`
             p {
                 color: #8A9DB7;
             }
+
+            b {
+                color: #27A2F8;
+            }
         }
     }
 
     .error-msg {
         color: red;
     }
-    
+
     p {
         display: inline-block;
         color: black;
@@ -97,15 +101,15 @@ const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage, clearFile}) => {
     }
 
     let {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-    
+
     return(
         <StyledFileDrop>
             {
-                fileName ? 
+                fileName ?
                 <FileContents>
                     <p>Selected File: { fileName } </p> <ClearIcon src={ DeleteIcon } onClick={ clearUploadedFile }/>
                 </FileContents>
-                : 
+                :
                 <div className='file-input' {...getRootProps()}>
                     <input {...getInputProps()} />
                     {
@@ -113,9 +117,9 @@ const FileDrop = ({acceptedFileTypes, setFile, setErrorMessage, clearFile}) => {
                         <p>Drop the file here ...</p> :
                         <div class='input-inner'>
                             <img src={CSVUploadIcon} alt="Upload icon for CSV" />
-                            <p>Drag and drop a file here, or click to select a file.</p>
+                            <p>Drag and drop a file here, or <b>Choose File</b></p>
                         </div>
-                        
+
                     }
                 </div>
             }

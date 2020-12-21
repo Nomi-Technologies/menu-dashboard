@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
 import { CategoryDropdown } from "./dropdown"
 import Client from '../../../util/client'
+import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
+import { FileDrop } from "../../file-drop"
 import useEventListener from '@use-it/event-listener'
-
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
 } from "./modal"
-
 let MultiSelectDropdown;
 
 if (typeof window !== `undefined`) {
@@ -82,6 +81,28 @@ const NewDishModal = props => {
   const [dishTags, setDishTags] = useState([])
   const [categoryId, setCategoryId] = useState(0)
   const [categories, setCategories] = useState([])
+  const [dishImage, setDishImage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const setFile = (file) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onabort = () => console.error('file reading was aborted')
+      reader.onerror = () => {
+          console.error('file reading has failed')
+          setErrorMessage("Error reading file")
+      }
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const formData = new FormData();
+        formData.append('file', file);
+        setDishImage(formData);
+      }
+  }
+
+  const clearFile = () => {
+      setDishImage(null)
+  }
 
   useEffect(() => {
     Client.getAllCategoriesByMenu(props.menuId).then(response => {
@@ -100,17 +121,21 @@ const NewDishModal = props => {
       dishTags: dishTags,
       price: price,
       menuId: props.menuId,
+      dishImage: dishImage,
     }
     if (name !== "" && categoryId !== 0) {
       Client.createDish(dishData)
         .then(res => {
-          props.toggleForm()
-          props.updateMenu()
+          props.toggleForm();
+          props.updateMenu();
+          if (dishImage) {
+            Client.upsertDishImage(res.data.id, dishImage);
+          }
         })
         .catch(err => {
-          console.error("error creating dish")
-          //show some error on form
-        })
+          console.error("error creating dish");
+          // TODO: show some error on form
+        });
     } else {
       console.error("missing field")
       //show some error
@@ -120,7 +145,7 @@ const NewDishModal = props => {
   const updateCategorySelection = category => {
     setCategoryId(category)
   }
-  
+
   //press escape to exit the form, press enter to submit
   function handler({ key }) {
     if (key === 'Escape') {
@@ -166,6 +191,9 @@ const NewDishModal = props => {
             }}
           />
           <Divider color="#DCE2E9" />
+          <FormSubtitle>Image (Optional)</FormSubtitle>
+          <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
+          <Divider color="#DCE2E9" />
           <FormSubtitle>Price</FormSubtitle>
           <DishFormInput
             placeholder="12.00"
@@ -177,7 +205,7 @@ const NewDishModal = props => {
           <Divider color="#DCE2E9" />
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm setTags={setDishTags}></TagsForm>
-          <ButtonRow>    
+          <ButtonRow>
             <FormButton
               text="Cancel"
               theme="light"
@@ -198,18 +226,40 @@ const EditDishModal = props => {
   const [categoryId, setCategoryId] = useState(props.dish.categoryId)
   const [dishTags, setDishTags] = useState([])
   const [categories, setCategories] = useState([])
+  const [dishImage, setDishImage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const setFile = (file) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onabort = () => console.error('file reading was aborted')
+      reader.onerror = () => {
+          console.error('file reading has failed')
+          setErrorMessage("Error reading file")
+      }
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const formData = new FormData();
+        formData.append('file', file);
+        setDishImage(formData);
+      }
+  }
+
+  const clearFile = () => {
+      setDishImage(null)
+  }
 
   useEffect(() => {
-      Client.getAllCategoriesByMenu(props.menuId).then(response => {
-          setCategories(response.data)
-      })
+    Client.getAllCategoriesByMenu(props.menuId).then(response => {
+        setCategories(response.data)
+    })
 
-      let tagIds = []
-      props.dish.Tags.forEach((tag) => {
-        tagIds.push(tag.id);
-      })
+    let tagIds = []
+    props.dish.Tags.forEach((tag) => {
+      tagIds.push(tag.id);
+    })
 
-      setDishTags(tagIds)
+    setDishTags(tagIds)
 
   }, [props.menuId])
 
@@ -236,7 +286,23 @@ const EditDishModal = props => {
           })
           console.error("error updating dish")
           // TODO: show some error on form
-        })
+        });
+      if (dishImage) {
+        Client.upsertDishImage(props.dish.id, dishImage)
+          .then(res => {
+            props.toggleForm();
+            props.updateMenu();
+          })
+          .catch(err => {
+            Client.getDish(props.dish.id).then(oldItem => {
+              setName(oldItem.name);
+              setDescription(oldItem.description);
+              setCategoryId(oldItem.categoryId);
+            })
+            console.error("error updating dish", err);
+            // TODO: show some error on form
+          });
+      }
     } else {
       console.error("missing field")
       // TODO: show some error
@@ -292,6 +358,9 @@ const EditDishModal = props => {
               setDescription(event.target.value)
             }}
           />
+          <Divider color="#DCE2E9" />
+          <FormSubtitle>Image (Optional)</FormSubtitle>
+          <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
           <Divider color="#DCE2E9" />
           <FormSubtitle>Price</FormSubtitle>
           <DishFormInput
