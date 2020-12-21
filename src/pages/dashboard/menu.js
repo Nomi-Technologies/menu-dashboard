@@ -35,7 +35,7 @@ const MenuPage = () => {
     const [selectedMenuId, setSelectedMenuId] = useState(null) // tracks currently selected menuId
     const [selectedMenuData, setSelectedMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
-    const [selectedMenuName, setSelectedMenuName] = useState('');
+    const [menuData, setMenuData] = useState({})
 
     const [favoriteMenus, setFavoriteMenus] = useState([]);
     const [allMenus, setAllMenus] = useState([])
@@ -70,8 +70,8 @@ const MenuPage = () => {
         })
         if (selectedMenuId !== null && selectedMenuId != 'all-menus') {
             await Client.getMenu(selectedMenuId).then((res) => {
-                setSelectedMenuName(res.data.name)
                 setSelectedMenuData(res.data.Categories)
+                setMenuData(res.data)
             })
         }
     };
@@ -97,19 +97,19 @@ const MenuPage = () => {
                         <>
                             <TopBar title="Menu Management">
                                 <MenuSelector updateMenuSelection={updateMenuSelection} selectedMenuId={selectedMenuId} allMenus={allMenus} getAllMenus={getAllMenus}
-                                    updateHasMenu={updateHasMenu} selectedMenuName={selectedMenuName} favoriteMenus={favoriteMenus}/>
+                                    updateHasMenu={updateHasMenu} selectedMenuName={menuData?.name} favoriteMenus={favoriteMenus}/>
                             </TopBar>
                             {
                                 selectedMenuId === 'all-menus' ? (
                                     <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
                                     ) : (
                                     <MenuContainer>  
-                                        <MenuTitle menuName={selectedMenuName} menuId={selectedMenuId} updateMenu={updateMenu}/>
-                                        <MenuTable menuId={selectedMenuId} menuData={selectedMenuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                        <MenuTitle menuName={menuData?.name} menuId={selectedMenuId} updateMenu={updateMenu}/>
+                                        <MenuTable menuId={selectedMenuId} menuData={menuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                         <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
                                     </MenuContainer>
                                     )
-                            }
+                            }                
                         </>
                     ) : (
                         <>
