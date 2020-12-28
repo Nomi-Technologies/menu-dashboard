@@ -206,12 +206,8 @@ const NewDishModal = props => {
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm setTags={setDishTags}></TagsForm>
           <ButtonRow>
-            <FormButton
-              text="Cancel"
-              theme="light"
-              onClick={props.toggleForm}
-            />
-            <FormButton text="Add Dish" onClick={createDish} />
+            <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
+            <ButtonPrimary onClick={createDish}>Create Dish</ButtonPrimary>
           </ButtonRow>
         </Container>
       </Modal>

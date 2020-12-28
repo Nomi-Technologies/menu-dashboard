@@ -126,8 +126,8 @@ const EditCategoryModal = (props) => {
                       }}
                     />
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm} />
-                        <FormButton text='Submit' onClick={updateCategory} />
+                        <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
+                        <ButtonPrimary  onClick={updateCategory}>Update Category</ButtonPrimary>
                     </ButtonRow>
                 </Container>
             </Modal>
