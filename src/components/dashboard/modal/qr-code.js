@@ -1,5 +1,5 @@
 import React from 'react';
-import { PopupFormTitle, FormButton } from "../../basics"
+import { PopupFormTitle, ButtonPrimary, ButtonSecondary } from "../../basics"
 import styled from "styled-components"
 import { useQRCode } from 'react-qrcode'
 
@@ -36,11 +36,14 @@ const QRCodeModal = (props) => {
                         <QRCode as='img' src={qrCodeDataUrl}/>
                     }
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.closeForm}/>
+                        <ButtonSecondary onClick={props.closeForm}>
+                            Cancel
+                        </ButtonSecondary>
                         <a
                             href={qrCodeDataUrl}
-                            download={`${props.uniqueName}-QRCode`}
-                        ><FormButton text='Download as PNG' onClick={() => {}}/></a>
+                            download={`${props.uniqueName}-QRCode`}>
+                            <ButtonPrimary onClick={() => {}}>Download as PNG</ButtonPrimary>
+                        </a>
                     </ButtonRow>
                 </Container>
             </Modal>

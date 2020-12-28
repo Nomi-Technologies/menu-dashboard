@@ -1,4 +1,4 @@
-import { FormButton } from "../../basics"
+import { FormButton, ButtonPrimary, ButtonSecondary } from "../../basics"
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
 import { FileDrop } from "../../file-drop"
@@ -36,6 +36,14 @@ const UploadCSVModal = (props) => {
         })
     }
 
+    const uploadCSV = () => {
+        if(content) {
+            postCSVFile()
+        } else {
+            setErrorMessage("Please select a file to upload")
+        }
+    }
+
     if(show) {
         return (
             <>
@@ -48,18 +56,8 @@ const UploadCSVModal = (props) => {
                         }
                         <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
                         <ButtonRow>
-                            <FormButton text='Cancel' theme='light' onClick={ () => {
-                                close()
-                            } }
-                            />    
-                            <FormButton text="Upload CSV" onClick={ () => { 
-                                if(content) {
-                                    postCSVFile()
-                                } else {
-                                    setErrorMessage("Please select a file to upload")
-                                }
-                            } }
-                            />    
+                            <ButtonSecondary onClick={ close }>Cancel</ButtonSecondary>
+                            <ButtonPrimary onClick={ uploadCSV }>Upload CSV</ButtonPrimary>  
                         </ButtonRow>
                     </Container>
                 </Modal>

@@ -1,4 +1,4 @@
-import { FormButton } from "../../basics"
+import { ButtonSecondary, ButtonDelete } from "../../basics"
 import React from 'react';
 import styled from 'styled-components'
 
@@ -12,15 +12,6 @@ let StyledDeleteConfirmation = styled.div`
     ${Modal} {
         width: 30%;
     }
-`
-
-let NoneSelectedFormMessage = styled(FormMessage)`
-`
-
-let SingleFormMessage = styled(FormMessage)`
-`
-
-let MultipleFormMessage = styled(FormMessage)`
 `
 
 const DeleteConfirmationModal = ({ type, itemIds, closeForm }) => {
@@ -44,25 +35,25 @@ const DeleteConfirmationModal = ({ type, itemIds, closeForm }) => {
                   <FormTitle>Delete Confirmation</FormTitle>
                   {
                     type === "multiple" && itemIds && itemIds.length === 0 ?
-                    <NoneSelectedFormMessage type={type} itemIds={itemIds}>
+                    <FormMessage type={type} itemIds={itemIds}>
                       There are currently no items selected to delete.
-                    </NoneSelectedFormMessage> : ""
+                    </FormMessage> : ""
                   }
                   {
-                    type === "multiple" ? "" : <SingleFormMessage type={type} itemIds={itemIds}>
+                    type === "multiple" ? "" : <FormMessage type={type} itemIds={itemIds}>
                       Are you sure you want to delete this item?
-                    </SingleFormMessage>
+                    </FormMessage>
                   }
                   {
                     type === "multiple" && itemIds && itemIds.length > 0 ?
-                    <MultipleFormMessage type={type} itemIds={itemIds}>
+                    <FormMessage type={type} itemIds={itemIds}>
                       Are you sure you want to delete ({itemIds.length}) items?
-                    </MultipleFormMessage> : ""
+                    </FormMessage> : ""
                   }
 
                   <ButtonRow>
-                      <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false) } }/>
-                      <FormButton text='Delete' onClick={ () => { closeForm(true) } }/>
+                      <ButtonSecondary onClick={ () => { closeForm(false) } }>Cancel</ButtonSecondary>
+                      <ButtonDelete onClick={ () => { closeForm(true) } }>Delete</ButtonDelete>
                   </ButtonRow>
               </Container>
 

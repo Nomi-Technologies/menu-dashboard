@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CategoryDropdown } from "./dropdown"
 import Client from '../../../util/client'
-import { DishFormInput, DishFormTextArea, FormButton } from "../../basics"
+import { DishFormInput, DishFormTextArea, FormButton, ButtonPrimary, ButtonSecondary } from "../../basics"
 import { FileDrop } from "../../file-drop"
 import useEventListener from '@use-it/event-listener'
 import {
@@ -375,12 +375,8 @@ const EditDishModal = props => {
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm tags={props.dish.Tags} setTags={setDishTags}></TagsForm>
           <ButtonRow>
-            <FormButton
-              text="Cancel"
-              theme="light"
-              onClick={props.toggleForm}
-            />
-            <FormButton text="Update Dish" onClick={updateDish} />
+            <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
+            <ButtonPrimary onClick={updateDish}>Update Dish</ButtonPrimary>
           </ButtonRow>
         </Container>
       </Modal>
