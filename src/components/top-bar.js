@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { FormButton } from "./basics"
+import { ButtonPrimary } from "./basics"
 import { retrieveUserToken, logout } from "../util/auth"
 import { navigate } from "gatsby"
 
@@ -17,12 +17,10 @@ const StyledTopBar = styled.div`
     }
 `
 
-const LogoutButton = styled(FormButton)`
-    float: right;
-    margin: 0;
-    padding: 10px 24px;
+const LogoutButton = styled(ButtonPrimary)`
+    position: absolute;
+    right: 80px;
 `
-
 
 const TopBar = ({title, children}) => {
     const loggedIn = retrieveUserToken()
@@ -34,7 +32,7 @@ const TopBar = ({title, children}) => {
     
     return(
         <StyledTopBar>
-            { loggedIn ? <LogoutButton onClick={ logoutUser } text="Logout"/>: "" }
+            { loggedIn ? <LogoutButton onClick={ logoutUser }>Logout</LogoutButton>: "" }
             <h1>{ title }</h1>
             { children }
         </StyledTopBar>

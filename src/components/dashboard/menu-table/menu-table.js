@@ -12,7 +12,7 @@ import { DeleteConfirmationModal } from "../modal/delete"
 import { NewDishModal, EditDishModal } from "../modal/dish"
 import { NewCategoryModal, EditCategoryModal } from "../modal/category"
 import { CopyMenuModal } from "../modal/copymenu"
-import { ButtonPrimary, ButtonSecondary, ButtonSpecial } from "../../basics"
+import { ButtonPrimary, ButtonSecondary, ButtonSpecial, ButtonDelete } from "../../basics"
 import * as Table from "./table"
 
 const StyledMenuTable = styled.div`
@@ -26,7 +26,6 @@ const StyledMenuTable = styled.div`
 
 const MenuControls = styled.div`
     display: flex;
-    text-transform: uppercase;
     margin-bottom: 20px;
     justify-content: space-between;
     width: 100%;
@@ -76,76 +75,6 @@ const MenuControls = styled.div`
             margin-left: 10px;
         }
     }
-`
-
-const EditModeButton = styled.div`
-  display: ${ props => (props.showEditMode ? "none" : "block") };
-  background: #628DEB;
-  box-shadow: 0px 10px 20px rgba(83, 131, 236, 0.2);
-  border-radius: 6px;
-  text-align: center;
-  padding: 10px 20px;
-  cursor: pointer;
-  z-index: 7;
-  width: 50px;
-`
-
-const EditModeDoneButton = styled.div`
-  display: ${ props => (props.showEditMode ? "block" : "none")};
-  background: #628DEB;
-  box-shadow: 0px 10px 20px rgba(83, 131, 236, 0.2);
-  border-radius: 6px;
-  text-align: center;
-  padding: 10px 20px;
-  cursor: pointer;
-  z-index: 10;
-  width: 50px;
-`
-
-const CopyNewMenuButton = styled.div`
-  display: ${ props => (props.showEditMode ? "block" : "none")};
-  background-color: #F3A35C;
-  padding: 10px 20px;
-  text-align: center;
-  border: 2px solid #F3A35C;
-  border-radius: 6px;
-  margin-left: 10px;
-  margin-right: 10px;
-  cursor: pointer;
-  width: 200px;
-`
-
-const NewCategoryButton = styled.div`
-  display: ${ props => (props.showEditMode ? "none" : "block")};
-  background-color: #F3A35C;
-  padding: 10px 20px;
-  text-align: center;
-  border: 2px solid #F3A35C;
-  border-radius: 6px;
-  margin-left: 10px;
-  margin-right: 10px;
-  cursor: pointer;
-  width: 200px;
-`
-
-const NewDishButton = styled.div`
-  display: ${ props => (props.showEditMode ? "none" : "block")};
-  border: 2px solid #F3A35C;
-  padding: 10px 20px;
-  color: #F3A35C;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 100px;
-`
-
-const DeleteButton = styled.div`
-  display: ${ props => (props.showEditMode ? "block" : "none")};
-  border: 2px solid #FA3838;
-  padding: 10px 20px;
-  background: #FA3838;
-  border-radius: 6px;
-  cursor: pointer;
-  width: 100px;
 `
 
 function useAsyncState(initialValue) {
@@ -461,9 +390,9 @@ const MenuTable = (props) => {
     return (
         <DndProvider backend={HTML5Backend}>
             <MenuControls>
-            <div className='buttons'>
-                <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial>
-            </div>
+                <div className='buttons'>
+                    <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial>
+                </div>
                 <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
                         onChange={(e) => setSearchBoxValue(e.target.value)}
@@ -486,12 +415,12 @@ const MenuTable = (props) => {
                 <div className='buttons'>
                     { 
                         showEditMode ? <>
-                            <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
-                            <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
+                            <ButtonPrimary onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</ButtonPrimary>
+                            <ButtonDelete onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</ButtonDelete>
                         </> 
                         : <> 
-                            <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
-                            <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
+                            <ButtonSecondary onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</ButtonSecondary>
+                            <ButtonPrimary onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
                         </>
                     }
                     

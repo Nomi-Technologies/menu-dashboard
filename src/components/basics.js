@@ -41,6 +41,17 @@ export const ButtonSpecial = styled(Button)`
 
     &:hover {
         background-color: ${ Colors.BLUE_LIGHT };
+        border: 2px solid ${ Colors.BLUE_LIGHT };
+    }
+`
+
+export const ButtonDelete = styled(Button)`
+    background-color: ${ Colors.RED };
+    border: 2px solid ${ Colors.RED };
+
+    &:hover {
+        background-color: ${ Colors.RED_LIGHT };
+        border: 2px solid ${ Colors.RED_LIGHT };
     }
 `
 
