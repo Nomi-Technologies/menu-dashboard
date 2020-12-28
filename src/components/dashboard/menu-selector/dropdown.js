@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { FormButton } from "../../form"
+import { FormButton } from "../../basics"
 
 import Client from '../../../util/client'
 

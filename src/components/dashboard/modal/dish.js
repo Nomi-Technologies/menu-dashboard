@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CategoryDropdown } from "./dropdown"
 import Client from '../../../util/client'
-import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
+import { DishFormInput, DishFormTextArea, FormButton } from "../../basics"
 import { FileDrop } from "../../file-drop"
 import useEventListener from '@use-it/event-listener'
 import {

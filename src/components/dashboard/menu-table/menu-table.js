@@ -12,6 +12,7 @@ import { DeleteConfirmationModal } from "../modal/delete"
 import { NewDishModal, EditDishModal } from "../modal/dish"
 import { NewCategoryModal, EditCategoryModal } from "../modal/category"
 import { CopyMenuModal } from "../modal/copymenu"
+import { ButtonPrimary, ButtonSecondary, ButtonSpecial } from "../../basics"
 import * as Table from "./table"
 
 const StyledMenuTable = styled.div`
@@ -461,8 +462,7 @@ const MenuTable = (props) => {
         <DndProvider backend={HTML5Backend}>
             <MenuControls>
             <div className='buttons'>
-                <EditModeButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Edit</EditModeButton>
-                <EditModeDoneButton onClick={toggleEditMode} showEditMode={showEditMode} role="button">Done</EditModeDoneButton>
+                <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial>
             </div>
                 <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
@@ -484,10 +484,17 @@ const MenuTable = (props) => {
 
                 </form>
                 <div className='buttons'>
-                    <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
-                    <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
-                    <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
-                    <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
+                    { 
+                        showEditMode ? <>
+                            <CopyNewMenuButton onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</CopyNewMenuButton>
+                            <DeleteButton onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</DeleteButton>
+                        </> 
+                        : <> 
+                            <NewCategoryButton onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</NewCategoryButton>
+                            <NewDishButton onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</NewDishButton>
+                        </>
+                    }
+                    
                 </div>
             </MenuControls>
             {

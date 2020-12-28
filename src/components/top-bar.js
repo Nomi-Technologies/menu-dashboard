@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { FormButton } from "./form"
+import { FormButton } from "./basics"
 import { retrieveUserToken, logout } from "../util/auth"
 import { navigate } from "gatsby"
 
