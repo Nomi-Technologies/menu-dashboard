@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import RegisterLayout from "../../components/register/register-layout"
 import Client from '../../util/client'
-import { FormTitle, FormSubtitle, FormRow, FormButton, FormControls, FormError, FormInput } from "../../components/basics"
+import { FormTitle, FormSubtitle, FormRow, FormControls, FormError, FormInput, ButtonPrimary } from "../../components/basics"
 import { navigate } from 'gatsby';
 import useEventListener from '@use-it/event-listener'
 import { setRegistrationData, fetchRegistrationData } from "../../util/registration"
@@ -97,7 +97,7 @@ const ContactInfo = () =>
             </FormRow>
 
             <FormControls>
-                <FormButton onClick={ validateForm } text="Next"/>
+                <ButtonPrimary onClick={ validateForm }>Next</ButtonPrimary>
             </FormControls>
         </RegisterLayout>
     )
