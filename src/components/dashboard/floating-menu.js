@@ -59,10 +59,12 @@ const FloatingMenu = (props) => {
     }, [props.menuData])
 
     const updateMenuData = () => {
-        Client.getMenu(props.menuId).then((res) => {
-            setMenuData(res.data);
-            console.log(res.data.enableFiltering)
-        })
+        if(props.menuId !== null) {
+            Client.getMenu(props.menuId).then((res) => {
+                setMenuData(res.data);
+                console.log(res.data.enableFiltering)
+            })
+        }
     }
     
     useEffect(() => {
