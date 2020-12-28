@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components"
 import { Container, Column } from "../../components/grid"
 import { RegistrationProgress } from "./registration-progress"
-import { FormContainer } from "../form"
+import { FormContainer } from "../basics"
 import { useLocation, navigate } from "@reach/router"
 
 import "../../pages/index.css"

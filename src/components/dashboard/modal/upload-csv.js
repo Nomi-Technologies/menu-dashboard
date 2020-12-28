@@ -1,4 +1,4 @@
-import { FormButton } from "../../form"
+import { FormButton } from "../../basics"
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
 import { FileDrop } from "../../file-drop"

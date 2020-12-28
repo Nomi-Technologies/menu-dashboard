@@ -20,6 +20,7 @@ h1, h2, h3, h4 {
 
 body {
     font-family: 'HK Grotesk Regular';
+    font-size: 16px;
 }
 
 input, button, textarea {

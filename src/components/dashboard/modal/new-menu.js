@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
 
-import { DishFormInput, FormButton } from "../../form"
+import { DishFormInput, FormButton } from "../../basics"
 import { FileDrop } from "../../file-drop"
 
 import {

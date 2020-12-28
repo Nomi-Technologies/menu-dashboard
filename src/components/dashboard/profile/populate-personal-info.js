@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
-import { FormInput, FormContainer, FormRow, SaveButton } from "../../form"
+import { FormInput, FormContainer, FormRow, SaveButton } from "../../basics"
 
 import Client from "../../../util/client"
 

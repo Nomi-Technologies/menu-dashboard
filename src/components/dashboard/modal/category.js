@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DishFormInput, DishFormTextArea, FormButton } from "../../form"
+import { ButtonPrimary, ButtonSecondary, DishFormInput, DishFormTextArea, FormButton } from "../../basics"
 import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
@@ -60,8 +60,8 @@ const NewCategoryModal = (props) => {
                       }}
                     />
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm} />
-                        <FormButton text='Submit' onClick={createCategory} />
+                        <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
+                        <ButtonPrimary onClick={createCategory}>Submit</ButtonPrimary>
                     </ButtonRow>
                 </Container>
             </Modal>

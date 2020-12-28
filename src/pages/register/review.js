@@ -5,7 +5,7 @@ import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from "@reach/router"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
-import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
+import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/basics"
 import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
 import useEventListener from '@use-it/event-listener'
 

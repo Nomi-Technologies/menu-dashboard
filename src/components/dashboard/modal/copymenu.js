@@ -1,6 +1,6 @@
-import { FormButton } from "../../form"
+import { FormButton } from "../../basics"
 import React, { useState } from 'react';
-import { DishFormInput, DishFormTextArea } from "../../form"
+import { DishFormInput } from "../../basics"
 import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider

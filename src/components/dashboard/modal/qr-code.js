@@ -1,5 +1,5 @@
 import React from 'react';
-import { PopupFormTitle, FormButton } from "../../form"
+import { PopupFormTitle, FormButton } from "../../basics"
 import styled from "styled-components"
 import { useQRCode } from 'react-qrcode'
 
