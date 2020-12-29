@@ -102,7 +102,7 @@ let StyledFormInput = styled.div`
     margin: 10px 0;
 `
 
-let StyledButton = styled.button`
+const StyledButton = styled.button`
     display: block;
     margin: 20px 0;
     font-size: 16px;
@@ -272,5 +272,6 @@ export {
     DoneButton,
     SaveButton,
     FormControls,
-    PopupFormTitle
+    PopupFormTitle,
+    StyledButton
 }

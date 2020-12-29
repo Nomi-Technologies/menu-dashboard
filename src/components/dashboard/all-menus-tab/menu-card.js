@@ -58,7 +58,7 @@ const MenuCard = (props) => {
     return (
         <>
             <StyledMenuCard {...props}>
-                < MenuName onClick={() => navigateToMenu(props.id)}>{props.name}</MenuName>
+                <MenuName onClick={() => navigateToMenu(props.id)}>{props.name}</MenuName>
                 <div className='controls'>
                     {
                         props.isFavorited ?

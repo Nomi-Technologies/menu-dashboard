@@ -16,6 +16,7 @@ import { FirstMenuSetup } from "../../components/dashboard/first-menu-setup/firs
 import TopBar from "../../components/top-bar"
 
 import Client from "../../util/client"
+import MenuSettingsPage from './menu-settings';
 
 let MenuContainer = styled.div`
     box-sizing: border-box;
@@ -35,6 +36,8 @@ const MenuPage = () => {
     const [selectedMenuId, setSelectedMenuId] = useState(null) // tracks currently selected menuId
     const [selectedMenuData, setSelectedMenuData] = useState()
     const [hasMenu, setHasMenu] = useState(true)
+    const [editMenu, setEditMenu] = useState(false)
+
     const [selectedMenuName, setSelectedMenuName] = useState('');
 
     const [favoriteMenus, setFavoriteMenus] = useState([]);
@@ -63,6 +66,12 @@ const MenuPage = () => {
             setSelectedMenuId(menu.id)
         }
     }
+    
+    let editMenuPressed = () => {
+
+        setEditMenu(!editMenu) 
+
+    };
 
     let updateMenu = async () => {
         Client.getFavoriteMenus().then((res) => {
@@ -100,13 +109,15 @@ const MenuPage = () => {
                                     updateHasMenu={updateHasMenu} selectedMenuName={selectedMenuName} favoriteMenus={favoriteMenus}/>
                             </TopBar>
                             {
+                                editMenu ? <MenuSettingsPage editMenuPressed = {editMenuPressed}  menuId={selectedMenuId} editingMenu = {true} updateMenu={updateMenu}/>  :                          
+                            
                                 selectedMenuId === 'all-menus' ? (
                                     <StyledAllMenus updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} favoriteMenus={favoriteMenus} toggleFavoriteMenu={toggleFavoriteMenu}></StyledAllMenus>
                                     ) : (
                                     <MenuContainer>  
                                         <MenuTitle menuName={selectedMenuName} menuId={selectedMenuId} updateMenu={updateMenu}/>
                                         <MenuTable menuId={selectedMenuId} menuData={selectedMenuData} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
-                                        <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection}/>
+                                        <FloatingMenuButton menuId={selectedMenuId} updateMenu={updateMenu} updateMenuSelection={updateMenuSelection} editMenuPressed = {editMenuPressed} />
                                     </MenuContainer>
                                     )
                             }

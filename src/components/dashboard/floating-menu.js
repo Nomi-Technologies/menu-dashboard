@@ -6,6 +6,8 @@ import { QRCodeModal } from "./modal/qr-code"
 import { UploadCSVModal } from "./modal/upload-csv"
 import { DeleteConfirmationModal } from "./modal/delete"
 import { checkPropTypes } from 'prop-types';
+import { Link } from "gatsby"
+
 
 const Menu = styled.div`
     position: absolute;
@@ -54,6 +56,7 @@ const FloatingMenu = (props) => {
     const [restaurantName, setRestaurantName] = useState(null);
     const [menuData, setMenuData] = useState({})
 
+
     useEffect(() => {
         updateMenuData()
     }, [props.menuData])
@@ -61,7 +64,6 @@ const FloatingMenu = (props) => {
     const updateMenuData = () => {
         Client.getMenu(props.menuId).then((res) => {
             setMenuData(res.data);
-            console.log(res.data.enableFiltering)
         })
     }
     
@@ -110,21 +112,17 @@ const FloatingMenu = (props) => {
     }
 
 
-    function toggle(){
-        Client.toggleFiltering(props.menuId, !menuData.enableFiltering).then(res => {
-            if(res.status == 200 && res.data){
-                updateMenuData()            
-            }
-        })
-    }
+
+
     
     return (
         <>
             <div className={props.className}>
                 <Menu isOpen={props.isOpen} className={props.className}>
-                    <OrangeTextMenuItem
-                        onClick = {() => toggle()}
-                    > {menuData?.enableFiltering ? "Disable Filtering" : "Enable Filtering"}
+
+                <OrangeTextMenuItem
+                        onClick = {props.editMenuPressed}
+                    > Edit Menu
                     </OrangeTextMenuItem>
                     <HorizontalSeparator/>
                     <OrangeTextMenuItem

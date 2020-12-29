@@ -2,6 +2,8 @@ import React, { useState  } from 'react';
 
 import styled from "styled-components"
 import { NewMenuModal } from "../../../components/dashboard/modal/new-menu";
+import MenuSettingsPage from '../../../pages/dashboard/menu-settings';
+
 
 let StyledMenuCreator = styled.div`
     display: inline-flex;
@@ -20,29 +22,31 @@ let StyledMenuCreator = styled.div`
         letter-spacing: 0.1em;
         text-transform: uppercase;
         font-feature-settings: 'cpsp' on;
-        z-index: 4;
+        z-index: 1;
     }
 `
 
 const MenuCreator = (props) => {
-    const [showNewMenuForm, setNewMenuForm] = useState(false);
-    
-    const toggleNewMenuForm = () => {
-        //if (!showNewMenuForm) closeAllForms() //if about to open form
-        setNewMenuForm(!showNewMenuForm)
-    }
+    const [newMenu, setNewMenu] = useState(false)
+
+    let newMenuPressed = () => {
+        setNewMenu(!newMenu) 
+    };
     
     return (
-        <StyledMenuCreator>
-            <div className="new-menu-button" onClick={toggleNewMenuForm}>
-                + Add New Menu
-            </div>
+        <React.Fragment>
+            <StyledMenuCreator>
+                <div className="new-menu-button" onClick={newMenuPressed}>
+                    + Add New Menu
+                </div>
+
+            </StyledMenuCreator>
             {
-                showNewMenuForm ? (
-                    <NewMenuModal updateMenuSelection={props.updateMenuSelection} updateHasMenu={props.updateHasMenu} toggleForm={toggleNewMenuForm}/>
+                newMenu ? (
+                    <MenuSettingsPage newMenuPressed = {newMenuPressed}  menuId={null} editingMenu = {false} />
                 ) : null
             }
-        </StyledMenuCreator>
+      </React.Fragment>
     )
 }
 

@@ -29,6 +29,7 @@ let StyledFloatingMenu = styled(FloatingMenu)`
         bottom: 70px;
         right: 150px;
     }
+    z-index: 3;
 `;
 
 const FloatingMenuButton = (props) => {
@@ -56,7 +57,10 @@ const FloatingMenuButton = (props) => {
                 updateMenu={props.updateMenu} 
                 updateMenuSelection={props.updateMenuSelection} 
                 onClickMenu={onClickMenu}
+                editMenuPressed = {props.editMenuPressed}
                 className='menu'
+                // editMenu
+
             />
         </>
     );
