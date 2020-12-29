@@ -1,19 +1,17 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import styled from "styled-components"
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import update from 'immutability-helper';
 import debounce from 'lodash.debounce';
+import { navigate } from 'gatsby';
 
 import Client from '../../../util/client'
 import SearchIcon from "../../../assets/img/search.png"
 import CancelIcon from "../../../assets/img/delete-icon.png"
-import { DeleteConfirmationModal } from "../modal/delete"
-import { NewDishModal, EditDishModal } from "../modal/dish"
-import { NewCategoryModal, EditCategoryModal } from "../modal/category"
-import { CopyMenuModal } from "../modal/copymenu"
-import { ButtonPrimary, ButtonSecondary, ButtonSpecial, ButtonDelete } from "../../basics"
+import { Button, ButtonPrimary, ButtonSecondary, ButtonSpecial, ButtonDelete } from "../../basics"
 import * as Table from "./table"
+import { MenuContext } from './menu-context';
 
 const StyledMenuTable = styled.div`
     width: 100%;
@@ -61,17 +59,12 @@ const MenuControls = styled.div`
 
     .buttons {
         display: flex;
-        color: white;
         align-self: flex-end;
         text-align: center;
-        font-size: 14px;
-
-        .upload-csv {
-            border: 2px solid #F3A35C;
-            padding: 10px 20px;
-            color: #F3A35C;
-            border-radius: 8px;
-            cursor: pointer;
+    }
+    
+    .buttons.right-controls {
+        ${Button} {
             margin-left: 10px;
         }
     }
@@ -88,11 +81,14 @@ function useAsyncState(initialValue) {
   }
 
 // Overall component which renders the table as a list of menu categories
-const MenuTable = (props) => {
-    // const [menuData, setMenuData] = useState(props.menuData)
-    let updateMenu = props.updateMenu
-    let updateMenuSelection = props.updateMenuSelection
+const MenuTable = () => {
+    let menuTableContext = useContext(MenuContext)
+    console.log(menuTableContext)
+    let refreshMenu = menuTableContext?.refreshMenu
+    let menu = menuTableContext?.menu
 
+
+    const [menuData, setMenuData] = useState({}) // includes parsed menuData
     const [showNewDishForm, setNewDishForm] = useState(false);
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
@@ -103,13 +99,10 @@ const MenuTable = (props) => {
     const [toDelete, setToDelete] = useAsyncState({});
     const [selectedDishes, setSelectedDishes] = useAsyncState([]);
     const [toDeleteType, setToDeleteType] = useAsyncState('');
-    const [selectedDish, setSelectedDish] = useState();
-    const [selectedCategory, setSelectedCategory] = useState();
     const [searchResults, setSearchResults] = useState([]);
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-    const [menuContext, setMenuContext] = useState({})
 
     const toggleNewDishForm = () => {
         if (!showNewDishForm) closeAllForms() //if about to open form
@@ -122,13 +115,13 @@ const MenuTable = (props) => {
     }
 
     const toggleEditDishForm = (dish) => {
-        if (typeof dish !== 'undefined') setSelectedDish(dish)
+        // if (typeof dish !== 'undefined') setSelectedDish(dish)
         if (!showEditDishForm) closeAllForms() //if about to open form
         setEditDishForm(!showEditDishForm)
     }
 
     const toggleEditCategoryForm = (category) => {
-        if (typeof category !== 'undefined') setSelectedCategory(category)
+        // if (typeof category !== 'undefined') setSelectedCategory(category)
         if (!showEditCategoryForm) closeAllForms() //if about to open form
         setEditCategoryForm(!showEditCategoryForm)
     }
@@ -179,73 +172,6 @@ const MenuTable = (props) => {
         }
     }
 
-    const closeDeleteConfirmation = (shouldDelete) => {
-        if(shouldDelete) {
-            if(toDelete.type === "category") {
-                Client.deleteCategory(toDelete.id).then(() => {
-                    setToDelete({}).then(() => {
-                        setDeleteConfirmation(false).then(() => {
-                            updateMenu()
-                        })
-                    }).catch((err) => {
-                        console.error(err)
-                    })
-                })
-            }
-
-            if(toDelete.type === "dish") {
-                Client.deleteDish(toDelete.id).then(() => {
-                    setToDelete({}).then(() => {
-                        setDeleteConfirmation(false).then(() => {
-                            updateMenu()
-                        })
-                    })
-                }).catch((err) => {
-                    console.error(err)
-                })
-            }
-
-            if(toDeleteType === "multiple") {
-              Client.bulkDeleteDish(props.menuId, selectedDishes).then(() => {
-                  setSelectedDishes([]).then(() => {
-                      setDeleteConfirmation(false).then(() => {
-                          updateMenu()
-                      })
-                  })
-              }).catch((err) => {
-                  console.error(err)
-              })
-            }
-
-            setToDeleteType('');
-        } else {
-            setDeleteConfirmation(false)
-        }
-    }
-
-    const closeCopyMenuConfirmation = (shouldCopy, menuName) => {
-      if (shouldCopy) {
-
-        let createDishesData = {
-          ids: selectedDishes,
-          name: menuName,
-        }
-
-        Client.bulkCreateDish(createDishesData).then((res) => {
-              setSelectedDishes([]).then(() => {
-                  setCopyMenuConfirmation(false).then(() => {
-                      updateMenu()
-                      updateMenuSelection(res.data.id)
-                  });
-              })
-          }).catch((err) => {
-              console.error(err)
-          })
-      } else {
-          setCopyMenuConfirmation(false)
-      }
-    }
-
     const closeAllForms = () => {
         setNewDishForm(false)
         setNewCategoryForm(false)
@@ -262,7 +188,7 @@ const MenuTable = (props) => {
         if (searchBoxValue.trim() === '') {
             setIsSearching(false);
         } else {
-            Client.searchDishes(searchBoxValue, props.menuId)
+            Client.searchDishes(searchBoxValue, menu?.menuId)
             .then((res) => {
                 setSearchResults(res.data);
                 setIsSearching(true);
@@ -274,12 +200,12 @@ const MenuTable = (props) => {
     }
 
     // takes menu object from API and returns dictionary with IDs to data, and an array of categories and menus for ordering
-    const parseMenu = (menuData) => {
+    const parseMenu = (menu) => {
         let categoryDict = {}
         let categoryOrder = []
         let dishDict = {}
         
-        menuData.Categories.forEach((category) => {
+        menu.Categories.forEach((category) => {
             let dishOrder = []
 
             category.Dishes.forEach((dish) => {
@@ -301,19 +227,14 @@ const MenuTable = (props) => {
         }
     }
 
-    let updateMenuContext = (newMenuContext) => {
-        setMenuContext(newMenuContext)
-    }
-
     useEffect(() => {
-        let menuContextObj = props.menuData && Object.keys(props.menuData).length > 0 ? {
-            ...parseMenu(props.menuData),
-            menuData: props.menuData,
-            updateMenuContext: updateMenuContext
+        let menuData = menu && Object.keys(menu).length > 0 ? {
+            ...parseMenu(menu),
+            menuData: menu, // todo: rename menu
         } : {}
-        setMenuContext(menuContextObj)
-        setCategoryOrder(menuContextObj.categoryOrder)
-    }, [props.menuData])
+        setMenuData(menuData)
+        setCategoryOrder(menuData.categoryOrder)
+    }, [menu])
 
     const [categoryOrder, setCategoryOrder] = useState([])
 
@@ -331,8 +252,8 @@ const MenuTable = (props) => {
     }, 5))
 
     const saveCategoryOrder = async () => {
-        await Client.updateCategoryOrder(props.menuData.id, categoryOrder)
-        updateMenu()
+        await Client.updateCategoryOrder(menu.id, categoryOrder)
+        refreshMenu()
     } 
 
     const renderTableContents = () => {
@@ -344,9 +265,9 @@ const MenuTable = (props) => {
                         <Table.TableCategory 
                             key={ categoryId } 
                             index={index}
-                            menuContext={ menuContext } 
-                            category={ menuContext.categoryDict[categoryId] }
-                            updateMenu={ updateMenu }
+                            menuContext={ menuData } 
+                            category={ menuData.categoryDict[categoryId] }
+                            updateMenu={ refreshMenu }
                             toggleEditCategory={ toggleEditCategoryForm }
                             toggleEditDish={ toggleEditDishForm }
                             openDeleteConfirmation={ openDeleteConfirmation }
@@ -354,7 +275,7 @@ const MenuTable = (props) => {
                             showEditMode={ showEditMode }
                             moveCategory={ moveCategory }
                             saveCategoryOrder={ saveCategoryOrder }
-                            updateMenu={ updateMenu }
+                            updateMenu={ refreshMenu }
                         />
                     )) : ''
                 }
@@ -374,7 +295,7 @@ const MenuTable = (props) => {
                         <Table.ItemRow
                             key={index}
                             dish={dish}
-                            updateMenu={updateMenu}
+                            updateMenu={refreshMenu}
                             toggleEditDish={toggleEditDishForm}
                             openDeleteConfirmation={openDeleteConfirmation}
                             toggleEditCategory={toggleEditCategoryForm}
@@ -412,7 +333,7 @@ const MenuTable = (props) => {
                     }
 
                 </form>
-                <div className='buttons'>
+                <div className='buttons right-controls'>
                     { 
                         showEditMode ? <>
                             <ButtonPrimary onClick={() => openCopyMenuConfirmation(selectedDishes)} showEditMode={showEditMode} role="button">Copy To New Menu</ButtonPrimary>
@@ -420,44 +341,12 @@ const MenuTable = (props) => {
                         </> 
                         : <> 
                             <ButtonSecondary onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</ButtonSecondary>
-                            <ButtonPrimary onClick={toggleNewDishForm} showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
+                            <ButtonPrimary onClick={() => { navigate('/dashboard/menu/dish', { state: { menuId: menu.id } }) }} showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
                         </>
                     }
                     
                 </div>
             </MenuControls>
-            {
-                showNewDishForm ? (
-                    <NewDishModal toggleForm={toggleNewDishForm} updateMenu={updateMenu} menuId={props.menuId}/>
-                ) : null
-            }
-            {
-                showNewCategoryForm ? (
-                    <NewCategoryModal toggleForm={toggleNewCategoryForm} updateMenu={updateMenu} menuId={props.menuId}/>
-                ) : null
-            }
-            {
-                showCopyMenuConfirmation ? (
-                    <CopyMenuModal closeForm={closeCopyMenuConfirmation} updateMenu={updateMenu} menuId={props.menuId} itemIds={selectedDishes}/>
-                ) : null
-            }
-            {
-                showEditDishForm ? (
-                    <EditDishModal toggleForm={toggleEditDishForm} updateMenu={updateMenu}
-                        dish={selectedDish} menuId={props.menuId}/>
-                ) : null
-            }
-            {
-                showEditCategoryForm ? (
-                    <EditCategoryModal toggleForm={toggleEditCategoryForm} updateMenu={updateMenu}
-                        category={selectedCategory} menuId={props.menuId}/>
-                ) : null
-            }
-            {
-                showDeleteConfirmation ? (
-                    <DeleteConfirmationModal closeForm={closeDeleteConfirmation} type={toDeleteType} itemIds={selectedDishes}/>
-                ) : null
-            }
 
             <StyledMenuTable>
                 <Table.HeaderRow>

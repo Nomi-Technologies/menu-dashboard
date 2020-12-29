@@ -7,6 +7,7 @@ import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
 import { FloatingMenu } from "../../dashboard/floating-menu"
 
 import Client from "../../../util/client"
+import { navigate } from 'gatsby';
 
 const StyledMenuCard = styled.div`
     background: #FFFFFF;
@@ -48,11 +49,10 @@ const MenuCard = (props) => {
         setIsFloatingMenuOpen(!isFloatingMenuOpen);
     }
 
+
+
     const navigateToMenu = (id) => {
-        const item = {
-            "id": id,
-        }
-        props.updateMenuSelection(item)
+        navigate('/dashboard/table', { state: { menuId: id } })
     }
 
     return (
@@ -65,18 +65,17 @@ const MenuCard = (props) => {
                         <input type='image' alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
                         <input type='image' alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
                     }
-                    
                     <input type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
                 </div>
             </StyledMenuCard>
-            <FloatingMenu 
+            {/* <FloatingMenu  // TODO: Fix this
                 isOpen={isFloatingMenuOpen} 
                 menuId={props.id} 
                 updateMenu={props.updateMenu} 
                 updateMenuSelection={props.updateMenuSelection} 
                 updateMenuData={props.updateMenuData}
                 onClickMenu={toggleFloatingMenu}
-            />
+            /> */}
         </>
     );
 }
