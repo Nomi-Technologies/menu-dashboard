@@ -6,7 +6,7 @@ import { Colors } from "../util/colors"
 
 import { navigate } from "@reach/router"
 
-let Button = styled.div`    
+export const Button = styled.div`    
     padding: 8px 40px;
     border-radius: 6px;
     color: white;

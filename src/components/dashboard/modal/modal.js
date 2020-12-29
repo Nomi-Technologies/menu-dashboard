@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Button, ButtonDelete } from "../../basics"
 
 const Modal = styled.div`
     left: 50%;
@@ -39,7 +40,7 @@ const ButtonRow = styled.div`
     justify-content: flex-end;
     margin-bottom: 20px;
 
-    button {
+    ${Button} {
         margin-left: 10px;
     }
 `
