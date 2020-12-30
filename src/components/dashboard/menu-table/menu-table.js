@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import update from 'immutability-helper';
 import debounce from 'lodash.debounce';
-import { navigate } from 'gatsby';
+import Navigation from "../../../util/navigation"
 
 import Client from '../../../util/client'
 import SearchIcon from "../../../assets/img/search.png"
@@ -83,13 +83,11 @@ function useAsyncState(initialValue) {
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
     let menuTableContext = useContext(MenuContext)
-    console.log(menuTableContext)
     let refreshMenu = menuTableContext?.refreshMenu
     let menu = menuTableContext?.menu
 
-
     const [menuData, setMenuData] = useState({}) // includes parsed menuData
-    const [showNewDishForm, setNewDishForm] = useState(false);
+
     const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
@@ -103,11 +101,6 @@ const MenuTable = () => {
     const [searchBoxValue, setSearchBoxValue] = useState('');
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
-
-    const toggleNewDishForm = () => {
-        if (!showNewDishForm) closeAllForms() //if about to open form
-        setNewDishForm(!showNewDishForm)
-    }
 
     const toggleNewCategoryForm = () => {
         if (!showNewCategoryForm) closeAllForms() //if about to open form
@@ -173,7 +166,6 @@ const MenuTable = () => {
     }
 
     const closeAllForms = () => {
-        setNewDishForm(false)
         setNewCategoryForm(false)
         setEditDishForm(false)
         setEditCategoryForm(false)
@@ -264,10 +256,10 @@ const MenuTable = () => {
                     categoryOrder?.length > 0 ? categoryOrder.map((categoryId, index) => (
                         <Table.TableCategory 
                             key={ categoryId } 
-                            index={index}
+                            index={ index }
+                            menuId = { menu.id }
                             menuContext={ menuData } 
                             category={ menuData.categoryDict[categoryId] }
-                            updateMenu={ refreshMenu }
                             toggleEditCategory={ toggleEditCategoryForm }
                             toggleEditDish={ toggleEditDishForm }
                             openDeleteConfirmation={ openDeleteConfirmation }
@@ -275,7 +267,7 @@ const MenuTable = () => {
                             showEditMode={ showEditMode }
                             moveCategory={ moveCategory }
                             saveCategoryOrder={ saveCategoryOrder }
-                            updateMenu={ refreshMenu }
+                            refreshMenu={ refreshMenu }
                         />
                     )) : ''
                 }
@@ -340,8 +332,8 @@ const MenuTable = () => {
                             <ButtonDelete onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</ButtonDelete>
                         </> 
                         : <> 
-                            <ButtonSecondary onClick={toggleNewCategoryForm} showEditMode={showEditMode} role="button">New Menu Category</ButtonSecondary>
-                            <ButtonPrimary onClick={() => { navigate('/dashboard/menu/dish', { state: { menuId: menu.id } }) }} showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
+                            <ButtonSecondary onClick={ () => { Navigation.category(null, menu.id, true) } } showEditMode={showEditMode} role="button">New Menu Category</ButtonSecondary>
+                            <ButtonPrimary onClick={ () => { Navigation.dish(null, menu.id, true) } } showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
                         </>
                     }
                     

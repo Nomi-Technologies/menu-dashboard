@@ -5,8 +5,6 @@ import styled from "styled-components"
 import Client from "../../../util/client"
 import { MenuCreator } from "../menu-creator/menu-creator"
 
-
-
 let StyledMenuSelector = styled.div`
     width: 100%;
 `
@@ -75,7 +73,7 @@ const MenuSelector = ({ menuId }) => {
                 </MenuTab>
                 {
                     menus?.map((item) => (
-                            <MenuTab onClick={ () => selectMenu(item.id) } selected={ item.id === menuId }>
+                            <MenuTab onClick={ () => selectMenu(item.id) } selected={ item.id === menuId } key={ item.id }>
                                 { item.name }
                                 { item.id === menuId ? <ActiveIndicator/> : "" }
                             </MenuTab>

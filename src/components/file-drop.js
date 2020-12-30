@@ -10,10 +10,9 @@ const StyledFileDrop = styled.div`
         justify-content: center;
         align-items: center;
         height: 100px;
-        margin-bottom: 20px;
-        margin-top: 20px;
+        margin-bottom: 24px;
         border: 2px dashed #B2BED0;
-        border-radius: 15px;
+        border-radius: 6px;
         background-color: #E1E7EC;
         cursor: pointer;
 

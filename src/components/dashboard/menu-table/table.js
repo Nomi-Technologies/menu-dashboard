@@ -3,6 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import debounce from 'lodash.debounce';
 import Client from '../../../util/client'
+import Navigation from '../../../util/navigation'
 
 import Checkbox from "./checkbox";
 
@@ -113,7 +114,7 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
+const ItemRow = ({ menuId, dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
     const { index, categoryId } = getDish(dish.id);
 
     const [{ isDragging }, drag] = useDrag({
@@ -171,7 +172,7 @@ const ItemRow = ({ dish, toggleEditDish, openDeleteConfirmation, handleCheckboxC
                 <p>{allergenList(dish.Tags)}</p>
             </TableCell>
             <RowControls>
-                <img className='edit' src={EditIcon} onClick={() => toggleEditDish(dish)} alt="edit icon" />
+                <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
                 <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(dish.id, "dish") }} alt="delete icon"/>
             </RowControls>
         </StyledItemRow>
@@ -292,7 +293,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, updateMenu }) => {
+const TableCategory = ({ menuId, menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, refreshMenu }) => {
     const [open, setOpen] = useState(false);
     const [dishOrder, setDishOrder] = useState([])
 
@@ -333,7 +334,7 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
 
     const saveDishOrder = async () => {
         await Client.updateDishOrder(menuContext.menuData.id, dishOrder)
-        updateMenu()
+        refreshMenu()
     }   
 
     const [{ isDragging }, drag] = useDrag({
@@ -376,7 +377,7 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
                     </CategoryDescription>
                 </TableCell>
                 <RowControls>
-                    <img className='edit' src={EditIcon} onClick={() => toggleEditCategory(category)} alt="edit icon"/>
+                    <img className='edit' src={EditIcon} onClick={() => Navigation.category(category.id, menuId, false) } alt="edit icon"/>
                     <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} alt="delete icon"/>
                 </RowControls>
             </CategoryHeaderRow>
@@ -386,6 +387,7 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
                         dishOrder.map((dishId, index) => (
                             <ItemRow
                                 key={dishId}
+                                menuId={ menuId }
                                 dish={menuContext.dishDict[dishId]}
                                 toggleEditDish={toggleEditDish}
                                 openDeleteConfirmation={openDeleteConfirmation}
