@@ -9,9 +9,10 @@ const StyledTopBar = styled.div`
     box-shadow: 0px 2px 6px rgba(0, 20, 63, 0.05);
     box-sizing: border-box;
     padding: 0 50px;
-    margin-top: 50px;
+    padding-top: 50px;
 
     h1 {
+        position: relative;
         font-size: 36px;
         margin-bottom: 30px;
     }

@@ -10,7 +10,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     if (retrieveUserToken() != null) {
-      navigate("/dashboard/menu")
+      navigate("/dashboard/all-menus")
     } else {
       navigate("/login")
     }
