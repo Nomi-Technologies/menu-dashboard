@@ -88,10 +88,8 @@ const MenuTable = () => {
 
     const [menuData, setMenuData] = useState({}) // includes parsed menuData
 
-    const [showNewCategoryForm, setNewCategoryForm] = useState(false);
     const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(false);
     const [showEditDishForm, setEditDishForm] = useState(false);
-    const [showEditCategoryForm, setEditCategoryForm] = useState(false);
     const [showEditMode, setEditMode] = useState(false);
     const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
     const [toDelete, setToDelete] = useAsyncState({});
@@ -102,21 +100,10 @@ const MenuTable = () => {
     const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
 
-    const toggleNewCategoryForm = () => {
-        if (!showNewCategoryForm) closeAllForms() //if about to open form
-        setNewCategoryForm(!showNewCategoryForm)
-    }
-
     const toggleEditDishForm = (dish) => {
         // if (typeof dish !== 'undefined') setSelectedDish(dish)
         if (!showEditDishForm) closeAllForms() //if about to open form
         setEditDishForm(!showEditDishForm)
-    }
-
-    const toggleEditCategoryForm = (category) => {
-        // if (typeof category !== 'undefined') setSelectedCategory(category)
-        if (!showEditCategoryForm) closeAllForms() //if about to open form
-        setEditCategoryForm(!showEditCategoryForm)
     }
 
     const toggleEditMode = () => {
@@ -166,9 +153,7 @@ const MenuTable = () => {
     }
 
     const closeAllForms = () => {
-        setNewCategoryForm(false)
         setEditDishForm(false)
-        setEditCategoryForm(false)
         setDeleteConfirmation(false)
     }
 
@@ -244,8 +229,11 @@ const MenuTable = () => {
     }, 5))
 
     const saveCategoryOrder = async () => {
-        await Client.updateCategoryOrder(menu.id, categoryOrder)
-        refreshMenu()
+        try {
+            await Client.updateCategoryOrder(menu.id, categoryOrder)
+        } catch {
+            refreshMenu()    
+        }
     } 
 
     const renderTableContents = () => {
@@ -260,8 +248,6 @@ const MenuTable = () => {
                             menuId = { menu.id }
                             menuContext={ menuData } 
                             category={ menuData.categoryDict[categoryId] }
-                            toggleEditCategory={ toggleEditCategoryForm }
-                            toggleEditDish={ toggleEditDishForm }
                             openDeleteConfirmation={ openDeleteConfirmation }
                             handleCheckboxChange={ handleCheckboxChange }
                             showEditMode={ showEditMode }
@@ -287,10 +273,8 @@ const MenuTable = () => {
                         <Table.ItemRow
                             key={index}
                             dish={dish}
-                            updateMenu={refreshMenu}
                             toggleEditDish={toggleEditDishForm}
                             openDeleteConfirmation={openDeleteConfirmation}
-                            toggleEditCategory={toggleEditCategoryForm}
                             handleCheckboxChange={handleCheckboxChange}
                             showEditMode={showEditMode}
                         />
