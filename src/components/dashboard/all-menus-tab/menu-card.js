@@ -18,11 +18,9 @@ const StyledMenuCard = styled.div`
     justify-content: space-between;
     display: flex;
 
-    input {
+    img {
         margin: 5px;
-        &:focus {
-            outline: none;
-        }
+        cursor: pointer;
     }
 
     .controls {
@@ -62,10 +60,10 @@ const MenuCard = (props) => {
                 <div className='controls'>
                     {
                         props.isFavorited ?
-                        <input type='image' alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
-                        <input type='image' alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
+                        <img alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
+                        <img alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
                     }
-                    <input type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
+                    <img type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
                 </div>
             </StyledMenuCard>
             {/* <FloatingMenu  // TODO: Fix this

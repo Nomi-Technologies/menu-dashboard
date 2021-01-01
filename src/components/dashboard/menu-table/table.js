@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import update from 'immutability-helper';
-import debounce from 'lodash.debounce';
 import Client from '../../../util/client'
 import Navigation from '../../../util/navigation'
 
@@ -114,7 +113,7 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ menuId, dish, toggleEditDish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
+const ItemRow = ({ menuId, dish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
     const { index, categoryId } = getDish(dish.id);
 
     const [{ isDragging }, drag] = useDrag({
@@ -293,7 +292,7 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ menuId, menuContext, index, category, toggleEditCategory, toggleEditDish, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, refreshMenu }) => {
+const TableCategory = ({ menuId, menuContext, index, category, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, refreshMenu }) => {
     const [open, setOpen] = useState(false);
     const [dishOrder, setDishOrder] = useState([])
 
@@ -333,8 +332,11 @@ const TableCategory = ({ menuId, menuContext, index, category, toggleEditCategor
     }, [dishOrder]);
 
     const saveDishOrder = async () => {
-        await Client.updateDishOrder(menuContext.menuData.id, dishOrder)
-        refreshMenu()
+        try {
+            await Client.updateDishOrder(menuContext.menuData.id, dishOrder)
+        } catch {
+            refreshMenu()
+        }
     }   
 
     const [{ isDragging }, drag] = useDrag({
@@ -389,7 +391,6 @@ const TableCategory = ({ menuId, menuContext, index, category, toggleEditCategor
                                 key={dishId}
                                 menuId={ menuId }
                                 dish={menuContext.dishDict[dishId]}
-                                toggleEditDish={toggleEditDish}
                                 openDeleteConfirmation={openDeleteConfirmation}
                                 handleCheckboxChange={handleCheckboxChange}
                                 showEditMode={showEditMode}
@@ -411,7 +412,6 @@ const AddCategory = () => {
                 <TableCell className='category-name' style={{color: "#B2BED0"}}>
                     Add Menu Section...
                 </TableCell>
-                
             </CategoryHeaderRow>
     )
 }

@@ -17,6 +17,7 @@ const StyledMenuCard = styled(MenuCard)`
 const Grid = styled.div`
     margin-left: 40px;
     margin-top: 60px;
+    max-width: 1400px;
 `;
 
 const Row =styled.div`
@@ -31,6 +32,13 @@ function CardGrid(props) {
     for (let i = 0; i < menus.length; i += 2) {
         rows.push(
             <Row key={i}>
+                <StyledMenuCard 
+                    name={menus[i].name} 
+                    id={menus[i].id} 
+                    isFavorited={props.favoriteMenus?.some((menu) => menu.id == menus[i].id)} 
+                    // toggleFavoriteMenu={ props.toggleFavoriteMenu }
+                    getMenus={ props.getMenus }
+                ></StyledMenuCard> 
                 { (i+1) < menus.length ? 
                     <StyledMenuCard 
                         name={menus[i+1].name} 
@@ -61,6 +69,7 @@ const AllMenus = (props) => {
 
     const getMenus = async () => {
         await Client.getAllMenus().then((res) => {
+            console.log(res.data)
             setMenus(res.data);
         })
 

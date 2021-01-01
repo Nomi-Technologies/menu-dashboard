@@ -180,7 +180,7 @@ const SidebarLayout = ({ children }) => {
           </Hamburger>
 
           <SidebarItemList>
-            <SidebarItem destination='/dashboard/menu' title='Menu Management' icon={ MenuIcon } sidebarOpen={ sidebarOpen } href={ href }/>
+            <SidebarItem destination='/dashboard/all-menus' title='Menu Management' icon={ MenuIcon } sidebarOpen={ sidebarOpen } href={ href }/>
           </SidebarItemList>
           <SettingsSidebarItem destination='/dashboard/settings' title='Settings' icon={ SettingsIcon } sidebarOpen={ sidebarOpen } href={ href }/>
         </SidebarContent>

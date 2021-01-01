@@ -55,8 +55,8 @@ const FloatingMenu = (props) => {
     const [menuData, setMenuData] = useState({})
 
     useEffect(() => {
-        updateMenuData()
-    }, [props.menuData])
+
+    }, [])
 
     const updateMenuData = () => {
         if(props.menuId !== null) {
@@ -78,22 +78,22 @@ const FloatingMenu = (props) => {
     }, [props.menuId]);
 
     async function deleteMenu(id) {
-        props.onClickMenu();
+        // props.onClickMenu();
         setShowDeleteConfirmationModal(true); // show delete confirmation modal
     }
 
     async function duplicateMenu(id) {
         const res = await Client.duplicateMenu(id);
         props.onClickMenu();
-        props.updateMenuSelection(res.data.menu);
+        // props.updateMenuSelection(res.data.menu);
     }
 
     async function closeDeleteConfirmation(shouldDelete) {
         if(shouldDelete) {
             await Client.deleteMenu(props.menuId);
-            props.updateMenuSelection('all-menus');
-            props.updateMenu();
-            props.updateMenuData();
+            // props.updateMenuSelection('all-menus');
+            // props.updateMenu();
+            // props.updateMenuData();
         }
         setShowDeleteConfirmationModal(false)
     }
@@ -148,9 +148,8 @@ const FloatingMenu = (props) => {
                     <HorizontalSeparator/>
                     <RedTextMenuItem onClick={()=>deleteMenu(props.menuId)}> Delete Menu</RedTextMenuItem>
                 </Menu>
-                
             </div>
-            <UploadCSVModal show={ showCSVUploadModal } close={() => setShowCSVUploadModal(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
+            {/* <UploadCSVModal show={ showCSVUploadModal } close={() => setShowCSVUploadModal(false) } menuId={ props.menuId } updateMenu={ props.updateMenu }/>
             {
                 showQRCodeModal ? (
                     <QRCodeModal
@@ -164,7 +163,7 @@ const FloatingMenu = (props) => {
                 showDeleteConfirmationModal ? (
                     <DeleteConfirmationModal closeForm={closeDeleteConfirmation}/>
                 ) : null
-            }
+            } */}
         </>
     )
 }
