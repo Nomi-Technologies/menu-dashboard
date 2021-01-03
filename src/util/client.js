@@ -283,6 +283,15 @@ export default class Client {
     })
   }
 
+  static updateDishOrder = (id, order) => {
+    let token = retrieveUserToken()
+    let data = {
+      order: order
+    }
+    return axios.put(ROOT_URL + "/menus/" + id + '/update-dish-order', data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
 
   static toggleFiltering = (menuId, enableFiltering) => {
     let token = retrieveUserToken() // get user auth token
@@ -293,6 +302,16 @@ export default class Client {
       enableFiltering: enableFiltering
     },
     {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
+  static updateCategoryOrder = (id, order) => {
+    let token = retrieveUserToken()
+    let data = {
+      order: order
+    }
+    return axios.put(ROOT_URL + "/menus/" + id + '/update-category-order', data, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
