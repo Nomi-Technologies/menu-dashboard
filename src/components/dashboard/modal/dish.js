@@ -190,7 +190,7 @@ const NewDishModal = props => {
               setDescription(event.target.value)
             }}
           />
-          <Divider color="#DCE2E9" />
+          {/* <Divider color="#DCE2E9" />
           <FormSubtitle>Image (Optional)</FormSubtitle>
           <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
           <Divider color="#DCE2E9" />
@@ -201,7 +201,7 @@ const NewDishModal = props => {
             onChange={event => {
               setPrice(event.target.value)
             }}
-          />
+          /> */}
           <Divider color="#DCE2E9" />
           <FormSubtitle>Allergen Search</FormSubtitle>
           <TagsForm setTags={setDishTags}></TagsForm>
