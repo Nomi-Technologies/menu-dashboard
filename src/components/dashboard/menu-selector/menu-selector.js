@@ -47,23 +47,11 @@ const MenuTab = styled.div`
     text-align: center;
 `
 
-const MenuSelector = ({ menuId }) => {
-    let [menus, setMenus] = useState(null)
-
-    const getAllMenus = () => {
-        Client.getAllMenus().then((res) => {
-            setMenus(res.data)
-        })
-    }
-
+const MenuSelector = ({ menuId, menus }) => {
     const selectMenu = (menuId) => {
         navigate('/dashboard/table', { state: { menuId: menuId } })
     }
-
-    useEffect(() => {
-        getAllMenus()
-    }, [])    
-
+    
     return (
         <StyledMenuSelector>
             <Menus>

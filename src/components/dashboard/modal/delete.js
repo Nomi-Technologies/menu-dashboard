@@ -1,12 +1,10 @@
-import { ButtonSecondary, ButtonDelete } from "../../basics"
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 
-import {
-  Modal, Container, ButtonRow, ModalBackground, FormTitle, FormMessage
-} from "./modal"
-
-import useEventListener from '@use-it/event-listener'
+import { FormTitle, FormMessage } from "../../form"
+import { ButtonRow, ButtonSecondary, ButtonDelete } from "../../basics"
+import { Modal, useModal } from "./modal"
+import Client from "../../../util/client"
 
 let StyledDeleteConfirmation = styled.div`
     ${Modal} {
@@ -14,52 +12,83 @@ let StyledDeleteConfirmation = styled.div`
     }
 `
 
-const DeleteConfirmationModal = ({ type, itemIds, closeForm }) => {
-    //press escape to exit the form, press enter to submit
-    function handler({ key }) {
-        if (key === 'Escape') {
-            closeForm(false)
-        }
-        if (key === 'Enter') {
-            closeForm(true)
-        }
+export const useDeleteDishModal = (refreshMenu) => {
+  let [open, openModal, closeModal] = useModal();
+  let [dishId, setDishId] = useState(null);
+
+  let openDeleteDishModal = (dishId) => {
+    setDishId(dishId)
+    openModal()
+  }
+
+  let closeDeleteDishModal = async (shouldDelete) => {
+    if(shouldDelete) {
+      // call delete api 
+      try {
+        await Client.deleteDish(dishId)
+        refreshMenu()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
-    useEventListener('keydown', handler);
+    closeModal()
+  }
 
-    return (
-      <StyledDeleteConfirmation>
-          <ModalBackground />
-          <Modal>
-              <Container>
-                  <FormTitle>Delete Confirmation</FormTitle>
-                  {
-                    type === "multiple" && itemIds && itemIds.length === 0 ?
-                    <FormMessage type={type} itemIds={itemIds}>
-                      There are currently no items selected to delete.
-                    </FormMessage> : ""
-                  }
-                  {
-                    type === "multiple" ? "" : <FormMessage type={type} itemIds={itemIds}>
-                      Are you sure you want to delete this item?
-                    </FormMessage>
-                  }
-                  {
-                    type === "multiple" && itemIds && itemIds.length > 0 ?
-                    <FormMessage type={type} itemIds={itemIds}>
-                      Are you sure you want to delete ({itemIds.length}) items?
-                    </FormMessage> : ""
-                  }
-
-                  <ButtonRow>
-                      <ButtonSecondary onClick={ () => { closeForm(false) } }>Cancel</ButtonSecondary>
-                      <ButtonDelete onClick={ () => { closeForm(true) } }>Delete</ButtonDelete>
-                  </ButtonRow>
-              </Container>
-
-          </Modal>
-      </StyledDeleteConfirmation>
-    )
+  return [open, openDeleteDishModal, closeDeleteDishModal]
 }
 
-export { DeleteConfirmationModal }
+
+
+export const DeleteDishModal = ({ open, openModal, closeModal }) => {
+  return (
+    <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
+      <FormTitle>Confirm Delete Dish</FormTitle>
+      <FormMessage>Are you sure you want to delete this dish?</FormMessage>
+        <ButtonRow>
+            <ButtonSecondary onClick={ () => { closeModal(false) } }>Cancel</ButtonSecondary>
+            <ButtonDelete onClick={ () => { closeModal(true) } }>Delete</ButtonDelete>
+        </ButtonRow>
+    </Modal>
+  )
+}
+
+
+
+export const useDeleteCategoryModal = (refreshMenu) => {
+  let [open, openModal, closeModal] = useModal();
+  let [categoryId, setCategoryId] = useState(null);
+
+  let openDeleteCategoryModal = (categoryId) => {
+    setCategoryId(categoryId)
+    openModal()
+  }
+
+  let closeDeleteCategoryModal = async (shouldDelete) => {
+    if(shouldDelete) { 
+      try {
+        await Client.deleteCategory(categoryId)
+        refreshMenu()
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    closeModal()
+  }
+
+  return [open, openDeleteCategoryModal, closeDeleteCategoryModal]
+}
+
+export const DeleteCategoryModal = ({ open, openModal, closeModal }) => {
+  return (
+    <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
+      <FormTitle>Confirm Delete Menu Section</FormTitle>
+      <FormMessage>Are you sure you want to delete this menu section?</FormMessage>
+        <ButtonRow>
+            <ButtonSecondary onClick={ () => { closeModal(false) } }>Cancel</ButtonSecondary>
+            <ButtonDelete onClick={ () => { closeModal(true) } }>Delete</ButtonDelete>
+        </ButtonRow>
+    </Modal>
+  )
+}

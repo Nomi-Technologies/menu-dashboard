@@ -12,6 +12,8 @@ import PlusIcon from "../../../assets/img/plus-icon.png"
 import EditIcon from "../../../assets/img/edit-icon.png"
 import DeleteIcon from "../../../assets/img/delete-icon.png"
 
+import { DeleteDishModal, useDeleteDishModal, DeleteCategoryModal, useDeleteCategoryModal } from "../modal/delete"
+
 const TableCell = styled.div`
     display: flex;
     position: relative;
@@ -113,7 +115,7 @@ const StyledItemRow = styled(TableRow)`
 
 `
 
-const ItemRow = ({ menuId, dish, openDeleteConfirmation, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder }) => {
+const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder, refreshMenu }) => {
     const { index, categoryId } = getDish(dish.id);
 
     const [{ isDragging }, drag] = useDrag({
@@ -146,35 +148,40 @@ const ItemRow = ({ menuId, dish, openDeleteConfirmation, handleCheckboxChange, s
         },
     });
 
+    let [open, openDeleteDishModal, closeDeleteDishModal] = useDeleteDishModal(refreshMenu)
+    
     return (
-        <StyledItemRow ref={ (node) => drag(drop(node)) } className='opened'>
-          {
-            showEditMode ? <Checkbox
-              handleCheckboxChange={handleCheckboxChange}
-              item={dish}
-              key={dish.id}
-            />
-            : ""
-          }
-            <TableCell className='item-name'>
-                <p>{dish.name}</p>
-            </TableCell>
-            <TableCell className='item-description'>
-                <p>{dish.description}</p>
-            </TableCell>
-            <TableCell className='item-price'>
-                <p>
-                    { dish.price ? dish.price : "--" }
-                </p>
-            </TableCell>
-            <TableCell className='item-tags'>
-                <p>{allergenList(dish.Tags)}</p>
-            </TableCell>
-            <RowControls>
-                <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
-                <img className='delete' src={DeleteIcon} onClick={() => { openDeleteConfirmation(dish.id, "dish") }} alt="delete icon"/>
-            </RowControls>
-        </StyledItemRow>
+        <>
+            <StyledItemRow ref={ (node) => drag(drop(node)) } className='opened'>
+            {
+                showEditMode ? <Checkbox
+                handleCheckboxChange={handleCheckboxChange}
+                item={dish}
+                key={dish.id}
+                />
+                : ""
+            }
+                <TableCell className='item-name'>
+                    <p>{dish.name}</p>
+                </TableCell>
+                <TableCell className='item-description'>
+                    <p>{dish.description}</p>
+                </TableCell>
+                <TableCell className='item-price'>
+                    <p>
+                        { dish.price ? dish.price : "--" }
+                    </p>
+                </TableCell>
+                <TableCell className='item-tags'>
+                    <p>{allergenList(dish.Tags)}</p>
+                </TableCell>
+                <RowControls>
+                    <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
+                    <img className='delete' src={DeleteIcon} onClick={() => { openDeleteDishModal(dish.id) }} alt="delete icon"/>
+                </RowControls>
+            </StyledItemRow>
+            <DeleteDishModal open={ open } openModal={ openDeleteDishModal } closeModal={ closeDeleteDishModal }/>
+        </>
     )
 }
 
@@ -273,7 +280,7 @@ const StyledTableCategory = styled.div`
         transition: 0.5s ease-in-out all;
     }
 
-    &.open {
+    &.expanded {
         .items {
             max-height: none;
             display: block;
@@ -292,8 +299,8 @@ const CategoryDescription = styled.p`
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
-const TableCategory = ({ menuId, menuContext, index, category, openDeleteConfirmation, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, refreshMenu }) => {
-    const [open, setOpen] = useState(false);
+const TableCategory = ({ menuId, menuContext, index, category, showEditMode, handleCheckboxChange, moveCategory, saveCategoryOrder, refreshMenu }) => {
+    const [expanded, setExpanded] = useState(false);
     const [dishOrder, setDishOrder] = useState([])
 
     useEffect(() => {
@@ -302,11 +309,11 @@ const TableCategory = ({ menuId, menuContext, index, category, openDeleteConfirm
         }
     }, [menuContext.categoryDict])
 
-    const toggleOpen = () => {
-        if (open) {
-            setOpen(false)
+    const toggleExpanded = () => {
+        if (expanded) {
+            setExpanded(false)
         } else {
-            setOpen(true)
+            setExpanded(true)
         }
     }
 
@@ -341,7 +348,7 @@ const TableCategory = ({ menuId, menuContext, index, category, openDeleteConfirm
 
     const [{ isDragging }, drag] = useDrag({
         item: { type: "category", id: category.id, index },
-        begin: () => { setOpen(false) }, // close category before dragging
+        begin: () => { setExpanded(false) }, // close category before dragging
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -366,42 +373,48 @@ const TableCategory = ({ menuId, menuContext, index, category, openDeleteConfirm
         }
     });
 
+    let [open, openDeleteCategoryModal, closeDeleteCategoryModal] = useDeleteCategoryModal(refreshMenu)
+
+
     return (
-        <StyledTableCategory ref={ (node) => drag(drop(node)) } className={ open ? 'open' : '' }>
-            <CategoryHeaderRow>
-                <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={toggleOpen}/>
-                <TableCell className='category-name' onClick={toggleOpen}>
-                    { category.name }
-                </TableCell>
-                <TableCell className='category-description' onClick={toggleOpen}>
-                    <CategoryDescription>
-                        { category.description }
-                    </CategoryDescription>
-                </TableCell>
-                <RowControls>
-                    <img className='edit' src={EditIcon} onClick={() => Navigation.category(category.id, menuId, false) } alt="edit icon"/>
-                    <img className='delete' src={DeleteIcon} onClick={() => openDeleteConfirmation(category.id, "category")} alt="delete icon"/>
-                </RowControls>
-            </CategoryHeaderRow>
-            <div className='items'>
-                {
-                    open && !isDragging && dishOrder ?
-                        dishOrder.map((dishId, index) => (
-                            <ItemRow
-                                key={dishId}
-                                menuId={ menuId }
-                                dish={menuContext.dishDict[dishId]}
-                                openDeleteConfirmation={openDeleteConfirmation}
-                                handleCheckboxChange={handleCheckboxChange}
-                                showEditMode={showEditMode}
-                                moveDish={moveDish}
-                                getDish={getDish}
-                                saveDishOrder={saveDishOrder}
-                            />
-                        )) : ''
-                }
-            </div>
-        </StyledTableCategory>
+        <>
+            <StyledTableCategory ref={ (node) => drag(drop(node)) } className={ expanded ? 'expanded' : '' }>
+                <CategoryHeaderRow>
+                    <img className='collapse-icon' src={ArrowIcon} alt="collapse icon" onClick={ toggleExpanded }/>
+                    <TableCell className='category-name' onClick={ toggleExpanded }>
+                        { category.name }
+                    </TableCell>
+                    <TableCell className='category-description' onClick={ toggleExpanded }>
+                        <CategoryDescription>
+                            { category.description }
+                        </CategoryDescription>
+                    </TableCell>
+                    <RowControls>
+                        <img className='edit' src={EditIcon} onClick={() => Navigation.category(category.id, menuId, false) } alt="edit icon"/>
+                        <img className='delete' src={DeleteIcon} onClick={() => openDeleteCategoryModal(category.id)} alt="delete icon"/>
+                    </RowControls>
+                </CategoryHeaderRow>
+                <div className='items'>
+                    {
+                        expanded && !isDragging && dishOrder ?
+                            dishOrder.map((dishId, index) => (
+                                <ItemRow
+                                    key={dishId}
+                                    menuId={ menuId }
+                                    dish={menuContext.dishDict[dishId]}
+                                    handleCheckboxChange={handleCheckboxChange}
+                                    showEditMode={showEditMode}
+                                    moveDish={moveDish}
+                                    getDish={getDish}
+                                    saveDishOrder={saveDishOrder}
+                                    refreshMenu={refreshMenu}
+                                />
+                            )) : ''
+                    }
+                </div>
+            </StyledTableCategory>
+            <DeleteCategoryModal open={ open } openModal={ openDeleteCategoryModal } closeModal={ closeDeleteCategoryModal }/>
+        </>
     )
 }
 
