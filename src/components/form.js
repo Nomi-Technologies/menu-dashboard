@@ -52,6 +52,12 @@ export const FormSubtitle = styled.p`
     margin-bottom: 8px;
 `
 
+export const FormMessage = styled.p`
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 8px;
+`
+
 export const FormError = styled.p`
     color: red;
     margin: 0px;

@@ -13,7 +13,7 @@ export const Button = styled.div`
 export const ButtonRow = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-top: 32px;
 
     ${Button} {
         margin-left: 10px;

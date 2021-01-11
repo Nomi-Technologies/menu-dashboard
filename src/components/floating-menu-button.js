@@ -33,8 +33,9 @@ let StyledFloatingMenu = styled(FloatingMenu)`
     }
 `;
 
-const FloatingMenuButton = ({ menuId, refreshMenu }) => {
+const FloatingMenuButton = () => {
     const [isOpen, setIsOpen] = useState(false);
+
     const onClickMenu = () => {
         setIsOpen(!isOpen);
     }
@@ -54,9 +55,6 @@ const FloatingMenuButton = ({ menuId, refreshMenu }) => {
             </Button>
             <StyledFloatingMenu 
                 isOpen={ isOpen }
-                menuId={ menuId } 
-                updateMenu={ refreshMenu } 
-                // updateMenuSelection={ props.updateMenuSelection } 
                 onClickMenu={onClickMenu}
                 className='menu'
             />
