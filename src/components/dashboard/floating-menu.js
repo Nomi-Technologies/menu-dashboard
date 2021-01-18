@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import styled from 'styled-components';
 import Client from "../../util/client";
 import { Colors } from "../../util/colors"
 
-import { useQRCodeModal, QRCodeModal } from "./modal/qr-code"
+import { MenuContext } from "./menu-table/menu-context"
 
-import { UploadCSVModal } from "./modal/upload-csv"
+import { useQRCodeModal, QRCodeModal } from "./modal/qr-code"
+import { useUploadCSVModal, UploadCSVModal } from "./modal/upload-csv"
 import { DeleteConfirmationModal } from "./modal/delete"
 import { checkPropTypes } from 'prop-types';
 
@@ -35,10 +36,6 @@ const MenuItem = styled.div`
     }
 `;
 
-const DeleteMenuItem = styled(MenuItem)`
-    color: #FB6565;
-`;
-
 const HorizontalSeparator = styled.div`
     height: 0;
     width: 195px;
@@ -46,28 +43,25 @@ const HorizontalSeparator = styled.div`
     margin: 0 auto;
 `;
 
-const FloatingMenu = (props) => {
-    const [showCSVUploadModal, setShowCSVUploadModal] = useState(false);
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+const FloatingMenu = ({ isOpen, className }) => {
     const [uniqueName, setUniqueName] = useState(null);
-    const [restaurantName, setRestaurantName] = useState(null);
+    let { menu, refreshMenu } = useContext(MenuContext)
 
     useEffect(() => {
         Client.getRestaurantInfo().then(res => {
             setUniqueName(res.data.uniqueName);
-            setRestaurantName(res.data.name);
         });
 
-    }, [props.menuId]);
+    }, []);
 
     async function duplicateMenu(id) {
         const res = await Client.duplicateMenu(id);
-        props.onClickMenu();
+        // props.onClickMenu();
         // props.updateMenuSelection(res.data.menu);
     }
 
     async function downloadCSV(){
-        Client.downloadCSV(props.menuId).then(res => {
+        Client.downloadCSV(menu?.id).then(res => {
             if(res.status == 200 && res.data.csv){
                 var csv = res.data.csv
                 var hiddenElement = document.createElement('a');
@@ -80,22 +74,24 @@ const FloatingMenu = (props) => {
     }
 
     let [showQRCodeModal, openQRCodeModal, closeQRCodeModal] = useQRCodeModal();
+    let [showUploadCSVModal, openUploadCSVModal, closeUploadCSVModal, uploadCSV, errorMessage, setErrorMessage] = useUploadCSVModal(menu?.id, refreshMenu); 
     
     return (
         <>
-            <div className={props.className}>
-                <Menu isOpen={props.isOpen} className={props.className}>
+            <div className={className}>
+                <Menu isOpen={isOpen} className={className}>
                     <MenuItem onClick = {() => downloadCSV()}>Download as .csv</MenuItem>
                     <HorizontalSeparator/>
-                    <MenuItem onClick={() => setShowCSVUploadModal(true)}>Upload .csv Menu</MenuItem>
+                    <MenuItem onClick={ openUploadCSVModal }>Upload .csv Menu</MenuItem>
                     <HorizontalSeparator/>
-                    <MenuItem onClick={() => duplicateMenu(props.menuId)}>Duplicate Menu</MenuItem>
+                    <MenuItem onClick={() => duplicateMenu(menu?.id)}>Duplicate Menu</MenuItem>
                     <HorizontalSeparator/>
-                    <MenuItem onClick={openQRCodeModal}>View QR Code</MenuItem>
+                    <MenuItem onClick={ openQRCodeModal }>View QR Code</MenuItem>
                 </Menu>
             </div>
 
             <QRCodeModal open={ showQRCodeModal } openModal={ openQRCodeModal } closeModal={ closeQRCodeModal } uniqueName={ uniqueName }/>
+            <UploadCSVModal open={ showUploadCSVModal } openModal={ openUploadCSVModal } closeModal={ closeUploadCSVModal } uploadCSV={ uploadCSV } errorMessage={ errorMessage } setErrorMessage={ setErrorMessage }/>
         </>
     )
 }

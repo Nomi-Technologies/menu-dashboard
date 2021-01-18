@@ -33,13 +33,14 @@ const MenuTableLayout = ({ menuId, children }) => {
     }, [menuId])
 
     const refreshMenu = async () => {
+        await getAllMenus()
+
         if (menuId !== null && menuId !== undefined && menuId !== 'all-menus') {
             setMenuContext({
                 ...menuContext,
                 menu: {}
             })
             await getMenu(menuId)
-            await getAllMenus()
         } else {
             if(menuId !== 'all-menus') {
                 navigate('/dashboard/all-menus')
@@ -59,7 +60,7 @@ const MenuTableLayout = ({ menuId, children }) => {
                 <Container>
                     <Column>
                         <TopBar title="Menu Management">
-                            <MenuSelector menuId={menuId} menus={ menus }/>
+                            <MenuSelector menuId={ menuId } menus={ menus }/>
                         </TopBar>
                         { children }                
                     </Column>
