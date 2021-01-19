@@ -13,11 +13,12 @@ const StyledRegisterLayout = styled.div`
 
 let SideBar = styled(Column)`
     min-width: 350px;
-    max-width: 450px;
+    max-width: 850px;
 `
 
 let FormColumn = styled(Column)`
-    padding-right: 52px;
+    margin-top: 230px;
+
 
 `
 

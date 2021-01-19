@@ -86,15 +86,11 @@ let FormRow = styled.div`
     justify-content: space-between;
 `
 
-let FormControls = styled.div`
-    display: flex;
-    /* flex-direction: row; */
-    /* position: absolute; */
-    /* bottom: 20px; */
-    padding-top: 40px;
-    width: 100%;
-    justify-content: space-between;
-`
+
+export const FormSplitColumn = styled.div`
+    flex-basis: 48%;
+
+` 
 
 let StyledFormInput = styled.div`
     position: relative;
@@ -112,19 +108,9 @@ let StyledButton = styled.button`
     border-radius: 8px;
     border: 2px solid #F3A35C;
     text-transform: uppercase;
-    transition: 0.3s ease-in-out;
-    cursor: pointer;
-
-    &:hover {
-        background: rgba(242, 153, 74, 0.2);
-    }
-`
-
-let ButtonRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-    align-items: flex-end;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 8px;
 `
 
 const FormButton = (props) => {
@@ -172,48 +158,14 @@ let StyledSaveButton = styled.button`
   margin-top: 20px;
 
 `
-
-let NextButton = (props) => (
-    <StyledNextButton onClick={props.onClick}>
-        NEXT
-        <img alt="Right Arrow Icon" src={RightArrowIcon}></img>
-    </StyledNextButton>
-)
-
-let DoneButton = (props) => (
-    <StyledNextButton onClick={props.onClick}>
-        DONE
-    </StyledNextButton>
-)
-
-let SaveButton = (props) => (
-    <StyledSaveButton save={ props.save } onClick={ props.onClick }>
-        { props.save ? "Changes Saved" : "Save" }
-    </StyledSaveButton>
-)
-
-let StyledPrevButton = styled.button`
-    border: none;
-    background: none;
-    color: #ACADAE;
-    align-self: flex-start;
+export const FormSubtitleNoCaps = styled.p`
+    font-family: HK Grotesk;
+    font-style: normal;
+    font-weight: normal;
     font-size: 18px;
+
 `
-
-let PrevButton = (props) => (
-    <StyledPrevButton onClick={() => navigate(props.destination, { state: props.state })}>
-        PREVIOUS STEP
-    </StyledPrevButton>
-)
-
-let FormInput = (props) => (
-    <StyledFormInput width={props.width}>
-        <StyledInput type={props.type} onChange={props.onChange} value={props.value} required></StyledInput>
-        <FloatingLabel>{props.placeholder}</FloatingLabel>
-    </StyledFormInput>
-)
-
-let FormError = styled.p`
+export const FormError = styled.p`
     color: red;
     margin: 0px;
 `
@@ -249,28 +201,7 @@ let StyledNewTextArea = styled.textarea`
     resize: none;
     border: none;
     height: 70px;
-    margin: 10px 0;
+    margin-bottom: 24px;
 `
 
-let DishFormTextArea = (props) => (
-    <StyledNewTextArea type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>
-)
 
-export { 
-    FormInput,
-    DishFormInput,
-    DishFormTextArea,
-    FormContainer,
-    FormTitle,
-    FormSubtitle,
-    FormRow,
-    FormError,
-    ButtonRow,
-    FormButton,
-    NextButton,
-    PrevButton,
-    DoneButton,
-    SaveButton,
-    FormControls,
-    PopupFormTitle
-}

@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-import CompletedIcon from "../../assets/img/check-white.png"
+import CompletedIcon from "../../assets/img/Ellipse-Orange.png"
 
 let StyledRegistrationProgress = styled.div`
     position: relative;
@@ -30,31 +30,27 @@ let StyledStep = styled.div`
     margin: 20px 0;
 
     p {
-        text-transform: uppercase;
-        color: ${({status}) => status === 'active' ? "#F2994A" : "#8A9DB7" };
-        opacity: ${({status}) => status === 'completed' ? "0.8" : "1" };
+        color: ${({status}) => status === 'active' ? "black" : "black" };
+        ${'' /* opacity: ${({status}) => status === 'completed' ? "0.8" : "1" }; */}
         display: inline-block;
+        font-size: ${({status}) => status === 'active' ? "18px" : "36px" };
     }
     
     .icon {
-        height: 17px;
-        width: 17px;
-        padding: 6.5px;
-        border: 3px solid #F2994A;
-        border-radius: 200px;
+        height: 16px;
+        width: 16px;
         margin-right: 20px;
-        background-color: #F2994A;
     }
 
     .step-indicator {
         display: inline-block;
         margin-right: 20px;
         color: ${({status}) => status === 'active' ? "#F2994A" : "#8A9DB7" };
-        border: 3px solid ${({status}) => status === 'active' ? "#F2994A" : "#8A9DB7" };
-        padding: 10px;
-        height: 10px;
-        width: 10px;
-        line-height: 10px;
+        border: 2px solid ${({status}) => status === 'active' ? "#F2994A" : "#8A9DB7" };
+        padding: 5px;
+        height: 2px;
+        width: 2px;
+        line-height: 20px;
         border-radius: 200px;
         font-size: 18px;
         text-align: center;
@@ -65,8 +61,8 @@ let Step = ({ idx, label, status }) => {
     return(
         <StyledStep status={ status }>
             { status === 'completed' ? 
-                <img src={ CompletedIcon } className="icon"/> 
-                : <div className='step-indicator'>{ idx }</div>
+            <img src={ CompletedIcon } className="icon"/> 
+                : <div className='step-indicator'>{ }</div>
             }
             <p>{ label }</p>
         </StyledStep>
@@ -84,12 +80,10 @@ const RegistrationProgress = ({ currentIdx }) => {
             return "upcoming"
         }
     }
-
     return (
         <StyledRegistrationProgress>
-            <Step label="Contact Info" idx="1" status={ checkStatus(1) }/>
-            <Step label="Restaurant Setup" idx="2" status={ checkStatus(2) }/>
-            <Step label="Review" idx="3" status={ checkStatus(3) }/>
+            <Step label="Let's get down to business" idx="1" status={ checkStatus(1) }/>
+            <Step label="Tell us about your restaurants" idx="2" status={ checkStatus(2) }/>
         </StyledRegistrationProgress>
     ) 
 }
