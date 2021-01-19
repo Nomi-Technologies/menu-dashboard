@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from "styled-components"
 import { Container, Column } from "../../components/grid"
 import { RegistrationProgress } from "./registration-progress"
-import { FormContainer } from "../basics"
+import { FormContainer } from "../form"
 import { useLocation, navigate } from "@reach/router"
 
 import "../../pages/index.css"
@@ -13,11 +13,12 @@ const StyledRegisterLayout = styled.div`
 
 let SideBar = styled(Column)`
     min-width: 350px;
-    max-width: 450px;
+    max-width: 850px;
 `
 
 let FormColumn = styled(Column)`
-    padding-right: 52px;
+    margin-top: 230px;
+
 
 `
 

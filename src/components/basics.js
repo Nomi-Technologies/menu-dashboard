@@ -21,9 +21,11 @@ export const ButtonRow = styled.div`
 `
 
 export const ButtonPrimary = styled(Button)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: ${ Colors.ORANGE };
     border: 2px solid ${ Colors.ORANGE };
-
     &:hover {
         background-color: ${ Colors.ORANGE_LIGHT };
         border: 2px solid ${ Colors.ORANGE_LIGHT };

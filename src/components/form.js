@@ -34,8 +34,10 @@ export const FormSplitRow = styled.div`
     justify-content: space-between;
 `
 
+
 export const FormSplitColumn = styled.div`
     flex-basis: 48%;
+
 ` 
 
 export const FormTitle = styled.h1`
@@ -48,7 +50,7 @@ export const FormSubtitle = styled.p`
     font-size: 12px;
     text-transform: uppercase;
     padding: 0;
-    margin-top: 0;
+    margin-top: 10px;
     margin-bottom: 8px;
 `
 
@@ -57,7 +59,13 @@ export const FormMessage = styled.p`
     margin-top: 0;
     margin-bottom: 8px;
 `
+export const FormSubtitleNoCaps = styled.p`
+    font-family: HK Grotesk;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
 
+`
 export const FormError = styled.p`
     color: red;
     margin: 0px;
@@ -86,3 +94,5 @@ export const FormTextArea = styled.textarea`
     height: 70px;
     margin-bottom: 24px;
 `
+
+

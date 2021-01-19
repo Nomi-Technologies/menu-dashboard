@@ -7,7 +7,7 @@ import styled from "styled-components"
     top: 0;
     /* width: 100vw; */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
  `
 
