@@ -28,7 +28,7 @@ const TopBar = ({title, children}) => {
 
     const logoutUser = () => {
         logout()
-        navigate('/')
+        navigate('/login')
     }
     
     return(

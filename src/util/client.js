@@ -208,7 +208,7 @@ export default class Client {
 
   static duplicateMenu = id => {
     let token = retrieveUserToken() // get user auth token
-    let data
+    let data 
     return axios.post(ROOT_URL + "/menus/" + id, data, {
       headers: { Authorization: `Bearer ${token}` },
     })

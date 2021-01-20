@@ -12,6 +12,8 @@ import SettingsIcon from "../../../assets/img/settings.png"
 import SidebarActive from "../../../assets/img/sidebar-active.png"
 import SidebarActiveSettings from "../../../assets/img/sidebar-active-grey.png"
 
+import { Colors } from "../../../util/colors"
+
 import "../../../pages/index.css"
 
 let SidebarItemList = styled.div`
@@ -33,6 +35,7 @@ let StyledMenuIcon = styled.div`
   width: 32px;
   padding-right: 25px;
   padding-left: 30px;
+
   img {
     margin: 0 auto;
     display: block;
@@ -74,7 +77,7 @@ let StyledSidebarItem = styled.div`
   padding: 10px 0;
   font-family: HK Grotesk Regular;
   position: relative;
-  color: #F3A35C;
+  color: ${Colors.ORANGE};
   cursor: pointer;
 `;
 
@@ -104,7 +107,7 @@ let StyledSettingsSidebarItem = styled.div`
   width: 100%;
   padding: 10px 0;
   font-family: HK Grotesk Regular;
-  color: #B2BED0;
+  color: ${Colors.ORANGE};
   cursor: pointer;
 `;
 

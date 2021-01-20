@@ -5,6 +5,7 @@ import { FormTitle, FormMessage } from "../../form"
 import { ButtonRow, ButtonSecondary, ButtonDelete } from "../../basics"
 import { Modal, useModal } from "./modal"
 import Client from "../../../util/client"
+import { navigate } from 'gatsby';
 
 let StyledDeleteConfirmation = styled.div`
     ${Modal} {
@@ -85,6 +86,42 @@ export const DeleteCategoryModal = ({ open, openModal, closeModal }) => {
     <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
       <FormTitle>Confirm Delete Menu Section</FormTitle>
       <FormMessage>Are you sure you want to delete this menu section?</FormMessage>
+        <ButtonRow>
+            <ButtonSecondary onClick={ () => { closeModal(false) } }>Cancel</ButtonSecondary>
+            <ButtonDelete onClick={ () => { closeModal(true) } }>Delete</ButtonDelete>
+        </ButtonRow>
+    </Modal>
+  )
+}
+
+export const useDeleteMenuModal = (menuId, refreshMenu) => {
+  let [open, openModal, closeModal] = useModal();
+
+  let openDeleteMenuModal = () => {
+    openModal()
+  }
+
+  let closeDeleteMenuModal = async (shouldDelete) => {
+    if(shouldDelete) { 
+      try {
+        await Client.deleteMenu(menuId)
+        navigate('/dashboard/all-menus')
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    closeModal()
+  }
+
+  return [open, openDeleteMenuModal, closeDeleteMenuModal]
+}
+
+export const DeleteMenuModal = ({ open, openModal, closeModal }) => {
+  return (
+    <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
+      <FormTitle>Confirm Delete Menu</FormTitle>
+      <FormMessage>Are you sure you want to delete this menu?</FormMessage>
         <ButtonRow>
             <ButtonSecondary onClick={ () => { closeModal(false) } }>Cancel</ButtonSecondary>
             <ButtonDelete onClick={ () => { closeModal(true) } }>Delete</ButtonDelete>

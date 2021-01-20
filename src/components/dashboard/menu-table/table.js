@@ -7,7 +7,7 @@ import Navigation from '../../../util/navigation'
 import Checkbox from "./checkbox";
 
 import styled from "styled-components"
-import ArrowIcon from "../../../assets/img/arrow_icon.png"
+import ArrowIcon from "../../../assets/img/arrow-icon.png"
 import PlusIcon from "../../../assets/img/plus-icon.png"
 import EditIcon from "../../../assets/img/edit-icon.png"
 import DeleteIcon from "../../../assets/img/delete-icon.png"

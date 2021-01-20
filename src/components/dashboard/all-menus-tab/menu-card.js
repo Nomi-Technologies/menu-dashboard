@@ -19,8 +19,9 @@ const StyledMenuCard = styled.div`
     display: flex;
 
     img {
-        margin: 5px;
+        margin: 10px;
         cursor: pointer;
+        width: 22px;
     }
 
     .controls {

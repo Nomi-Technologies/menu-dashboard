@@ -8,7 +8,7 @@ import { MenuContext } from "./menu-table/menu-context"
 
 import { useQRCodeModal, QRCodeModal } from "./modal/qr-code"
 import { useUploadCSVModal, UploadCSVModal } from "./modal/upload-csv"
-import { DeleteConfirmationModal } from "./modal/delete"
+import { DeleteConfirmationModal, DeleteMenuModal, useDeleteMenuModal } from "./modal/delete"
 import { checkPropTypes } from 'prop-types';
 
 const Menu = styled.div`
@@ -75,6 +75,7 @@ const FloatingMenu = ({ isOpen, className }) => {
 
     let [showQRCodeModal, openQRCodeModal, closeQRCodeModal] = useQRCodeModal();
     let [showUploadCSVModal, openUploadCSVModal, closeUploadCSVModal, uploadCSV, errorMessage, setErrorMessage] = useUploadCSVModal(menu?.id, refreshMenu); 
+    let [showDeleteMenuModal, openDeleteMenuModal, closeDeleteMenuModal] = useDeleteMenuModal(menu?.id, refreshMenu)
     
     return (
         <>
@@ -84,7 +85,7 @@ const FloatingMenu = ({ isOpen, className }) => {
                     <HorizontalSeparator/>
                     <MenuItem onClick={ openUploadCSVModal }>Upload .csv Menu</MenuItem>
                     <HorizontalSeparator/>
-                    <MenuItem onClick={() => duplicateMenu(menu?.id)}>Duplicate Menu</MenuItem>
+                    <MenuItem onClick={ openDeleteMenuModal }>Delete Menu</MenuItem>
                     <HorizontalSeparator/>
                     <MenuItem onClick={ openQRCodeModal }>View QR Code</MenuItem>
                 </Menu>
@@ -92,6 +93,7 @@ const FloatingMenu = ({ isOpen, className }) => {
 
             <QRCodeModal open={ showQRCodeModal } openModal={ openQRCodeModal } closeModal={ closeQRCodeModal } uniqueName={ uniqueName }/>
             <UploadCSVModal open={ showUploadCSVModal } openModal={ openUploadCSVModal } closeModal={ closeUploadCSVModal } uploadCSV={ uploadCSV } errorMessage={ errorMessage } setErrorMessage={ setErrorMessage }/>
+            <DeleteMenuModal open={ showDeleteMenuModal } openModal={ openDeleteMenuModal } closeModal={ closeDeleteMenuModal }/>
         </>
     )
 }
