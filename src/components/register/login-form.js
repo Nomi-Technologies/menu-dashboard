@@ -1,8 +1,7 @@
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import React, { useState } from 'react';
 
 import styled from "styled-components"
-import { navigate } from "@reach/router"
 import { FormInput, FormButton, ButtonRow } from "../form"
 import Client from "../../util/client"
 import { saveUserToken } from "../../util/auth"
@@ -70,7 +69,7 @@ const LoginForm = () => {
             {/* <ForgotPassword>Forgot password?</ForgotPassword>   */}
             <ButtonRow>
                 <FormButton text='Login' onClick={ loginUser }/>    
-                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info') } />    
+                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info/') } />    
             </ButtonRow>
         </Container>
     )

@@ -52,22 +52,22 @@ const RestaurantDetails = () =>
             <FormTitle>Restaurant Details</FormTitle>
             <FormSubtitle>Details about your restaurant's location and services</FormSubtitle>
             <FormRow>
-                <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}} value={ restaurantDetails.name }/>
+                <FormInput width='100%' name='restuarant-name' placeholder='restaurant name' onChange={(event) => { setRestaurantDetails({...restaurantDetails, name: event.target.value })}} value={ restaurantDetails?.name }/>
             </FormRow>
             <FormRow>
-                <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}} value={ restaurantDetails.streetAddress }/>
+                <FormInput width='100%' name='street-address' placeholder='street address' onChange={(event) => { setRestaurantDetails({...restaurantDetails, streetAddress: event.target.value })}} value={ restaurantDetails?.streetAddress }/>
             </FormRow>
             <FormRow>
-                <FormInput width='50%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}} value={ restaurantDetails.city }/>
-                <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}} value={ restaurantDetails.state }/>
-                <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}} value={ restaurantDetails.zip }/>
+                <FormInput width='50%' name='city' placeholder='city' onChange={(event) => { setRestaurantDetails({...restaurantDetails, city: event.target.value })}} value={ restaurantDetails?.city }/>
+                <FormInput width='15%' name='state' placeholder='state' onChange={(event) => { setRestaurantDetails({...restaurantDetails, state: event.target.value })}} value={ restaurantDetails?.state }/>
+                <FormInput width='30%' name='zip' placeholder='zip code' onChange={(event) => { setRestaurantDetails({...restaurantDetails, zip: event.target.value })}} value={ restaurantDetails?.zip }/>
             </FormRow>
             <FormRow>
-                <FormInput width='48%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}} value={ restaurantDetails.phone }/>
-                <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}} value={ restaurantDetails.url }/>
+                <FormInput width='48%' name='restaurant-phone' placeholder='phone number' onChange={(event) => { setRestaurantDetails({...restaurantDetails, phone: event.target.value })}} value={ restaurantDetails?.phone }/>
+                <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}} value={ restaurantDetails?.url }/>
             </FormRow>
             <FormControls>
-                <FormButton destination='contact-info' text="Previous" theme="light"/>
+                <FormButton destination='../contact-info' text="Previous" theme="light"/>
                 <FormButton onClick={ validateForm } text="Next"/>
             </FormControls>
         </RegisterLayout>
