@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { FormButton } from "./form"
 import { retrieveUserToken, logout } from "../util/auth"
-import { navigate } from "@reach/router"
+import { navigate } from "gatsby"
 
 // Top of most dashboard pages.  Can include children for custom conent (i.e. menu selector)
 const StyledTopBar = styled.div`

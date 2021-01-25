@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import RightArrowIcon from "../assets/img/right-arrow.png"
 
-import { navigate } from "@reach/router"
+import { navigate } from "gatsby"
 
 let FormTitle = styled.h1`
     padding-top: 120px;

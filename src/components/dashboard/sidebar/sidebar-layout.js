@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import { useLocation, navigate } from "@reach/router"
+import { useLocation } from "@reach/router"
+import { navigate } from "gatsby"
 
 
 import CollapseIcon from "../../../assets/img/collapse-sidebar.png"

@@ -3,7 +3,8 @@ import styled from "styled-components"
 import { Container, Column } from "../../components/grid"
 import { RegistrationProgress } from "./registration-progress"
 import { FormContainer } from "../form"
-import { useLocation, navigate } from "@reach/router"
+import { useLocation } from "@reach/router"
+import { navigate } from "gatsby"
 
 import "../../pages/index.css"
 
