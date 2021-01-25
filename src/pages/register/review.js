@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import styled from "styled-components"
 
 import RegisterLayout from "../../components/register/register-layout"
-import { navigate } from "@reach/router"
+import { navigate } from "gatsby"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
 import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
@@ -115,7 +115,7 @@ const Review = (props) =>
                 ) : null
             }   
             <FormControls>
-                <FormButton destination='restaurant-details' text="Previous" theme="light"/>
+                <FormButton destination='../restaurant-details' text="Previous" theme="light"/>
                 <FormButton onClick={ submitRegistration } text="Register"/>
             </FormControls>
         </RegisterLayout>

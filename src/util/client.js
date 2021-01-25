@@ -1,6 +1,6 @@
 import axios from "axios"
 import { retrieveUserToken } from "./auth"
-import { navigate } from "@reach/router"
+import { navigate } from "gatsby"
 
 const ROOT_URL = process.env.GATSBY_API_URL
 
