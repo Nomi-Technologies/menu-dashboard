@@ -115,7 +115,7 @@ const Review = (props) =>
                 ) : null
             }   
             <FormControls>
-                <FormButton destination='restaurant-details' text="Previous" theme="light"/>
+                <FormButton destination='../restaurant-details' text="Previous" theme="light"/>
                 <FormButton onClick={ submitRegistration } text="Register"/>
             </FormControls>
         </RegisterLayout>
