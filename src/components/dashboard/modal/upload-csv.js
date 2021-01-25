@@ -5,7 +5,7 @@ import { FileDrop } from "../../file-drop"
 
 import { Modal, useModal } from "./modal"
 import { ButtonRow } from "../../basics"
-import { FormTitle } from "../../form"
+import { FormSubtitle, FormTitle } from "../../form"
 
 const useUploadCSVModal = ( menuId, refreshMenu ) => {
     let [open, openModal, closeModal] = useModal()
@@ -61,7 +61,8 @@ const UploadCSVModal = ({ open, openModal, closeModal, uploadCSV, errorMessage, 
                 {
                     errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
                 }
-                <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
+                <FormSubtitle>CSV File</FormSubtitle>
+                <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ () => { setContent(null) } }/>
                 <ButtonRow>
                     <ButtonSecondary onClick={ closeModal }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={ submitCSV }>Upload CSV</ButtonPrimary>  

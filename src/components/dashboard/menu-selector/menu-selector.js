@@ -67,7 +67,7 @@ const MenuSelector = ({ menuId, menus }) => {
                             </MenuTab>
                     ))
                 }
-                {/* <MenuCreator className="menu-creator"/> */}
+                <MenuCreator className="menu-creator"/>
             </Menus>
         </StyledMenuSelector>
     )

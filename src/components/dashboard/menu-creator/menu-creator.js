@@ -1,7 +1,8 @@
 import React, { useState  } from 'react';
 
 import styled from "styled-components"
-import { NewMenuModal } from "../../../components/dashboard/modal/new-menu";
+import { NewMenuModal, useNewMenuModal } from "../../../components/dashboard/modal/new-menu";
+import { Colors } from "../../../util/colors"
 
 let StyledMenuCreator = styled.div`
     display: inline-flex;
@@ -11,7 +12,7 @@ let StyledMenuCreator = styled.div`
     margin-top: 8px;
 
     .new-menu-button {
-        color: #F3A35C;
+        color: ${ Colors.ORANGE };
         cursor: pointer;
 
         font-family: HK Grotesk regular;
@@ -25,24 +26,29 @@ let StyledMenuCreator = styled.div`
 `
 
 const MenuCreator = (props) => {
-    const [showNewMenuForm, setNewMenuForm] = useState(false);
-    
-    const toggleNewMenuForm = () => {
-        //if (!showNewMenuForm) closeAllForms() //if about to open form
-        setNewMenuForm(!showNewMenuForm)
-    }
-    
+    let [open, openModal, closeModal, createMenu, title, setTitle, fileContent, setFileContent, errorMessage, setErrorMessage] = useNewMenuModal(props.refreshMenu)
+        
     return (
-        <StyledMenuCreator>
-            <div className="new-menu-button" onClick={toggleNewMenuForm}>
-                + Add New Menu
-            </div>
-            {
-                showNewMenuForm ? (
-                    <NewMenuModal updateMenuSelection={props.updateMenuSelection} updateHasMenu={props.updateHasMenu} toggleForm={toggleNewMenuForm}/>
-                ) : null
-            }
-        </StyledMenuCreator>
+        <>
+            <StyledMenuCreator>
+                <div className="new-menu-button" onClick={ openModal }>
+                    + Add New Menu
+                </div>
+
+            </StyledMenuCreator>
+            <NewMenuModal 
+                open={ open } 
+                openModal={ openModal }  
+                closeModal={ closeModal } 
+                createMenu={ createMenu } 
+                title={ title } 
+                setTitle={ setTitle } 
+                fileContent={ fileContent }
+                setFileContent={ setFileContent } 
+                errorMessage={ errorMessage } 
+                setErrorMessage={ setErrorMessage }
+            />
+        </>
     )
 }
 

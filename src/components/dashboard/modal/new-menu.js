@@ -1,94 +1,82 @@
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
 
-import { DishFormInput, ButtonPrimary, ButtonSecondary } from "../../basics"
+import { ButtonPrimary, ButtonSecondary, ButtonRow } from "../../basics"
+import { FormInput, FormTitle, FormSubtitle } from "../../form"
 import { FileDrop } from "../../file-drop"
 
-import {
-    Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
-} from "./modal"
+import Navigation from "../../../util/navigation"
+
+import { Modal, useModal } from "./modal"
 
 
-const NewMenuModal = (props) => {
-    const [name, setName] = useState('');
-    let [content, setContent] = useState(null)
+const useNewMenuModal = ( refreshMenu ) => {
+    let [open, openModal, closeModal] = useModal()
     let [errorMessage, setErrorMessage] = useState(null)
-    let [loading, setLoading] = useState(false)
+    let [title, setTitle] = useState(null)
+    let [fileContent, setFileContent] = useState(null)
 
+    let createMenu = async () => {
+        let menuData = {
+            name: title
+        }
+        if(fileContent !== null) {
+            menuData = {
+                ...menuData,
+                csv: fileContent
+            }
+        }
+
+        try {
+            let response = await Client.createMenu(menuData)
+            if(response) {
+                Navigation.table(response.data.id)
+                closeModal()
+            }
+        } catch (error) {
+            console.error(error)
+            setErrorMessage("An error occured while trying to create your new menu.  Please try again later.")
+            return
+        }
+        
+ 
+    }
+
+    return [open, openModal, closeModal, createMenu, title, setTitle, fileContent, setFileContent, errorMessage, setErrorMessage]
+}
+
+const NewMenuModal = ({ open, openModal, closeModal, createMenu, title, setTitle, fileContent, setFileContent, errorMessage, setErrorMessage }) => {
     const setFile = (file) => {
         const reader = new FileReader()      
         reader.readAsText(file)
         reader.onabort = () => console.error('file reading was aborted')
         reader.onerror = () => {
             console.error('file reading has failed')
-            setErrorMessage("Error reading file")
+            setErrorMessage("Error uploading file")
         }
         reader.onload = () => {
         // Do whatever you want with the file contents
           const fileContent = reader.result
-          setContent(fileContent)
+          setFileContent(fileContent)
         }
-    }
-
-    const clearFile = () => {
-        setContent(null)
-    }
-    
-    async function createMenu () {
-        let menuData = {
-            name: name,
-            csv: content,
-        }
-
-        // avoid creating multiple menus while loading
-        if (name !== '' && !loading) {
-            setLoading(true)
-            await Client.createMenu(menuData).then((res) => {
-                props.toggleForm()
-                props.updateHasMenu(true)
-                props.updateMenuSelection(res.data)
-            }).catch((err) => {
-                console.error("error creating menu")
-                setErrorMessage("An error occured while creating the menu, please try again.")
-            }).finally(() => {
-                setLoading(false)
-            })
-        } else {
-            console.error("missing field")
-            //show some error
-        }
-        
     }
 
     return (
-        <>
-            <ModalBackground/>
-            <Modal>
-                <Container>
-                    <FormTitle>New Menu</FormTitle>
-                    {
-                        errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
-                    }
-                    <FormSubtitle>Menu Name</FormSubtitle>
-                    
-                    <DishFormInput
-                        placeholder="Type menu name..."
-                        name="name"
-                        onChange={event => {
-                            setName(event.target.value)
-                        }}
-                    />
-                    <Divider color="#DCE2E9" />
-                    <FormSubtitle>CSV File (Optional)</FormSubtitle>
-                    <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
-                    <ButtonRow>
-                        <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
-                        <ButtonPrimary onClick={ createMenu }>Create Menu</ButtonPrimary>
-                    </ButtonRow>
-                </Container>
-            </Modal>
-        </>
+        <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
+            <FormTitle>Create Menu</FormTitle>
+            {
+                errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
+            }
+            <FormSubtitle>Menu Title</FormSubtitle>
+            <FormInput placeholder='Type your menu title here...' name='menu' value={ title } onChange={(event) => { setTitle(event.target.value) }}/>
+            <FormSubtitle>CSV File (Optional)</FormSubtitle>
+            <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ () => { setFileContent(null) } }/>
+            <ButtonRow>
+                <ButtonSecondary onClick={ closeModal }>Cancel</ButtonSecondary>
+                <ButtonPrimary onClick={ createMenu }>Create Menu</ButtonPrimary>  
+            </ButtonRow>
+        </Modal>
     )
 }
 
-export { NewMenuModal }
+export { NewMenuModal, useNewMenuModal }

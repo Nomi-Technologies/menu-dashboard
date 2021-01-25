@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import useEventListener from '@use-it/event-listener'
 
 const StyledModal = styled.div`
@@ -41,6 +41,10 @@ const useModal = () => {
 const Modal = ({children, open, openModal, closeModal, width}) => {
     //press escape to exit the form, press enter to submit
     function handler({ key }) {
+        if(!open) {
+            return
+        }
+
         if (key === 'Escape') {
             closeModal(false)
         }
