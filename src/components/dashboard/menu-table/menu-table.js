@@ -290,7 +290,7 @@ const MenuTable = () => {
                 <div className='buttons'>
                     <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial>
                 </div>
-                <form onSubmit={handleSearch} className='searchForm'>
+                {/* <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
                         onChange={(e) => setSearchBoxValue(e.target.value)}
                         onFocus={(e) => {
@@ -308,7 +308,7 @@ const MenuTable = () => {
                         <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
 
-                </form>
+                </form> */}
                 <div className='buttons right-controls'>
                     { 
                         showEditMode ? <>
