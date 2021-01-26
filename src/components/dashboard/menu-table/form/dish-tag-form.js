@@ -1,13 +1,16 @@
-let MultiSelect;
-if (typeof window !== `undefined`) {
-  const { Multiselect } = require('multiselect-react-dropdown');
-  MultiSelectDropdown = Multiselect;
-}
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 
 import Client from '../../../../util/client'
 import { Colors } from "../../../../util/colors"
+
+// Fix for undefined window bug
+let MultiSelectDropdown;
+
+if (typeof window !== `undefined`) {
+  const { Multiselect } = require('multiselect-react-dropdown');
+  MultiSelectDropdown = Multiselect;
+}
 
 let Container = styled.div`
   margin-bottom: 24px;
