@@ -60,6 +60,8 @@ const RestaurantInfoCard = (props) => {
 
     useEffect(() => {
         setCurrRestaurantDetails(props.restaurantList[props.index])
+
+        //debug prints
         console.log([props.index])
         console.log((props.restaurantList[props.index]))
         console.log((props.restaurantList))
@@ -69,7 +71,7 @@ const RestaurantInfoCard = (props) => {
 
     const localValidate = (addLocation, collapse) => {
 
-        // if were validating the last one navigate but if we are validating one that we are editing just collapse
+        // if we're validating the last one navigate but if we are validating one that we are editing just collapse
 
         // todo more information
         let invalid = false
