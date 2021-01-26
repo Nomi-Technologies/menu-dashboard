@@ -1,4 +1,8 @@
-import { Multiselect } from "multiselect-react-dropdown"
+let MultiSelect;
+if (typeof window !== `undefined`) {
+  const { Multiselect } = require('multiselect-react-dropdown');
+  MultiSelectDropdown = Multiselect;
+}
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 
