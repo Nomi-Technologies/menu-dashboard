@@ -9,5 +9,6 @@ export const Colors = {
     BLUE_LIGHT: "#D6E2FA",
     RED: "#FA3838",
     RED_LIGHT: "#FB6565",
-    WHITE: "#FFFFFF"
+    WHITE: "#FFFFFF",
+    VERY_LIGHT_GRAY: "f8f8f8 "
 }
