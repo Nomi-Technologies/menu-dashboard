@@ -34,7 +34,7 @@ const ContactInfo = () =>
         password: "",
     });
 
-    const [error, setError] = useState("")
+    const [error, setError] = useState(" ")
 
     useEffect(() => {
         let registrationData = fetchRegistrationData()
