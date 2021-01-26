@@ -178,6 +178,7 @@ const MenuTable = () => {
 
     // takes menu object from API and returns dictionary with IDs to data, and an array of categories and menus for ordering
     const parseMenu = (menu) => {
+        console.log(menu)
         let categoryDict = {}
         let categoryOrder = []
         let dishDict = {}
@@ -205,12 +206,14 @@ const MenuTable = () => {
     }
 
     useEffect(() => {
-        let menuData = menu && Object.keys(menu).length > 0 ? {
-            ...parseMenu(menu),
-            menuData: menu, // todo: rename menu
-        } : {}
-        setMenuData(menuData)
-        setCategoryOrder(menuData.categoryOrder)
+        if(menu) {
+            let menuData = menu && Object.keys(menu).length > 0 ? {
+                ...parseMenu(menu),
+                menuData: menu, // todo: rename menu
+            } : {}
+            setMenuData(menuData)
+            setCategoryOrder(menuData.categoryOrder)
+        }
     }, [menu])
 
     const [categoryOrder, setCategoryOrder] = useState([])

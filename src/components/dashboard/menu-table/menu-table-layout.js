@@ -11,6 +11,7 @@ import TopBar from "../../top-bar"
 
 const MenuTableLayout = ({ menuId, children }) => {
     let [menus, setMenus] = useState([])
+    const [currentMenu, setCurrentMenu] = useState(null);
 
     const getAllMenus = async () => {
         Client.getAllMenus().then((res) => {
@@ -20,26 +21,15 @@ const MenuTableLayout = ({ menuId, children }) => {
 
     const getMenu = async (menuId) => {
         await Client.getMenu(menuId).then((res) => {
-            setMenuContext({
-                ...menuContext,
-                menu: res.data
-            })
+            setCurrentMenu(res.data)
         })
     }
-
-    useEffect(() => {
-        refreshMenu()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuId])
 
     const refreshMenu = async () => {
         await getAllMenus()
 
         if (menuId !== null && menuId !== undefined && menuId !== 'all-menus') {
-            setMenuContext({
-                ...menuContext,
-                menu: {}
-            })
+            setCurrentMenu({})
             await getMenu(menuId)
         } else {
             if(menuId !== 'all-menus') {
@@ -48,11 +38,16 @@ const MenuTableLayout = ({ menuId, children }) => {
         }
     };
 
-    const [menuContext, setMenuContext] = useState({
-        menu: null,
-        refreshMenu: refreshMenu,
-        updateMenuContext: setMenuContext
-    });
+    let menuContext = {
+        menu: currentMenu,
+        refreshMenu: refreshMenu
+    }
+
+    useEffect(() => {
+        refreshMenu()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuId])
+
 
     return (
         <SidebarLayout>

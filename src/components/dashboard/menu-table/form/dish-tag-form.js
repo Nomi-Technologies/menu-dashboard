@@ -59,7 +59,7 @@ const DishTagForm = ({ tags, setTags }) => {
   
     return (
       <Container>
-        <Multiselect
+        <MultiSelectDropdown
           options={ allTags }
           selectedValues={ tags }
           displayValue="name"
