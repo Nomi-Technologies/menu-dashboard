@@ -2,7 +2,6 @@ import { Link, navigate } from "gatsby"
 import React, { useState } from 'react';
 
 import styled from "styled-components"
-import { navigate } from "@reach/router"
 import { ButtonPrimary,  ButtonSecondary, ButtonRow } from "../basics"
 import { FormInput } from "../form"
 import Client from "../../util/client"
