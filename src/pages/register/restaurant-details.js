@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from 'gatsby';
-import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls } from "../../components/form"
 import useEventListener from '@use-it/event-listener'
 import { setRegistrationData, fetchRegistrationData } from "../../util/registration"
 
