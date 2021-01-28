@@ -178,7 +178,6 @@ const MenuTable = () => {
 
     // takes menu object from API and returns dictionary with IDs to data, and an array of categories and menus for ordering
     const parseMenu = (menu) => {
-        console.log(menu)
         let categoryDict = {}
         let categoryOrder = []
         let dishDict = {}

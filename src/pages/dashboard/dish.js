@@ -172,7 +172,7 @@ const DishPage = ({ location }) => {
                     </FormSplitColumn>
                 </FormSplitRow>
                 <FormSubtitle>Allergens</FormSubtitle>
-                <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
+                {/* <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm> */}
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>                
                 <FormControls>

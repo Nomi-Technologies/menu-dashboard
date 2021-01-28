@@ -69,7 +69,6 @@ const AllMenus = (props) => {
 
     const getMenus = async () => {
         await Client.getAllMenus().then((res) => {
-            console.log(res.data)
             setMenus(res.data);
         })
 
@@ -83,7 +82,7 @@ const AllMenus = (props) => {
         //     Client.getFavoriteMenus().then((res) => {
         //         // setFavoriteMenus(res.data);
         //     })
-        // }) 
+        // })
     }
 
     return (

@@ -2,6 +2,10 @@ import styled from "styled-components"
 import { Colors } from "../util/colors"
 import { Button } from "../components/basics"
 
+export const FormRow = styled.div`
+
+`
+
 export const FormContainer = styled.div`
     position: relative;
     width: 100%;
@@ -86,3 +90,5 @@ export const FormTextArea = styled.textarea`
     height: 70px;
     margin-bottom: 24px;
 `
+
+
