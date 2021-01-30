@@ -315,4 +315,11 @@ export default class Client {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
+  
+  static getAllModifications = () => {
+    let token = retrieveUserToken();
+    return axios.get(ROOT_URL + `/modifications`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 }
