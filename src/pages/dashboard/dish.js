@@ -174,7 +174,7 @@ const DishPage = ({ location }) => {
                 <FormSubtitle>Allergens</FormSubtitle>
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>                
+                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={createOrUpdateDish}>
