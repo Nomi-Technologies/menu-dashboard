@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 
 import Client from "../../util/client"
+import { Colors } from '../../util/colors';
 
 import MenuTableLayout from '../../components/dashboard/menu-table/menu-table-layout';
 import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
@@ -9,6 +10,7 @@ import { FormTitle, FormSubtitle, FormInput, FormTextArea, FormSplitRow, FormSpl
 import { FileDrop } from "../../components/file-drop"
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown"
 import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form"
+import ModifierDropDown from '../../components/dashboard/menu-table/form/modifier-dropdown';
 import Navigation from '../../util/navigation';
 
 const DishPage = ({ location }) => {
@@ -175,6 +177,29 @@ const DishPage = ({ location }) => {
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
+                <FormTitle>
+                    Dish Modifiers
+                </FormTitle>
+                <FormSplitRow>
+                    <div style={{
+                        padding: '0 10px 0 4px',
+                        flex: '0 1 auto',
+                        color: `${Colors.SLATE_DARK}`,
+                        fontSize: '38px',
+                        cursor: 'default',
+                    }}>+</div>
+                    <ModifierDropDown
+                        style={{
+                            flex: '1 1 auto',
+                        }}
+                        onSelect={(value) => {
+                            console.log(value);
+                        }}
+                        onCreate={(value) => {
+                            console.log(value);
+                        }}
+                    />
+                </FormSplitRow>
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={createOrUpdateDish}>
