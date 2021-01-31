@@ -13,6 +13,44 @@ import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag
 import ModifierDropDown from '../../components/dashboard/menu-table/form/modifier-dropdown';
 import Navigation from '../../util/navigation';
 
+import EditIcon from "../../assets/img/edit-icon.png"
+import DeleteIcon from '../../assets/img/delete-icon-red.png'
+import styled from 'styled-components';
+
+const ModifierContainer = styled.div`
+    margin: 20px 0;
+    padding: 10px 20px;
+    border: 1px solid ${Colors.SLATE_LIGHT};
+    border-radius: 5px;
+`;
+
+const Modifier = styled.div`
+    position: relative;
+    font-size: 14px;
+    margin: 10px 0;
+
+    & span {
+        font-family: 'HK Grotesk Light';
+        color: ${Colors.GRAY}
+    }
+
+    & .edit, & .delete {
+        width: 14px;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        cursor: pointer;
+    }
+
+    & .edit {
+        right: 30px;
+    }
+
+    & .delete {
+        right: 5px;
+    }
+`;
+
 const DishPage = ({ location }) => {
     const { state = {} } = location
     if(state === null) {
@@ -25,7 +63,8 @@ const DishPage = ({ location }) => {
         description: "",
         price: "",
         categoryId: 0,
-        Tags: []
+        Tags: [],
+        Modifications: [],
     })
 
     const [errorMessage, setErrorMessage] = useState(null)
@@ -177,9 +216,7 @@ const DishPage = ({ location }) => {
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
-                <FormTitle>
-                    Dish Modifiers
-                </FormTitle>
+                <FormTitle>Dish Modifiers</FormTitle>
                 <FormSplitRow>
                     <div style={{
                         padding: '0 10px 0 4px',
@@ -200,6 +237,45 @@ const DishPage = ({ location }) => {
                         }}
                     />
                 </FormSplitRow>
+                {
+                    dishData.Modifications ?
+                    <ModifierContainer>
+                        {
+                            dishData.Modifications.map((modification) => {
+                                const addTags = modification.Tags?.filter((tag) => tag.ModificationTag.addToDish);
+                                const removeTags = modification.Tags?.filter((tag) => !tag.ModificationTag.addToDish);
+                                return (
+                                    <Modifier>
+                                        {modification.name}
+                                        <span>
+                                            , ${modification.price}
+                                        </span>
+                                        {
+                                            addTags.length > 0 ?
+                                            <span>
+                                                , adds {addTags.map((tag) => tag.name).join(', ')}
+                                            </span>
+                                            :
+                                            null
+                                        }
+                                        {
+                                            removeTags.length > 0 ?
+                                            <span>
+                                                , removes {removeTags.map((tag) => tag.name).join(', ')}
+                                            </span>
+                                            :
+                                            null
+                                        }
+                                        <img className='edit' src={EditIcon} onClick={() => {}}alt="edit icon" />
+                                        <img className='delete' src={DeleteIcon} onClick={() => {}} alt='delete icon' />
+                                    </Modifier>
+                                );
+                            })
+                        }
+                    </ModifierContainer>
+                    :
+                    null
+                }
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={createOrUpdateDish}>
