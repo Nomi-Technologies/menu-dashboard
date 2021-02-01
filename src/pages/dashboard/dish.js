@@ -16,6 +16,7 @@ import Navigation from '../../util/navigation';
 import EditIcon from "../../assets/img/edit-icon.png"
 import DeleteIcon from '../../assets/img/delete-icon-red.png'
 import styled from 'styled-components';
+import { ModificationModal, useModificationModal } from '../../components/dashboard/modal/modification';
 
 const ModifierContainer = styled.div`
     margin: 20px 0;
@@ -69,6 +70,7 @@ const DishPage = ({ location }) => {
 
     const [errorMessage, setErrorMessage] = useState(null)
     const [dishImage, setDishImage] = useState(null)
+    const modificationModalControls = useModificationModal();
 
     const updateCategorySelection = (categoryId) => {
         setDishData({
@@ -128,15 +130,10 @@ const DishPage = ({ location }) => {
         // first validate dish form
         if(!validateDishData()) return
 
-        // reformat tags into list of ids
-        let tagIds = []
-        dishData.Tags.forEach((tag) => {
-            tagIds.push(tag.id)
-        })
-
         let postDishData = {
             ...dishData,
-            dishTags: tagIds
+            dishTags: dishData.Tags.map((tag) => tag.id),
+            dishModifications: dishData.Modifications.map((mod) => mod.id),
         }
 
         try {
@@ -233,7 +230,7 @@ const DishPage = ({ location }) => {
                             console.log(value);
                         }}
                         onCreate={(value) => {
-                            console.log(value);
+                            modificationModalControls.openModal(value);
                         }}
                     />
                 </FormSplitRow>
@@ -241,9 +238,7 @@ const DishPage = ({ location }) => {
                     dishData.Modifications ?
                     <ModifierContainer>
                         {
-                            dishData.Modifications.map((modification) => {
-                                const addTags = modification.Tags?.filter((tag) => tag.ModificationTag.addToDish);
-                                const removeTags = modification.Tags?.filter((tag) => !tag.ModificationTag.addToDish);
+                            dishData.Modifications.map((modification, index) => {
                                 return (
                                     <Modifier>
                                         {modification.name}
@@ -251,23 +246,33 @@ const DishPage = ({ location }) => {
                                             , ${modification.price}
                                         </span>
                                         {
-                                            addTags.length > 0 ?
+                                            modification.addTags.length > 0 ?
                                             <span>
-                                                , adds {addTags.map((tag) => tag.name).join(', ')}
+                                                , adds {modification.addTags.map((tag) => tag.name).join(', ')}
                                             </span>
                                             :
                                             null
                                         }
                                         {
-                                            removeTags.length > 0 ?
+                                            modification.removeTags.length > 0 ?
                                             <span>
-                                                , removes {removeTags.map((tag) => tag.name).join(', ')}
+                                                , removes {modification.removeTags.map((tag) => tag.name).join(', ')}
                                             </span>
                                             :
                                             null
                                         }
-                                        <img className='edit' src={EditIcon} onClick={() => {}}alt="edit icon" />
-                                        <img className='delete' src={DeleteIcon} onClick={() => {}} alt='delete icon' />
+                                        <img className='edit' src={EditIcon} alt="edit icon" onClick={() => {
+                                            modificationModalControls.openModal(modification);
+                                        }} />
+                                        <img className='delete' src={DeleteIcon} alt='delete icon' onClick={() => {
+                                            console.log(dishData);
+                                            const modifications = dishData.Modifications.slice(0);
+                                            modifications.splice(index, 1);
+                                            setDishData({
+                                                ...dishData,
+                                                Modifications: modifications,
+                                            });
+                                        }} />
                                     </Modifier>
                                 );
                             })
@@ -285,6 +290,7 @@ const DishPage = ({ location }) => {
                     </ButtonPrimary>
                 </FormControls>
             </FormContainer>
+            <ModificationModal controls={modificationModalControls} />
         </MenuTableLayout>
     )
 }
