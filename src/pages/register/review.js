@@ -1,11 +1,12 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
 
 import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from "gatsby"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
-import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
+import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import { FormTitle, FormSubtitle, FormControls } from "../../components/form"
 import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
 import useEventListener from '@use-it/event-listener'
 
@@ -115,8 +116,8 @@ const Review = (props) =>
                 ) : null
             }   
             <FormControls>
-                <FormButton destination='../restaurant-details' text="Previous" theme="light"/>
-                <FormButton onClick={ submitRegistration } text="Register"/>
+                <ButtonSecondary onClick={ () => { navigate('/register/restaurant-details') } }>Previous</ButtonSecondary>
+                <ButtonPrimary onClick={ submitRegistration }>Register</ButtonPrimary>
             </FormControls>
         </RegisterLayout>
     )

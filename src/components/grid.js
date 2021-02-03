@@ -1,18 +1,20 @@
 import styled from "styled-components"
 
  const Container = styled.div`
-    display: flex;
     min-height: 100vh;
     height: 100%;
+    max-height: 100vh;
+    top: 0;
     /* width: 100vw; */
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
+    position: relative;
  `
 
  const Column = styled.div`
    flex-basis: ${({width}) => width ? width : 'auto'};
    flex-grow: ${({width}) => width ? 0 : 1};
    box-sizing: border-box;
-   /* max-width: 88%; */
  `
 
  const ImageColumn = styled(Column)`
