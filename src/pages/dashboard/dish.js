@@ -242,7 +242,7 @@ const DishPage = ({ location }) => {
                     />
                 </FormSplitRow>
                 {
-                    dishData.Modifications ?
+                    dishData.Modifications.length > 0 ?
                     <ModifierContainer>
                         {
                             dishData.Modifications.map((modification, index) => {
