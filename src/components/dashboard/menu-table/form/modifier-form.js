@@ -49,8 +49,6 @@ export default ({ modalControls, dishModIds, setDishModIds }) => {
 
     const { modifications } = useContext(ModificationContext);
 
-    console.log(modifications);
-
     return (
     <>
         <FormSplitRow>
