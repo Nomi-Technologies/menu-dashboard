@@ -61,9 +61,12 @@ const MenuTableLayout = ({ menuId, children }) => {
 
     useEffect(() => {
         refreshMenu();
-        refreshModifications();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuId])
+    }, [menuId]);
+
+    useEffect(() => {
+        refreshModifications();
+    }, []);
 
 
     return (

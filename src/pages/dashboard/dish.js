@@ -27,7 +27,7 @@ const DishPage = ({ location }) => {
         price: "",
         categoryId: 0,
         Tags: [],
-        Modifications: [],
+        modIds: [],  // only contains ids
     })
 
     const [errorMessage, setErrorMessage] = useState(null)
@@ -50,10 +50,10 @@ const DishPage = ({ location }) => {
         })
     }
 
-    const setDishModifications = (modifications) => {
+    const setDishModIds = (ids) => {
         setDishData({
             ...dishData,
-            Modifications: modifications,
+            modIds: ids,
         })
     }
 
@@ -79,7 +79,10 @@ const DishPage = ({ location }) => {
     const initializeForm = () => {
         if(!create) {
             Client.getDish(dishId).then((res) => {
-                setDishData(res.data)
+                const dish = res.data;
+                dish.modIds = dish.Modifications.map((mod) => mod.id);
+                delete dish["Modification"];
+                setDishData(dish);
             })
         }
     }
@@ -102,7 +105,7 @@ const DishPage = ({ location }) => {
         let postDishData = {
             ...dishData,
             dishTags: dishData.Tags.map((tag) => tag.id),
-            dishModifications: dishData.Modifications.map((mod) => mod.id),
+            dishModifications: dishData.modIds,
         }
 
         try {
@@ -185,8 +188,8 @@ const DishPage = ({ location }) => {
                 <FormTitle>Dish Modifiers</FormTitle>
                 <ModificationForm
                     modalControls={modificationModalControls}
-                    dishModifications={dishData.Modifications}
-                    setDishModifications={setDishModifications}
+                    dishModIds={dishData.modIds}
+                    setDishModIds={setDishModIds}
                 />
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>

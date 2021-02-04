@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CreatableSelect from 'react-select/creatable';
 
 import Client from '../../../../util/client';
 import { Colors } from '../../../../util/colors';
+import { ModificationContext } from '../modification-context';
 
 
 const dropDownStyle = {
@@ -23,19 +24,14 @@ const dropDownStyle = {
 };
 
 export default ({ style, onSelect, onCreate }) => {
-    const [allModifications, setAllModifications] = useState([]);
-
-    useEffect(() => {
-        Client.getAllModifications().then((res) => {
-            const modifications = res.data.map((modification) => ({
-                value: modification,
-                label: modification.name
-            }));
-            setAllModifications(modifications);
-        });
-    }, []);
+    const { modifications } = useContext(ModificationContext);
+    const allModifications = Object.values(modifications).map((mod) => ({
+        value: mod,
+        label: mod.name,
+    }));
 
     return (
+        allModifications.length > 0 ?
         <div style={style}>
             <CreatableSelect
                 value={null}
@@ -59,6 +55,6 @@ export default ({ style, onSelect, onCreate }) => {
                     {modification}
                 </>}
             />
-        </div>
+        </div> : null
     )
 };

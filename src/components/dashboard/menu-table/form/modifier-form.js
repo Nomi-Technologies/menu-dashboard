@@ -45,9 +45,9 @@ const Modifier = styled.div`
     }
 `;
 
-export default ({ modalControls, dishModifications, setDishModifications }) => {
+export default ({ modalControls, dishModIds, setDishModIds }) => {
 
-    const { modifications, refreshModification } = useContext(ModificationContext);
+    const { modifications } = useContext(ModificationContext);
 
     console.log(modifications);
 
@@ -66,10 +66,10 @@ export default ({ modalControls, dishModifications, setDishModifications }) => {
                     flex: '1 1 auto',
                 }}
                 onSelect={({ value }) => {
-                    const modifications = dishModifications.slice(0);
-                    if (!modifications.some((modification) => modification.id === value.id)) {
-                        modifications.push(value);
-                        setDishModifications(modifications);
+                    const modIds = dishModIds.slice(0);
+                    if (!modIds.some((modId) => modId === value.id)) {
+                        modIds.push(value.id);
+                        setDishModIds(modIds);
                     }
                 }}
                 onCreate={(value) => {
@@ -78,12 +78,13 @@ export default ({ modalControls, dishModifications, setDishModifications }) => {
             />
         </FormSplitRow>
         {
-            dishModifications.length > 0 ?
+            dishModIds.length > 0 && Object.keys(modifications).length > 0 ?
             <ModifierContainer>
                 {
-                    dishModifications.map((modification, index) => {
+                    dishModIds.map((modId, index) => {
+                        const modification = modifications[modId];
                         return (
-                            <Modifier key={modification.id}>
+                            <Modifier key={modId}>
                                 {modification.name}
                                 <span>
                                     , ${modification.price}
@@ -108,9 +109,9 @@ export default ({ modalControls, dishModifications, setDishModifications }) => {
                                     modalControls.openModal(modification);
                                 }} />
                                 <img className='delete' src={DeleteIcon} alt='delete icon' onClick={() => {
-                                    const modifications = dishModifications.slice(0);
+                                    const modifications = dishModIds.slice(0);
                                     modifications.splice(index, 1);
-                                    setDishModifications(modifications)
+                                    setDishModIds(modifications)
                                 }} />
                             </Modifier>
                         );
