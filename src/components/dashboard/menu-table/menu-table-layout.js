@@ -46,8 +46,8 @@ const MenuTableLayout = ({ menuId, children }) => {
     }
 
     const refreshModifications = async () => {
-        const modsArray = await Client.getAllModifications();
-        let modsLUT = modsArray.reduce((accumulator, value) => {
+        const { data } = await Client.getAllModifications();
+        let modsLUT = data.reduce((accumulator, value) => {
             accumulator[value.id] = value;
             return accumulator
         }, {});
@@ -60,7 +60,8 @@ const MenuTableLayout = ({ menuId, children }) => {
     }
 
     useEffect(() => {
-        refreshMenu()
+        refreshMenu();
+        refreshModifications();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menuId])
 
