@@ -315,4 +315,25 @@ export default class Client {
       headers: { Authorization: `Bearer ${token}` },
     })
   }
+  
+  static getAllModifications = () => {
+    let token = retrieveUserToken();
+    return axios.get(ROOT_URL + `/modifications`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  static createModification = (modification) => {
+    let token = retrieveUserToken();
+    return axios.post(ROOT_URL + '/modifications', modification, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  static updateModification = (id, modification) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/modifications/${id}`, modification, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
 }

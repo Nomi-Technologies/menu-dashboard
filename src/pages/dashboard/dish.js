@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 
 import Client from "../../util/client"
+import { Colors } from '../../util/colors';
 
 import MenuTableLayout from '../../components/dashboard/menu-table/menu-table-layout';
 import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
@@ -9,7 +10,47 @@ import { FormTitle, FormSubtitle, FormInput, FormTextArea, FormSplitRow, FormSpl
 import { FileDrop } from "../../components/file-drop"
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown"
 import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form"
+import ModifierDropDown from '../../components/dashboard/menu-table/form/modifier-dropdown';
 import Navigation from '../../util/navigation';
+
+import EditIcon from "../../assets/img/edit-icon.png"
+import DeleteIcon from '../../assets/img/delete-icon-red.png'
+import styled from 'styled-components';
+import { ModificationModal, useModificationModal } from '../../components/dashboard/modal/modification';
+
+const ModifierContainer = styled.div`
+    margin: 20px 0;
+    padding: 10px 20px;
+    border: 1px solid ${Colors.SLATE_LIGHT};
+    border-radius: 5px;
+`;
+
+const Modifier = styled.div`
+    position: relative;
+    font-size: 14px;
+    margin: 10px 0;
+
+    & span {
+        font-family: 'HK Grotesk Light';
+        color: ${Colors.GRAY}
+    }
+
+    & .edit, & .delete {
+        width: 14px;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        cursor: pointer;
+    }
+
+    & .edit {
+        right: 30px;
+    }
+
+    & .delete {
+        right: 5px;
+    }
+`;
 
 const DishPage = ({ location }) => {
     const { state = {} } = location
@@ -23,11 +64,13 @@ const DishPage = ({ location }) => {
         description: "",
         price: "",
         categoryId: 0,
-        Tags: []
+        Tags: [],
+        Modifications: [],
     })
 
     const [errorMessage, setErrorMessage] = useState(null)
     const [dishImage, setDishImage] = useState(null)
+    const modificationModalControls = useModificationModal();
 
     const updateCategorySelection = (categoryId) => {
         setDishData({
@@ -87,15 +130,10 @@ const DishPage = ({ location }) => {
         // first validate dish form
         if(!validateDishData()) return
 
-        // reformat tags into list of ids
-        let tagIds = []
-        dishData.Tags.forEach((tag) => {
-            tagIds.push(tag.id)
-        })
-
         let postDishData = {
             ...dishData,
-            dishTags: tagIds
+            dishTags: dishData.Tags.map((tag) => tag.id),
+            dishModifications: dishData.Modifications.map((mod) => mod.id),
         }
 
         try {
@@ -174,7 +212,81 @@ const DishPage = ({ location }) => {
                 <FormSubtitle>Allergens</FormSubtitle>
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>                
+                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
+                <FormTitle>Dish Modifiers</FormTitle>
+                <FormSplitRow>
+                    <div style={{
+                        padding: '0 10px 0 4px',
+                        flex: '0 1 auto',
+                        color: `${Colors.SLATE_DARK}`,
+                        fontSize: '38px',
+                        cursor: 'default',
+                    }}>+</div>
+                    <ModifierDropDown
+                        style={{
+                            flex: '1 1 auto',
+                        }}
+                        onSelect={({ value }) => {
+                            const modifications = dishData.Modifications.slice(0);
+                            if (!modifications.some((modification) => modification.id === value.id)) {
+                                modifications.push(value);
+                                setDishData({
+                                    ...dishData,
+                                    Modifications: modifications,
+                                });
+                            }
+                        }}
+                        onCreate={(value) => {
+                            modificationModalControls.openModal(value);
+                        }}
+                    />
+                </FormSplitRow>
+                {
+                    dishData.Modifications.length > 0 ?
+                    <ModifierContainer>
+                        {
+                            dishData.Modifications.map((modification, index) => {
+                                return (
+                                    <Modifier key={modification.id}>
+                                        {modification.name}
+                                        <span>
+                                            , ${modification.price}
+                                        </span>
+                                        {
+                                            modification.addTags.length > 0 ?
+                                            <span>
+                                                , adds {modification.addTags.map((tag) => tag.name).join(', ')}
+                                            </span>
+                                            :
+                                            null
+                                        }
+                                        {
+                                            modification.removeTags.length > 0 ?
+                                            <span>
+                                                , removes {modification.removeTags.map((tag) => tag.name).join(', ')}
+                                            </span>
+                                            :
+                                            null
+                                        }
+                                        <img className='edit' src={EditIcon} alt="edit icon" onClick={() => {
+                                            modificationModalControls.openModal(modification);
+                                        }} />
+                                        <img className='delete' src={DeleteIcon} alt='delete icon' onClick={() => {
+                                            const modifications = dishData.Modifications.slice(0);
+                                            modifications.splice(index, 1);
+                                            setDishData({
+                                                ...dishData,
+                                                Modifications: modifications,
+                                            });
+                                        }} />
+                                    </Modifier>
+                                );
+                            })
+                        }
+                    </ModifierContainer>
+                    :
+                    null
+                }
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={createOrUpdateDish}>
@@ -184,6 +296,7 @@ const DishPage = ({ location }) => {
                     </ButtonPrimary>
                 </FormControls>
             </FormContainer>
+            <ModificationModal controls={modificationModalControls} />
         </MenuTableLayout>
     )
 }
