@@ -226,8 +226,13 @@ const DishPage = ({ location }) => {
                         style={{
                             flex: '1 1 auto',
                         }}
-                        onSelect={(value) => {
-                            console.log(value);
+                        onSelect={({ value }) => {
+                            const modifications = dishData.Modifications.slice(0);
+                            modifications.push(value);
+                            setDishData({
+                                ...dishData,
+                                Modifications: modifications,
+                            })
                         }}
                         onCreate={(value) => {
                             modificationModalControls.openModal(value);
