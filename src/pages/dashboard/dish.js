@@ -247,7 +247,7 @@ const DishPage = ({ location }) => {
                         {
                             dishData.Modifications.map((modification, index) => {
                                 return (
-                                    <Modifier>
+                                    <Modifier key={modification.id}>
                                         {modification.name}
                                         <span>
                                             , ${modification.price}
