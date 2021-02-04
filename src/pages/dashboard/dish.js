@@ -228,11 +228,13 @@ const DishPage = ({ location }) => {
                         }}
                         onSelect={({ value }) => {
                             const modifications = dishData.Modifications.slice(0);
-                            modifications.push(value);
-                            setDishData({
-                                ...dishData,
-                                Modifications: modifications,
-                            })
+                            if (!modifications.some((modification) => modification.id === value.id)) {
+                                modifications.push(value);
+                                setDishData({
+                                    ...dishData,
+                                    Modifications: modifications,
+                                });
+                            }
                         }}
                         onCreate={(value) => {
                             modificationModalControls.openModal(value);
