@@ -42,9 +42,9 @@ export const useModificationModal = () => {
             removeTags: modification.removeTags.map((tag) => tag.id),
         }
         create ?
-        createModification(mod)
+        await createModification(mod)
         :
-        updateModification(mod);
+        await updateModification(mod);
     }
 
     const openModal = (modificationOrName) => {
