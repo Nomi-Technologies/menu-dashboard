@@ -332,8 +332,6 @@ export default class Client {
 
   static updateModification = (id, modification) => {
     let token = retrieveUserToken();
-    modification.addTags = modification.addTags.map((tag) => tag.id);
-    modification.removeTags = modification.removeTags.map((tag) => tag.id);
     return axios.put(`${ROOT_URL}/modifications/${id}`, modification, {
       headers: { Authorization: `Bearer ${token}` },
     })
