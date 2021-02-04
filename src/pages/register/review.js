@@ -1,51 +1,142 @@
-import React, { useContext } from "react"
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components"
-
 import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from "@reach/router"
 import Client from '../../util/client'
 import { saveUserToken } from "../../util/auth"
-import { FormTitle, FormSubtitle, FormControls, FormButton } from "../../components/form"
-import { removeRegistrationData, fetchRegistrationData } from "../../util/registration"
+import {FormError, FormTitle, FormSubtitle, FormControls, FormInput, FormContainer, FormSplitColumn, FormSplitRow, FormMessage, FormSubtitleNoCap } from "../../components/form"
+import {ButtonPrimary, ButtonRow, ButtonSecondary, Button } from "../../components/basics"
+import {RestaurantInfoCard} from "../../components/register/restauraunt-info-card"
+import { setRegistrationData, removeRegistrationData, fetchRegistrationData } from "../../util/registration"
 import useEventListener from '@use-it/event-listener'
 
-let InfoBox = styled.div`
-    background-color: white;
-    background: #FFFFFF;
-    border: 1px solid #ACADAE;
-    box-sizing: border-box;
-    border-radius: 3px;
-    padding: 10px;
-    margin-bottom: 30px;
-    width: 60%;
 
-    .infoTitle {
-        color: #F2A25C;
-        text-transform: uppercase;
-        font-size: 14px;
-        margin-bottom: 14px;
-    }
-
-    p {
-        font-size: 18px;
-        margin: 8px 0;
-    }
-`
 
 const Review = (props) => 
 {
-    let registrationData = fetchRegistrationData()
+    const [currIndex, setCurrIndex] = useState(-1);
+    const [invalid, setInvalid] = useState(true)
+    const [error, setError] = useState("")
+    // restaurant list from local storage
+    const [restaurantList, setRestaurantList] = useState([{
+        name: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: "",
+        phone: "",
+    }]);
+    const [contactInfo, setContactInfo] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+    });
 
-    if(registrationData?.contactInfo === null) {
-        navigate('/register/contact-info')
-    } else {
-        if(registrationData?.restaurantDetails === null) {
+
+
+    useEffect(() => {
+        let registrationData = fetchRegistrationData()
+        console.log(registrationData)
+        if(!registrationData?.contactInfo || registrationData?.contactInfo === null ) {
+            navigate('/register/contact-info')
+        } else if(!registrationData?.restaurantList || registrationData?.restaurantList === null) {
             navigate('/register/restaurant-details')
+        } else {
+            setRestaurantList(registrationData?.restaurantList)
+            setContactInfo(registrationData?.contactInfo)
+        }
+    }, [])
+
+    const updateRestaurantList = (index, restaurantDetails) => {
+        restaurantList[index] = restaurantDetails
+        setRestaurantList(restaurantList)
+        localStore(false)
+    }
+
+    const appendRestaurant = (restaurantDetails) => {
+        restaurantList.push(restaurantDetails)
+        setRestaurantList(restaurantList)
+        localStore(false)
+    }
+
+    const removeRestaurant = (index) => {
+        restaurantList.splice(index,1)
+        setRestaurantList(restaurantList)
+        localStore(false)
+    }
+
+    const validate = (addLocation, currRestaurantDetails, index) => {
+
+        let invalid = false
+        Object.keys(currRestaurantDetails).forEach(function(key) {
+            if(currRestaurantDetails[key] === "" && key != "phone")
+            {
+                invalid = true;
+            }
+        });
+
+        setInvalid(invalid)
+        if(invalid) {
+            setError("Error: There are missing fields that are required")
+            return invalid
+        }
+        //if hit looks good on the last element
+        else if (!addLocation && index == restaurantList.length - 1) {
+            setError("")
+            localStore(true)
+        } else if (addLocation){
+            setError("")
+            return invalid
+        } else {
+            // this is when they hit looks good on an edit
+            setError("")
+            updateRestaurantList(index, currRestaurantDetails)
+            localStore(false)
+            setCurrIndex(-1)
+            return invalid
         }
     }
 
+
+    function addLocation (index, currRestaurantDetails){        
+        let invalid = validate(true, currRestaurantDetails, restaurantList.length - 1)
+
+        if(!invalid){
+            updateRestaurantList(index, currRestaurantDetails)
+            let tempRestaurant = {
+                name: "",
+                streetAddress: "",
+                city: "",
+                state: "",
+                zip: "",
+                phone: "",
+            }
+            appendRestaurant(tempRestaurant)
+            setCurrIndex(currIndex + 1)
+            localStore(false)
+        }
+    }
+
+    const localStore = (nextPage) => {
+        setRegistrationData({
+            contactInfo: contactInfo,
+            restaurantList: restaurantList                
+        })
+        if(nextPage){
+            navigate('/register/review')
+        }
+}
+    // let registrationData = fetchRegistrationData()
+
     const submitRegistration = () => {
-        Client.registerRestaurant(registrationData.restaurantDetails).then((response) => {
+        let registrationData = {
+            contactInfo: contactInfo,
+            restaurantList: restaurantList
+        }
+
+
+        Client.registerRestaurant(registrationData.restaurantList).then((response) => {
             const restaurantId = response.data.id
             const userData = { 
                 ...registrationData.contactInfo,
@@ -76,47 +167,49 @@ const Review = (props) =>
 
     return (
         <RegisterLayout>
-            <FormTitle>Review setup information</FormTitle>
-            <FormSubtitle>Please review information before creating a restaurant page and gaining access to the web portal.</FormSubtitle>
-            { 
-                registrationData ? (
+             {
+                restaurantList.map((item, index) => (
                     <>
-                    <InfoBox>
-                        <p className = 'infoTitle'>Admin Info</p>
-                        <p>
-                            { registrationData.contactInfo.firstName } { registrationData.contactInfo.lastName }
-                        </p>
-                        <p>
-                            { registrationData.contactInfo.email }
-                        </p>
-                        <p>
-                            { registrationData.contactInfo.phone }
-                        </p>
-                    </InfoBox>
-                    <InfoBox>
-                        <p className = 'infoTitle'>Restaurant Info</p>
-                        <p>
-                            { registrationData.restaurantDetails.name }
-                        </p>
-                        <p>
-                            { registrationData.restaurantDetails.streetAddress }
-                        </p>
-                        <p>
-                            { registrationData.restaurantDetails.city } { registrationData.restaurantDetails.state } { registrationData.restaurantDetails.zip }
-                        </p>
-                        <p>
-                            { registrationData.restaurantDetails.phone }
-                        </p>
-                        <p>
-                            { registrationData.restaurantDetails.yelp }
-                        </p>
-                    </InfoBox> 
+                    {   
+                        index == currIndex ? (
+                            <FormError>{error}</FormError>
+                        ) :
+                        (<> </>)
+                    }
+
+                    <RestaurantInfoCard 
+                        appendRestaurant = {appendRestaurant} 
+                        index = {index} 
+                        currIndex = {currIndex} 
+                        setCurrIndex = {setCurrIndex} 
+                        restaurantList = {restaurantList} 
+                        setRestaurantList = {setRestaurantList} 
+                        localStore = {localStore} 
+                        updateRestaurantList = {updateRestaurantList}
+                        addLocation = {addLocation}
+                        validate = {validate}
+                        removeRestaurant = {removeRestaurant}
+                    />
+
+                    {
+                            // only show looks good button for currently editing restaurant and its not the last one
+                            (index == currIndex && index != (restaurantList.length - 1)) ? (
+                            <>
+                            <FormControls>
+                                <ButtonPrimary style = {{width: '211px', height: '56px', fontSize: '18px'}} onClick={ () => validate(false, restaurantList[index], index) }>Looks good!</ButtonPrimary>
+                            </FormControls>
+                            </>
+                        )
+                        :
+                        (<></>)
+                    }
                     </>
-                ) : null
-            }   
+                ))
+            }
+
+            
             <FormControls>
-                <FormButton destination='restaurant-details' text="Previous" theme="light"/>
-                <FormButton onClick={ submitRegistration } text="Register"/>
+                <ButtonPrimary style = {{width: '211px', height: '56px', fontSize: '18px'}} onClick={ submitRegistration }>Finish</ButtonPrimary>
             </FormControls>
         </RegisterLayout>
     )

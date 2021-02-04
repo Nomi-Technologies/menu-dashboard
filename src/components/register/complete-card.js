@@ -5,9 +5,6 @@ import styled from "styled-components"
 import { Colors } from "../../util/colors"
 import editIcon from "../../assets/img/edit-icon.png"
 import removeIcon from "../../assets/img/remove-icon.png"
-
-
-
 import useEventListener from '@use-it/event-listener'
 import { setRegistrationData, fetchRegistrationData } from "../../util/registration"
 
@@ -61,53 +58,7 @@ const RestaurantInfoCard = (props) => {
     const removePressed = () => {
         props.removeRestaurant(props.index)
         props.setCurrIndex(props.currIndex - 1)
-        setCurrRestaurantDetails(props.restaurantList[props.index])
     }
-
-    // we had to do multiple updates per change since setters are asynchronous so 
-    //it was cleaner to separate them all into separate functions
-
-    const updateName = (currName) => {
-        let updatedObject = {...currRestaurantDetails, name: currName}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-    }
-
-    const updateStreet = (currStreet) => {
-        let updatedObject = {...currRestaurantDetails, streetAddress: currStreet}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-        
-    }
-
-    const updateCity = (currCity) => {
-        let updatedObject = {...currRestaurantDetails, city: currCity}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-        
-    }
-
-    const updateState = (currState) => {
-        let updatedObject = {...currRestaurantDetails, state: currState}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-        
-    }
-
-    const updateZip = (currZip) => {
-        let updatedObject = {...currRestaurantDetails, zip: currZip}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-        
-    }
-
-    const updateNumber = (currNumber) => {
-        let updatedObject = {...currRestaurantDetails, phone: currNumber}
-        setCurrRestaurantDetails(updatedObject); 
-        props.updateRestaurantList(props.index, updatedObject)
-        
-    }
-
 
     return (
         <>
@@ -136,28 +87,47 @@ const RestaurantInfoCard = (props) => {
                     </TitleRow>
 
                     <FormMessage>Name*</FormMessage>
-                    <FormInput width='100%' name='restuarant-name' placeholder='Restaurant Name' onChange={(event) => {updateName(event.target.value)}} value={currRestaurantDetails?.name}/>
+                    <FormInput width='100%' name='restuarant-name' placeholder='Restaurant Name' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, name: event.target.value}); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={currRestaurantDetails?.name}/>
                     <FormMessage>Street Address*</FormMessage>
-                    <FormInput width='100%' name='street-address' placeholder='Restaurant Street Address' onChange={(event) => {updateStreet(event.target.value)}} value={ currRestaurantDetails?.streetAddress }/>
+                    <FormInput width='100%' name='street-address' placeholder='Restaurant Street Address' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, streetAddress: event.target.value }); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={ currRestaurantDetails?.streetAddress }/>
                     <FormSplitRow>
                         <FormSplitColumn style = {{paddingRight: 25}}>
                             <FormMessage>City*</FormMessage>
-                            <FormInput  width='50%' name='city' placeholder='City' onChange={(event) => {updateCity(event.target.value) }} value={ currRestaurantDetails?.city }/>
+                            <FormInput  width='50%' name='city' placeholder='City' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, city: event.target.value }); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={ currRestaurantDetails?.city }/>
                         </FormSplitColumn>
 
                         <FormSplitColumn style = {{paddingRight: 25}}>
                             <FormMessage>State*</FormMessage>
-                            <FormInput width='15%' name='state' placeholder='State' onChange={(event) => {updateState(event.target.value)}} value={ currRestaurantDetails?.state }/>
+                            <FormInput width='15%' name='state' placeholder='State' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, state: event.target.value }); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={ currRestaurantDetails?.state }/>
                         </FormSplitColumn>
 
                         <FormSplitColumn>
                             <FormMessage>Zip Code*</FormMessage>
-                            <FormInput width='30%' name='zip' placeholder='XXXXX' onChange={(event) => {updateZip(event.target.value) }} value={ currRestaurantDetails?.zip }/>
+                            <FormInput width='30%' name='zip' placeholder='XXXXX' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, zip: event.target.value }); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={ currRestaurantDetails?.zip }/>
                         </FormSplitColumn>
                     </FormSplitRow>
                     <FormMessage>Phone Number</FormMessage>
-                    <FormInput width='48%' name='restaurant-phone' placeholder='(000) 000-0000' onChange={(event) => {updateNumber(event.target.value) }} value={ currRestaurantDetails?.phone }/>
+                    <FormInput width='48%' name='restaurant-phone' placeholder='(000) 000-0000' onChange={(event) => { setCurrRestaurantDetails({...currRestaurantDetails, phone: event.target.value }); props.updateRestaurantList(props.index, currRestaurantDetails)}} value={ currRestaurantDetails?.phone }/>
 
+                    {
+                        // only show the next and add locations for the last one
+                        (props.index == props.restaurantList.length - 1) ? (
+                            <>
+                            <StyledAdd>
+                                <div className="new-restaurant-button" onClick={ () => {props.addLocation(props.index, currRestaurantDetails)}}>
+                                    + Add Another Location
+                                </div>
+                            </StyledAdd>
+                            </>
+                        )
+                    :
+                    (<></>)
+                      
+                    }
+
+                    <FormControls>
+                                <ButtonPrimary onClick={ () => props.validate(false, currRestaurantDetails, props.index) }>Looks good!</ButtonPrimary>
+                    </FormControls>
                 </>
             )
         }
@@ -165,4 +135,4 @@ const RestaurantInfoCard = (props) => {
     );
 }
 
-export { RestaurantInfoCard }
+export { CompleteCard }
