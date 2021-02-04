@@ -272,7 +272,6 @@ const DishPage = ({ location }) => {
                                             modificationModalControls.openModal(modification);
                                         }} />
                                         <img className='delete' src={DeleteIcon} alt='delete icon' onClick={() => {
-                                            console.log(dishData);
                                             const modifications = dishData.Modifications.slice(0);
                                             modifications.splice(index, 1);
                                             setDishData({
