@@ -1,7 +1,13 @@
 import React from "react"
 import styled from "styled-components"
-
+import { navigate } from 'gatsby';
 import CompletedIcon from "../../assets/img/Ellipse-Orange.png"
+import backArrow from "../../assets/img/left-arrow.png"
+import { FormSubtitle, FormMessage } from "../form"
+import {Button } from "../basics"
+
+
+
 
 let StyledRegistrationProgress = styled.div`
     position: relative;
@@ -68,6 +74,15 @@ let Step = ({ idx, label, status }) => {
         </StyledStep>
     )
 }
+const goBack = (currentIdx) => {
+    if(currentIdx == 2){
+        navigate('/register/contact-info')
+    } else if (currentIdx == 3){
+        navigate('/register/restaurant-details')
+
+    }
+
+}
 
 
 const RegistrationProgress = ({ currentIdx }) => {
@@ -82,8 +97,31 @@ const RegistrationProgress = ({ currentIdx }) => {
     }
     return (
         <StyledRegistrationProgress>
-            <Step label="Let's get down to business" idx="1" status={ checkStatus(1) }/>
-            <Step label="Tell us about your restaurants" idx="2" status={ checkStatus(2) }/>
+            <Button 
+            onClick={ () => { goBack (currentIdx)}}
+                style = {{color: 'black', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '0px'}}>
+
+                <img src={ backArrow } width = "16px" height = "16px" style = {{marginRight: '20px'}}/> 
+                <FormSubtitle>Go Back</FormSubtitle>
+            </Button>
+            
+            { (currentIdx == 1 || currentIdx == 2) ? 
+            (
+                <>
+                    <Step label="Let's get down to business" idx="1" status={ checkStatus(1) }/>
+                    <Step label="Tell us about your restaurants" idx="2" status={ checkStatus(2) }/>
+                </>
+            ) :
+            (
+                <>
+                    <Step label="One and done!" idx="2" status={ checkStatus(2) }/>
+                    <Step label="Here's a summary of your restaurants" idx="3" status={ checkStatus(3) }/>
+                    <FormMessage style = {{marginLeft: '35px'}} >(Don't worry, you can always edit or add more later)!</FormMessage>
+                </>
+
+            )
+            }
+            
         </StyledRegistrationProgress>
     ) 
 }
