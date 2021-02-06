@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Client from '../../../util/client';
 import { ButtonPrimary, ButtonSecondary } from '../../basics';
 import { FormControls, FormInput, FormSplitColumn, FormSplitRow, FormSubtitle, FormTitle } from '../../form';
 import { DishTagForm } from "../menu-table/form/dish-tag-form"
+import { ModificationContext } from '../menu-table/modification-context';
 
 import { Modal, useModal } from './modal';
 
@@ -41,9 +42,9 @@ export const useModificationModal = () => {
             removeTags: modification.removeTags.map((tag) => tag.id),
         }
         create ?
-        createModification(mod)
+        await createModification(mod)
         :
-        updateModification(mod);
+        await updateModification(mod);
     }
 
     const openModal = (modificationOrName) => {
@@ -74,6 +75,9 @@ export const ModificationModal = ({ controls: {
     setModification,
     saveModification
 }}) => {
+
+    const { refreshModifications } = useContext(ModificationContext);
+
     return (
         <Modal open={open} closeModal={closeModal}>
             {
@@ -132,7 +136,10 @@ export const ModificationModal = ({ controls: {
             }}></DishTagForm>
             <FormControls>
                 <ButtonSecondary onClick={closeModal}>Cancel</ButtonSecondary>
-                <ButtonPrimary onClick={saveModification}>Save Modifier</ButtonPrimary>
+                <ButtonPrimary onClick={async () => {
+                    await saveModification();
+                    refreshModifications();
+                }}>Save Modifier</ButtonPrimary>
             </FormControls>
         </Modal>
     )
