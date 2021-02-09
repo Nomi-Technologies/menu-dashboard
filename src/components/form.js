@@ -86,31 +86,26 @@ let FormRow = styled.div`
     justify-content: space-between;
 `
 
+export const FormControls = styled.div`
+    box-sizing: border-box;
+    position: sticky;
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0px;
+    right: 0px;
+    padding: 32px 0;
+    width: 100%;
 
-export const FormSplitColumn = styled.div`
-    flex-basis: 48%;
+    background-color: white;
 
-` 
-
-let StyledFormInput = styled.div`
-    position: relative;
-    flex-basis: ${({ width }) => width ? width : 'auto'};
-    margin: 10px 0;
+    ${Button} {
+        margin-left: 16px;
+    }
 `
 
-let StyledButton = styled.button`
-    display: block;
-    margin: 20px 0;
-    font-size: 16px;
-    color: ${ props => props.theme === 'light' ? "#F3A35C" : "white"};
-    padding: 10px 46px;
-    background: ${ props => props.theme === 'light' ? "white" : "#F3A35C"};
-    border-radius: 8px;
-    border: 2px solid #F3A35C;
-    text-transform: uppercase;
-    padding: 0;
-    margin-top: 10px;
-    margin-bottom: 8px;
+export const FormSplitRow = styled.div`
+    display: flex;
+    justify-content: space-between;
 `
 
 const FormButton = (props) => {
