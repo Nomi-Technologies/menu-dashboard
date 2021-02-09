@@ -1,89 +1,15 @@
-import React from "react"
 import styled from "styled-components"
+import { Colors } from "../util/colors"
+import { Button } from "../components/basics"
 
-import RightArrowIcon from "../assets/img/right-arrow.png"
-
-import { navigate } from "@reach/router"
-
-let FormTitle = styled.h1`
-    padding-top: 120px;
-    font-size: 36px;
-    line-height: 43px;
-    margin: 0;
-`
-
-let PopupFormTitle = styled.h1`
-    font-size: 36px;
-    line-height: 43px;
-    margin: 0;
-`;
-
-let FormSubtitle = styled.p`
-    font-size: 16px;
-    line-height: 19px;
-    max-width: 400px;
-    margin-bottom: 52px;
-`
-
-let FloatingLabel = styled.span`
-    position: absolute;
-    pointer-events: none;
-    left: 10px;
-    top: 20px;
-    transition: 0.2s ease all;
-    color: #ACADAE;
-    text-transform: uppercase;
-    font-size: 18px;
-`
-
-let StyledInput = styled.input`
-    display: block;
-    width: 100%;
-    border: 1px solid #ACADAE;
-    border-radius: 3px;
-    background-color: #FFFFFF;
-    font-size: 18px;
-    padding: 8px;
-    padding-top: 26px;
-    box-sizing: border-box; 
-    
-    &:focus ~ ${ FloatingLabel}
-    {
-        top: 10px;
-        bottom: 30px;
-        font-size: 12px;
-        opacity: 1;
-    }
-
-    &:valid ~ ${ FloatingLabel}
-    {
-        top: 10px;
-        bottom: 30px;
-        font-size: 12px;
-        opacity: 1;
-    }
-`
-
-let FormContainer = styled.div`
+export const FormContainer = styled.div`
     position: relative;
-    margin-left: 96px;
-    button {
-        cursor: pointer;
-    }
-
-    button:focus {
-        outline: none;
-    }
-
-    button:hover {
-        opacity: 0.8;
-    }
-`
-
-let FormRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 0 25%;
+    padding-top: 32px;
 `
 
 export const FormControls = styled.div`
@@ -108,50 +34,30 @@ export const FormSplitRow = styled.div`
     justify-content: space-between;
 `
 
-const FormButton = (props) => {
-    if(props.destination) {
-        return (
-            <StyledButton { ...props } onClick={() => navigate(props.destination, { state: props.state })}>{ props.text }</StyledButton>
-        )    
-    } else {
-        return ( 
-            <StyledButton { ...props }>{ props.text }</StyledButton>
-        )
-    }
 
-    
-}
+export const FormSplitColumn = styled.div`
+    flex-basis: 48%;
 
+` 
 
-let StyledNextButton = styled.button`
-    display: flex;
-    background-color: #F2994A;
-    border-radius: 16px;
-    align-items: center;
-    font-size: 18px;
-    color: white;
-    padding: 15px 28px;
-    align-self: flex-end;
-    margin-right: -20px;
-
-    img {
-        padding-left: 10px;
-        width: 16px;
-    }
+export const FormTitle = styled.h1`
+    font-size: 24px;
+    margin: 0;
+    margin-bottom: 24px;
 `
 
-let StyledSaveButton = styled.button`
-  display: inline-block;
-  background-color: ${ ({ save }) => save ? "#f2994a" : "white" };
-  color: ${ ({ save }) => save ? "white" : "#f2994a" };
-  transition: background-color 0.4s ease;
-  border-radius: 8px;
-  border: 2px solid #f2994a;
-  font-size: 18px;
-  width: 200px;
-  padding: 10px 0;
-  margin-top: 20px;
+export const FormSubtitle = styled.p`
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 8px;
+`
 
+export const FormMessage = styled.p`
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 8px;
 `
 export const FormSubtitleNoCaps = styled.p`
     font-family: HK Grotesk;
@@ -165,33 +71,23 @@ export const FormError = styled.p`
     margin: 0px;
 `
 
-let StyledNewInput = styled.input`
+export const FormInput = styled.input`
     width: 100%;
     border-radius: 6px;
-    background-color: #E1E7EC;
+    border: none;
+    background-color: ${Colors.SLATE_LIGHT};
     opacity: 0.75;
-    font-size: 14px;
-    padding: 14px;
-    padding-left: 20px;
-    font-family: HK Grotesk Regular;
+    padding: 16px;
+    margin-bottom: 24px;
     box-sizing: border-box;
-    margin: 10px 0;
 `
 
-let DishFormInput = (props) => (
-    <StyledNewInput type={props.type} onChange={ props.onChange } defaultValue={ props.value } placeholder={ props.placeholder } required/>    
-)
-
-
-let StyledNewTextArea = styled.textarea`
+export const FormTextArea = styled.textarea`
+    background-color: ${Colors.SLATE_LIGHT};
     width: 100%;
     border-radius: 6px;
-    background-color: #E1E7EC;
     opacity: 0.75;
-    font-size: 14px;
-    padding: 14px;
-    padding-left: 20px;
-    font-family: HK Grotesk Regular;
+    padding: 16px;
     box-sizing: border-box;
     resize: none;
     border: none;

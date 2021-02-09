@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import HamburgerMenu from 'react-hamburger-menu';
 import { FloatingMenu } from "../components/dashboard/floating-menu"
+import { Colors } from "../util/colors"
 
 const Button = styled.div`
     position: absolute;
@@ -11,7 +12,7 @@ const Button = styled.div`
     right: 64px;
     bottom: 56px;
     border-radius: 36px;
-    background: #F3A35C;
+    background: ${ Colors.ORANGE };
     box-shadow: 0px 10px 20px rgba(243, 163, 92, 0.2);
     cursor: pointer;
 `;
@@ -25,14 +26,16 @@ let StyledFloatingMenu = styled(FloatingMenu)`
     position: fixed;
     right: 64px;
     bottom: 56px;
+
     .menu{
         bottom: 70px;
         right: 150px;
     }
 `;
 
-const FloatingMenuButton = (props) => {
+const FloatingMenuButton = () => {
     const [isOpen, setIsOpen] = useState(false);
+
     const onClickMenu = () => {
         setIsOpen(!isOpen);
     }
@@ -51,10 +54,7 @@ const FloatingMenuButton = (props) => {
                     />
             </Button>
             <StyledFloatingMenu 
-                isOpen={isOpen} 
-                menuId={props.menuId} 
-                updateMenu={props.updateMenu} 
-                updateMenuSelection={props.updateMenuSelection} 
+                isOpen={ isOpen }
                 onClickMenu={onClickMenu}
                 className='menu'
             />

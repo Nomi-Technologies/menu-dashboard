@@ -17,6 +17,7 @@ const StyledMenuCard = styled(MenuCard)`
 const Grid = styled.div`
     margin-left: 40px;
     margin-top: 60px;
+    max-width: 1400px;
 `;
 
 const Row =styled.div`
@@ -24,21 +25,27 @@ const Row =styled.div`
     flex-direction: row;
 `;
 
+
 function CardGrid(props) {
-    const menuData = props.menuData;
+    const menus = props.menus;
     let rows = []; 
-    for (let i = 0; i < menuData.length; i += 2) {
+    for (let i = 0; i < menus.length; i += 2) {
         rows.push(
             <Row key={i}>
-                { (i+1) < menuData.length ? 
+                <StyledMenuCard 
+                    name={menus[i].name} 
+                    id={menus[i].id} 
+                    isFavorited={props.favoriteMenus?.some((menu) => menu.id == menus[i].id)} 
+                    // toggleFavoriteMenu={ props.toggleFavoriteMenu }
+                    getMenus={ props.getMenus }
+                ></StyledMenuCard> 
+                { (i+1) < menus.length ? 
                     <StyledMenuCard 
-                        name={menuData[i+1].name} 
-                        id={menuData[i+1].id} 
-                        updateMenuSelection={props.updateMenuSelection} 
-                        updateMenu={props.updateMenu} 
-                        isFavorited={props.favoriteMenus.some((menu) => menu.id == menuData[i+1].id)} 
-                        toggleFavoriteMenu={props.toggleFavoriteMenu}
-                        updateMenuData={props.updateMenuData}
+                        name={menus[i+1].name} 
+                        id={menus[i+1].id} 
+                        isFavorited={props.favoriteMenus?.some((menu) => menu.id == menus[i+1].id)} 
+                        // toggleFavoriteMenu={ props.toggleFavoriteMenu }
+                        getMenus={ props.getMenus }
                     ></StyledMenuCard> 
                     :
                     null
@@ -53,25 +60,41 @@ function CardGrid(props) {
 
 
 const AllMenus = (props) => {
-    const [menuData, setMenuData] = useState(null)
+    const [menus, setMenus] = useState(null)
+    const [favoriteMenus, setFavoriteMenus] = useState(null)
 
     useEffect(() => {
-        updateMenuData()
-    }, [props.menuData])
+        getMenus()
+    }, [])
 
-    const updateMenuData = async () => {
+    const getMenus = async () => {
         await Client.getAllMenus().then((res) => {
-            setMenuData(res.data);
+            console.log(res.data)
+            setMenus(res.data);
         })
+
+        await Client.getFavoriteMenus().then((res) => {
+            setFavoriteMenus(res.data);
+        })
+    }
+
+    const toggleFavoriteMenu = (menuId, favorite) => {
+        // Client.favoriteMenu(menuId, favorite).then((res) => {
+        //     Client.getFavoriteMenus().then((res) => {
+        //         // setFavoriteMenus(res.data);
+        //     })
+        // }) 
     }
 
     return (
         <>
             {
-                menuData ? 
+                menus ? 
                 <CardGrid
-                    menuData={menuData}
-                    updateMenuData={updateMenuData}
+                    menus={ menus }
+                    favoriteMenus={ [] }
+                    getMenus={ getMenus }
+                    toggleFavoriteMenu={ toggleFavoriteMenu }
                     {...props}
                 /> :
                 null

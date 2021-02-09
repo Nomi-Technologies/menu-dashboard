@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Client from '../../../util/client'
 
-import { DishFormInput, FormButton } from "../../form"
+import { DishFormInput, ButtonPrimary, ButtonSecondary } from "../../basics"
 import { FileDrop } from "../../file-drop"
 
 import {
@@ -82,8 +82,8 @@ const NewMenuModal = (props) => {
                     <FormSubtitle>CSV File (Optional)</FormSubtitle>
                     <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.toggleForm}/>    
-                        <FormButton text='Create Menu' onClick={createMenu} />
+                        <ButtonSecondary onClick={props.toggleForm}>Cancel</ButtonSecondary>
+                        <ButtonPrimary onClick={ createMenu }>Create Menu</ButtonPrimary>
                     </ButtonRow>
                 </Container>
             </Modal>

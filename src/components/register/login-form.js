@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 
 import styled from "styled-components"
 import { navigate } from "@reach/router"
-import { FormInput, FormButton, ButtonRow } from "../form"
+import { ButtonPrimary,  ButtonSecondary, ButtonRow } from "../basics"
+import { FormInput } from "../form"
 import Client from "../../util/client"
 import { saveUserToken } from "../../util/auth"
 import useEventListener from '@use-it/event-listener'
@@ -48,7 +49,7 @@ const LoginForm = () => {
         Client.login(email, password).then((response) => {
             saveUserToken(response.data['token'])
             setLoginError(false)
-            navigate('/')
+            navigate('/dashboard/all-menus')
         }).catch((response) => {
             setLoginError(true)
         })
@@ -69,8 +70,8 @@ const LoginForm = () => {
             <FormInput placeholder='password' name='password' type='password' onChange={ (event) => {setPassword(event.target.value)} }/>
             {/* <ForgotPassword>Forgot password?</ForgotPassword>   */}
             <ButtonRow>
-                <FormButton text='Login' onClick={ loginUser }/>    
-                <FormButton text='Sign Up' theme='light' onClick = {() => navigate('/register/contact-info') } />    
+                <ButtonPrimary onClick={ loginUser }>Login</ButtonPrimary>
+                <ButtonSecondary theme='light' onClick = {() => navigate('/register/contact-info') } >Sign Up</ButtonSecondary>    
             </ButtonRow>
         </Container>
     )

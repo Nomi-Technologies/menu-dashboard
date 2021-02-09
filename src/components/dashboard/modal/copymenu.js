@@ -1,6 +1,6 @@
-import { FormButton } from "../../form"
+import { FormButton } from "../../basics"
 import React, { useState } from 'react';
-import { DishFormInput, DishFormTextArea } from "../../form"
+import { DishFormInput, ButtonPrimary, ButtonSecondary } from "../../basics"
 import Client from '../../../util/client'
 import {
   Modal, Container, ButtonRow, ModalBackground, FormTitle, FormSubtitle, Divider
@@ -33,8 +33,8 @@ const CopyMenuModal = ({ closeForm, itemIds }) => {
                     <DishFormInput placeholder='Fall 2020' name='menu' value={ name } onChange={(event) => { setName(event.target.value) }}/>
                     <Divider/>
                     <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={ () => { closeForm(false, name) } }/>
-                        <FormButton text='Create Menu' onClick={ () => { closeForm(true, name) } }/>
+                        <ButtonSecondary onClick={ () => { closeForm(false, name) } }>Cancel</ButtonSecondary>
+                        <ButtonPrimary onClick={ () => { closeForm(true, name) } }>Create Menu</ButtonPrimary>
                     </ButtonRow>
                 </Container>
             </Modal>
