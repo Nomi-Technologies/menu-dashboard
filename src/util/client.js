@@ -221,6 +221,13 @@ export default class Client {
     })
   }
 
+  static getDiets = () => {
+    let token = retrieveUserToken() // get user auth token
+    return axios.get(ROOT_URL + "/diets", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+
   static uploadMenu = data => {
     let token = retrieveUserToken()
     return axios.post(

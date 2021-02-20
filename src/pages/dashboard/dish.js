@@ -9,6 +9,8 @@ import { FormTitle, FormSubtitle, FormInput, FormTextArea, FormSplitRow, FormSpl
 import { FileDrop } from "../../components/file-drop"
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown"
 import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form"
+import { DishDietForm } from "../../components/dashboard/menu-table/form/dish-diet-form"
+
 import ModificationForm from '../../components/dashboard/menu-table/form/modifier-form';
 import Navigation from '../../util/navigation';
 
@@ -27,6 +29,7 @@ const DishPage = ({ location }) => {
         price: "",
         categoryId: 0,
         Tags: [],
+        Diets: [],
         modIds: [],  // only contains ids
     })
 
@@ -47,6 +50,13 @@ const DishPage = ({ location }) => {
         setDishData({
             ...dishData,
             Tags: tags
+        })
+    }
+
+    const setDishDiets = (diets) => {
+        setDishData({
+            ...dishData,
+            Diets: diets
         })
     }
 
@@ -105,6 +115,7 @@ const DishPage = ({ location }) => {
         let postDishData = {
             ...dishData,
             dishTags: dishData.Tags.map((tag) => tag.id),
+            dishDiets: dishData.Diets.map((diet) => diet.id),
             dishModifications: dishData.modIds,
         }
 
@@ -183,6 +194,9 @@ const DishPage = ({ location }) => {
                 </FormSplitRow>
                 <FormSubtitle>Allergens</FormSubtitle>
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
+                <FormSubtitle>Diets</FormSubtitle>
+                <DishDietForm diets={ dishData.Diets } setDiets={ setDishDiets }></DishDietForm> 
+                {/* need update */}
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
                 <FormTitle>Dish Modifiers</FormTitle>

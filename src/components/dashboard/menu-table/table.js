@@ -110,7 +110,11 @@ const StyledItemRow = styled(TableRow)`
     }
 
     .item-tags {
-        flex-basis: 40%;
+        flex-basis: 20%;
+    }
+
+    .item-diets {
+        flex-basis: 20%;
     }
 
 `
@@ -175,6 +179,9 @@ const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, g
                 <TableCell className='item-tags'>
                     <p>{allergenList(dish.Tags)}</p>
                 </TableCell>
+                <TableCell className='item-diets'>
+                    <p>{dietList(dish.Diets)}</p>
+                </TableCell>
                 <RowControls>
                     <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
                     <img className='delete' src={DeleteIcon} onClick={() => { openDeleteDishModal(dish.id) }} alt="delete icon"/>
@@ -205,7 +212,11 @@ const HeaderRow = styled(TableRow)`
     }
 
     .tags {
-        flex-basis: 40%;
+        flex-basis: 20%;
+    }
+
+    .diets{
+        flex-basis: 20%;
     }
 
 `
@@ -261,7 +272,25 @@ const allergenList = allergens => {
             list += element.name
         }
     });
+    console.log("allergen list", list)
+    return list
+}
 
+const dietList = diets => {
+    if (diets.length === 0) {
+        return "--"
+    }
+
+    let list = ''
+
+    diets.forEach((element, idx) => {
+        if (idx !== diets.length - 1) {
+            list += element.name + ', '
+        } else {
+            list += element.name
+        }
+    });
+    console.log("diets list", list)
     return list
 }
 
