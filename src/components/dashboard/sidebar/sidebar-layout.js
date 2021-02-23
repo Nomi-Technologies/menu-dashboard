@@ -147,9 +147,7 @@ let Sidebar = styled.div`
   width: ${ props => props.sidebarOpen ? "290px" : "90px"};
   transition: width 0.5s ease;
   flex-direction: column;
-  -moz-box-shadow:    0px 8px 20px rgba(0, 20, 63, 0.1);
-  -webkit-box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
-  box-shadow:         0px 8px 20px rgba(0, 20, 63, 0.1);
+  
 
   img {
     cursor: pointer;
@@ -159,6 +157,11 @@ let Sidebar = styled.div`
 let SidebarContent = styled.div`
   position: fixed;
   height: 100%;
+  width: ${ props => props.sidebarOpen ? "290px" : "90px"};
+  transition: width 0.5s ease;
+  -moz-box-shadow:    0px 8px 20px rgba(0, 20, 63, 0.1);
+  -webkit-box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
+  box-shadow:         0px 8px 20px rgba(0, 20, 63, 0.1);
 `
 
 const SidebarLayout = ({ children }) => {
@@ -175,7 +178,7 @@ const SidebarLayout = ({ children }) => {
       <Sidebar
         sidebarOpen={sidebarOpen}
       >
-        <SidebarContent>
+        <SidebarContent sidebarOpen={sidebarOpen}>
           <Hamburger onClick={ handleToggleSidebar } sidebarOpen={ sidebarOpen }>
             {
               sidebarOpen ? <Collapse src={CollapseIcon}/> : <Expand src={ExpandIcon}/>
