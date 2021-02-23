@@ -1,21 +1,26 @@
 import React from 'react';
-import { PopupFormTitle, FormButton } from "../../form"
+import { FormTitle } from "../../form"
+import { ButtonPrimary, ButtonSecondary, ButtonRow } from "../../basics"
 import styled from "styled-components"
 import { useQRCode } from 'react-qrcode'
-
-import {
-    Modal, Container, ButtonRow, ModalBackground
-} from "./modal"
+import { useModal, Modal } from "./modal"
 
 const QRCode = styled.div`
     display: block;
-    margin: 50px auto;
-    width: 250px;
-    height: 250px;
+    margin: 20px auto;
+    width: 175px;
+    height: 175px;
 `;
 
-const QRCodeModal = (props) => {
-    const url = `${process.env.GATSBY_SMART_MENU_URL}/${props.uniqueName}`
+const useQRCodeModal = () => {
+    let [open, openModal, closeModal] = useModal();
+    
+    let closeQRCodeModal = closeModal
+    return [open, openModal, closeQRCodeModal]
+}
+
+const QRCodeModal = ({open, openModal, closeModal, uniqueName}) => {
+    const url = `${process.env.GATSBY_SMART_MENU_URL}/${uniqueName}`
     const qrCodeDataUrl = useQRCode({
         value: url,
         scale: 128,
@@ -23,29 +28,29 @@ const QRCodeModal = (props) => {
         type: 'image/png',
     });
 
-    return (
-        <>
-            <ModalBackground/>
-            <Modal>
-                <Container>
-                    <PopupFormTitle>Download QRCode for {props.name}</PopupFormTitle>
-                    {
-                        props.uniqueName === null ?
-                        <QRCode>Generating QR code...</QRCode>
-                        :
-                        <QRCode as='img' src={qrCodeDataUrl}/>
-                    }
-                    <ButtonRow>
-                        <FormButton text='Cancel' theme='light' onClick={props.closeForm}/>
-                        <a
-                            href={qrCodeDataUrl}
-                            download={`${props.uniqueName}-QRCode`}
-                        ><FormButton text='Download as PNG' onClick={() => {}}/></a>
-                    </ButtonRow>
-                </Container>
-            </Modal>
-        </>
-    );
+    const downloadQRCode = () => {
+
+    }
+
+    return(
+        <Modal open={ open } openModal={ openModal } closeModal={ closeModal } width={ "550px" }>
+            <FormTitle>QR Code</FormTitle>
+            {
+                uniqueName === null ?
+                <QRCode>Generating QR code...</QRCode>
+                :
+                <QRCode as='img' src={qrCodeDataUrl}/>
+            }
+            <ButtonRow>
+                <ButtonSecondary onClick={ closeModal }>Close</ButtonSecondary>
+                <a
+                    href={qrCodeDataUrl}
+                    download={`${uniqueName}-QRCode`}>
+                    <ButtonPrimary onClick={() => {}}>Download as .PNG</ButtonPrimary>
+                </a>
+            </ButtonRow>
+        </Modal>
+    )
 }
 
-export { QRCodeModal }
+export { useQRCodeModal, QRCodeModal }

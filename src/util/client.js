@@ -208,7 +208,7 @@ export default class Client {
 
   static duplicateMenu = id => {
     let token = retrieveUserToken() // get user auth token
-    let data
+    let data 
     return axios.post(ROOT_URL + "/menus/" + id, data, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -312,6 +312,27 @@ export default class Client {
       order: order
     }
     return axios.put(ROOT_URL + "/menus/" + id + '/update-category-order', data, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
+  
+  static getAllModifications = () => {
+    let token = retrieveUserToken();
+    return axios.get(ROOT_URL + `/modifications`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  static createModification = (modification) => {
+    let token = retrieveUserToken();
+    return axios.post(ROOT_URL + '/modifications', modification, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  static updateModification = (id, modification) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/modifications/${id}`, modification, {
       headers: { Authorization: `Bearer ${token}` },
     })
   }

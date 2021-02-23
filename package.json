@@ -6,7 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@use-it/event-listener": "^0.1.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-plugin-styled-components": "^1.10.7",
     "dotenv": "^8.2.0",
     "gatsby": "^2.29.1",
@@ -21,7 +21,7 @@
     "gatsby-transformer-sharp": "^2.5.0",
     "immutability-helper": "^3.1.1",
     "lodash.debounce": "^4.0.8",
-    "multiselect-react-dropdown": "^1.5.7",
+    "multiselect-react-dropdown": "^1.6.3",
     "prop-types": "^15.7.2",
     "qrcode": "^1.4.4",
     "react": "^16.12.0",
@@ -32,6 +32,7 @@
     "react-hamburger-menu": "^1.2.1",
     "react-helmet": "^6.0.0",
     "react-qrcode": "^0.2.5",
+    "react-select": "^4.0.2",
     "react-virtualized": "^9.21.2",
     "styled-components": "^5.1.1"
   },

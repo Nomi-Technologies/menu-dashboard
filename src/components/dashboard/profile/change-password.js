@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
-import { FormInput, FormContainer, FormRow, FormError, SaveButton } from "../../form"
+import { ButtonPrimary } from "../../basics"
+import { FormInput, FormContainer, FormRow, FormError } from "../../form"
 
 import Client from "../../../util/client"
 
@@ -70,7 +71,7 @@ const ChangePassword = () => {
                 }}
             ></FormInput>
         </FormRow>
-        <SaveButton onClick={ submit } save={ save }/>
+        <ButtonPrimary onClick={ submit } save={ save }>Save</ButtonPrimary>
     </FormContainer>
     )
 }

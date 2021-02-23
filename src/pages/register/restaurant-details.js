@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import RegisterLayout from "../../components/register/register-layout"
 import { navigate } from 'gatsby';
-import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls, FormButton } from "../../components/form"
+import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import { FormInput, FormTitle, FormSubtitle, FormRow, FormControls } from "../../components/form"
 import useEventListener from '@use-it/event-listener'
 import { setRegistrationData, fetchRegistrationData } from "../../util/registration"
 
@@ -67,8 +68,8 @@ const RestaurantDetails = () =>
                 <FormInput width='49%' name='yelp-profile' placeholder='yelp profile (optional)' onChange={(event) => { setRestaurantDetails({...restaurantDetails, url: event.target.value })}} value={ restaurantDetails?.url }/>
             </FormRow>
             <FormControls>
-                <FormButton destination='../contact-info' text="Previous" theme="light"/>
-                <FormButton onClick={ validateForm } text="Next"/>
+                <ButtonSecondary onClick={ () => { navigate('/register/contact-info') } }>Previous</ButtonSecondary>
+                <ButtonPrimary onClick={ validateForm }>Next</ButtonPrimary>
             </FormControls>
         </RegisterLayout>
     )

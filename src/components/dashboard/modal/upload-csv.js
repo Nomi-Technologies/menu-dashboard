@@ -1,16 +1,35 @@
-import { FormButton } from "../../form"
-import React, { useState, useCallback } from 'react';
+import { ButtonPrimary, ButtonSecondary } from "../../basics"
+import React, { useState } from 'react';
 import Client from '../../../util/client'
 import { FileDrop } from "../../file-drop"
 
-import {
-  Modal, Container, ButtonRow, ModalBackground, FormTitle
-} from "./modal"
+import { Modal, useModal } from "./modal"
+import { ButtonRow } from "../../basics"
+import { FormSubtitle, FormTitle } from "../../form"
 
-const UploadCSVModal = (props) => {
-    let { show, close } = props
-    let [content, setContent] = useState(null)
+const useUploadCSVModal = ( menuId, refreshMenu ) => {
+    let [open, openModal, closeModal] = useModal()
     let [errorMessage, setErrorMessage] = useState(null)
+
+    let uploadCSV = async (content) => {
+        try {
+            await Client.uploadCSV(content, menuId, false)
+        } catch (error) {
+            setErrorMessage("There was an error uploading your .csv, try again later.")
+            return
+        }
+        
+        setErrorMessage(null)
+        refreshMenu()
+        closeModal()
+    }
+
+    return [open, openModal, closeModal, uploadCSV, errorMessage, setErrorMessage]
+}
+
+
+const UploadCSVModal = ({ open, openModal, closeModal, uploadCSV, errorMessage, setErrorMessage }) => {
+    let [content, setContent] = useState(null)
 
     const setFile = (file) => {
         const reader = new FileReader()      
@@ -26,48 +45,30 @@ const UploadCSVModal = (props) => {
           setContent(fileContent)
         }
     }
+
     
-    const postCSVFile = () => {
-        Client.uploadCSV(content, props.menuId, false).then(() => {
-            setErrorMessage(null)
-            setContent(null)
-            props.updateMenu()
-            props.close()
-        })
+    const submitCSV = () => {
+        if(content) {
+            uploadCSV(content)
+        } else {
+            setErrorMessage("Please select a file to upload")
+        }
     }
 
-    if(show) {
-        return (
-            <>
-                <ModalBackground/>
-                <Modal>
-                    <Container>
-                        <FormTitle>Upload CSV</FormTitle>
-                        {
-                            errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
-                        }
-                        <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage }/>
-                        <ButtonRow>
-                            <FormButton text='Cancel' theme='light' onClick={ () => {
-                                close()
-                            } }
-                            />    
-                            <FormButton text="Upload CSV" onClick={ () => { 
-                                if(content) {
-                                    postCSVFile()
-                                } else {
-                                    setErrorMessage("Please select a file to upload")
-                                }
-                            } }
-                            />    
-                        </ButtonRow>
-                    </Container>
-                </Modal>
-            </>
-        )
-    } else {
-        return null
-    }
+    return (
+        <Modal open={ open }  openModal={ openModal } closeModal={ closeModal }>
+                <FormTitle>Upload CSV</FormTitle>
+                {
+                    errorMessage ? <p className='error'>{ errorMessage }</p> : <></>
+                }
+                <FormSubtitle>CSV File</FormSubtitle>
+                <FileDrop acceptedFileTypes={ ['.csv'] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ () => { setContent(null) } }/>
+                <ButtonRow>
+                    <ButtonSecondary onClick={ closeModal }>Cancel</ButtonSecondary>
+                    <ButtonPrimary onClick={ submitCSV }>Upload CSV</ButtonPrimary>  
+                </ButtonRow>
+        </Modal>
+    )
 }
 
-export { UploadCSVModal }
+export { UploadCSVModal, useUploadCSVModal }
