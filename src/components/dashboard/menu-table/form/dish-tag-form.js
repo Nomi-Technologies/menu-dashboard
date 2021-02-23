@@ -43,7 +43,7 @@ const css = {
 const DishTagForm = ({ tags, setTags }) => {
     const [allTags, setAllTags] = useState([])
 
-    if (typeof window === `undefined`) return null
+    
   
     useEffect(() => {
       Client.getTags().then(response => {
