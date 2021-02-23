@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 import { MenuCard } from "./menu-card"
 
+import { Colors } from "../../../util/colors"
 import Client from "../../../util/client"
 
 const StyledMenuCard = styled(MenuCard)`
@@ -13,6 +14,13 @@ const StyledMenuCard = styled(MenuCard)`
     height: 80px;
     z-index: 2;
 `;
+
+const NoMenuText = styled.h3`
+    text-align: center;
+    margin-top: 100px;
+    color: ${Colors.SLATE_DARK};
+
+`
 
 const Grid = styled.div`
     margin-left: 40px;
@@ -88,7 +96,7 @@ const AllMenus = (props) => {
     return (
         <>
             {
-                menus ? 
+                menus?.length > 0 ? 
                 <CardGrid
                     menus={ menus }
                     favoriteMenus={ [] }
@@ -96,7 +104,7 @@ const AllMenus = (props) => {
                     toggleFavoriteMenu={ toggleFavoriteMenu }
                     {...props}
                 /> :
-                null
+                <NoMenuText>No Menus Yet... Click Add New Menu to Create a New Menu!</NoMenuText>
             }
         </>
     );

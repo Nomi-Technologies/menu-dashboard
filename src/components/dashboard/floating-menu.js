@@ -47,6 +47,8 @@ const FloatingMenu = ({ isOpen, className }) => {
     const [uniqueName, setUniqueName] = useState(null);
     let { menu, refreshMenu } = useContext(MenuContext)
 
+    console.log(menu)
+
     useEffect(() => {
         Client.getRestaurantInfo().then(res => {
             setUniqueName(res.data.uniqueName);

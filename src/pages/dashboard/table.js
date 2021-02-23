@@ -17,7 +17,7 @@ let MenuContainer = styled.div`
 const MenuTablePage = ({ location }) => {
     const { state = {} } = location
     if(state === null) {
-        navigate('/dashboard/all-menus')
+        navigate('/dashboard/all-menus/')
     }
     
     const { menuId } = state
