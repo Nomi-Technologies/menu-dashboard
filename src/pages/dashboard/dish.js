@@ -9,7 +9,10 @@ import { FormTitle, FormSubtitle, FormInput, FormTextArea, FormSplitRow, FormSpl
 import { FileDrop } from "../../components/file-drop"
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown"
 import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form"
+import ModificationForm from '../../components/dashboard/menu-table/form/modifier-form';
 import Navigation from '../../util/navigation';
+
+import { ModificationModal, useModificationModal } from '../../components/dashboard/modal/modification';
 
 const DishPage = ({ location }) => {
     const { state = {} } = location
@@ -23,11 +26,13 @@ const DishPage = ({ location }) => {
         description: "",
         price: "",
         categoryId: 0,
-        Tags: []
+        Tags: [],
+        modIds: [],  // only contains ids
     })
 
     const [errorMessage, setErrorMessage] = useState(null)
     const [dishImage, setDishImage] = useState(null)
+    const modificationModalControls = useModificationModal();
 
     const updateCategorySelection = (categoryId) => {
         setDishData({
@@ -42,6 +47,13 @@ const DishPage = ({ location }) => {
         setDishData({
             ...dishData,
             Tags: tags
+        })
+    }
+
+    const setDishModIds = (ids) => {
+        setDishData({
+            ...dishData,
+            modIds: ids,
         })
     }
 
@@ -67,7 +79,10 @@ const DishPage = ({ location }) => {
     const initializeForm = () => {
         if(!create) {
             Client.getDish(dishId).then((res) => {
-                setDishData(res.data)
+                const dish = res.data;
+                dish.modIds = dish.Modifications.map((mod) => mod.id);
+                delete dish["Modification"];
+                setDishData(dish);
             })
         }
     }
@@ -87,15 +102,10 @@ const DishPage = ({ location }) => {
         // first validate dish form
         if(!validateDishData()) return
 
-        // reformat tags into list of ids
-        let tagIds = []
-        dishData.Tags.forEach((tag) => {
-            tagIds.push(tag.id)
-        })
-
         let postDishData = {
             ...dishData,
-            dishTags: tagIds
+            dishTags: dishData.Tags.map((tag) => tag.id),
+            dishModifications: dishData.modIds,
         }
 
         try {
@@ -174,7 +184,13 @@ const DishPage = ({ location }) => {
                 <FormSubtitle>Allergens</FormSubtitle>
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>                
+                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
+                <FormTitle>Dish Modifiers</FormTitle>
+                <ModificationForm
+                    modalControls={modificationModalControls}
+                    dishModIds={dishData.modIds}
+                    setDishModIds={setDishModIds}
+                />
                 <FormControls>
                     <ButtonSecondary onClick={ ()=>{ Navigation.table(menuId) } }>Cancel</ButtonSecondary>
                     <ButtonPrimary onClick={createOrUpdateDish}>
@@ -184,6 +200,7 @@ const DishPage = ({ location }) => {
                     </ButtonPrimary>
                 </FormControls>
             </FormContainer>
+            <ModificationModal controls={modificationModalControls} />
         </MenuTableLayout>
     )
 }

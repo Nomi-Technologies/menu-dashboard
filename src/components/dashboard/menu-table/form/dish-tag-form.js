@@ -43,8 +43,6 @@ const css = {
 const DishTagForm = ({ tags, setTags }) => {
     const [allTags, setAllTags] = useState([])
 
-    
-  
     useEffect(() => {
       Client.getTags().then(response => {
         setAllTags(response.data)
@@ -59,11 +57,11 @@ const DishTagForm = ({ tags, setTags }) => {
       setTags(selectedList)
     }
 
-    if(typeof window !== 'undefined') {
-      return
-    }
-  
+
     return (
+      typeof window === 'undefined' ? 
+      null
+      :
       <Container>
         <MultiSelectDropdown
           options={ allTags }
@@ -76,7 +74,7 @@ const DishTagForm = ({ tags, setTags }) => {
           closeIcon="cancel"
         />
       </Container>
-    )
+    );
   }
-
-export { DishTagForm }
+  
+  export { DishTagForm }
