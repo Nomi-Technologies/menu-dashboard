@@ -296,11 +296,13 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
     const [open, setOpen] = useState(false);
     const [dishOrder, setDishOrder] = useState([])
 
+
     useEffect(() => {
         if(menuContext.categoryDict && !isDragging) {
             setDishOrder(menuContext.categoryDict[category.id].dishOrder)    
+     
         }
-    }, [menuContext.categoryDict])
+    },[menuContext.categoryDict] )
 
     const toggleOpen = () => {
         if (open) {
@@ -384,17 +386,32 @@ const TableCategory = ({ menuContext, index, category, toggleEditCategory, toggl
                 {
                     open && !isDragging && dishOrder ?
                         dishOrder.map((dishId, index) => (
-                            <ItemRow
-                                key={dishId}
-                                dish={menuContext.dishDict[dishId]}
-                                toggleEditDish={toggleEditDish}
-                                openDeleteConfirmation={openDeleteConfirmation}
-                                handleCheckboxChange={handleCheckboxChange}
-                                showEditMode={showEditMode}
-                                moveDish={moveDish}
-                                getDish={getDish}
-                                saveDishOrder={saveDishOrder}
-                            />
+                            <>
+                            
+                            {
+                                // Since setdishOrder is async, we are mapping to an array and trying to get the id from menuContext that has already been updated.
+                                // so the element doesnt exist in menuContext.dishDict anymore, so we have to check for existence
+
+                                menuContext.dishDict[dishId] ? (
+                                <ItemRow
+                                    key={dishId}
+                                    dish={menuContext.dishDict[dishId]}
+                                    toggleEditDish={toggleEditDish}
+                                    openDeleteConfirmation={openDeleteConfirmation}
+                                    handleCheckboxChange={handleCheckboxChange}
+                                    showEditMode={showEditMode}
+                                    moveDish={moveDish}
+                                    getDish={getDish}
+                                    saveDishOrder={saveDishOrder}
+                                />
+
+                                 ) : (
+                                     ''
+
+                                 )
+
+                            }                            
+                            </>
                         )) : ''
                 }
             </div>

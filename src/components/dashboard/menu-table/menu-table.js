@@ -231,6 +231,7 @@ const MenuTable = (props) => {
                 setToDeleteType("multiple");
             } else {
               setToDelete({id: id, type: type}).then(() => {
+
                   setDeleteConfirmation(true)
               })
 
