@@ -18,7 +18,8 @@ import { ModificationModal, useModificationModal } from '../../components/dashbo
 
 const DishPage = ({ location }) => {
     const { state = {} } = location
-    if(state === null) {
+    
+    if(state === null || state === {}) {
         navigate('/dashboard/all-menus')
     }
     
@@ -90,6 +91,7 @@ const DishPage = ({ location }) => {
         if(!create) {
             Client.getDish(dishId).then((res) => {
                 const dish = res.data;
+                console.log(dish)
                 dish.modIds = dish.Modifications.map((mod) => mod.id);
                 delete dish["Modification"];
                 setDishData(dish);
@@ -194,10 +196,12 @@ const DishPage = ({ location }) => {
                 </FormSplitRow>
                 <FormSubtitle>Allergens</FormSubtitle>
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
+
                 <FormSubtitle>Diets</FormSubtitle>
                 <DishDietForm diets={ dishData.Diets } setDiets={ setDishDiets }></DishDietForm> 
-                <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
+                {/* <FormSubtitle>Image (Optional)</FormSubtitle>
+                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/> */}
+
                 <FormTitle>Dish Modifiers</FormTitle>
                 <ModificationForm
                     modalControls={modificationModalControls}

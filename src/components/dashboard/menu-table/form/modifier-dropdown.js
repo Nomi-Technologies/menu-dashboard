@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import CreatableSelect from 'react-select/creatable';
 
-import Client from '../../../../util/client';
 import { Colors } from '../../../../util/colors';
 import { ModificationContext } from '../modification-context';
 
@@ -31,7 +30,6 @@ export default ({ style, onSelect, onCreate }) => {
     }));
 
     return (
-        allModifications.length > 0 ?
         <div style={style}>
             <CreatableSelect
                 value={null}
@@ -41,6 +39,7 @@ export default ({ style, onSelect, onCreate }) => {
                     DropdownIndicator: () => null,
                     IndicatorSeparator: () => null,
                 }}
+                noOptionsMessage={() => 'Start typing to create your first modifier...'}
                 styles={dropDownStyle}
                 onChange={onSelect}
                 onCreateOption={onCreate}
@@ -55,6 +54,6 @@ export default ({ style, onSelect, onCreate }) => {
                     {modification}
                 </>}
             />
-        </div> : null
+        </div>
     )
 };
