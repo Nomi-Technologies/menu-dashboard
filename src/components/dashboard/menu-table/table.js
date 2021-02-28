@@ -176,10 +176,10 @@ const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, g
                     </p>
                 </TableCell>
                 <TableCell className='item-tags'>
-                    <p>{allergenList(dish.Tags)}</p>
+                    <p>{tagListToString(dish.Tags)}</p>
                 </TableCell>
                 <TableCell className='item-diets'>
-                    <p>{dietList(dish.Diets)}</p>
+                    <p>{tagListToString(dish.Diets)}</p>
                 </TableCell>
                 <RowControls>
                     <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
@@ -256,38 +256,14 @@ const CategoryHeaderRow = styled(TableRow)`
     }
 `
 
-const allergenList = allergens => {
-  if (allergens.length === 0) {
-    return "--"
-  }
-
-    let list = ''
-
-    allergens.forEach((element, idx) => {
-        if (idx !== allergens.length - 1) {
-            list += element.name + ', '
-        } else {
-            list += element.name
-        }
-    });
-    return list
-}
-
-const dietList = diets => {
-    if (diets.length === 0) {
-        return "--"
+// for allergens and diets
+const tagListToString = (tags) => {
+    if (tags.length === 0) {
+        return '--';
     }
 
-    let list = ''
-
-    diets.forEach((element, idx) => {
-        if (idx !== diets.length - 1) {
-            list += element.name + ', '
-        } else {
-            list += element.name
-        }
-    });
-    return list
+    const names = tags.map((tag) => tag.name);
+    return names.join(', ');
 }
 
 const StyledTableCategory = styled.div`
