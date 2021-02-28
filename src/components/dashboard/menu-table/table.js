@@ -116,7 +116,6 @@ const StyledItemRow = styled(TableRow)`
     .item-diets {
         flex-basis: 20%;
     }
-
 `
 
 const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder, refreshMenu }) => {
@@ -218,7 +217,6 @@ const HeaderRow = styled(TableRow)`
     .diets{
         flex-basis: 20%;
     }
-
 `
 const CategoryHeaderRow = styled(TableRow)`
     background: #F0F2F7;
@@ -272,7 +270,6 @@ const allergenList = allergens => {
             list += element.name
         }
     });
-    console.log("allergen list", list)
     return list
 }
 
@@ -290,7 +287,6 @@ const dietList = diets => {
             list += element.name
         }
     });
-    console.log("diets list", list)
     return list
 }
 

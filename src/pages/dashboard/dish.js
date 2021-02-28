@@ -196,7 +196,6 @@ const DishPage = ({ location }) => {
                 <DishTagForm tags={ dishData.Tags } setTags={ setDishTags }></DishTagForm>
                 <FormSubtitle>Diets</FormSubtitle>
                 <DishDietForm diets={ dishData.Diets } setDiets={ setDishDiets }></DishDietForm> 
-                {/* need update */}
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
                 <FormTitle>Dish Modifiers</FormTitle>
