@@ -110,9 +110,12 @@ const StyledItemRow = styled(TableRow)`
     }
 
     .item-tags {
-        flex-basis: 40%;
+        flex-basis: 20%;
     }
 
+    .item-diets {
+        flex-basis: 20%;
+    }
 `
 
 const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, getDish, saveDishOrder, refreshMenu }) => {
@@ -173,7 +176,10 @@ const ItemRow = ({ menuId, dish, handleCheckboxChange, showEditMode, moveDish, g
                     </p>
                 </TableCell>
                 <TableCell className='item-tags'>
-                    <p>{allergenList(dish.Tags)}</p>
+                    <p>{tagListToString(dish.Tags)}</p>
+                </TableCell>
+                <TableCell className='item-diets'>
+                    <p>{tagListToString(dish.Diets)}</p>
                 </TableCell>
                 <RowControls>
                     <img className='edit' src={EditIcon} onClick={() => Navigation.dish(dish.id, menuId, false)} alt="edit icon" />
@@ -205,9 +211,12 @@ const HeaderRow = styled(TableRow)`
     }
 
     .tags {
-        flex-basis: 40%;
+        flex-basis: 20%;
     }
 
+    .diets{
+        flex-basis: 20%;
+    }
 `
 const CategoryHeaderRow = styled(TableRow)`
     background: #F0F2F7;
@@ -247,22 +256,14 @@ const CategoryHeaderRow = styled(TableRow)`
     }
 `
 
-const allergenList = allergens => {
-  if (allergens.length === 0) {
-    return "--"
-  }
+// for allergens and diets
+const tagListToString = (tags) => {
+    if (tags.length === 0) {
+        return '--';
+    }
 
-    let list = ''
-
-    allergens.forEach((element, idx) => {
-        if (idx !== allergens.length - 1) {
-            list += element.name + ', '
-        } else {
-            list += element.name
-        }
-    });
-
-    return list
+    const names = tags.map((tag) => tag.name);
+    return names.join(', ');
 }
 
 const StyledTableCategory = styled.div`

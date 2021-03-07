@@ -340,6 +340,9 @@ const MenuTable = () => {
                     <Table.TableCell className='tags'>
                         Allergens
                     </Table.TableCell>
+                    <Table.TableCell className='diets'>
+                        Diets
+                    </Table.TableCell>
                 </Table.HeaderRow>
                 {
                     renderTableContents()
