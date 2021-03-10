@@ -124,8 +124,14 @@ const DishPage = ({ location }) => {
         try {
             if(create) {
                 await Client.createDish(postDishData);
+                if (dishImage) {
+                    await Client.upsertDishImage(dishId, dishImage);
+                }
             } else {
                 await Client.updateDish(dishId, postDishData);
+                if (dishImage) {
+                    await Client.upsertDishImage(dishId, dishImage);
+                }
             }
 
             navigate('/dashboard/table', { state: { menuId } })
@@ -199,8 +205,8 @@ const DishPage = ({ location }) => {
 
                 <FormSubtitle>Diets</FormSubtitle>
                 <DishDietForm diets={ dishData.Diets } setDiets={ setDishDiets }></DishDietForm> 
-                {/* <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/> */}
+                <FormSubtitle>Image (Optional)</FormSubtitle>
+                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
 
                 <FormTitle>Dish Modifiers</FormTitle>
                 <ModificationForm
