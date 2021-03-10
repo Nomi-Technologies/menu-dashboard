@@ -97,6 +97,7 @@ const DishPage = ({ location }) => {
                 setDishData(dish);
             })
         }
+        //initialize image
     }
 
     const validateDishData = () => {
