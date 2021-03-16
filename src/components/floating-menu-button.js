@@ -6,7 +6,7 @@ import { FloatingMenu } from "../components/dashboard/floating-menu"
 import { Colors } from "../util/colors"
 
 const Button = styled.div`
-    position: absolute;
+    position: fixed;
     width: 62px;
     height: 62px;
     right: 64px;
