@@ -17,6 +17,8 @@ const StyledMenuCard = styled.div`
     line-height: 26px;
     justify-content: space-between;
     display: flex;
+    width: 325px;
+    padding: 20px;
 
     img {
         margin: 10px;
@@ -41,40 +43,35 @@ const MenuName = styled.div`
     width: 50%;
 `;
 
-const MenuCard = (props) => {
+const MenuCard = ({ menuId, name }) => {
     const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
 
     const toggleFloatingMenu = () => {
         setIsFloatingMenuOpen(!isFloatingMenuOpen);
     }
 
-
-
-    const navigateToMenu = (id) => {
-        navigate('/dashboard/table', { state: { menuId: id } })
+    const navigateToMenu = () => {
+        navigate('/dashboard/table', { state: { menuId: menuId } })
     }
 
     return (
         <>
-            <StyledMenuCard {...props}>
-                < MenuName onClick={() => navigateToMenu(props.id)}>{props.name}</MenuName>
+            <StyledMenuCard>
+                < MenuName onClick={ navigateToMenu }>{name}</MenuName>
                 <div className='controls'>
-                    {
+                    {/* {
                         props.isFavorited ?
                         <img alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
                         <img alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
-                    }
+                    } */}
                     <img type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
                 </div>
             </StyledMenuCard>
-            {/* <FloatingMenu  // TODO: Fix this
-                isOpen={isFloatingMenuOpen} 
-                menuId={props.id} 
-                updateMenu={props.updateMenu} 
-                updateMenuSelection={props.updateMenuSelection} 
-                updateMenuData={props.updateMenuData}
-                onClickMenu={toggleFloatingMenu}
-            /> */}
+            <FloatingMenu
+                isOpen={ isFloatingMenuOpen }
+                close={ toggleFloatingMenu }
+                menuId={ menuId }
+            />
         </>
     );
 }
