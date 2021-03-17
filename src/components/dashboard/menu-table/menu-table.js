@@ -290,7 +290,7 @@ const MenuTable = () => {
         <DndProvider backend={HTML5Backend}>
             <MenuControls>
                 <div className='buttons'>
-                    <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial>
+                    {/* <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial> */}
                 </div>
                 {/* <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
