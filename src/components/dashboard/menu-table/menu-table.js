@@ -318,7 +318,6 @@ const MenuTable = () => {
                             <ButtonDelete onClick={() => openDeleteConfirmation(selectedDishes, "dishes")} showEditMode={showEditMode} role="button">Delete</ButtonDelete>
                         </> 
                         : <> 
-                            <ButtonSecondary onClick={ () => { Navigation.category(null, menu.id, true) } } showEditMode={showEditMode} role="button">New Menu Category</ButtonSecondary>
                             <ButtonPrimary onClick={ () => { Navigation.dish(null, menu.id, true) } } showEditMode={showEditMode} role="button">New Dish</ButtonPrimary>
                         </>
                     }
@@ -347,6 +346,7 @@ const MenuTable = () => {
                 {
                     renderTableContents()
                 }
+                <Table.AddCategory onClick={ () => { Navigation.category(null, menu.id, true) } }/>
             </StyledMenuTable>
         </DndProvider>
     )
