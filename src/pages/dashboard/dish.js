@@ -223,7 +223,7 @@ const DishPage = ({ location }) => {
                 <DishDietForm diets={ dishData.Diets } setDiets={ setDishDiets }></DishDietForm> 
                 <FormSubtitle>Image (Optional)</FormSubtitle>
                 {
-                    selectedDishImageURL ? <Banner src={ selectedDishImageURL} /> : null
+                    selectedDishImageURL ? <><Banner src={ selectedDishImageURL} /> <div>Replace Image:</div> </> : null
                 }
                 <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/>
 
