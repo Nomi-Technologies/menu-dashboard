@@ -69,6 +69,13 @@ export default class Client {
     });
   }
 
+  static getDishImage = (id) => {
+    let token = retrieveUserToken(); // get user auth token
+    return axios.get(ROOT_URL + "/images/dishes/" + id, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   static deleteDish = id => {
     let token = retrieveUserToken() // get user auth token
     return axios.delete(ROOT_URL + "/dishes/" + id, {
