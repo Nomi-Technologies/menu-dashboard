@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { navigate } from "gatsby"
-import { Router } from "@reach/router"
+import React, { useState, useEffect } from "react";
+import { navigate } from "gatsby";
+import { Router } from "@reach/router";
 
-import Client from "../../util/client"
+import Client from "../../util/client";
 
-import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout"
-import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
+import { ButtonPrimary, ButtonSecondary } from "../../components/basics";
 import {
   FormTitle,
   FormSubtitle,
@@ -15,27 +15,27 @@ import {
   FormSplitColumn,
   FormContainer,
   FormControls,
-} from "../../components/form"
-import { FileDrop } from "../../components/file-drop"
-import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown"
-import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form"
-import { DishDietForm } from "../../components/dashboard/menu-table/form/dish-diet-form"
+} from "../../components/form";
+import { FileDrop } from "../../components/file-drop";
+import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown";
+import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form";
+import { DishDietForm } from "../../components/dashboard/menu-table/form/dish-diet-form";
 
-import ModificationForm from "../../components/dashboard/menu-table/form/modifier-form"
-import Navigation from "../../util/navigation"
+import ModificationForm from "../../components/dashboard/menu-table/form/modifier-form";
+import Navigation from "../../util/navigation";
 
 import {
   ModificationModal,
   useModificationModal,
-} from "../../components/dashboard/modal/modification"
+} from "../../components/dashboard/modal/modification";
 
 const DishPage = ({ menuId, dishIdOrCreate }) => {
-  let dishId, create
+  let dishId, create;
   if (dishIdOrCreate === "create") {
-    create = true
+    create = true;
   } else {
-    create = false
-    dishId = dishIdOrCreate
+    create = false;
+    dishId = dishIdOrCreate;
   }
 
   const [dishData, setDishData] = useState({
@@ -46,111 +46,111 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     Tags: [],
     Diets: [],
     modIds: [], // only contains ids
-  })
+  });
 
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [dishImage, setDishImage] = useState(null)
-  const modificationModalControls = useModificationModal()
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [dishImage, setDishImage] = useState(null);
+  const modificationModalControls = useModificationModal();
 
-  const updateCategorySelection = categoryId => {
+  const updateCategorySelection = (categoryId) => {
     setDishData({
       ...dishData,
       categoryId: categoryId,
-    })
+    });
 
-    console.log(dishData)
-  }
+    console.log(dishData);
+  };
 
-  const setDishTags = tags => {
+  const setDishTags = (tags) => {
     setDishData({
       ...dishData,
       Tags: tags,
-    })
-  }
+    });
+  };
 
-  const setDishDiets = diets => {
+  const setDishDiets = (diets) => {
     setDishData({
       ...dishData,
       Diets: diets,
-    })
-  }
+    });
+  };
 
-  const setDishModIds = ids => {
+  const setDishModIds = (ids) => {
     setDishData({
       ...dishData,
       modIds: ids,
-    })
-  }
+    });
+  };
 
-  const setFile = file => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onabort = () => console.error("file reading was aborted")
+  const setFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onabort = () => console.error("file reading was aborted");
     reader.onerror = () => {
-      console.error("file reading has failed")
-      setErrorMessage("Error reading file")
-    }
+      console.error("file reading has failed");
+      setErrorMessage("Error reading file");
+    };
     reader.onload = () => {
-      const formData = new FormData()
-      formData.append("file", file)
-      setDishImage(formData)
-    }
-  }
+      const formData = new FormData();
+      formData.append("file", file);
+      setDishImage(formData);
+    };
+  };
 
   const clearFile = () => {
-    setDishImage(null)
-  }
+    setDishImage(null);
+  };
 
   const initializeForm = () => {
     if (!create) {
-      Client.getDish(dishId).then(res => {
-        const dish = res.data
-        console.log(dish)
-        dish.modIds = dish.Modifications.map(mod => mod.id)
-        delete dish["Modification"]
-        setDishData(dish)
-      })
+      Client.getDish(dishId).then((res) => {
+        const dish = res.data;
+        console.log(dish);
+        dish.modIds = dish.Modifications.map((mod) => mod.id);
+        delete dish["Modification"];
+        setDishData(dish);
+      });
     }
-  }
+  };
 
   const validateDishData = () => {
     if (dishData.categoryId === 0) {
-      return false
+      return false;
     }
 
     if (dishData.name === "") {
-      return false
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const createOrUpdateDish = async () => {
     // first validate dish form
-    if (!validateDishData()) return
+    if (!validateDishData()) return;
 
     let postDishData = {
       ...dishData,
-      dishTags: dishData.Tags.map(tag => tag.id),
-      dishDiets: dishData.Diets.map(diet => diet.id),
+      dishTags: dishData.Tags.map((tag) => tag.id),
+      dishDiets: dishData.Diets.map((diet) => diet.id),
       dishModifications: dishData.modIds,
-    }
+    };
 
     try {
       if (create) {
-        await Client.createDish(postDishData)
+        await Client.createDish(postDishData);
       } else {
-        await Client.updateDish(dishId, postDishData)
+        await Client.updateDish(dishId, postDishData);
       }
 
-      Navigation.table(menuId)
+      Navigation.table(menuId);
     } catch (error) {
-      console.log("could not create dish")
+      console.log("could not create dish");
     }
-  }
+  };
 
   useEffect(() => {
-    initializeForm()
-  }, [])
+    initializeForm();
+  }, []);
 
   return (
     <MenuTableLayout menuId={menuId}>
@@ -161,11 +161,11 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
           placeholder="Set dish name..."
           value={dishData.name}
           name="name"
-          onChange={event => {
+          onChange={(event) => {
             setDishData({
               ...dishData,
               name: event.target.value,
-            })
+            });
           }}
         />
         <FormSubtitle>Description</FormSubtitle>
@@ -173,11 +173,11 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
           placeholder="Set description..."
           value={dishData.description}
           name="description"
-          onChange={event => {
+          onChange={(event) => {
             setDishData({
               ...dishData,
               description: event.target.value,
-            })
+            });
           }}
         />
         <FormSplitRow>
@@ -195,11 +195,11 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
               placeholder="Set price..."
               name="price"
               value={dishData.price}
-              onChange={event => {
+              onChange={(event) => {
                 setDishData({
                   ...dishData,
                   price: event.target.value,
-                })
+                });
               }}
             />
           </FormSplitColumn>
@@ -224,7 +224,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId)
+              Navigation.table(menuId);
             }}
           >
             Cancel
@@ -236,14 +236,14 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
       </FormContainer>
       <ModificationModal controls={modificationModalControls} />
     </MenuTableLayout>
-  )
-}
+  );
+};
 
 const AllMenusPage = () => {
-  navigate("/dashboard/all-menus")
+  Navigation.allMenus();
 
-  return <></>
-}
+  return <></>;
+};
 
 export default () => {
   return (
@@ -251,5 +251,5 @@ export default () => {
       <DishPage path="/:menuId/:dishIdOrCreate" />
       <AllMenusPage path="/" />
     </Router>
-  )
-}
+  );
+};

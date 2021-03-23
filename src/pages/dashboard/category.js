@@ -111,7 +111,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
 };
 
 const AllMenusPage = () => {
-  navigate("/dashboard/all-menus");
+  Navigation.allMenus();
 
   return <></>;
 };
