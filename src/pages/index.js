@@ -5,18 +5,18 @@ import { navigate } from "gatsby"
 import { retrieveUserToken } from "../util/auth"
 
 import "./index.css"
+import Navigation from "../util/navigation"
 
 const IndexPage = () => {
-
   useEffect(() => {
     if (retrieveUserToken() != null) {
-      navigate("/dashboard/all-menus")
+      Navigation.allMenus()
     } else {
       navigate("/login")
     }
   }, [])
 
-  return (<></>)
+  return <></>
 }
 
 export default IndexPage

@@ -7,6 +7,7 @@ import { FloatingMenuButton } from "../../components/floating-menu-button"
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout"
+import Navigation from "../../util/navigation"
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -29,7 +30,7 @@ const MenuTablePage = ({ menuId }) => {
 }
 
 const AllMenusPage = () => {
-  navigate("/dashboard/all-menus")
+  Navigation.allMenus()
 
   return <></>
 }
