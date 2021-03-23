@@ -33,18 +33,22 @@ let StyledFloatingMenu = styled(FloatingMenu)`
     }
 `;
 
-const FloatingMenuButton = () => {
+const FloatingMenuButton = ({ menuId }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const onClickMenu = () => {
+    const toggleFloatingMenu = () => {
         setIsOpen(!isOpen);
+    }
+
+    const closeFloatingMenu = () => {
+        setIsOpen(false);
     }
 
     return(
         <>
-            <Button onClick={onClickMenu}>
+            <Button onClick={ toggleFloatingMenu }>
                 <StyledHamburger
-                    isOpen={isOpen}
+                    isOpen={ isOpen }
                     menuClicked={() => {}}
                     width={26}
                     height={24}
@@ -55,9 +59,10 @@ const FloatingMenuButton = () => {
             </Button>
             <StyledFloatingMenu 
                 isOpen={ isOpen }
-                onClickMenu={onClickMenu}
+                close={ closeFloatingMenu }
+                menuId={ menuId }
                 className='menu'
-            />
+                />
         </>
     );
 }

@@ -43,9 +43,9 @@ const HorizontalSeparator = styled.div`
     margin: 0 auto;
 `;
 
-const FloatingMenu = ({ isOpen, className }) => {
+const FloatingMenu = ({ isOpen, close, menuId, className }) => {
     const [uniqueName, setUniqueName] = useState(null);
-    let { menu, refreshMenu } = useContext(MenuContext)
+    let { refreshMenu } = useContext(MenuContext)
 
     useEffect(() => {
         Client.getRestaurantInfo().then(res => {
@@ -54,14 +54,15 @@ const FloatingMenu = ({ isOpen, className }) => {
 
     }, []);
 
-    async function duplicateMenu(id) {
-        const res = await Client.duplicateMenu(id);
+    // TODO: Re-add this feature
+    async function duplicateMenu() {
+        const res = await Client.duplicateMenu(menuId);
         // props.onClickMenu();
         // props.updateMenuSelection(res.data.menu);
     }
 
     async function downloadCSV(){
-        Client.downloadCSV(menu?.id).then(res => {
+        Client.downloadCSV(menuId).then(res => {
             if(res.status == 200 && res.data.csv){
                 var csv = res.data.csv
                 var hiddenElement = document.createElement('a');
@@ -74,8 +75,8 @@ const FloatingMenu = ({ isOpen, className }) => {
     }
 
     let [showQRCodeModal, openQRCodeModal, closeQRCodeModal] = useQRCodeModal();
-    let [showUploadCSVModal, openUploadCSVModal, closeUploadCSVModal, uploadCSV, errorMessage, setErrorMessage] = useUploadCSVModal(menu?.id, refreshMenu); 
-    let [showDeleteMenuModal, openDeleteMenuModal, closeDeleteMenuModal] = useDeleteMenuModal(menu?.id, refreshMenu)
+    let [showUploadCSVModal, openUploadCSVModal, closeUploadCSVModal, uploadCSV, errorMessage, setErrorMessage] = useUploadCSVModal(menuId, refreshMenu); 
+    let [showDeleteMenuModal, openDeleteMenuModal, closeDeleteMenuModal] = useDeleteMenuModal(menuId, refreshMenu)
     
     return (
         <>
@@ -90,7 +91,6 @@ const FloatingMenu = ({ isOpen, className }) => {
                     <MenuItem onClick={ openQRCodeModal }>View QR Code</MenuItem>
                 </Menu>
             </div>
-
             <QRCodeModal open={ showQRCodeModal } openModal={ openQRCodeModal } closeModal={ closeQRCodeModal } uniqueName={ uniqueName }/>
             <UploadCSVModal open={ showUploadCSVModal } openModal={ openUploadCSVModal } closeModal={ closeUploadCSVModal } uploadCSV={ uploadCSV } errorMessage={ errorMessage } setErrorMessage={ setErrorMessage }/>
             <DeleteMenuModal open={ showDeleteMenuModal } openModal={ openDeleteMenuModal } closeModal={ closeDeleteMenuModal }/>

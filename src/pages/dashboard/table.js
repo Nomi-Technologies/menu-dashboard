@@ -28,7 +28,7 @@ const MenuTablePage = ({ location }) => {
             <MenuContainer>  
                 <MenuTitle/>
                 <MenuTable/>
-                <FloatingMenuButton/> 
+                <FloatingMenuButton menuId={ menuId }/> 
             </MenuContainer>
         </MenuTableLayout>
     )

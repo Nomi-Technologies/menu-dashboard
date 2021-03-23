@@ -42,7 +42,7 @@ function CardGrid(props) {
             <Row key={i}>
                 <StyledMenuCard 
                     name={menus[i].name} 
-                    id={menus[i].id} 
+                    menuId={menus[i].id} 
                     isFavorited={props.favoriteMenus?.some((menu) => menu.id == menus[i].id)} 
                     // toggleFavoriteMenu={ props.toggleFavoriteMenu }
                     getMenus={ props.getMenus }
@@ -50,7 +50,7 @@ function CardGrid(props) {
                 { (i+1) < menus.length ? 
                     <StyledMenuCard 
                         name={menus[i+1].name} 
-                        id={menus[i+1].id} 
+                        menuId={menus[i+1].id} 
                         isFavorited={props.favoriteMenus?.some((menu) => menu.id == menus[i+1].id)} 
                         // toggleFavoriteMenu={ props.toggleFavoriteMenu }
                         getMenus={ props.getMenus }

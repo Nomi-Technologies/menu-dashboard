@@ -225,11 +225,9 @@ const CategoryHeaderRow = styled(TableRow)`
 
     .collapse-icon {
         position: absolute;
-        width: 12px;
-        height: 6px;
-        left: 0px;
-        top: 0px;
-        padding: 20px;
+        height: 35px;
+        left: 10px;
+        top: 8px;
         cursor: pointer;
     }
 
@@ -238,7 +236,7 @@ const CategoryHeaderRow = styled(TableRow)`
         left: 10px;
         top: 10px;
         cursor: pointer;
-        width: 30px;
+        width: 25px;
     }
 
     .category-name {
@@ -419,9 +417,9 @@ const TableCategory = ({ menuId, menuContext, index, category, showEditMode, han
     )
 }
 
-const AddCategory = () => {
+const AddCategory = ({ onClick }) => {
     return (
-            <CategoryHeaderRow>
+            <CategoryHeaderRow onClick={ onClick }>
                 <img className='plus-icon' src={PlusIcon} alt="plus icon"/>
                 <TableCell className='category-name' style={{color: "#B2BED0"}}>
                     Add Menu Section...
