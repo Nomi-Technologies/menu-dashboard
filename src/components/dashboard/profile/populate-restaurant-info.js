@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 
-import styled from "styled-components"
-import { ButtonPrimary } from "../../basics"
-import { FormInput, FormContainer, FormRow } from "../../form"
+import styled from "styled-components";
+import { ButtonPrimary } from "../../basics";
+import { FormInput, FormContainer, FormRow } from "../../form";
 
-import Client from "../../../util/client"
+import Client from "../../../util/client";
 
 const PopulateRestaurant = () => {
-  const [restaurant, setRestaurant] = useState("")
-  const [address, setAddress] = useState("")
-  const [city, setCity] = useState("")
-  const [state, setState] = useState("")
-  const [zip, setZip] = useState("")
-  const [phone, setPhone] = useState("")
-  const [website, setWebsite] = useState("")
+  const [restaurant, setRestaurant] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
 
-  const [id, setId] = useState()
-  const [save, setSave] = useState(false)
+  const [id, setId] = useState();
+  const [save, setSave] = useState(false);
 
   useEffect(() => {
-    Client.getRestaurantInfo().then(response => {
-      setRestaurant(response.data.name)
-      setAddress(response.data.streetAddress)
-      setCity(response.data.city)
-      setState(response.data.state)
-      setZip(response.data.zip)
-      setPhone(response.data.phone)
-      setWebsite(response.data.url)
-      setId(response.data.id)
-      setSave(false)
-    })
-  }, [])
+    Client.getRestaurantInfo().then((response) => {
+      setRestaurant(response.data.name);
+      setAddress(response.data.streetAddress);
+      setCity(response.data.city);
+      setState(response.data.state);
+      setZip(response.data.zip);
+      setPhone(response.data.phone);
+      setWebsite(response.data.url);
+      setId(response.data.id);
+      setSave(false);
+    });
+  }, []);
 
   const submit = () => {
     Client.updateRestaurantInfo(id, {
@@ -43,23 +43,23 @@ const PopulateRestaurant = () => {
       url: website,
     })
       .then(() => {
-        setSave(true)
+        setSave(true);
       })
-      .catch(err => {
-        Client.getRestaurantInfo().then(oldItem => {
-          setRestaurant(oldItem.data.name)
-          setAddress(oldItem.data.streetAddress)
-          setCity(oldItem.data.city)
-          setState(oldItem.data.state)
-          setZip(oldItem.data.zip)
-          setPhone(oldItem.data.phone)
-          setWebsite(oldItem.data.url)
-          setId(oldItem.data.id)
-          setSave(false)
-        })
-        console.error(err)
-      })
-  }
+      .catch((err) => {
+        Client.getRestaurantInfo().then((oldItem) => {
+          setRestaurant(oldItem.data.name);
+          setAddress(oldItem.data.streetAddress);
+          setCity(oldItem.data.city);
+          setState(oldItem.data.state);
+          setZip(oldItem.data.zip);
+          setPhone(oldItem.data.phone);
+          setWebsite(oldItem.data.url);
+          setId(oldItem.data.id);
+          setSave(false);
+        });
+        console.error(err);
+      });
+  };
 
   return (
     <FormContainer>
@@ -69,9 +69,9 @@ const PopulateRestaurant = () => {
           name="restaurant"
           placeholder="restaurant name"
           value={restaurant}
-          onChange={event => {
-            setSave(false)
-            setRestaurant(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setRestaurant(event.target.value);
           }}
         ></FormInput>
       </FormRow>
@@ -81,9 +81,9 @@ const PopulateRestaurant = () => {
           name="address"
           placeholder="street address"
           value={address}
-          onChange={event => {
-            setSave(false)
-            setAddress(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setAddress(event.target.value);
           }}
         ></FormInput>
       </FormRow>
@@ -93,9 +93,9 @@ const PopulateRestaurant = () => {
           name="city"
           placeholder="city"
           value={city}
-          onChange={event => {
-            setSave(false)
-            setCity(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setCity(event.target.value);
           }}
         ></FormInput>
         <FormInput
@@ -103,9 +103,9 @@ const PopulateRestaurant = () => {
           name="state"
           placeholder="state"
           value={state}
-          onChange={event => {
-            setSave(false)
-            setState(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setState(event.target.value);
           }}
         ></FormInput>
         <FormInput
@@ -113,9 +113,9 @@ const PopulateRestaurant = () => {
           name="zip"
           placeholder="zip code"
           value={zip}
-          onChange={event => {
-            setSave(false)
-            setZip(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setZip(event.target.value);
           }}
         ></FormInput>
       </FormRow>
@@ -125,9 +125,9 @@ const PopulateRestaurant = () => {
           name="phone"
           placeholder="phone number"
           value={phone}
-          onChange={event => {
-            setSave(false)
-            setPhone(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setPhone(event.target.value);
           }}
         ></FormInput>
         <FormInput
@@ -135,16 +135,18 @@ const PopulateRestaurant = () => {
           name="website"
           placeholder="website (optional)"
           value={website}
-          onChange={event => {
-            setSave(false)
-            setWebsite(event.target.value)
+          onChange={(event) => {
+            setSave(false);
+            setWebsite(event.target.value);
           }}
         ></FormInput>
       </FormRow>
 
-      <ButtonPrimary onClick={ submit } save={ save }>Save</ButtonPrimary>
+      <ButtonPrimary onClick={submit} save={save}>
+        Save
+      </ButtonPrimary>
     </FormContainer>
-  )
-}
+  );
+};
 
-export default PopulateRestaurant
+export default PopulateRestaurant;

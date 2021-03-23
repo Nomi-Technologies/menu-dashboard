@@ -1,9 +1,8 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React, { useState, useEffect } from "react"
-import styled from "styled-components"
-import { retrieveUserToken } from "../util/auth"
-
+import { Link } from "gatsby";
+import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { retrieveUserToken } from "../util/auth";
 
 const Header = styled.div`
   display: flex;
@@ -14,8 +13,8 @@ const Header = styled.div`
   left: 0%;
   right: 0%;
   top: 0px;
-  background: #FFFFFF;
-  font-family: 'HK Grotesk Bold';
+  background: #ffffff;
+  font-family: "HK Grotesk Bold";
   /* TopBar */
   box-shadow: 0px 0px 20px rgba(0, 12, 54, 0.2);
   z-index: 10;
@@ -35,7 +34,7 @@ const Header = styled.div`
     font-size: 18px;
     color: black;
   }
-`
+`;
 
 const LoginButton = styled(Link)`
   margin-left: auto;
@@ -45,27 +44,24 @@ const LoginButton = styled(Link)`
   line-height: 19px;
   color: white;
   padding: 8px 20px;
-  background: #F3A35C;
+  background: #f3a35c;
   border-radius: 4px;
-`
-
+`;
 
 export default () => {
-  const [loggedIn, setLoggedIn] = useState(false)
-  
+  const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
-    setLoggedIn(retrieveUserToken() !== null)
-  }, [])
+    setLoggedIn(retrieveUserToken() !== null);
+  }, []);
 
   return (
     <Header>
-      { loggedIn ? 
-        (
-          <LoginButton to='dashboard/personal'>Your Profile</LoginButton>
-        ) : (
-          <LoginButton to='login'>Member Login</LoginButton>
-        )
-      }
+      {loggedIn ? (
+        <LoginButton to="dashboard/personal">Your Profile</LoginButton>
+      ) : (
+        <LoginButton to="login">Member Login</LoginButton>
+      )}
     </Header>
-  )
-}
+  );
+};

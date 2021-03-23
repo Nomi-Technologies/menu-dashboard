@@ -1,22 +1,21 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from "react";
 
-import { navigate } from "gatsby"
+import { navigate } from "gatsby";
 
-import { retrieveUserToken } from "../util/auth"
+import { retrieveUserToken } from "../util/auth";
 
-import "./index.css"
+import "./index.css";
 
 const IndexPage = () => {
-
   useEffect(() => {
     if (retrieveUserToken() != null) {
-      navigate("/dashboard/all-menus")
+      navigate("/dashboard/all-menus");
     } else {
-      navigate("/login")
+      navigate("/login");
     }
-  }, [])
+  }, []);
 
-  return (<></>)
-}
+  return <></>;
+};
 
-export default IndexPage
+export default IndexPage;
