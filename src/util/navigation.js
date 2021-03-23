@@ -9,8 +9,8 @@ export default class Navigation {
     navigate(`/dashboard/table/${menuId}`)
   }
 
-  static dish = (dishId, menuId, create) => {
-    navigate("/dashboard/dish", { state: { dishId, menuId, create } })
+  static dish = (menuId, dishId) => {
+    navigate(`/dashboard/dish/${menuId}/${dishId ?? "create"}`)
   }
 
   static category = (categoryId, menuId, create) => {

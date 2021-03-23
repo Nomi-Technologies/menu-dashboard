@@ -29,14 +29,15 @@ import {
   useModificationModal,
 } from "../../components/dashboard/modal/modification"
 
-const DishPage = ({ location }) => {
-  const { state = {} } = location
-
-  if (state === null || state === {}) {
-    Navigation.allMenus()
+const DishPage = ({ menuId, dishIdOrCreate }) => {
+  let dishId, create
+  if (dishIdOrCreate === "create") {
+    create = true
+  } else {
+    create = false
+    dishId = dishIdOrCreate
   }
 
-  const { menuId, dishId, create } = state
   const [dishData, setDishData] = useState({
     name: "",
     description: "",
@@ -238,4 +239,17 @@ const DishPage = ({ location }) => {
   )
 }
 
-export default DishPage
+const AllMenusPage = () => {
+  navigate("/dashboard/all-menus")
+
+  return <></>
+}
+
+export default () => {
+  return (
+    <Router basepath="/dashboard/dish">
+      <DishPage path="/:menuId/:dishIdOrCreate" />
+      <AllMenusPage path="/" />
+    </Router>
+  )
+}

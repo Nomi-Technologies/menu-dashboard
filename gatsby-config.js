@@ -40,7 +40,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-create-client-paths`,
       options: {
-        prefixes: [`/dashboard/all-menus/*`, `/dashboard/table/*`],
+        prefixes: [
+          `/dashboard/all-menus/*`,
+          `/dashboard/table/*`,
+          `/dashboard/dish/*`,
+        ],
       },
     },
   ],
