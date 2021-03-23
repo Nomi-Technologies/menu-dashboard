@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react"
 
 import styled from "styled-components"
 import EditIcon from "../../../assets/img/edit-orange.png"
@@ -7,73 +7,78 @@ import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
 import { FloatingMenu } from "../../dashboard/floating-menu"
 
 import Client from "../../../util/client"
-import { navigate } from 'gatsby';
+import { navigate } from "gatsby"
 
 const StyledMenuCard = styled.div`
-    background: #FFFFFF;
-    box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
-    border-radius: 8px;
-    font-size: 18px;
-    line-height: 26px;
-    justify-content: space-between;
-    display: flex;
-    width: 325px;
-    padding: 20px;
+  background: #ffffff;
+  box-shadow: 0px 8px 20px rgba(0, 20, 63, 0.1);
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 26px;
+  justify-content: space-between;
+  display: flex;
+  width: 325px;
+  padding: 20px;
 
-    img {
-        margin: 10px;
-        cursor: pointer;
-        width: 22px;
-    }
-
-    .controls {
-        margin-right: 15px;
-        display: flex;
-        align-items: center;
-    }
-`;
-
-const MenuName = styled.div`
-    float: left;
+  img {
+    margin: 10px;
     cursor: pointer;
+    width: 22px;
+  }
+
+  .controls {
+    margin-right: 15px;
     display: flex;
     align-items: center;
-    margin-left: 20px;
-    cursor: pointer;
-    width: 50%;
-`;
+  }
+`
+
+const MenuName = styled.div`
+  float: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  cursor: pointer;
+  width: 50%;
+`
 
 const MenuCard = ({ menuId, name }) => {
-    const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
+  const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false)
 
-    const toggleFloatingMenu = () => {
-        setIsFloatingMenuOpen(!isFloatingMenuOpen);
-    }
+  const toggleFloatingMenu = () => {
+    setIsFloatingMenuOpen(!isFloatingMenuOpen)
+  }
 
-    const navigateToMenu = () => {
-        navigate('/dashboard/table', { state: { menuId: menuId } })
-    }
+  const navigateToMenu = () => {
+    navigate(`/dashboard/table/${menuId}`)
+  }
 
-    return (
-        <>
-            <StyledMenuCard>
-                < MenuName onClick={ navigateToMenu }>{name}</MenuName>
-                <div className='controls'>
-                    {/* {
+  return (
+    <>
+      <StyledMenuCard>
+        <MenuName onClick={navigateToMenu}>{name}</MenuName>
+        <div className="controls">
+          {/* {
                         props.isFavorited ?
                         <img alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
                         <img alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
                     } */}
-                    <img type='image' alt="Edit" src={EditIcon} onClick={toggleFloatingMenu}/>
-                </div>
-            </StyledMenuCard>
-            <FloatingMenu
-                isOpen={ isFloatingMenuOpen }
-                close={ toggleFloatingMenu }
-                menuId={ menuId }
-            />
-        </>
-    );
+          <img
+            type="image"
+            alt="Edit"
+            src={EditIcon}
+            onClick={toggleFloatingMenu}
+          />
+        </div>
+      </StyledMenuCard>
+      <FloatingMenu
+        isOpen={isFloatingMenuOpen}
+        close={toggleFloatingMenu}
+        menuId={menuId}
+      />
+    </>
+  )
 }
 
 export { MenuCard }

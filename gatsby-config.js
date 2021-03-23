@@ -1,4 +1,3 @@
-
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
@@ -34,9 +33,15 @@ module.exports = {
       },
     },
 
-    'gatsby-plugin-styled-components',
+    "gatsby-plugin-styled-components",
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: {
+        prefixes: [`/dashboard/all-menus/*`, `/dashboard/table/*`],
+      },
+    },
   ],
 }
