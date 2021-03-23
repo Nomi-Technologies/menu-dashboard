@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useCallback, useContext } from "react"
-import styled from "styled-components"
-import { DndProvider } from "react-dnd"
-import { HTML5Backend } from "react-dnd-html5-backend"
-import update from "immutability-helper"
-import debounce from "lodash.debounce"
-import Navigation from "../../../util/navigation"
+import React, { useEffect, useState, useCallback, useContext } from "react";
+import styled from "styled-components";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import update from "immutability-helper";
+import debounce from "lodash.debounce";
+import Navigation from "../../../util/navigation";
 
-import Client from "../../../util/client"
-import SearchIcon from "../../../assets/img/search.png"
-import CancelIcon from "../../../assets/img/delete-icon.png"
+import Client from "../../../util/client";
+import SearchIcon from "../../../assets/img/search.png";
+import CancelIcon from "../../../assets/img/delete-icon.png";
 import {
   Button,
   ButtonPrimary,
   ButtonSecondary,
   ButtonSpecial,
   ButtonDelete,
-} from "../../basics"
-import * as Table from "./table"
-import { MenuContext } from "./menu-context"
+} from "../../basics";
+import * as Table from "./table";
+import { MenuContext } from "./menu-context";
 
 const StyledMenuTable = styled.div`
   width: 100%;
@@ -26,7 +26,7 @@ const StyledMenuTable = styled.div`
   margin-bottom: 150px;
   border-radius: 8px;
   overflow: hidden;
-`
+`;
 
 const MenuControls = styled.div`
   display: flex;
@@ -74,143 +74,143 @@ const MenuControls = styled.div`
       margin-left: 10px;
     }
   }
-`
+`;
 
 function useAsyncState(initialValue) {
-  const [value, setValue] = useState(initialValue)
-  const setter = x =>
-    new Promise(resolve => {
-      setValue(x)
-      resolve(x)
-    })
-  return [value, setter]
+  const [value, setValue] = useState(initialValue);
+  const setter = (x) =>
+    new Promise((resolve) => {
+      setValue(x);
+      resolve(x);
+    });
+  return [value, setter];
 }
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
-  let menuTableContext = useContext(MenuContext)
-  let refreshMenu = menuTableContext?.refreshMenu
-  let menu = menuTableContext?.menu
+  let menuTableContext = useContext(MenuContext);
+  let refreshMenu = menuTableContext?.refreshMenu;
+  let menu = menuTableContext?.menu;
 
-  const [menuData, setMenuData] = useState({}) // includes parsed menuData
+  const [menuData, setMenuData] = useState({}); // includes parsed menuData
 
   const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(
     false
-  )
-  const [showEditDishForm, setEditDishForm] = useState(false)
-  const [showEditMode, setEditMode] = useState(false)
-  const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false)
-  const [toDelete, setToDelete] = useAsyncState({})
-  const [selectedDishes, setSelectedDishes] = useAsyncState([])
-  const [toDeleteType, setToDeleteType] = useAsyncState("")
-  const [searchResults, setSearchResults] = useState([])
-  const [searchBoxValue, setSearchBoxValue] = useState("")
-  const [searchBoxFocused, setSearchBoxFocused] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
+  );
+  const [showEditDishForm, setEditDishForm] = useState(false);
+  const [showEditMode, setEditMode] = useState(false);
+  const [showDeleteConfirmation, setDeleteConfirmation] = useAsyncState(false);
+  const [toDelete, setToDelete] = useAsyncState({});
+  const [selectedDishes, setSelectedDishes] = useAsyncState([]);
+  const [toDeleteType, setToDeleteType] = useAsyncState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchBoxValue, setSearchBoxValue] = useState("");
+  const [searchBoxFocused, setSearchBoxFocused] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const toggleEditDishForm = dish => {
+  const toggleEditDishForm = (dish) => {
     // if (typeof dish !== 'undefined') setSelectedDish(dish)
-    if (!showEditDishForm) closeAllForms() //if about to open form
-    setEditDishForm(!showEditDishForm)
-  }
+    if (!showEditDishForm) closeAllForms(); //if about to open form
+    setEditDishForm(!showEditDishForm);
+  };
 
   const toggleEditMode = () => {
-    setEditMode(!showEditMode)
-  }
+    setEditMode(!showEditMode);
+  };
 
-  const handleCheckboxChange = itemId => {
-    let newSelectedDishes = selectedDishes
+  const handleCheckboxChange = (itemId) => {
+    let newSelectedDishes = selectedDishes;
 
     if (selectedDishes.includes(itemId)) {
-      var index = newSelectedDishes.indexOf(itemId)
-      newSelectedDishes.splice(index, 1)
+      var index = newSelectedDishes.indexOf(itemId);
+      newSelectedDishes.splice(index, 1);
     } else {
-      newSelectedDishes.push(itemId)
+      newSelectedDishes.push(itemId);
     }
 
-    setSelectedDishes(newSelectedDishes)
-  }
+    setSelectedDishes(newSelectedDishes);
+  };
 
   const openDeleteConfirmation = (id, type) => {
     if (!showDeleteConfirmation) {
-      closeAllForms() //if about to open form
+      closeAllForms(); //if about to open form
 
       if (type === "dishes") {
         setSelectedDishes(id).then(() => {
-          setDeleteConfirmation(true)
-        })
-        setToDeleteType("multiple")
+          setDeleteConfirmation(true);
+        });
+        setToDeleteType("multiple");
       } else {
         setToDelete({ id: id, type: type }).then(() => {
-          setDeleteConfirmation(true)
-        })
+          setDeleteConfirmation(true);
+        });
 
-        setToDeleteType("single")
+        setToDeleteType("single");
       }
     }
-  }
+  };
 
-  const openCopyMenuConfirmation = ids => {
+  const openCopyMenuConfirmation = (ids) => {
     if (!showCopyMenuConfirmation) {
-      closeAllForms() //if about to open form
+      closeAllForms(); //if about to open form
 
       setSelectedDishes(ids).then(() => {
-        setCopyMenuConfirmation(true)
-      })
+        setCopyMenuConfirmation(true);
+      });
     }
-  }
+  };
 
   const closeAllForms = () => {
-    setEditDishForm(false)
-    setDeleteConfirmation(false)
-  }
+    setEditDishForm(false);
+    setDeleteConfirmation(false);
+  };
 
   // TODO: refactor search to be in browser
-  const handleSearch = e => {
-    e.preventDefault()
-    e.target.firstChild.blur()
-    setSearchBoxFocused(false)
+  const handleSearch = (e) => {
+    e.preventDefault();
+    e.target.firstChild.blur();
+    setSearchBoxFocused(false);
     if (searchBoxValue.trim() === "") {
-      setIsSearching(false)
+      setIsSearching(false);
     } else {
       Client.searchDishes(searchBoxValue, menu?.menuId)
-        .then(res => {
-          setSearchResults(res.data)
-          setIsSearching(true)
+        .then((res) => {
+          setSearchResults(res.data);
+          setIsSearching(true);
         })
-        .catch(err => {
-          console.error("error searching for dishes")
-        })
+        .catch((err) => {
+          console.error("error searching for dishes");
+        });
     }
-  }
+  };
 
   // takes menu object from API and returns dictionary with IDs to data, and an array of categories and menus for ordering
-  const parseMenu = menu => {
-    let categoryDict = {}
-    let categoryOrder = []
-    let dishDict = {}
+  const parseMenu = (menu) => {
+    let categoryDict = {};
+    let categoryOrder = [];
+    let dishDict = {};
 
-    menu.Categories.forEach(category => {
-      let dishOrder = []
+    menu.Categories.forEach((category) => {
+      let dishOrder = [];
 
-      category.Dishes.forEach(dish => {
-        dishDict[dish.id] = dish
-        dishOrder.push(dish.id)
-      })
+      category.Dishes.forEach((dish) => {
+        dishDict[dish.id] = dish;
+        dishOrder.push(dish.id);
+      });
 
       categoryDict[category.id] = {
         ...category,
         dishOrder: dishOrder,
-      }
-      categoryOrder.push(category.id)
-    })
+      };
+      categoryOrder.push(category.id);
+    });
 
     return {
       categoryDict: categoryDict,
       categoryOrder: categoryOrder,
       dishDict: dishDict,
-    }
-  }
+    };
+  };
 
   useEffect(() => {
     if (menu) {
@@ -220,36 +220,36 @@ const MenuTable = () => {
               ...parseMenu(menu),
               menuData: menu, // todo: rename menu
             }
-          : {}
-      setMenuData(menuData)
-      setCategoryOrder(menuData.categoryOrder)
+          : {};
+      setMenuData(menuData);
+      setCategoryOrder(menuData.categoryOrder);
     }
-  }, [menu])
+  }, [menu]);
 
-  const [categoryOrder, setCategoryOrder] = useState([])
+  const [categoryOrder, setCategoryOrder] = useState([]);
 
   const moveCategory = useCallback(
     debounce((id, atIndex) => {
-      let index = categoryOrder.indexOf(id)
+      let index = categoryOrder.indexOf(id);
 
       let newCategoryOrder = update(categoryOrder, {
         $splice: [
           [index, 1],
           [atIndex, 0, id],
         ],
-      })
+      });
 
-      setCategoryOrder(newCategoryOrder)
+      setCategoryOrder(newCategoryOrder);
     }, 5)
-  )
+  );
 
   const saveCategoryOrder = async () => {
     try {
-      await Client.updateCategoryOrder(menu.id, categoryOrder)
+      await Client.updateCategoryOrder(menu.id, categoryOrder);
     } catch {
-      refreshMenu()
+      refreshMenu();
     }
-  }
+  };
 
   const renderTableContents = () => {
     if (!isSearching) {
@@ -273,9 +273,9 @@ const MenuTable = () => {
               ))
             : ""}
         </div>
-      )
+      );
     } else if (searchResults.length === 0) {
-      return <Table.TableCell>No items found</Table.TableCell>
+      return <Table.TableCell>No items found</Table.TableCell>;
     }
     return (
       <>
@@ -290,8 +290,8 @@ const MenuTable = () => {
           />
         ))}
       </>
-    )
-  }
+    );
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -340,7 +340,7 @@ const MenuTable = () => {
             <>
               <ButtonPrimary
                 onClick={() => {
-                  Navigation.dish(menu.id)
+                  Navigation.dish(menu.id);
                 }}
                 showEditMode={showEditMode}
                 role="button"
@@ -363,12 +363,12 @@ const MenuTable = () => {
         {renderTableContents()}
         <Table.AddCategory
           onClick={() => {
-            Navigation.category(null, menu.id, true)
+            Navigation.category(menu.id);
           }}
         />
       </StyledMenuTable>
     </DndProvider>
-  )
-}
+  );
+};
 
-export { MenuTable }
+export { MenuTable };

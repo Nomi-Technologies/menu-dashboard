@@ -1,23 +1,23 @@
-import React, { useState, useRef, useCallback, useEffect } from "react"
-import { useDrag, useDrop } from "react-dnd"
-import update from "immutability-helper"
-import Client from "../../../util/client"
-import Navigation from "../../../util/navigation"
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import update from "immutability-helper";
+import Client from "../../../util/client";
+import Navigation from "../../../util/navigation";
 
-import Checkbox from "./checkbox"
+import Checkbox from "./checkbox";
 
-import styled from "styled-components"
-import ArrowIcon from "../../../assets/img/arrow-icon.png"
-import PlusIcon from "../../../assets/img/plus-icon.png"
-import EditIcon from "../../../assets/img/edit-icon.png"
-import DeleteIcon from "../../../assets/img/delete-icon.png"
+import styled from "styled-components";
+import ArrowIcon from "../../../assets/img/arrow-icon.png";
+import PlusIcon from "../../../assets/img/plus-icon.png";
+import EditIcon from "../../../assets/img/edit-icon.png";
+import DeleteIcon from "../../../assets/img/delete-icon.png";
 
 import {
   DeleteDishModal,
   useDeleteDishModal,
   DeleteCategoryModal,
   useDeleteCategoryModal,
-} from "../modal/delete"
+} from "../modal/delete";
 
 const TableCell = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const TableCell = styled.div`
     white-space: nowrap;
     padding-right: 15px;
   }
-`
+`;
 
 const TableRow = styled.div`
   position: relative;
@@ -79,7 +79,7 @@ const TableRow = styled.div`
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
-`
+`;
 
 const RowControls = styled.div`
   position: absolute;
@@ -91,7 +91,7 @@ const RowControls = styled.div`
     right: 50px;
     cursor: pointer;
   }
-`
+`;
 
 const StyledItemRow = styled(TableRow)`
   font-family: HK Grotesk Light;
@@ -123,7 +123,7 @@ const StyledItemRow = styled(TableRow)`
   .item-diets {
     flex-basis: 20%;
   }
-`
+`;
 
 const ItemRow = ({
   menuId,
@@ -135,24 +135,24 @@ const ItemRow = ({
   saveDishOrder,
   refreshMenu,
 }) => {
-  const { index, categoryId } = getDish(dish.id)
+  const { index, categoryId } = getDish(dish.id);
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: "dish", id: dish.id, categoryId: categoryId, index },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end: (dropResult, monitor) => {
-      const { id: droppedId, index } = monitor.getItem()
-      const didDrop = monitor.didDrop()
+      const { id: droppedId, index } = monitor.getItem();
+      const didDrop = monitor.didDrop();
       if (!didDrop) {
         // move card back to original position if drop did not occur on given category
-        moveDish(droppedId, index)
+        moveDish(droppedId, index);
       } else {
-        saveDishOrder()
+        saveDishOrder();
       }
     },
-  })
+  });
 
   const [, drop] = useDrop({
     accept: "dish",
@@ -160,19 +160,19 @@ const ItemRow = ({
     hover({ id: draggedId, categoryId: draggedCategoryId }) {
       if (draggedId !== dish.id && categoryId === draggedCategoryId) {
         // if same category, just move within category
-        const overIndex = getDish(dish.id).index
-        moveDish(draggedId, overIndex)
+        const overIndex = getDish(dish.id).index;
+        moveDish(draggedId, overIndex);
       }
     },
-  })
+  });
 
   let [open, openDeleteDishModal, closeDeleteDishModal] = useDeleteDishModal(
     refreshMenu
-  )
+  );
 
   return (
     <>
-      <StyledItemRow ref={node => drag(drop(node))} className="opened">
+      <StyledItemRow ref={(node) => drag(drop(node))} className="opened">
         {showEditMode ? (
           <Checkbox
             handleCheckboxChange={handleCheckboxChange}
@@ -208,7 +208,7 @@ const ItemRow = ({
             className="delete"
             src={DeleteIcon}
             onClick={() => {
-              openDeleteDishModal(dish.id)
+              openDeleteDishModal(dish.id);
             }}
             alt="delete icon"
           />
@@ -220,8 +220,8 @@ const ItemRow = ({
         closeModal={closeDeleteDishModal}
       />
     </>
-  )
-}
+  );
+};
 
 const HeaderRow = styled(TableRow)`
   background-color: #8a9db7;
@@ -249,7 +249,7 @@ const HeaderRow = styled(TableRow)`
   .diets {
     flex-basis: 20%;
   }
-`
+`;
 const CategoryHeaderRow = styled(TableRow)`
   background: #f0f2f7;
   color: black;
@@ -283,17 +283,17 @@ const CategoryHeaderRow = styled(TableRow)`
       padding-right: 50%;
     }
   }
-`
+`;
 
 // for allergens and diets
-const tagListToString = tags => {
+const tagListToString = (tags) => {
   if (tags.length === 0) {
-    return "--"
+    return "--";
   }
 
-  const names = tags.map(tag => tag.name)
-  return names.join(", ")
-}
+  const names = tags.map((tag) => tag.name);
+  return names.join(", ");
+};
 
 const StyledTableCategory = styled.div`
   transition: 0.4s ease all;
@@ -320,12 +320,12 @@ const StyledTableCategory = styled.div`
       transform: none;
     }
   }
-`
+`;
 
 const CategoryDescription = styled.p`
   color: #8a9db7;
   font-family: HK Grotesk Light;
-`
+`;
 
 // Subitem for each cateogry in the menu.  Contains a list of item rows
 // Can be toggled on and off, and can be deleted
@@ -340,93 +340,93 @@ const TableCategory = ({
   saveCategoryOrder,
   refreshMenu,
 }) => {
-  const [expanded, setExpanded] = useState(false)
-  const [dishOrder, setDishOrder] = useState([])
+  const [expanded, setExpanded] = useState(false);
+  const [dishOrder, setDishOrder] = useState([]);
 
   useEffect(() => {
     if (menuContext.categoryDict && !isDragging) {
-      setDishOrder(menuContext.categoryDict[category.id].dishOrder)
+      setDishOrder(menuContext.categoryDict[category.id].dishOrder);
     }
-  }, [menuContext.categoryDict])
+  }, [menuContext.categoryDict]);
 
   const toggleExpanded = () => {
     if (expanded) {
-      setExpanded(false)
+      setExpanded(false);
     } else {
-      setExpanded(true)
+      setExpanded(true);
     }
-  }
+  };
 
-  const getDish = id => {
+  const getDish = (id) => {
     for (let i = 0; i < dishOrder.length; i++) {
       if (dishOrder[i] === id) {
-        return { index: i, categoryId: category.id }
+        return { index: i, categoryId: category.id };
       }
     }
-    return { index: null, categoryId: category.id }
-  }
+    return { index: null, categoryId: category.id };
+  };
 
   const moveDish = useCallback(
     (id, atIndex) => {
-      let index = getDish(id).index
+      let index = getDish(id).index;
 
       let newDishOrder = update(dishOrder, {
         $splice: [
           [index, 1],
           [atIndex, 0, id],
         ],
-      })
-      setDishOrder(newDishOrder)
+      });
+      setDishOrder(newDishOrder);
     },
     [dishOrder]
-  )
+  );
 
   const saveDishOrder = async () => {
     try {
-      await Client.updateDishOrder(menuContext.menuData.id, dishOrder)
+      await Client.updateDishOrder(menuContext.menuData.id, dishOrder);
     } catch {
-      refreshMenu()
+      refreshMenu();
     }
-  }
+  };
 
   const [{ isDragging }, drag] = useDrag({
     item: { type: "category", id: category.id, index },
     begin: () => {
-      setExpanded(false)
+      setExpanded(false);
     }, // close category before dragging
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end: (dropResult, monitor) => {
-      const { id: droppedId, index } = monitor.getItem()
-      const didDrop = monitor.didDrop()
+      const { id: droppedId, index } = monitor.getItem();
+      const didDrop = monitor.didDrop();
       if (!didDrop) {
-        moveCategory(droppedId, index)
+        moveCategory(droppedId, index);
       } else {
-        saveCategoryOrder() // save to backend
+        saveCategoryOrder(); // save to backend
       }
     },
-  })
+  });
 
   const [, drop] = useDrop({
     accept: ["dish", "category"],
     hover({ type, id: draggedId }) {
       if (type === "category") {
-        moveCategory(draggedId, index)
+        moveCategory(draggedId, index);
       }
     },
-  })
+  });
 
   let [
     open,
     openDeleteCategoryModal,
     closeDeleteCategoryModal,
-  ] = useDeleteCategoryModal(refreshMenu)
+  ] = useDeleteCategoryModal(refreshMenu);
 
   return (
     <>
       <StyledTableCategory
-        ref={node => drag(drop(node))}
+        ref={(node) => drag(drop(node))}
         className={expanded ? "expanded" : ""}
       >
         <CategoryHeaderRow>
@@ -446,7 +446,7 @@ const TableCategory = ({
             <img
               className="edit"
               src={EditIcon}
-              onClick={() => Navigation.category(category.id, menuId, false)}
+              onClick={() => Navigation.category(menuId, category.id)}
               alt="edit icon"
             />
             <img
@@ -481,8 +481,8 @@ const TableCategory = ({
         closeModal={closeDeleteCategoryModal}
       />
     </>
-  )
-}
+  );
+};
 
 const AddCategory = ({ onClick }) => {
   return (
@@ -492,8 +492,8 @@ const AddCategory = ({ onClick }) => {
         Add Menu Section...
       </TableCell>
     </CategoryHeaderRow>
-  )
-}
+  );
+};
 
 export {
   TableCell,
@@ -505,4 +505,4 @@ export {
   StyledTableCategory,
   TableCategory,
   AddCategory,
-}
+};

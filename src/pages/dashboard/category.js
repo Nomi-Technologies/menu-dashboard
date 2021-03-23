@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { navigate } from "gatsby"
+import React, { useState, useEffect } from "react";
+import { navigate } from "gatsby";
+import { Router } from "@reach/router";
 
-import Client from "../../util/client"
+import Client from "../../util/client";
 
-import { MenuFormLayout } from "../../components/dashboard/menu-table/menu-form-layout"
-import { ButtonPrimary, ButtonSecondary } from "../../components/basics"
+import { MenuFormLayout } from "../../components/dashboard/menu-table/menu-form-layout";
+import { ButtonPrimary, ButtonSecondary } from "../../components/basics";
 import {
   FormTitle,
   FormSubtitle,
@@ -12,53 +13,55 @@ import {
   FormTextArea,
   FormContainer,
   FormControls,
-} from "../../components/form"
-import Navigation from "../../util/navigation"
+} from "../../components/form";
+import Navigation from "../../util/navigation";
 
-const CategoryPage = ({ location }) => {
-  const { state = {} } = location
-  if (state === null) {
-    Navigation.allMenus()
+const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
+  let categoryId, create;
+  if (categoryIdOrCreate === "create") {
+    create = true;
+  } else {
+    create = false;
+    categoryId = categoryIdOrCreate;
   }
-  const { menuId, categoryId, create } = state
 
   let [categoryData, setCategoryData] = useState({
     menuId: menuId,
     name: "",
     description: "",
-  })
+  });
 
   const initializeForm = () => {
     if (!create) {
-      Client.getCategory(categoryId).then(res => {
-        setCategoryData(res.data)
-      })
+      Client.getCategory(categoryId).then((res) => {
+        setCategoryData(res.data);
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    initializeForm()
-  }, [])
+    initializeForm();
+  }, []);
 
   const validateCategoryData = () => {
-    return true
-  }
+    return true;
+  };
 
   const createOrUpdateCategory = async () => {
-    if (!validateCategoryData()) return
+    if (!validateCategoryData()) return;
 
     try {
       if (create) {
-        await Client.createCategory(categoryData)
+        await Client.createCategory(categoryData);
       } else {
-        await Client.updateCategory(categoryId, categoryData)
+        await Client.updateCategory(categoryId, categoryData);
       }
 
-      Navigation.table(menuId)
+      Navigation.table(menuId);
     } catch (error) {
-      console.log("could not create/update category")
+      console.log("could not create/update category");
     }
-  }
+  };
 
   return (
     <MenuFormLayout menuId={menuId}>
@@ -71,11 +74,11 @@ const CategoryPage = ({ location }) => {
           placeholder="Set section name..."
           value={categoryData.name}
           name="name"
-          onChange={event => {
+          onChange={(event) => {
             setCategoryData({
               ...categoryData,
               name: event.target.value,
-            })
+            });
           }}
         />
         <FormSubtitle>Description</FormSubtitle>
@@ -83,17 +86,17 @@ const CategoryPage = ({ location }) => {
           placeholder="Set description..."
           value={categoryData.description}
           name="description"
-          onChange={event => {
+          onChange={(event) => {
             setCategoryData({
               ...categoryData,
               description: event.target.value,
-            })
+            });
           }}
         />
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId)
+              Navigation.table(menuId);
             }}
           >
             Cancel
@@ -104,7 +107,20 @@ const CategoryPage = ({ location }) => {
         </FormControls>
       </FormContainer>
     </MenuFormLayout>
-  )
-}
+  );
+};
 
-export default CategoryPage
+const AllMenusPage = () => {
+  navigate("/dashboard/all-menus");
+
+  return <></>;
+};
+
+export default () => {
+  return (
+    <Router basepath="/dashboard/category">
+      <CategoryPage path="/:menuId/:categoryIdOrCreate" />
+      <AllMenusPage path="/" />
+    </Router>
+  );
+};

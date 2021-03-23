@@ -1,6 +1,6 @@
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 module.exports = {
   siteMetadata: {
@@ -44,8 +44,9 @@ module.exports = {
           `/dashboard/all-menus/*`,
           `/dashboard/table/*`,
           `/dashboard/dish/*`,
+          `/dashboard/category/*`,
         ],
       },
     },
   ],
-}
+};
