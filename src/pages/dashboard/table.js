@@ -1,20 +1,20 @@
-import React from "react"
-import { Router } from "@reach/router"
+import React from "react";
+import { Router } from "@reach/router";
 
-import styled from "styled-components"
-import { navigate } from "gatsby"
-import { FloatingMenuButton } from "../../components/floating-menu-button"
-import { MenuTable } from "../../components/dashboard/menu-table/menu-table"
-import { MenuTitle } from "../../components/dashboard/menu-table/menu-title"
-import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout"
-import Navigation from "../../util/navigation"
+import styled from "styled-components";
+import { navigate } from "gatsby";
+import { FloatingMenuButton } from "../../components/floating-menu-button";
+import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
+import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
+import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
+import Navigation from "../../util/navigation";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0 50px;
   padding-top: 30px;
-`
+`;
 
 const MenuTablePage = ({ menuId }) => {
   // TODO: fix menu title and floating menu button
@@ -26,14 +26,16 @@ const MenuTablePage = ({ menuId }) => {
         <FloatingMenuButton menuId={menuId} />
       </MenuContainer>
     </MenuTableLayout>
-  )
-}
+  );
+};
 
 const AllMenusPage = () => {
-  Navigation.allMenus()
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
 
-  return <></>
-}
+  return <></>;
+};
 
 export default () => {
   return (
@@ -41,5 +43,5 @@ export default () => {
       <MenuTablePage path="/:menuId" />
       <AllMenusPage path="/" />
     </Router>
-  )
-}
+  );
+};

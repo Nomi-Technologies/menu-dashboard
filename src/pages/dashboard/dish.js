@@ -240,7 +240,9 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
 };
 
 const AllMenusPage = () => {
-  Navigation.allMenus();
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
 
   return <></>;
 };

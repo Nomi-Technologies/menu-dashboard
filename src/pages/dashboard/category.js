@@ -111,7 +111,9 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
 };
 
 const AllMenusPage = () => {
-  Navigation.allMenus();
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
 
   return <></>;
 };
