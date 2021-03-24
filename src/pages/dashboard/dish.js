@@ -39,14 +39,15 @@ const Banner = styled.div`
   margin-bottom: 10px;
 `;
 
-const DishPage = ({ location }) => {
-  const { state = {} } = location;
-
-  if (state === null || state === {}) {
-    navigate("/dashboard/all-menus");
+const DishPage = ({ menuId, dishIdOrCreate }) => {
+  let dishId, create;
+  if (dishIdOrCreate === "create") {
+    create = true;
+  } else {
+    create = false;
+    dishId = dishIdOrCreate;
   }
 
-  const { menuId, dishId, create } = state;
   const [dishData, setDishData] = useState({
     name: "",
     description: "",
