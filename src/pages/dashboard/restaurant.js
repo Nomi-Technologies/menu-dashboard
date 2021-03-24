@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 
-import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout"
-import { Container } from "../../components/grid"
-import PopulateRestaurant from "../../components/dashboard/profile/populate-restaurant-info"
+import SidebarLayout from "../../components/dashboard/sidebar/sidebar-layout";
+import { Container } from "../../components/grid";
+import PopulateRestaurant from "../../components/dashboard/profile/populate-restaurant-info";
 
-import corner from "../../images/corner.png"
-import { Link } from "gatsby"
+import corner from "../../images/corner.png";
+import { Link } from "gatsby";
 
 import {
   InfoTitle,
@@ -17,7 +17,7 @@ import {
   Orange,
   SideBar,
   GreyBar,
-} from "../../components/dashboard/profile/account"
+} from "../../components/dashboard/profile/account";
 
 let styles = {
   corner: {
@@ -26,7 +26,7 @@ let styles = {
     left: "0px",
     bottom: "0px",
   },
-}
+};
 
 const Restaurant = () => (
   <SidebarLayout>
@@ -39,6 +39,6 @@ const Restaurant = () => (
       </Container>
     </Wrapper>
   </SidebarLayout>
-)
+);
 
-export default Restaurant
+export default Restaurant;

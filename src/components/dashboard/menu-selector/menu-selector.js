@@ -1,20 +1,20 @@
-import React, { useEffect, useState }  from 'react';
-import { navigate } from 'gatsby';
-import styled from "styled-components"
+import React, { useEffect, useState } from "react";
+import { navigate } from "gatsby";
+import styled from "styled-components";
 
-import Client from "../../../util/client"
-import { MenuCreator } from "../menu-creator/menu-creator"
+import Client from "../../../util/client";
+import { MenuCreator } from "../menu-creator/menu-creator";
 
 let StyledMenuSelector = styled.div`
-    width: 100%;
-`
+  width: 100%;
+`;
 
 const Menus = styled.div`
-    .menu-creator {
-        display: inline-block;
-        width: auto;
-    }
-`
+  .menu-creator {
+    display: inline-block;
+    width: auto;
+  }
+`;
 
 let ActiveIndicator = styled.div`
   position: absolute;
@@ -23,54 +23,59 @@ let ActiveIndicator = styled.div`
   height: 4px;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
-  background-color: #628DEB;
+  background-color: #628deb;
   width: 100%;
-`
+`;
 
 const MenuTab = styled.div`
-    position: relative;
-    text-transform: uppercase;
-    font-size: 14px;
-    line-height: 12px;
-    font-family: HK Grotesk Regular;
-    font-style: normal;
-    font-weight: bold;
-    font-feature-settings: 'cpsp' on;
-    letter-spacing: 0.1em;
-    display: inline-block;
-    padding-bottom: 15px;
-    margin-right: 50px;
-    box-sizing: border-box;
-    border-radius: 5px;   
-    cursor: pointer;
-    color: ${ props => props.selected ? "#628DEB" : "#8A9DB7"};
-    text-align: center;
-`
+  position: relative;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 12px;
+  font-family: HK Grotesk Regular;
+  font-style: normal;
+  font-weight: bold;
+  font-feature-settings: "cpsp" on;
+  letter-spacing: 0.1em;
+  display: inline-block;
+  padding-bottom: 15px;
+  margin-right: 50px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  cursor: pointer;
+  color: ${(props) => (props.selected ? "#628DEB" : "#8A9DB7")};
+  text-align: center;
+`;
 
 const MenuSelector = ({ menuId, menus }) => {
-    const selectMenu = (menuId) => {
-        navigate('/dashboard/table', { state: { menuId: menuId } })
-    }
-    
-    return (
-        <StyledMenuSelector>
-            <Menus>
-                <MenuTab onClick={ () => navigate("/dashboard/all-menus")} selected={'all-menus' === menuId}>
-                    See All Menus
-                    { menuId === 'all-menus' ? <ActiveIndicator/> : "" }
-                </MenuTab>
-                {
-                    menus?.map((item) => (
-                            <MenuTab onClick={ () => selectMenu(item.id) } selected={ item.id === menuId } key={ item.id }>
-                                { item.name }
-                                { item.id === menuId ? <ActiveIndicator/> : "" }
-                            </MenuTab>
-                    ))
-                }
-                <MenuCreator className="menu-creator"/>
-            </Menus>
-        </StyledMenuSelector>
-    )
-}
+  const selectMenu = (menuId) => {
+    navigate("/dashboard/table", { state: { menuId: menuId } });
+  };
 
-export { MenuSelector }
+  return (
+    <StyledMenuSelector>
+      <Menus>
+        <MenuTab
+          onClick={() => navigate("/dashboard/all-menus")}
+          selected={"all-menus" === menuId}
+        >
+          See All Menus
+          {menuId === "all-menus" ? <ActiveIndicator /> : ""}
+        </MenuTab>
+        {menus?.map((item) => (
+          <MenuTab
+            onClick={() => selectMenu(item.id)}
+            selected={item.id === menuId}
+            key={item.id}
+          >
+            {item.name}
+            {item.id === menuId ? <ActiveIndicator /> : ""}
+          </MenuTab>
+        ))}
+        <MenuCreator className="menu-creator" />
+      </Menus>
+    </StyledMenuSelector>
+  );
+};
+
+export { MenuSelector };
