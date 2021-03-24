@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 
-import styled from "styled-components"
-import EditIcon from "../../../assets/img/edit-orange.png"
-import HeartIcon from "../../../assets/img/heart-active.png"
-import HeartEmptyIcon from "../../../assets/img/heart-inactive.png"
-import { FloatingMenu } from "../../dashboard/floating-menu"
+import styled from "styled-components";
+import EditIcon from "../../../assets/img/edit-orange.png";
+import HeartIcon from "../../../assets/img/heart-active.png";
+import HeartEmptyIcon from "../../../assets/img/heart-inactive.png";
+import { FloatingMenu } from "../../dashboard/floating-menu";
 
-import Client from "../../../util/client"
-import { navigate } from "gatsby"
-import Navigation from "../../../util/navigation"
+import Client from "../../../util/client";
+import { navigate } from "gatsby";
+import Navigation from "../../../util/navigation";
 
 const StyledMenuCard = styled.div`
   background: #ffffff;
@@ -32,7 +32,7 @@ const StyledMenuCard = styled.div`
     display: flex;
     align-items: center;
   }
-`
+`;
 
 const MenuName = styled.div`
   float: left;
@@ -42,14 +42,14 @@ const MenuName = styled.div`
   margin-left: 20px;
   cursor: pointer;
   width: 50%;
-`
+`;
 
 const MenuCard = ({ menuId, name }) => {
-  const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false)
+  const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
 
   const toggleFloatingMenu = () => {
-    setIsFloatingMenuOpen(!isFloatingMenuOpen)
-  }
+    setIsFloatingMenuOpen(!isFloatingMenuOpen);
+  };
 
   return (
     <>
@@ -75,7 +75,7 @@ const MenuCard = ({ menuId, name }) => {
         menuId={menuId}
       />
     </>
-  )
-}
+  );
+};
 
-export { MenuCard }
+export { MenuCard };

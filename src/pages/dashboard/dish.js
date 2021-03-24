@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from "gatsby";
 import { Router } from "@reach/router";
+import styled from "styled-components";
 
 import Client from "../../util/client";
 
@@ -29,15 +30,23 @@ import {
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
 
-const DishPage = ({ menuId, dishIdOrCreate }) => {
-  let dishId, create;
-  if (dishIdOrCreate === "create") {
-    create = true;
-  } else {
-    create = false;
-    dishId = dishIdOrCreate;
+const Banner = styled.div`
+  background: url(${({ src }) => src});
+  background-size: cover;
+  width: 300px;
+  height: 200px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const DishPage = ({ location }) => {
+  const { state = {} } = location;
+
+  if (state === null || state === {}) {
+    navigate("/dashboard/all-menus");
   }
 
+  const { menuId, dishId, create } = state;
   const [dishData, setDishData] = useState({
     name: "",
     description: "",
@@ -50,6 +59,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [dishImage, setDishImage] = useState(null);
+  const [selectedDishImageURL, setSelectedDishImageURL] = useState(null);
   const modificationModalControls = useModificationModal();
 
   const updateCategorySelection = (categoryId) => {
@@ -110,6 +120,11 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         delete dish["Modification"];
         setDishData(dish);
       });
+      Client.getDishImage(dishId).then((res) => {
+        if (res.config.url) {
+          setSelectedDishImageURL(res.config.url);
+        }
+      });
     }
   };
 
@@ -138,8 +153,14 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     try {
       if (create) {
         await Client.createDish(postDishData);
+        if (dishImage) {
+          await Client.upsertDishImage(dishId, dishImage);
+        }
       } else {
         await Client.updateDish(dishId, postDishData);
+        if (dishImage) {
+          await Client.upsertDishImage(dishId, dishImage);
+        }
       }
 
       Navigation.table(menuId);
@@ -212,8 +233,18 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
           diets={dishData.Diets}
           setDiets={setDishDiets}
         ></DishDietForm>
-        {/* <FormSubtitle>Image (Optional)</FormSubtitle>
-                <FileDrop acceptedFileTypes={ ['.png', '.jpg', '.jpeg', ] } setFile={ setFile } setErrorMessage={ setErrorMessage } clearFile={ clearFile }/> */}
+        <FormSubtitle>Image (Optional)</FormSubtitle>
+        {selectedDishImageURL ? (
+          <>
+            <Banner src={selectedDishImageURL} /> <div>Replace Image:</div>{" "}
+          </>
+        ) : null}
+        <FileDrop
+          acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
+          setFile={setFile}
+          setErrorMessage={setErrorMessage}
+          clearFile={clearFile}
+        />
 
         <FormTitle>Dish Modifiers</FormTitle>
         <ModificationForm

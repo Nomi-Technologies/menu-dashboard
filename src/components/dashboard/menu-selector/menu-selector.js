@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react"
-import { navigate } from "gatsby"
-import styled from "styled-components"
+import React, { useEffect, useState } from "react";
+import { navigate } from "gatsby";
+import styled from "styled-components";
 
-import Client from "../../../util/client"
-import { MenuCreator } from "../menu-creator/menu-creator"
-import Navigation from "../../../util/navigation"
+import Client from "../../../util/client";
+import { MenuCreator } from "../menu-creator/menu-creator";
+import Navigation from "../../../util/navigation";
 
 let StyledMenuSelector = styled.div`
   width: 100%;
-`
+`;
 
 const Menus = styled.div`
   .menu-creator {
     display: inline-block;
     width: auto;
   }
-`
+`;
 
 let ActiveIndicator = styled.div`
   position: absolute;
@@ -26,7 +26,7 @@ let ActiveIndicator = styled.div`
   border-top-left-radius: 4px;
   background-color: #628deb;
   width: 100%;
-`
+`;
 
 const MenuTab = styled.div`
   position: relative;
@@ -44,9 +44,9 @@ const MenuTab = styled.div`
   box-sizing: border-box;
   border-radius: 5px;
   cursor: pointer;
-  color: ${props => (props.selected ? "#628DEB" : "#8A9DB7")};
+  color: ${(props) => (props.selected ? "#628DEB" : "#8A9DB7")};
   text-align: center;
-`
+`;
 
 const MenuSelector = ({ menuId, menus }) => {
   return (
@@ -59,7 +59,7 @@ const MenuSelector = ({ menuId, menus }) => {
           See All Menus
           {menuId === "all-menus" ? <ActiveIndicator /> : ""}
         </MenuTab>
-        {menus?.map(item => (
+        {menus?.map((item) => (
           <MenuTab
             onClick={() => Navigation.table(item.id)}
             selected={item.id === menuId}
@@ -72,7 +72,7 @@ const MenuSelector = ({ menuId, menus }) => {
         <MenuCreator className="menu-creator" />
       </Menus>
     </StyledMenuSelector>
-  )
-}
+  );
+};
 
-export { MenuSelector }
+export { MenuSelector };

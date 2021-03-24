@@ -1,90 +1,101 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 
-import { MenuContext } from "./menu-context" 
-import { FormInput } from "../../form"
+import { MenuContext } from "./menu-context";
+import { FormInput } from "../../form";
 
-import styled from "styled-components"
-import CheckIcon from "../../../assets/img/check-orange.png"
-import EditIcon from "../../../assets/img/edit-icon.png"
-import Client from "../../../util/client"
+import styled from "styled-components";
+import CheckIcon from "../../../assets/img/check-orange.png";
+import EditIcon from "../../../assets/img/edit-icon.png";
+import Client from "../../../util/client";
 
 let StyledMenuTitle = styled.div`
-    display: flex; 
-    align-items: center;
-    margin: 16px;
-    margin-left: 0;
+  display: flex;
+  align-items: center;
+  margin: 16px;
+  margin-left: 0;
 
-    #editBox {
-        width: auto;
-        margin-bottom: 0;
-        padding: 10px;
-    }
+  #editBox {
+    width: auto;
+    margin-bottom: 0;
+    padding: 10px;
+  }
 
-    .checkIcon {
-        width: 20px;
-        display: inline-block;
-        margin-left: 16px;
-        cursor: pointer;
-    }
+  .checkIcon {
+    width: 20px;
+    display: inline-block;
+    margin-left: 16px;
+    cursor: pointer;
+  }
 
+  .pencilIcon {
+    width: 15px;
+    margin-left: 16px;
+    cursor: pointer;
+    display: none;
+  }
+
+  &:hover {
     .pencilIcon {
-        width: 15px;
-        margin-left: 16px;
-        cursor: pointer;
-        display: none;
+      display: inline-block;
     }
+  }
 
-    &:hover{
-        .pencilIcon {
-            display: inline-block;
-        }
-    }
-
-    .menuTitle {
-        float: left;
-        cursor: pointer;
-        margin: 0;
-    }
-`
+  .menuTitle {
+    float: left;
+    cursor: pointer;
+    margin: 0;
+  }
+`;
 
 let MenuTitle = () => {
-    let menuContext = useContext(MenuContext)
-    let { menu, refreshMenu } = menuContext
-    
-    let [edit, setEdit] = useState(false)
-    let [newName, setNewName] = useState(menu?.name)
+  let menuContext = useContext(MenuContext);
+  let { menu, refreshMenu } = menuContext;
 
-    let enableEditing = () => {
-        setNewName(menu.name)   
-        setEdit(true);
+  let [edit, setEdit] = useState(false);
+  let [newName, setNewName] = useState(menu?.name);
+
+  let enableEditing = () => {
+    setNewName(menu.name);
+    setEdit(true);
+  };
+
+  let submitChange = async () => {
+    // call api
+    // refresh menu
+    try {
+      await Client.updateMenu(menu.id, { name: newName });
+      refreshMenu();
+    } finally {
+      setEdit(false);
     }
+  };
 
-    let submitChange = async () => {
-        // call api
-        // refresh menu
-        try {
-            await Client.updateMenu(menu.id, {name: newName})
-            refreshMenu()
-        } finally {
-            setEdit(false)
-        }
-    }
-
-    return(
-        <StyledMenuTitle>
-            { edit ? 
-                <>
-                    <FormInput type='text' value={ newName } id='editBox' onChange={(event) => { setNewName(event.target.value) } }/>
-                    <img className='checkIcon' src={CheckIcon} onClick={ submitChange }/>    
-                </> :
-                <>
-                    <h1 className='menuTitle' onClick={ enableEditing }> { menu?.name } </h1>
-                    <img src={EditIcon} className='pencilIcon'/>
-                </> 
-            }
-        </StyledMenuTitle>
-    )
-}
+  return (
+    <StyledMenuTitle>
+      {edit ? (
+        <>
+          <FormInput
+            type="text"
+            value={newName}
+            id="editBox"
+            onChange={(event) => {
+              setNewName(event.target.value);
+            }}
+          />
+          <img className="checkIcon" src={CheckIcon} onClick={submitChange} />
+        </>
+      ) : (
+        <>
+          <h1 className="menuTitle" onClick={enableEditing}>
+            {" "}
+            {menu?.name}{" "}
+          </h1>
+          <img src={EditIcon} className="pencilIcon" />
+        </>
+      )}
+    </StyledMenuTitle>
+  );
+};
 
 // class MenuTitle extends React.Component {
 //     constructor(props)  {
@@ -131,8 +142,8 @@ let MenuTitle = () => {
 //                 <StyledMenuTitle>
 //                     <form className='changeNameForm' onSubmit={this.changeMenuName}>
 //                         <input type='text' value={this.state.textBoxContents} id='editBox' ref={this.textInput}
-//                             onChange={(event) => { this.setState({ textBoxContents: event.target.value }) }} 
-//                             onFocus={(e) => { e.target.select() }} 
+//                             onChange={(event) => { this.setState({ textBoxContents: event.target.value }) }}
+//                             onFocus={(e) => { e.target.select() }}
 //                         />
 //                         <input type='image' alt="Submit" className='checkIcon' src={CheckIcon} />
 //                     </form>
@@ -143,7 +154,7 @@ let MenuTitle = () => {
 //                 <StyledMenuTitle>
 //                     <div>
 //                         <h1 className='menuTitle'> {this.props.menuName} </h1>
-//                         <img src={EditIcon} className='pencilIcon' onClick={ () => { 
+//                         <img src={EditIcon} className='pencilIcon' onClick={ () => {
 //                             this.setState({
 //                                 editingMenuName: true,
 //                             })
@@ -156,4 +167,4 @@ let MenuTitle = () => {
 
 // }
 
-export {MenuTitle}
+export { MenuTitle };

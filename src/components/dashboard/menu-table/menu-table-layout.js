@@ -1,73 +1,73 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 
-import SidebarLayout from "../../dashboard/sidebar/sidebar-layout"
-import { Container, Column } from "../../grid"
-import { navigate } from "gatsby"
-import Client from "../../../util/client"
-import { MenuContext } from "./menu-context"
-import { ModificationContext } from "./modification-context"
+import SidebarLayout from "../../dashboard/sidebar/sidebar-layout";
+import { Container, Column } from "../../grid";
+import { navigate } from "gatsby";
+import Client from "../../../util/client";
+import { MenuContext } from "./menu-context";
+import { ModificationContext } from "./modification-context";
 
-import { MenuSelector } from "../../dashboard/menu-selector/menu-selector"
-import TopBar from "../../top-bar"
-import Navigation from "../../../util/navigation"
+import { MenuSelector } from "../../dashboard/menu-selector/menu-selector";
+import TopBar from "../../top-bar";
+import Navigation from "../../../util/navigation";
 
 const MenuTableLayout = ({ menuId, children }) => {
-  let [menus, setMenus] = useState([])
-  const [currentMenu, setCurrentMenu] = useState(null)
-  const [modificationsById, setModificationsById] = useState({})
+  let [menus, setMenus] = useState([]);
+  const [currentMenu, setCurrentMenu] = useState(null);
+  const [modificationsById, setModificationsById] = useState({});
 
   const getAllMenus = async () => {
-    Client.getAllMenus().then(res => {
-      setMenus(res.data)
-    })
-  }
+    Client.getAllMenus().then((res) => {
+      setMenus(res.data);
+    });
+  };
 
-  const getMenu = async menuId => {
-    await Client.getMenu(menuId).then(res => {
-      setCurrentMenu(res.data)
-    })
-  }
+  const getMenu = async (menuId) => {
+    await Client.getMenu(menuId).then((res) => {
+      setCurrentMenu(res.data);
+    });
+  };
 
   const refreshMenu = async () => {
-    await getAllMenus()
+    await getAllMenus();
 
     if (menuId !== null && menuId !== undefined && menuId !== "all-menus") {
-      setCurrentMenu({})
-      await getMenu(menuId)
+      setCurrentMenu({});
+      await getMenu(menuId);
     } else {
       if (menuId !== "all-menus") {
-        Navigation.allMenus()
+        Navigation.allMenus();
       }
     }
-  }
+  };
 
   let menuContext = {
     menu: currentMenu,
     refreshMenu: refreshMenu,
-  }
+  };
 
   const refreshModifications = async () => {
-    const { data } = await Client.getAllModifications()
+    const { data } = await Client.getAllModifications();
     let modsLUT = data.reduce((accumulator, value) => {
-      accumulator[value.id] = value
-      return accumulator
-    }, {})
-    setModificationsById(modsLUT)
-  }
+      accumulator[value.id] = value;
+      return accumulator;
+    }, {});
+    setModificationsById(modsLUT);
+  };
 
   let modificationContext = {
     modifications: modificationsById,
     refreshModifications,
-  }
+  };
 
   useEffect(() => {
-    refreshMenu()
+    refreshMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuId])
+  }, [menuId]);
 
   useEffect(() => {
-    refreshModifications()
-  }, [])
+    refreshModifications();
+  }, []);
 
   return (
     <SidebarLayout>
@@ -84,7 +84,7 @@ const MenuTableLayout = ({ menuId, children }) => {
         </ModificationContext.Provider>
       </MenuContext.Provider>
     </SidebarLayout>
-  )
-}
+  );
+};
 
-export default MenuTableLayout
+export default MenuTableLayout;
