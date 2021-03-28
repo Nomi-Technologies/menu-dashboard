@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from "gatsby";
+import { Router } from "@reach/router";
 
 import Client from "../../util/client";
 
@@ -15,12 +16,14 @@ import {
 } from "../../components/form";
 import Navigation from "../../util/navigation";
 
-const CategoryPage = ({ location }) => {
-  const { state = {} } = location;
-  if (state === null) {
-    navigate("/dashboard/all-menus");
+const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
+  let categoryId, create;
+  if (categoryIdOrCreate === "create") {
+    create = true;
+  } else {
+    create = false;
+    categoryId = categoryIdOrCreate;
   }
-  const { menuId, categoryId, create } = state;
 
   let [categoryData, setCategoryData] = useState({
     menuId: menuId,
@@ -54,7 +57,7 @@ const CategoryPage = ({ location }) => {
         await Client.updateCategory(categoryId, categoryData);
       }
 
-      navigate("/dashboard/table", { state: { menuId } });
+      Navigation.table(menuId);
     } catch (error) {
       console.log("could not create/update category");
     }
@@ -107,4 +110,19 @@ const CategoryPage = ({ location }) => {
   );
 };
 
-export default CategoryPage;
+const AllMenusPage = () => {
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
+
+  return <></>;
+};
+
+export default () => {
+  return (
+    <Router basepath="/dashboard/category">
+      <CategoryPage path="/:menuId/:categoryIdOrCreate" />
+      <AllMenusPage path="/" />
+    </Router>
+  );
+};

@@ -8,6 +8,7 @@ import { FloatingMenu } from "../../dashboard/floating-menu";
 
 import Client from "../../../util/client";
 import { navigate } from "gatsby";
+import Navigation from "../../../util/navigation";
 
 const StyledMenuCard = styled.div`
   background: #ffffff;
@@ -50,14 +51,10 @@ const MenuCard = ({ menuId, name }) => {
     setIsFloatingMenuOpen(!isFloatingMenuOpen);
   };
 
-  const navigateToMenu = () => {
-    navigate("/dashboard/table", { state: { menuId: menuId } });
-  };
-
   return (
     <>
       <StyledMenuCard>
-        <MenuName onClick={navigateToMenu}>{name}</MenuName>
+        <MenuName onClick={() => Navigation.table(menuId)}>{name}</MenuName>
         <div className="controls">
           {/* {
                         props.isFavorited ?

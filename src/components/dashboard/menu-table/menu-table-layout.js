@@ -9,6 +9,7 @@ import { ModificationContext } from "./modification-context";
 
 import { MenuSelector } from "../../dashboard/menu-selector/menu-selector";
 import TopBar from "../../top-bar";
+import Navigation from "../../../util/navigation";
 
 const MenuTableLayout = ({ menuId, children }) => {
   let [menus, setMenus] = useState([]);
@@ -35,7 +36,7 @@ const MenuTableLayout = ({ menuId, children }) => {
       await getMenu(menuId);
     } else {
       if (menuId !== "all-menus") {
-        navigate("/dashboard/all-menus");
+        Navigation.allMenus();
       }
     }
   };

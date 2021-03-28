@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Router } from "@reach/router";
+
 import styled from "styled-components";
 import { navigate } from "gatsby";
 import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
+import Navigation from "../../util/navigation";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -13,14 +16,7 @@ let MenuContainer = styled.div`
   padding-top: 30px;
 `;
 
-const MenuTablePage = ({ location }) => {
-  const { state = {} } = location;
-  if (state === null) {
-    navigate("/dashboard/all-menus/");
-  }
-
-  const { menuId } = state;
-
+const MenuTablePage = ({ menuId }) => {
   // TODO: fix menu title and floating menu button
   return (
     <MenuTableLayout menuId={menuId}>
@@ -33,4 +29,19 @@ const MenuTablePage = ({ location }) => {
   );
 };
 
-export default MenuTablePage;
+const AllMenusPage = () => {
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
+
+  return <></>;
+};
+
+export default () => {
+  return (
+    <Router basepath="/dashboard/table">
+      <MenuTablePage path="/:menuId" />
+      <AllMenusPage path="/" />
+    </Router>
+  );
+};

@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Client from "../../../util/client";
 import { MenuCreator } from "../menu-creator/menu-creator";
+import Navigation from "../../../util/navigation";
 
 let StyledMenuSelector = styled.div`
   width: 100%;
@@ -48,15 +49,11 @@ const MenuTab = styled.div`
 `;
 
 const MenuSelector = ({ menuId, menus }) => {
-  const selectMenu = (menuId) => {
-    navigate("/dashboard/table", { state: { menuId: menuId } });
-  };
-
   return (
     <StyledMenuSelector>
       <Menus>
         <MenuTab
-          onClick={() => navigate("/dashboard/all-menus")}
+          onClick={() => Navigation.allMenus()}
           selected={"all-menus" === menuId}
         >
           See All Menus
@@ -64,7 +61,7 @@ const MenuSelector = ({ menuId, menus }) => {
         </MenuTab>
         {menus?.map((item) => (
           <MenuTab
-            onClick={() => selectMenu(item.id)}
+            onClick={() => Navigation.table(item.id)}
             selected={item.id === menuId}
             key={item.id}
           >

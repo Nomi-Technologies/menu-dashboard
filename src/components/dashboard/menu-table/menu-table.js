@@ -340,7 +340,7 @@ const MenuTable = () => {
             <>
               <ButtonPrimary
                 onClick={() => {
-                  Navigation.dish(null, menu.id, true);
+                  Navigation.dish(menu.id);
                 }}
                 showEditMode={showEditMode}
                 role="button"
@@ -363,7 +363,7 @@ const MenuTable = () => {
         {renderTableContents()}
         <Table.AddCategory
           onClick={() => {
-            Navigation.category(null, menu.id, true);
+            Navigation.category(menu.id);
           }}
         />
       </StyledMenuTable>

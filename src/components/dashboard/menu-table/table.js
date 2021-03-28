@@ -201,7 +201,7 @@ const ItemRow = ({
           <img
             className="edit"
             src={EditIcon}
-            onClick={() => Navigation.dish(dish.id, menuId, false)}
+            onClick={() => Navigation.dish(menuId, dish.id)}
             alt="edit icon"
           />
           <img
@@ -446,7 +446,7 @@ const TableCategory = ({
             <img
               className="edit"
               src={EditIcon}
-              onClick={() => Navigation.category(category.id, menuId, false)}
+              onClick={() => Navigation.category(menuId, category.id)}
               alt="edit icon"
             />
             <img

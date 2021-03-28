@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from "gatsby";
+import { Router } from "@reach/router";
 import styled from "styled-components";
 
 import Client from "../../util/client";
@@ -38,14 +39,15 @@ const Banner = styled.div`
   margin-bottom: 10px;
 `;
 
-const DishPage = ({ location }) => {
-  const { state = {} } = location;
-
-  if (state === null || state === {}) {
-    navigate("/dashboard/all-menus");
+const DishPage = ({ menuId, dishIdOrCreate }) => {
+  let dishId, create;
+  if (dishIdOrCreate === "create") {
+    create = true;
+  } else {
+    create = false;
+    dishId = dishIdOrCreate;
   }
 
-  const { menuId, dishId, create } = state;
   const [dishData, setDishData] = useState({
     name: "",
     description: "",
@@ -162,7 +164,7 @@ const DishPage = ({ location }) => {
         }
       }
 
-      navigate("/dashboard/table", { state: { menuId } });
+      Navigation.table(menuId);
     } catch (error) {
       console.log("could not create dish");
     }
@@ -269,4 +271,19 @@ const DishPage = ({ location }) => {
   );
 };
 
-export default DishPage;
+const AllMenusPage = () => {
+  if (typeof window !== `undefined`) {
+    Navigation.allMenus();
+  }
+
+  return <></>;
+};
+
+export default () => {
+  return (
+    <Router basepath="/dashboard/dish">
+      <DishPage path="/:menuId/:dishIdOrCreate" />
+      <AllMenusPage path="/" />
+    </Router>
+  );
+};

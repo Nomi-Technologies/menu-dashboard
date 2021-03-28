@@ -7,6 +7,7 @@ import { FormInput } from "../form";
 import Client from "../../util/client";
 import { saveUserToken } from "../../util/auth";
 import useEventListener from "@use-it/event-listener";
+import Navigation from "../../util/navigation";
 
 const ForgotPassword = styled(Link)`
   color: rgba(242, 153, 74, 0.9);
@@ -49,7 +50,7 @@ const LoginForm = () => {
       .then((response) => {
         saveUserToken(response.data["token"]);
         setLoginError(false);
-        navigate("/dashboard/all-menus");
+        Navigation.allMenus();
       })
       .catch((response) => {
         setLoginError(true);
