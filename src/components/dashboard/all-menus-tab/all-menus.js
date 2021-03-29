@@ -23,7 +23,7 @@ const NoMenuText = styled.h3`
 
 const Grid = styled.div`
   margin-left: 40px;
-  margin-top: 60px;
+  margin-top: 20px;
   max-width: 1400px;
 `;
 
