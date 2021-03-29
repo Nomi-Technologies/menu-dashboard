@@ -31,10 +31,6 @@ const MenuTablePage = ({ menuId }) => {
 };
 
 const AllMenusPage = () => {
-  // if (typeof window !== `undefined`) {
-  //   Navigation.allMenus();
-  // }
-
   return (
     <MenuTableLayout menuId="all-menus">
       <AllMenus />
