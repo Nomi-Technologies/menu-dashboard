@@ -20,6 +20,7 @@ const StyledMenuCard = styled.div`
   display: flex;
   width: 325px;
   padding: 20px;
+  margin: 8px;
 
   img {
     margin: 10px;

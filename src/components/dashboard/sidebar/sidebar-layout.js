@@ -108,7 +108,7 @@ let StyledSettingsSidebarItem = styled.div`
   width: 100%;
   padding: 10px 0;
   font-family: HK Grotesk Regular;
-  color: ${Colors.ORANGE};
+  color: ${Colors.GRAY};
   cursor: pointer;
 `;
 
@@ -196,7 +196,7 @@ const SidebarLayout = ({ children }) => {
 
           <SidebarItemList>
             <SidebarItem
-              destination="/dashboard/all-menus"
+              destination="/dashboard/table"
               title="Menu Management"
               icon={MenuIcon}
               sidebarOpen={sidebarOpen}

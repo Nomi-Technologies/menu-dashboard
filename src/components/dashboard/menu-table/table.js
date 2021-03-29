@@ -257,9 +257,9 @@ const CategoryHeaderRow = styled(TableRow)`
 
   .collapse-icon {
     position: absolute;
-    height: 35px;
-    left: 10px;
-    top: 8px;
+    height: 8px;
+    left: 15px;
+    top: 22px;
     cursor: pointer;
   }
 

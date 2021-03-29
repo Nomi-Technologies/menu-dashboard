@@ -8,6 +8,7 @@ import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
 import Navigation from "../../util/navigation";
+import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -30,11 +31,15 @@ const MenuTablePage = ({ menuId }) => {
 };
 
 const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
+  // if (typeof window !== `undefined`) {
+  //   Navigation.allMenus();
+  // }
 
-  return <></>;
+  return (
+    <MenuTableLayout menuId="all-menus">
+      <AllMenus />
+    </MenuTableLayout>
+  );
 };
 
 export default () => {
