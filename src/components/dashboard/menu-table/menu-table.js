@@ -12,6 +12,7 @@ import CancelIcon from "../../../assets/img/delete-icon.png"
 import { Button, ButtonPrimary, ButtonSecondary, ButtonSpecial, ButtonDelete } from "../../basics"
 import * as Table from "./table"
 import { MenuContext } from './menu-context';
+import { SearchBox } from './search-box'
 
 const StyledMenuTable = styled.div`
     width: 100%;
@@ -51,10 +52,10 @@ const MenuControls = styled.div`
     }
 
     .submitSearch {
-        top: 25%;
+        top: 0px;
         position: absolute;
-        left: 100%;
-        height: 50%;
+        left: 98%;
+        height: 45%;
     }
 
     .buttons {
@@ -85,6 +86,7 @@ const MenuTable = () => {
     let menuTableContext = useContext(MenuContext)
     let refreshMenu = menuTableContext?.refreshMenu
     let menu = menuTableContext?.menu
+    console.log(menu)
 
     const [menuData, setMenuData] = useState({}) // includes parsed menuData
 
@@ -96,9 +98,11 @@ const MenuTable = () => {
     const [selectedDishes, setSelectedDishes] = useAsyncState([]);
     const [toDeleteType, setToDeleteType] = useAsyncState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [searchBoxValue, setSearchBoxValue] = useState('');
-    const [searchBoxFocused, setSearchBoxFocused] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
+
+
+    const [searchBoxFocused, setSearchBoxFocused] = useState(false);
+    const [searchBoxValue, setSearchBoxValue] = useState('');
 
     const toggleEditDishForm = (dish) => {
         // if (typeof dish !== 'undefined') setSelectedDish(dish)
@@ -162,13 +166,15 @@ const MenuTable = () => {
         e.preventDefault();
         e.target.firstChild.blur();
         setSearchBoxFocused(false)
+        setIsSearching(true);
+
         if (searchBoxValue.trim() === '') {
             setIsSearching(false);
         } else {
-            Client.searchDishes(searchBoxValue, menu?.menuId)
+            Client.searchDishes(searchBoxValue, menu?.id)
             .then((res) => {
                 setSearchResults(res.data);
-                setIsSearching(true);
+                setIsSearching(false);
             })
             .catch((err) => {
                 console.error("error searching for dishes");
@@ -292,7 +298,7 @@ const MenuTable = () => {
                 <div className='buttons'>
                     {/* <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial> */}
                 </div>
-                {/* <form onSubmit={handleSearch} className='searchForm'>
+                <form onSubmit={handleSearch} className='searchForm'>
                     <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
                         onChange={(e) => setSearchBoxValue(e.target.value)}
                         onFocus={(e) => {
@@ -310,7 +316,14 @@ const MenuTable = () => {
                         <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
                     }
 
-                </form> */}
+                </form>
+
+                {/* <SearchBox setIsSearching={setIsSearching} setSearchResults={setSearchResults} menu={menu} isSearching={isSearching}></SearchBox> */}
+
+
+
+
+
                 <div className='buttons right-controls'>
                     { 
                         showEditMode ? <>
