@@ -1,19 +1,19 @@
-import { navigate } from 'gatsby';
+import { navigate } from "gatsby";
 
 export default class Navigation {
-    static allMenus = () => {
-        navigate('/dashboard/all-menus')
-    }
+  static allMenus = () => {
+    navigate("/dashboard/table");
+  };
 
-    static table = (menuId) => {
-        navigate('/dashboard/table', { state: { menuId } })
-    }
+  static table = (menuId) => {
+    navigate(`/dashboard/table/${menuId}`);
+  };
 
-    static dish = (dishId, menuId, create) => {
-        navigate('/dashboard/dish', { state: { dishId, menuId, create } })
-    }
+  static dish = (menuId, dishId) => {
+    navigate(`/dashboard/dish/${menuId}/${dishId ?? "create"}`);
+  };
 
-    static category = (categoryId, menuId, create) => {
-        navigate('/dashboard/category', { state: { categoryId, menuId, create } })
-    }
-};
+  static category = (menuId, categoryId) => {
+    navigate(`/dashboard/category/${menuId}/${categoryId ?? "create"}`);
+  };
+}
