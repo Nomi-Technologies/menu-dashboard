@@ -40,7 +40,7 @@ const AllMenusPage = () => {
 
 export default () => {
   return (
-    <Router basepath="/dashboard/table">
+    <Router>
       <MenuTablePage path="/:menuId" />
       <AllMenusPage path="/" />
     </Router>

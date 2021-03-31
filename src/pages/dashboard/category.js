@@ -120,7 +120,7 @@ const AllMenusPage = () => {
 
 export default () => {
   return (
-    <Router basepath="/dashboard/category">
+    <Router>
       <CategoryPage path="/:menuId/:categoryIdOrCreate" />
       <AllMenusPage path="/" />
     </Router>

@@ -281,7 +281,7 @@ const AllMenusPage = () => {
 
 export default () => {
   return (
-    <Router basepath="/dashboard/dish">
+    <Router>
       <DishPage path="/:menuId/:dishIdOrCreate" />
       <AllMenusPage path="/" />
     </Router>
