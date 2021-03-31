@@ -5,7 +5,7 @@ import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
-import { RestaurantContext } from "../../components/restaurant-context";
+import { URLParamsContext } from "../../components/URL-params-context";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -14,14 +14,14 @@ let MenuContainer = styled.div`
   padding-top: 30px;
 `;
 
-const MenuTablePage = ({ menuId }) => {
+const MenuTablePage = () => {
   // TODO: fix menu title and floating menu button
   return (
-    <MenuTableLayout menuId={menuId}>
+    <MenuTableLayout>
       <MenuContainer>
         <MenuTitle />
         <MenuTable />
-        <FloatingMenuButton menuId={menuId} />
+        <FloatingMenuButton />
       </MenuContainer>
     </MenuTableLayout>
   );
@@ -29,8 +29,8 @@ const MenuTablePage = ({ menuId }) => {
 
 export default ({ menuId, restoId }) => {
   return (
-    <RestaurantContext.Provider value={{ restoId }}>
-      <MenuTablePage menuId={menuId} />
-    </RestaurantContext.Provider>
+    <URLParamsContext.Provider value={{ restoId, menuId }}>
+      <MenuTablePage />
+    </URLParamsContext.Provider>
   );
 };

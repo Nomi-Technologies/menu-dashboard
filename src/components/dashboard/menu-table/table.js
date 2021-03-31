@@ -24,7 +24,7 @@ import {
   DeleteCategoryModal,
   useDeleteCategoryModal,
 } from "../modal/delete";
-import { RestaurantContext } from "../../restaurant-context";
+import { URLParamsContext } from "../../URL-params-context";
 
 const TableCell = styled.div`
   display: flex;
@@ -142,7 +142,7 @@ const ItemRow = ({
   saveDishOrder,
   refreshMenu,
 }) => {
-  const { restoId } = useContext(RestaurantContext);
+  const { restoId } = useContext(URLParamsContext);
   const { index, categoryId } = getDish(dish.id);
 
   const [{ isDragging }, drag] = useDrag({
@@ -348,7 +348,7 @@ const TableCategory = ({
   saveCategoryOrder,
   refreshMenu,
 }) => {
-  const { restoId } = useContext(RestaurantContext);
+  const { restoId } = useContext(URLParamsContext);
 
   const [expanded, setExpanded] = useState(false);
   const [dishOrder, setDishOrder] = useState([]);

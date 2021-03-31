@@ -13,10 +13,10 @@ import {
   FormControls,
 } from "../../components/form";
 import Navigation from "../../util/navigation";
-import { RestaurantContext } from "../../components/restaurant-context";
+import { URLParamsContext } from "../../components/URL-params-context";
 
-const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
-  const { restoId } = useContext(RestaurantContext);
+const CategoryPage = () => {
+  const { restoId, menuId, categoryIdOrCreate } = useContext(URLParamsContext);
 
   let categoryId, create;
   if (categoryIdOrCreate === "create") {
@@ -113,8 +113,8 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
 
 export default ({ menuId, restoId, categoryIdOrCreate }) => {
   return (
-    <RestaurantContext.Provider value={{ restoId }}>
-      <CategoryPage menuId={menuId} categoryIdOrCreate={categoryIdOrCreate} />
-    </RestaurantContext.Provider>
+    <URLParamsContext.Provider value={{ menuId, restoId, categoryIdOrCreate }}>
+      <CategoryPage />
+    </URLParamsContext.Provider>
   );
 };

@@ -8,10 +8,10 @@ import { FileDrop } from "../../file-drop";
 import Navigation from "../../../util/navigation";
 
 import { Modal, useModal } from "./modal";
-import { RestaurantContext } from "../../restaurant-context";
+import { URLParamsContext } from "../../URL-params-context";
 
 const useNewMenuModal = (refreshMenu) => {
-  const { restoId } = useContext(RestaurantContext);
+  const { restoId } = useContext(URLParamsContext);
 
   let [open, openModal, closeModal] = useModal();
   let [errorMessage, setErrorMessage] = useState(null);

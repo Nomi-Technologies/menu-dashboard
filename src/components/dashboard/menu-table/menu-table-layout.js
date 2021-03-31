@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import SidebarLayout from "../../dashboard/sidebar/sidebar-layout";
 import { Container, Column } from "../../grid";
@@ -10,8 +10,11 @@ import { ModificationContext } from "./modification-context";
 import { MenuSelector } from "../../dashboard/menu-selector/menu-selector";
 import TopBar from "../../top-bar";
 import Navigation from "../../../util/navigation";
+import { URLParamsContext } from "../../URL-params-context";
 
-const MenuTableLayout = ({ menuId, children }) => {
+const MenuTableLayout = ({ children }) => {
+  const { menuId } = useContext(URLParamsContext);
+
   let [menus, setMenus] = useState([]);
   const [currentMenu, setCurrentMenu] = useState(null);
   const [modificationsById, setModificationsById] = useState({});

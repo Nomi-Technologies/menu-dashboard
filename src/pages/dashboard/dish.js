@@ -27,7 +27,7 @@ import {
   ModificationModal,
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
-import { RestaurantContext } from "../../components/restaurant-context";
+import { URLParamsContext } from "../../components/URL-params-context";
 
 const Banner = styled.div`
   background: url(${({ src }) => src});
@@ -38,8 +38,8 @@ const Banner = styled.div`
   margin-bottom: 10px;
 `;
 
-const DishPage = ({ menuId, dishIdOrCreate }) => {
-  const { restoId } = useContext(RestaurantContext);
+const DishPage = () => {
+  const { restoId, menuId, dishIdOrCreate } = useContext(URLParamsContext);
 
   let dishId, create;
   if (dishIdOrCreate === "create") {
@@ -176,7 +176,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   }, []);
 
   return (
-    <MenuTableLayout menuId={menuId}>
+    <MenuTableLayout>
       <FormContainer>
         <FormTitle>{create ? "Create Dish" : "Edit Dish Info"}</FormTitle>
         <FormSubtitle>Dish Name</FormSubtitle>
@@ -274,8 +274,8 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
 
 export default ({ menuId, restoId, dishIdOrCreate }) => {
   return (
-    <RestaurantContext.Provider value={{ restoId }}>
-      <DishPage menuId={menuId} dishIdOrCreate={dishIdOrCreate} />
-    </RestaurantContext.Provider>
+    <URLParamsContext.Provider value={{ restoId, menuId, dishIdOrCreate }}>
+      <DishPage />
+    </URLParamsContext.Provider>
   );
 };
