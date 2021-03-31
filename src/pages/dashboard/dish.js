@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
-import { Router } from "@reach/router";
 import styled from "styled-components";
 
 import Client from "../../util/client";
@@ -271,19 +269,4 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   );
 };
 
-const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
-
-  return <></>;
-};
-
-export default () => {
-  return (
-    <Router>
-      <DishPage path="/:menuId/:dishIdOrCreate" />
-      <AllMenusPage path="/" />
-    </Router>
-  );
-};
+export default DishPage;

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
-import { Router } from "@reach/router";
 
 import Client from "../../util/client";
 
@@ -110,19 +108,4 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   );
 };
 
-const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
-
-  return <></>;
-};
-
-export default () => {
-  return (
-    <Router>
-      <CategoryPage path="/:menuId/:categoryIdOrCreate" />
-      <AllMenusPage path="/" />
-    </Router>
-  );
-};
+export default CategoryPage;

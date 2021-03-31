@@ -2,7 +2,7 @@ import { navigate } from "gatsby";
 
 export default class Navigation {
   static allMenus = () => {
-    navigate("/dashboard/table");
+    navigate("/dashboard");
   };
 
   static table = (menuId) => {

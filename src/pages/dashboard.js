@@ -6,17 +6,17 @@ import Dish from "./dashboard/dish";
 import Restaurant from "./dashboard/restaurant";
 import Settings from "./dashboard/settings";
 import Table from "./dashboard/table";
-import NotFound from "./404";
+import AllMenus from "./dashboard/all-menus";
 
 export default () => {
   return (
     <Router basepath="/dashboard">
-      <Dish path="/dish/*" />
-      <Category path="/category/*" />
+      <Dish path="/dish/:menuId/:dishIdOrCreate" />
+      <Category path="/category/:menuId/:categoryIdOrCreate" />
       <Restaurant path="/restaurant" />
       <Settings path="/settings" />
-      <Table path="/table/*" />
-      <NotFound path="/" />
+      <Table path="/table/:menuId" />
+      <AllMenus path="/" default />
     </Router>
   );
 };

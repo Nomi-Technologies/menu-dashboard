@@ -1,14 +1,10 @@
 import React from "react";
-import { Router } from "@reach/router";
 
 import styled from "styled-components";
-import { navigate } from "gatsby";
 import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
-import Navigation from "../../util/navigation";
-import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -30,19 +26,4 @@ const MenuTablePage = ({ menuId }) => {
   );
 };
 
-const AllMenusPage = () => {
-  return (
-    <MenuTableLayout menuId="all-menus">
-      <AllMenus />
-    </MenuTableLayout>
-  );
-};
-
-export default () => {
-  return (
-    <Router>
-      <MenuTablePage path="/:menuId" />
-      <AllMenusPage path="/" />
-    </Router>
-  );
-};
+export default MenuTablePage;
