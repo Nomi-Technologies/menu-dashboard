@@ -13,6 +13,7 @@ import {
   FormControls,
 } from "../../components/form";
 import Navigation from "../../util/navigation";
+import { RestaurantContext } from "../../components/restaurant-context";
 
 const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   let categoryId, create;
@@ -108,4 +109,10 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   );
 };
 
-export default CategoryPage;
+export default ({ menuId, restaurantId, categoryIdOrCreate }) => {
+  return (
+    <RestaurantContext.Provider value={{ restaurantId }}>
+      <CategoryPage menuId={menuId} categoryIdOrCreate={categoryIdOrCreate} />
+    </RestaurantContext.Provider>
+  );
+};

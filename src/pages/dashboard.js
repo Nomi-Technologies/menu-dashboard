@@ -11,11 +11,13 @@ import AllMenus from "./dashboard/all-menus";
 export default () => {
   return (
     <Router basepath="/dashboard">
-      <Dish path="/dish/:menuId/:dishIdOrCreate" />
-      <Category path="/category/:menuId/:categoryIdOrCreate" />
-      <Restaurant path="/restaurant" />
-      <Settings path="/settings" />
-      <Table path="/table/:menuId" />
+      <div path="/:restaurantId">
+        <Dish path="/dish/:menuId/:dishIdOrCreate" />
+        <Category path="/category/:menuId/:categoryIdOrCreate" />
+        <Restaurant path="/restaurant" />
+        <Settings path="/settings" />
+        <Table path="/table/:menuId" />
+      </div>
       <AllMenus path="/" default />
     </Router>
   );

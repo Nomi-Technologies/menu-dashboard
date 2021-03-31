@@ -27,6 +27,7 @@ import {
   ModificationModal,
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
+import { RestaurantContext } from "../../components/restaurant-context";
 
 const Banner = styled.div`
   background: url(${({ src }) => src});
@@ -269,4 +270,10 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   );
 };
 
-export default DishPage;
+export default ({ menuId, restaurantId, dishIdOrCreate }) => {
+  return (
+    <RestaurantContext.Provider value={{ restaurantId }}>
+      <DishPage menuId={menuId} dishIdOrCreate={dishIdOrCreate} />
+    </RestaurantContext.Provider>
+  );
+};

@@ -5,6 +5,7 @@ import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
+import { RestaurantContext } from "../../components/restaurant-context";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -26,4 +27,10 @@ const MenuTablePage = ({ menuId }) => {
   );
 };
 
-export default MenuTablePage;
+export default ({ menuId, restaurantId }) => {
+  return (
+    <RestaurantContext.Provider value={{ restaurantId }}>
+      <MenuTablePage menuId={menuId} />
+    </RestaurantContext.Provider>
+  );
+};
