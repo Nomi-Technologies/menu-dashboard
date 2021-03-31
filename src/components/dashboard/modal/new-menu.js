@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext } from "react";
 import Client from "../../../util/client";
 
 import { ButtonPrimary, ButtonSecondary, ButtonRow } from "../../basics";
@@ -8,8 +8,11 @@ import { FileDrop } from "../../file-drop";
 import Navigation from "../../../util/navigation";
 
 import { Modal, useModal } from "./modal";
+import { RestaurantContext } from "../../restaurant-context";
 
 const useNewMenuModal = (refreshMenu) => {
+  const { restoId } = useContext(RestaurantContext);
+
   let [open, openModal, closeModal] = useModal();
   let [errorMessage, setErrorMessage] = useState(null);
   let [title, setTitle] = useState(null);
@@ -29,7 +32,7 @@ const useNewMenuModal = (refreshMenu) => {
     try {
       let response = await Client.createMenu(menuData);
       if (response) {
-        Navigation.table(response.data.id);
+        Navigation.table(restoId, response.data.id);
         closeModal();
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Client from "../../util/client";
 
@@ -16,6 +16,8 @@ import Navigation from "../../util/navigation";
 import { RestaurantContext } from "../../components/restaurant-context";
 
 const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
+  const { restoId } = useContext(RestaurantContext);
+
   let categoryId, create;
   if (categoryIdOrCreate === "create") {
     create = true;
@@ -56,7 +58,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
         await Client.updateCategory(categoryId, categoryData);
       }
 
-      Navigation.table(menuId);
+      Navigation.table(restoId, menuId);
     } catch (error) {
       console.log("could not create/update category");
     }
@@ -95,7 +97,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId);
+              Navigation.table(restoId, menuId);
             }}
           >
             Cancel
@@ -109,9 +111,9 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   );
 };
 
-export default ({ menuId, restaurantId, categoryIdOrCreate }) => {
+export default ({ menuId, restoId, categoryIdOrCreate }) => {
   return (
-    <RestaurantContext.Provider value={{ restaurantId }}>
+    <RestaurantContext.Provider value={{ restoId }}>
       <CategoryPage menuId={menuId} categoryIdOrCreate={categoryIdOrCreate} />
     </RestaurantContext.Provider>
   );

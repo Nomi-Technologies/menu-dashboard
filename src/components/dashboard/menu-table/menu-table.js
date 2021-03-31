@@ -18,6 +18,7 @@ import {
 } from "../../basics";
 import * as Table from "./table";
 import { MenuContext } from "./menu-context";
+import { RestaurantContext } from "../../restaurant-context";
 
 const StyledMenuTable = styled.div`
   width: 100%;
@@ -88,6 +89,7 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
+  const { restoId } = useContext(RestaurantContext);
   let menuTableContext = useContext(MenuContext);
   let refreshMenu = menuTableContext?.refreshMenu;
   let menu = menuTableContext?.menu;
@@ -340,7 +342,7 @@ const MenuTable = () => {
             <>
               <ButtonPrimary
                 onClick={() => {
-                  Navigation.dish(menu.id);
+                  Navigation.dish(restoId, menu.id);
                 }}
                 showEditMode={showEditMode}
                 role="button"
@@ -363,7 +365,7 @@ const MenuTable = () => {
         {renderTableContents()}
         <Table.AddCategory
           onClick={() => {
-            Navigation.category(menu.id);
+            Navigation.category(restoId, menu.id);
           }}
         />
       </StyledMenuTable>

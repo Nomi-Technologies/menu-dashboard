@@ -11,7 +11,7 @@ import AllMenus from "./dashboard/all-menus";
 export default () => {
   return (
     <Router basepath="/dashboard">
-      <div path="/:restaurantId">
+      <div path="/:restoId">
         <Dish path="/dish/:menuId/:dishIdOrCreate" />
         <Category path="/category/:menuId/:categoryIdOrCreate" />
         <Restaurant path="/restaurant" />

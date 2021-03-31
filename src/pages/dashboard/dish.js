@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 
 import Client from "../../util/client";
@@ -39,6 +39,8 @@ const Banner = styled.div`
 `;
 
 const DishPage = ({ menuId, dishIdOrCreate }) => {
+  const { restoId } = useContext(RestaurantContext);
+
   let dishId, create;
   if (dishIdOrCreate === "create") {
     create = true;
@@ -163,7 +165,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         }
       }
 
-      Navigation.table(menuId);
+      Navigation.table(restoId, menuId);
     } catch (error) {
       console.log("could not create dish");
     }
@@ -255,7 +257,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId);
+              Navigation.table(restoId, menuId);
             }}
           >
             Cancel
@@ -270,9 +272,9 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   );
 };
 
-export default ({ menuId, restaurantId, dishIdOrCreate }) => {
+export default ({ menuId, restoId, dishIdOrCreate }) => {
   return (
-    <RestaurantContext.Provider value={{ restaurantId }}>
+    <RestaurantContext.Provider value={{ restoId }}>
       <DishPage menuId={menuId} dishIdOrCreate={dishIdOrCreate} />
     </RestaurantContext.Provider>
   );

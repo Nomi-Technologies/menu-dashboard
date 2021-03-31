@@ -27,9 +27,9 @@ const MenuTablePage = ({ menuId }) => {
   );
 };
 
-export default ({ menuId, restaurantId }) => {
+export default ({ menuId, restoId }) => {
   return (
-    <RestaurantContext.Provider value={{ restaurantId }}>
+    <RestaurantContext.Provider value={{ restoId }}>
       <MenuTablePage menuId={menuId} />
     </RestaurantContext.Provider>
   );

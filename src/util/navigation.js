@@ -5,17 +5,17 @@ export default class Navigation {
     navigate("/dashboard");
   };
 
-  static table = (menuId) => {
-    navigate(`/dashboard/restaurantId/table/${menuId}`);
+  static table = (restoId, menuId) => {
+    navigate(`/dashboard/${restoId}/table/${menuId}`);
   };
 
-  static dish = (menuId, dishId) => {
-    navigate(`/dashboard/restaurantId/dish/${menuId}/${dishId ?? "create"}`);
+  static dish = (restoId, menuId, dishId) => {
+    navigate(`/dashboard/${restoId}/dish/${menuId}/${dishId ?? "create"}`);
   };
 
-  static category = (menuId, categoryId) => {
+  static category = (restoId, menuId, categoryId) => {
     navigate(
-      `/dashboard/restaurantId/category/${menuId}/${categoryId ?? "create"}`
+      `/dashboard/${restoId}/category/${menuId}/${categoryId ?? "create"}`
     );
   };
 }
