@@ -12,11 +12,11 @@ export default () => {
   return (
     <Router basepath="/dashboard">
       <div path="/:restoId">
-        <Dish path="/dish/:menuId/:dishIdOrCreate" />
-        <Category path="/category/:menuId/:categoryIdOrCreate" />
+        <Dish path="/dishes/:menuId/:dishIdOrCreate" />
+        <Category path="/categories/:menuId/:categoryIdOrCreate" />
         <Restaurant path="/restaurant" />
         <Settings path="/settings" />
-        <Table path="/table/:menuId" />
+        <Table path="/tables/:menuId" />
       </div>
       <AllMenus path="/" default />
     </Router>

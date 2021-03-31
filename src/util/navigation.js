@@ -6,16 +6,16 @@ export default class Navigation {
   };
 
   static table = (restoId, menuId) => {
-    navigate(`/dashboard/${restoId}/table/${menuId}`);
+    navigate(`/dashboard/${restoId}/tables/${menuId}`);
   };
 
   static dish = (restoId, menuId, dishId) => {
-    navigate(`/dashboard/${restoId}/dish/${menuId}/${dishId ?? "create"}`);
+    navigate(`/dashboard/${restoId}/dishes/${menuId}/${dishId ?? "create"}`);
   };
 
   static category = (restoId, menuId, categoryId) => {
     navigate(
-      `/dashboard/${restoId}/category/${menuId}/${categoryId ?? "create"}`
+      `/dashboard/${restoId}/categories/${menuId}/${categoryId ?? "create"}`
     );
   };
 }
