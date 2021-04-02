@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { navigate } from "gatsby";
 import { Router } from "@reach/router";
 import styled from "styled-components";
@@ -29,6 +29,7 @@ import {
   ModificationModal,
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
+import { MenuContext } from "../../components/dashboard/menu-table/menu-context";
 
 const Banner = styled.div`
   background: url(${({ src }) => src});
@@ -52,6 +53,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     name: "",
     description: "",
     price: "",
+    restaurantId: menu?.restaurantId,
     categoryId: 0,
     Tags: [],
     Diets: [],
@@ -62,14 +64,13 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   const [dishImage, setDishImage] = useState(null);
   const [selectedDishImageURL, setSelectedDishImageURL] = useState(null);
   const modificationModalControls = useModificationModal();
+  const { menu } = useContext(MenuContext);
 
   const updateCategorySelection = (categoryId) => {
     setDishData({
       ...dishData,
       categoryId: categoryId,
     });
-
-    console.log(dishData);
   };
 
   const setDishTags = (tags) => {
