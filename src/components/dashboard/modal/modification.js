@@ -165,7 +165,7 @@ export const ModificationModal = ({
           onClick={async () => {
             const mod = await saveModification();
             await refreshModifications();
-            addModification && addModification(mod);
+            create && addModification(mod);
           }}
         >
           Save Modifier
