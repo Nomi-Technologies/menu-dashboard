@@ -53,6 +53,7 @@ const DishPage = () => {
     name: "",
     description: "",
     price: "",
+    restaurantId: restoId,
     categoryId: 0,
     Tags: [],
     Diets: [],
@@ -69,8 +70,6 @@ const DishPage = () => {
       ...dishData,
       categoryId: categoryId,
     });
-
-    console.log(dishData);
   };
 
   const setDishTags = (tags) => {
