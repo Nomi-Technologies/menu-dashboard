@@ -42,6 +42,7 @@ export default ({ style, onSelect, onCreate }) => {
         onChange={onSelect}
         onCreateOption={onCreate}
         createOptionPosition="first"
+        isValidNewOption={() => true}
         formatCreateLabel={(modification) => (
           <>
             <span
