@@ -4,6 +4,7 @@ import { ButtonPrimary, ButtonSecondary } from "../../basics";
 import {
   FormControls,
   FormInput,
+  FormNotice,
   FormSplitColumn,
   FormSplitRow,
   FormSubtitle,
@@ -95,7 +96,14 @@ export const ModificationModal = ({
       {create ? (
         <FormTitle>Add New Dish Modifier</FormTitle>
       ) : (
-        <FormTitle>Edit Dish Modifier</FormTitle>
+        <>
+          <FormTitle style={{ marginBottom: "10px" }}>
+            Edit Dish Modifier
+          </FormTitle>
+          <FormNotice style={{ marginBottom: "28px" }}>
+            Editing this modifier will update across all dishes
+          </FormNotice>
+        </>
       )}
       <FormSplitRow>
         <FormSplitColumn style={{ flex: "1 1 auto" }}>
