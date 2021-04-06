@@ -266,7 +266,13 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
           </ButtonPrimary>
         </FormControls>
       </FormContainer>
-      <ModificationModal controls={modificationModalControls} />
+      <ModificationModal
+        controls={modificationModalControls}
+        addModification={({ id }) => {
+          const updated = [...dishData.modIds, id];
+          setDishModIds(updated);
+        }}
+      />
     </MenuTableLayout>
   );
 };

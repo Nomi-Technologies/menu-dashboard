@@ -26,6 +26,7 @@ export const useModificationModal = () => {
       if (res) {
         closeModal();
       }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -37,6 +38,7 @@ export const useModificationModal = () => {
       if (res) {
         closeModal();
       }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -48,7 +50,10 @@ export const useModificationModal = () => {
       addTags: modification.addTags.map((tag) => tag.id),
       removeTags: modification.removeTags.map((tag) => tag.id),
     };
-    create ? await createModification(mod) : await updateModification(mod);
+    return (create
+      ? await createModification(mod)
+      : await updateModification(mod)
+    ).modification;
   };
 
   const openModal = (modificationOrName) => {
@@ -80,6 +85,7 @@ export const useModificationModal = () => {
 };
 
 export const ModificationModal = ({
+  addModification,
   controls: {
     open,
     closeModal,
@@ -165,8 +171,9 @@ export const ModificationModal = ({
         <ButtonSecondary onClick={closeModal}>Cancel</ButtonSecondary>
         <ButtonPrimary
           onClick={async () => {
-            await saveModification();
-            refreshModifications();
+            const mod = await saveModification();
+            await refreshModifications();
+            create && addModification(mod);
           }}
         >
           Save Modifier
