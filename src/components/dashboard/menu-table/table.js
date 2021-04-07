@@ -126,20 +126,25 @@ const StyledItemRow = styled(TableRow)`
 `;
 
 // SearchItemRow Components that does not have movable functionality
-const SearchItemRow = ({
+const RawItemRow = ({
   menuId,
   dish,
   showEditMode,
   handleCheckboxChange,
   refreshMenu,
+  reorderControls,
 }) => {
+  const ref = reorderControls
+    ? (node) => reorderControls.drag(reorderControls.drop(node))
+    : undefined;
+
   let [open, openDeleteDishModal, closeDeleteDishModal] = useDeleteDishModal(
     refreshMenu
   );
 
   return (
     <>
-      <StyledItemRow className="opened">
+      <StyledItemRow ref={ref} className="opened">
         {showEditMode ? (
           <Checkbox
             handleCheckboxChange={handleCheckboxChange}
@@ -231,58 +236,15 @@ const ItemRow = ({
     },
   });
 
-  let [open, openDeleteDishModal, closeDeleteDishModal] = useDeleteDishModal(
-    refreshMenu
-  );
-
   return (
     <>
-      <StyledItemRow ref={(node) => drag(drop(node))} className="opened">
-        {showEditMode ? (
-          <Checkbox
-            handleCheckboxChange={handleCheckboxChange}
-            item={dish}
-            key={dish.id}
-          />
-        ) : (
-          ""
-        )}
-        <TableCell className="item-name">
-          <p>{dish.name}</p>
-        </TableCell>
-        <TableCell className="item-description">
-          <p>{dish.description}</p>
-        </TableCell>
-        <TableCell className="item-price">
-          <p>{dish.price ? dish.price : "--"}</p>
-        </TableCell>
-        <TableCell className="item-tags">
-          <p>{tagListToString(dish.Tags)}</p>
-        </TableCell>
-        <TableCell className="item-diets">
-          <p>{tagListToString(dish.Diets)}</p>
-        </TableCell>
-        <RowControls>
-          <img
-            className="edit"
-            src={EditIcon}
-            onClick={() => Navigation.dish(menuId, dish.id)}
-            alt="edit icon"
-          />
-          <img
-            className="delete"
-            src={DeleteIcon}
-            onClick={() => {
-              openDeleteDishModal(dish.id);
-            }}
-            alt="delete icon"
-          />
-        </RowControls>
-      </StyledItemRow>
-      <DeleteDishModal
-        open={open}
-        openModal={openDeleteDishModal}
-        closeModal={closeDeleteDishModal}
+      <RawItemRow
+        menuId={menuId}
+        dish={dish}
+        showEditMode={showEditMode}
+        handleCheckboxChange={handleCheckboxChange}
+        refreshMenu={refreshMenu}
+        reorderControls={{ drag, drop }}
       />
     </>
   );
@@ -570,5 +532,5 @@ export {
   StyledTableCategory,
   TableCategory,
   AddCategory,
-  SearchItemRow,
+  RawItemRow as SearchItemRow,
 };
