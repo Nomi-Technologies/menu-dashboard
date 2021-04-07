@@ -200,9 +200,6 @@ const MenuTable = () => {
   };
 
   const renderTableContents = () => {
-    console.log("isSearching");
-
-    console.log(isSearching);
     if (!isSearching) {
       return (
         <div id="menuTable">
