@@ -12,11 +12,8 @@ import {
 
 import styled from "styled-components";
 
-const MenuControls = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-  justify-content: space-between;
-  width: 100%;
+const SearchStyle = styled.div`
+  width: 30%;
 
   .searchForm {
     flex-basis: 50%;
@@ -34,29 +31,17 @@ const MenuControls = styled.div`
   }
 
   .cancelSearch {
-    top: 0px;
+    margin-top: -45px;
     position: absolute;
     left: 98%;
     height: 45%;
   }
 
   .submitSearch {
-    top: 0px;
+    margin-top: -45px;
     position: absolute;
     left: 98%;
     height: 45%;
-  }
-
-  .buttons {
-    display: flex;
-    align-self: flex-end;
-    text-align: center;
-  }
-
-  .buttons.right-controls {
-    ${Button} {
-      margin-left: 10px;
-    }
   }
 `;
 
@@ -86,40 +71,42 @@ const SearchBox = (props) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="searchForm">
-      <input
-        className="search"
-        placeholder="Search Dishes..."
-        id="searchBox"
-        type="text"
-        value={searchBoxValue}
-        onChange={(e) => setSearchBoxValue(e.target.value)}
-        onFocus={(e) => {
-          setSearchBoxFocused(true);
-          e.target.select(); // highlight text when focus on element
-        }}
-      />
-      {props.isSearching && !searchBoxFocused ? (
+    <SearchStyle>
+      <form onSubmit={handleSearch} className="searchForm">
         <input
-          className="cancelSearch"
-          type="image"
-          alt="Reset search"
-          src={CancelIcon}
-          onClick={(e) => {
-            e.preventDefault();
-            setSearchBoxValue("");
-            props.setIsSearching(false);
+          className="search"
+          placeholder="Search Dishes..."
+          id="searchBox"
+          type="text"
+          value={searchBoxValue}
+          onChange={(e) => setSearchBoxValue(e.target.value)}
+          onBlur={(e) => {
+            setSearchBoxFocused(false);
+            e.target.select(); // highlight text when focus on element
           }}
         />
-      ) : (
-        <input
-          className="submitSearch"
-          type="image"
-          alt="Submit"
-          src={SearchIcon}
-        />
-      )}
-    </form>
+        {props.isSearching && !searchBoxFocused ? (
+          <input
+            className="cancelSearch"
+            type="image"
+            alt="Reset search"
+            src={CancelIcon}
+            onClick={(e) => {
+              e.preventDefault();
+              setSearchBoxValue("");
+              props.setIsSearching(false);
+            }}
+          />
+        ) : (
+          <input
+            className="submitSearch"
+            type="image"
+            alt="Submit"
+            src={SearchIcon}
+          />
+        )}
+      </form>
+    </SearchStyle>
   );
 };
 

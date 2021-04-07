@@ -35,35 +35,6 @@ const MenuControls = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  .searchForm {
-    flex-basis: 50%;
-    position: relative;
-  }
-
-  .search {
-    padding: 10px 20px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-    padding-left: 10px;
-    border-radius: 8px;
-    border: 2px #e3ebf2 solid;
-    width: 100%;
-  }
-
-  .cancelSearch {
-    top: 0px;
-    position: absolute;
-    left: 98%;
-    height: 45%;
-  }
-
-  .submitSearch {
-    top: 0px;
-    position: absolute;
-    left: 98%;
-    height: 45%;
-  }
-
   .buttons {
     display: flex;
     align-self: flex-end;
