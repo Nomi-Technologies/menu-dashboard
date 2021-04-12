@@ -206,6 +206,17 @@ export default class Client {
     });
   };
 
+  static getMenuImage = (id) => {
+    return axios.get(`${ROOT_URL}/images/menus/${id}`);
+  };
+
+  static upsertMenuImage = (id, image) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/images/menus/${id}`, image, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   static getMenu = (id) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.get(ROOT_URL + "/menus/" + id, {

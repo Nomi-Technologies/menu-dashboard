@@ -13,6 +13,7 @@ import {
   DeleteMenuModal,
   useDeleteMenuModal,
 } from "./modal/delete";
+import { useMenuImageModal, MenuImageModal } from "./modal/menu-image";
 import { checkPropTypes } from "prop-types";
 
 const Menu = styled.div`
@@ -91,11 +92,24 @@ const FloatingMenu = ({ isOpen, close, menuId, className }) => {
     openDeleteMenuModal,
     closeDeleteMenuModal,
   ] = useDeleteMenuModal(menuId, refreshMenu);
+  let [
+    showMenuImageModal,
+    openMenuImageModal,
+    closeMenuImageModal,
+    upsertMenuImage,
+    menuImage,
+    menuImageErrorMessage,
+    setMenuImageErrorMessage,
+  ] = useMenuImageModal(menuId);
 
   return (
     <>
       <div className={className}>
         <Menu isOpen={isOpen} className={className}>
+          <MenuItem onClick={openMenuImageModal}>
+            Set Menu Header Image
+          </MenuItem>
+          <HorizontalSeparator />
           <MenuItem onClick={() => downloadCSV()}>Download as .csv</MenuItem>
           <HorizontalSeparator />
           <MenuItem onClick={openUploadCSVModal}>Upload .csv Menu</MenuItem>
@@ -123,6 +137,15 @@ const FloatingMenu = ({ isOpen, close, menuId, className }) => {
         open={showDeleteMenuModal}
         openModal={openDeleteMenuModal}
         closeModal={closeDeleteMenuModal}
+      />
+      <MenuImageModal
+        open={showMenuImageModal}
+        openModal={openMenuImageModal}
+        closeModal={closeMenuImageModal}
+        upsertMenuImage={upsertMenuImage}
+        menuImage={menuImage}
+        errorMessage={menuImageErrorMessage}
+        setErrorMessage={setMenuImageErrorMessage}
       />
     </>
   );
