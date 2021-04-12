@@ -4,6 +4,7 @@ import { ButtonPrimary, ButtonSecondary } from "../../basics";
 import {
   FormControls,
   FormInput,
+  FormNotice,
   FormSplitColumn,
   FormSplitRow,
   FormSubtitle,
@@ -25,6 +26,7 @@ export const useModificationModal = () => {
       if (res) {
         closeModal();
       }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -36,6 +38,7 @@ export const useModificationModal = () => {
       if (res) {
         closeModal();
       }
+      return res.data;
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +50,10 @@ export const useModificationModal = () => {
       addTags: modification.addTags.map((tag) => tag.id),
       removeTags: modification.removeTags.map((tag) => tag.id),
     };
-    create ? await createModification(mod) : await updateModification(mod);
+    return (create
+      ? await createModification(mod)
+      : await updateModification(mod)
+    ).modification;
   };
 
   const openModal = (modificationOrName) => {
@@ -79,6 +85,7 @@ export const useModificationModal = () => {
 };
 
 export const ModificationModal = ({
+  addModification,
   controls: {
     open,
     closeModal,
@@ -95,7 +102,14 @@ export const ModificationModal = ({
       {create ? (
         <FormTitle>Add New Dish Modifier</FormTitle>
       ) : (
-        <FormTitle>Edit Dish Modifier</FormTitle>
+        <>
+          <FormTitle style={{ marginBottom: "10px" }}>
+            Edit Dish Modifier
+          </FormTitle>
+          <FormNotice style={{ marginBottom: "28px" }}>
+            Editing this modifier will update across all dishes
+          </FormNotice>
+        </>
       )}
       <FormSplitRow>
         <FormSplitColumn style={{ flex: "1 1 auto" }}>
@@ -157,8 +171,9 @@ export const ModificationModal = ({
         <ButtonSecondary onClick={closeModal}>Cancel</ButtonSecondary>
         <ButtonPrimary
           onClick={async () => {
-            await saveModification();
-            refreshModifications();
+            const mod = await saveModification();
+            await refreshModifications();
+            create && addModification(mod);
           }}
         >
           Save Modifier
