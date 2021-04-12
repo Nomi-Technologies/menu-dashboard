@@ -297,6 +297,17 @@ export default class Client {
     });
   };
 
+  static getRestaurantLogo = (id) => {
+    return axios.get(`${ROOT_URL}/images/restaurants/${id}`);
+  };
+
+  static upsertRestaurantLogo = (id, data) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/images/restaurants/${id}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   static downloadCSV = (menuId) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.get(ROOT_URL + `/menus/${menuId}/csv`, {

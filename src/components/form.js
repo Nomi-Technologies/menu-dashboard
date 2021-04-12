@@ -88,3 +88,9 @@ export const FormTextArea = styled.textarea`
   height: 70px;
   margin-bottom: 24px;
 `;
+
+export const ImagePreview = styled.img`
+  max-width: 100%;
+  max-height: 300px;
+  margin: 20px 0;
+`;

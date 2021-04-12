@@ -59,7 +59,9 @@ let SideBar = styled(Column)`
   background-color: white;
 `;
 
-let GreyBar = styled(Column)``;
+let GreyBar = styled(Column)`
+  padding-bottom: 40px;
+`;
 
 export {
   InfoTitle,
