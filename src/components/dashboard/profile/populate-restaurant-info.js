@@ -177,7 +177,12 @@ const PopulateRestaurant = () => {
       </FormRow>
       <FormRow>
         <FormSubtitle>Restaurant Logo</FormSubtitle>
-        {logoUrl ? <ImagePreview src={`${logoUrl}?${logoImageHash}`} /> : null}
+        {logoUrl ? (
+          <>
+            <ImagePreview src={`${logoUrl}?${logoImageHash}`} />
+            <p>Replace Image:</p>
+          </>
+        ) : null}
         <FileDrop
           acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
           setFile={setFile}

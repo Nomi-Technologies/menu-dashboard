@@ -76,7 +76,12 @@ const MenuImageModal = ({
       <FormTitle>Upload Menu Header Image</FormTitle>
       {errorMessage ? <p className="error">{errorMessage}</p> : <></>}
       <FormSubtitle>Menu Header Image</FormSubtitle>
-      {menuImage ? <ImagePreview src={menuImage} /> : null}
+      {menuImage ? (
+        <>
+          <ImagePreview src={menuImage} />
+          <p>Replace Image:</p>
+        </>
+      ) : null}
       <FileDrop
         acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
         setFile={setFile}
