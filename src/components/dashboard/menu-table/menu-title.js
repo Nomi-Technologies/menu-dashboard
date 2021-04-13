@@ -90,7 +90,7 @@ let MenuTitle = () => {
             {" "}
             {menu?.name}{" "}
           </h1>
-          <img src={EditIcon} className="pencilIcon" />
+          <img src={EditIcon} className="pencilIcon" onClick={enableEditing} />
         </>
       )}
     </StyledMenuTitle>
