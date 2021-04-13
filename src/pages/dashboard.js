@@ -15,9 +15,9 @@ export default () => {
         <Dish path="/dishes/:menuId/:dishIdOrCreate" />
         <Category path="/categories/:menuId/:categoryIdOrCreate" />
         <Restaurant path="/restaurant" />
-        <Settings path="/settings" />
         <Table path="/tables/:menuId" />
       </div>
+      <Settings path="/settings" />
       <AllMenus path="/" default />
     </Router>
   );

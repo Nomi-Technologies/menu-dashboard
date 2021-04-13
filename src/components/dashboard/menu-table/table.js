@@ -142,36 +142,6 @@ const RawItemRow = ({
   reorderControls,
 }) => {
   const { restoId } = useContext(URLParamsContext);
-  const { index, categoryId } = getDish(dish.id);
-
-  const [{ isDragging }, drag] = useDrag({
-    item: { type: "dish", id: dish.id, categoryId: categoryId, index },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-    end: (dropResult, monitor) => {
-      const { id: droppedId, index } = monitor.getItem();
-      const didDrop = monitor.didDrop();
-      if (!didDrop) {
-        // move card back to original position if drop did not occur on given category
-        moveDish(droppedId, index);
-      } else {
-        saveDishOrder();
-      }
-    },
-  });
-
-  const [, drop] = useDrop({
-    accept: "dish",
-    canDrop: () => false,
-    hover({ id: draggedId, categoryId: draggedCategoryId }) {
-      if (draggedId !== dish.id && categoryId === draggedCategoryId) {
-        // if same category, just move within category
-        const overIndex = getDish(dish.id).index;
-        moveDish(draggedId, overIndex);
-      }
-    },
-  });
   const ref = reorderControls
     ? (node) => reorderControls.drag(reorderControls.drop(node))
     : undefined;
