@@ -19,6 +19,7 @@ import {
 import * as Table from "./table";
 import { MenuContext } from "./menu-context";
 import { URLParamsContext } from "../../URL-params-context";
+import { SearchBox } from "./search-box";
 
 const StyledMenuTable = styled.div`
   width: 100%;
@@ -34,35 +35,6 @@ const MenuControls = styled.div`
   margin-bottom: 20px;
   justify-content: space-between;
   width: 100%;
-
-  .searchForm {
-    flex-basis: 50%;
-    position: relative;
-  }
-
-  .search {
-    padding: 10px 20px;
-    background-color: #f9f9f9;
-    font-size: 14px;
-    padding-left: 10px;
-    border-radius: 8px;
-    border: 2px #e3ebf2 solid;
-    width: 100%;
-  }
-
-  .cancelSearch {
-    top: 28%;
-    position: absolute;
-    left: 100%;
-    height: 40%;
-  }
-
-  .submitSearch {
-    top: 25%;
-    position: absolute;
-    left: 100%;
-    height: 50%;
-  }
 
   .buttons {
     display: flex;
@@ -93,7 +65,6 @@ const MenuTable = () => {
   let menuTableContext = useContext(MenuContext);
   let refreshMenu = menuTableContext?.refreshMenu;
   let menu = menuTableContext?.menu;
-
   const [menuData, setMenuData] = useState({}); // includes parsed menuData
 
   const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(
@@ -106,18 +77,13 @@ const MenuTable = () => {
   const [selectedDishes, setSelectedDishes] = useAsyncState([]);
   const [toDeleteType, setToDeleteType] = useAsyncState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [searchBoxValue, setSearchBoxValue] = useState("");
-  const [searchBoxFocused, setSearchBoxFocused] = useState(false);
+  // isSearching means we are currently in search mode. It does not mean we are loading results
   const [isSearching, setIsSearching] = useState(false);
 
   const toggleEditDishForm = (dish) => {
     // if (typeof dish !== 'undefined') setSelectedDish(dish)
     if (!showEditDishForm) closeAllForms(); //if about to open form
     setEditDishForm(!showEditDishForm);
-  };
-
-  const toggleEditMode = () => {
-    setEditMode(!showEditMode);
   };
 
   const handleCheckboxChange = (itemId) => {
@@ -167,25 +133,6 @@ const MenuTable = () => {
     setDeleteConfirmation(false);
   };
 
-  // TODO: refactor search to be in browser
-  const handleSearch = (e) => {
-    e.preventDefault();
-    e.target.firstChild.blur();
-    setSearchBoxFocused(false);
-    if (searchBoxValue.trim() === "") {
-      setIsSearching(false);
-    } else {
-      Client.searchDishes(searchBoxValue, menu?.menuId)
-        .then((res) => {
-          setSearchResults(res.data);
-          setIsSearching(true);
-        })
-        .catch((err) => {
-          console.error("error searching for dishes");
-        });
-    }
-  };
-
   // takes menu object from API and returns dictionary with IDs to data, and an array of categories and menus for ordering
   const parseMenu = (menu) => {
     let categoryDict = {};
@@ -200,6 +147,7 @@ const MenuTable = () => {
         dishOrder.push(dish.id);
       });
 
+      // new stuff
       categoryDict[category.id] = {
         ...category,
         dishOrder: dishOrder,
@@ -282,7 +230,8 @@ const MenuTable = () => {
     return (
       <>
         {searchResults.map((dish, index) => (
-          <Table.ItemRow
+          <Table.SearchItemRow
+            menuId={menu?.id}
             key={index}
             dish={dish}
             toggleEditDish={toggleEditDishForm}
@@ -301,25 +250,14 @@ const MenuTable = () => {
         <div className="buttons">
           {/* <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial> */}
         </div>
-        {/* <form onSubmit={handleSearch} className='searchForm'>
-                    <input className='search' placeholder='Search Dishes...' id='searchBox' type='text' value={searchBoxValue}
-                        onChange={(e) => setSearchBoxValue(e.target.value)}
-                        onFocus={(e) => {
-                            setSearchBoxFocused(true);
-                            e.target.select(); // highlight text when focus on element
-                        }}
-                    />
-                    {
-                        (isSearching && !searchBoxFocused) ?
-                        <input className='cancelSearch' type='image' alt="Reset search" src={CancelIcon} onClick={(e) => {
-                            e.preventDefault();
-                            setSearchBoxValue('');
-                            setIsSearching(false);
-                        }}/> :
-                        <input className='submitSearch' type='image' alt="Submit" src={SearchIcon} />
-                    }
 
-                </form> */}
+        <SearchBox
+          setIsSearching={setIsSearching}
+          setSearchResults={setSearchResults}
+          menu={menu}
+          isSearching={isSearching}
+        ></SearchBox>
+
         <div className="buttons right-controls">
           {showEditMode ? (
             <>

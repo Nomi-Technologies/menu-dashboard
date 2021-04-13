@@ -132,15 +132,14 @@ const StyledItemRow = styled(TableRow)`
   }
 `;
 
-const ItemRow = ({
+// SearchItemRow Components that does not have movable functionality
+const RawItemRow = ({
   menuId,
   dish,
-  handleCheckboxChange,
   showEditMode,
-  moveDish,
-  getDish,
-  saveDishOrder,
+  handleCheckboxChange,
   refreshMenu,
+  reorderControls,
 }) => {
   const { restoId } = useContext(URLParamsContext);
   const { index, categoryId } = getDish(dish.id);
@@ -173,6 +172,9 @@ const ItemRow = ({
       }
     },
   });
+  const ref = reorderControls
+    ? (node) => reorderControls.drag(reorderControls.drop(node))
+    : undefined;
 
   let [open, openDeleteDishModal, closeDeleteDishModal] = useDeleteDishModal(
     refreshMenu
@@ -180,7 +182,7 @@ const ItemRow = ({
 
   return (
     <>
-      <StyledItemRow ref={(node) => drag(drop(node))} className="opened">
+      <StyledItemRow ref={ref} className="opened">
         {showEditMode ? (
           <Checkbox
             handleCheckboxChange={handleCheckboxChange}
@@ -226,6 +228,61 @@ const ItemRow = ({
         open={open}
         openModal={openDeleteDishModal}
         closeModal={closeDeleteDishModal}
+      />
+    </>
+  );
+};
+
+const ItemRow = ({
+  menuId,
+  dish,
+  handleCheckboxChange,
+  showEditMode,
+  moveDish,
+  getDish,
+  saveDishOrder,
+  refreshMenu,
+}) => {
+  const { index, categoryId } = getDish(dish.id);
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: "dish", id: dish.id, categoryId: categoryId, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    end: (dropResult, monitor) => {
+      const { id: droppedId, index } = monitor.getItem();
+      const didDrop = monitor.didDrop();
+      if (!didDrop) {
+        // move card back to original position if drop did not occur on given category
+        moveDish(droppedId, index);
+      } else {
+        saveDishOrder();
+      }
+    },
+  });
+
+  const [, drop] = useDrop({
+    accept: "dish",
+    canDrop: () => false,
+    hover({ id: draggedId, categoryId: draggedCategoryId }) {
+      if (draggedId !== dish.id && categoryId === draggedCategoryId) {
+        // if same category, just move within category
+        const overIndex = getDish(dish.id).index;
+        moveDish(draggedId, overIndex);
+      }
+    },
+  });
+
+  return (
+    <>
+      <RawItemRow
+        menuId={menuId}
+        dish={dish}
+        showEditMode={showEditMode}
+        handleCheckboxChange={handleCheckboxChange}
+        refreshMenu={refreshMenu}
+        reorderControls={{ drag, drop }}
       />
     </>
   );
@@ -515,4 +572,5 @@ export {
   StyledTableCategory,
   TableCategory,
   AddCategory,
+  RawItemRow as SearchItemRow,
 };
