@@ -16,7 +16,7 @@ export const FormContainer = styled.div`
 
 export const FormControls = styled.div`
   box-sizing: border-box;
-  position: sticky;
+  position: relative;
   display: flex;
   justify-content: flex-end;
   bottom: 0px;
