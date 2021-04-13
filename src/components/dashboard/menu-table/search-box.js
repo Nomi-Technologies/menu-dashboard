@@ -46,23 +46,26 @@ const SearchStyle = styled.div`
 `;
 
 const SearchBox = (props) => {
-  const [searchBoxFocused, setSearchBoxFocused] = useState(false);
+  const [showCancelIcon, setShowCancelIcon] = useState(false);
   const [searchBoxValue, setSearchBoxValue] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
-    e.target.firstChild.blur();
-    setSearchBoxFocused(false);
-    props.setIsSearching(false);
+    if (showCancelIcon) {
+      setSearchBoxValue("");
+      props.setIsSearching(false);
+      setShowCancelIcon(false);
+      return;
+    }
 
     if (searchBoxValue.trim() === "") {
       props.setIsSearching(false);
     } else {
       Client.searchDishes(searchBoxValue, props.menu?.id)
         .then((res) => {
-          console.log(res);
           props.setSearchResults(res.data);
           props.setIsSearching(true);
+          setShowCancelIcon(true);
         })
         .catch((err) => {
           console.error("error searching for dishes");
@@ -79,23 +82,17 @@ const SearchBox = (props) => {
           id="searchBox"
           type="text"
           value={searchBoxValue}
-          onChange={(e) => setSearchBoxValue(e.target.value)}
-          onBlur={(e) => {
-            setSearchBoxFocused(false);
-            e.target.select(); // highlight text when focus on element
+          onChange={(e) => {
+            setSearchBoxValue(e.target.value);
+            setShowCancelIcon(false);
           }}
         />
-        {props.isSearching && !searchBoxFocused ? (
+        {showCancelIcon ? (
           <input
             className="cancelSearch"
             type="image"
             alt="Reset search"
             src={CancelIcon}
-            onClick={(e) => {
-              e.preventDefault();
-              setSearchBoxValue("");
-              props.setIsSearching(false);
-            }}
           />
         ) : (
           <input
