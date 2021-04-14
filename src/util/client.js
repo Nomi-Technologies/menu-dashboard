@@ -316,23 +316,12 @@ export default class Client {
 
   static toggleFiltering = (menuId, enableFiltering) => {
     let token = retrieveUserToken(); // get user auth token
+    console.log(token);
+    console.log(menuId);
     return axios.put(
       ROOT_URL + `/menus/${menuId}/toggle-filtering`,
       {
         enableFiltering: enableFiltering,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-  };
-
-  static setPublished = (menuId, published) => {
-    let token = retrieveUserToken();
-    return axios.put(
-      ROOT_URL + `/menus/${menuId}/set-published`,
-      {
-        published: published,
       },
       {
         headers: { Authorization: `Bearer ${token}` },
