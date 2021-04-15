@@ -4,7 +4,7 @@ import { Router } from "@reach/router";
 
 import Client from "../../util/client";
 
-import { MenuFormLayout } from "../../components/dashboard/menu-table/menu-form-layout";
+import { MenuTableLayout } from "../../components/dashboard/menu-table/menu-table-layout";
 import { ButtonPrimary, ButtonSecondary } from "../../components/basics";
 import {
   FormTitle,
@@ -64,7 +64,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   };
 
   return (
-    <MenuFormLayout menuId={menuId}>
+    <MenuTableLayout menuId={menuId}>
       <FormContainer>
         <FormTitle>
           {create ? "Create Menu Section" : "Edit Menu Section"}
@@ -106,7 +106,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
           </ButtonPrimary>
         </FormControls>
       </FormContainer>
-    </MenuFormLayout>
+    </MenuTableLayout>
   );
 };
 
