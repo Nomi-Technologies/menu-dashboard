@@ -70,6 +70,7 @@ const TableRow = styled.div`
   flex-direction: row;
   box-sizing: border-box;
   padding-left: 52px;
+  padding-right: 60px;
   background-color: #f9f9f9;
   font-family: HK Grotesk Regular;
   font-size: 18px;
