@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import { useDrag, useDrop } from "react-dnd";
 import update from "immutability-helper";
 import Client from "../../../util/client";
@@ -18,6 +24,7 @@ import {
   DeleteCategoryModal,
   useDeleteCategoryModal,
 } from "../modal/delete";
+import { URLParamsContext } from "../../URL-params-context";
 
 const TableCell = styled.div`
   display: flex;
@@ -70,6 +77,7 @@ const TableRow = styled.div`
   flex-direction: row;
   box-sizing: border-box;
   padding-left: 52px;
+  padding-right: 60px;
   background-color: #f9f9f9;
   font-family: HK Grotesk Regular;
   font-size: 18px;
@@ -134,6 +142,7 @@ const RawItemRow = ({
   refreshMenu,
   reorderControls,
 }) => {
+  const { restoId } = useContext(URLParamsContext);
   const ref = reorderControls
     ? (node) => reorderControls.drag(reorderControls.drop(node))
     : undefined;
@@ -173,7 +182,7 @@ const RawItemRow = ({
           <img
             className="edit"
             src={EditIcon}
-            onClick={() => Navigation.dish(menuId, dish.id)}
+            onClick={() => Navigation.dish(restoId, menuId, dish.id)}
             alt="edit icon"
           />
           <img
@@ -367,6 +376,8 @@ const TableCategory = ({
   saveCategoryOrder,
   refreshMenu,
 }) => {
+  const { restoId } = useContext(URLParamsContext);
+
   const [expanded, setExpanded] = useState(false);
   const [dishOrder, setDishOrder] = useState([]);
 
@@ -473,7 +484,7 @@ const TableCategory = ({
             <img
               className="edit"
               src={EditIcon}
-              onClick={() => Navigation.category(menuId, category.id)}
+              onClick={() => Navigation.category(restoId, menuId, category.id)}
               alt="edit icon"
             />
             <img

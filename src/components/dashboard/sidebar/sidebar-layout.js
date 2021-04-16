@@ -196,7 +196,7 @@ const SidebarLayout = ({ children }) => {
 
           <SidebarItemList>
             <SidebarItem
-              destination="/dashboard/table"
+              destination="/dashboard"
               title="Menu Management"
               icon={MenuIcon}
               sidebarOpen={sidebarOpen}

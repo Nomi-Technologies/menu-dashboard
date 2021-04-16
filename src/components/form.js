@@ -94,3 +94,9 @@ export const ImagePreview = styled.img`
   max-height: 300px;
   margin: 20px 0;
 `;
+
+export const FormNotice = styled.div`
+  font-family: HK Grotesk Light;
+  color: ${Colors.BLACK75};
+  font-size: 14px;
+`;

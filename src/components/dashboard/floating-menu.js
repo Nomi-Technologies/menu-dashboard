@@ -50,7 +50,7 @@ const HorizontalSeparator = styled.div`
 
 const FloatingMenu = ({ isOpen, close, menuId, className }) => {
   const [uniqueName, setUniqueName] = useState(null);
-  let { refreshMenu } = useContext(MenuContext);
+  let { refreshMenu, menu } = useContext(MenuContext);
 
   useEffect(() => {
     Client.getRestaurantInfo().then((res) => {
@@ -76,6 +76,15 @@ const FloatingMenu = ({ isOpen, close, menuId, className }) => {
         hiddenElement.click();
       }
     });
+  }
+
+  async function togglePublished() {
+    if (menu.published) {
+      await Client.setPublished(menuId, false);
+    } else {
+      await Client.setPublished(menuId, true);
+    }
+    refreshMenu();
   }
 
   let [showQRCodeModal, openQRCodeModal, closeQRCodeModal] = useQRCodeModal();
@@ -117,6 +126,10 @@ const FloatingMenu = ({ isOpen, close, menuId, className }) => {
           <MenuItem onClick={openDeleteMenuModal}>Delete Menu</MenuItem>
           <HorizontalSeparator />
           <MenuItem onClick={openQRCodeModal}>View QR Code</MenuItem>
+          <HorizontalSeparator />
+          <MenuItem onClick={togglePublished}>
+            {menu?.published ? "Unpublish Menu" : "Publish Menu"}
+          </MenuItem>
         </Menu>
       </div>
       <QRCodeModal
