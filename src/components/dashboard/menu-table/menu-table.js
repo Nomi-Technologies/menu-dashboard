@@ -18,6 +18,7 @@ import {
 } from "../../basics";
 import * as Table from "./table";
 import { MenuContext } from "./menu-context";
+import { URLParamsContext } from "../../URL-params-context";
 import { SearchBox } from "./search-box";
 
 const StyledMenuTable = styled.div`
@@ -60,6 +61,7 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
+  const { restoId } = useContext(URLParamsContext);
   let menuTableContext = useContext(MenuContext);
   let refreshMenu = menuTableContext?.refreshMenu;
   let menu = menuTableContext?.menu;
@@ -278,7 +280,7 @@ const MenuTable = () => {
             <>
               <ButtonPrimary
                 onClick={() => {
-                  Navigation.dish(menu.id);
+                  Navigation.dish(restoId, menu.id);
                 }}
                 showEditMode={showEditMode}
                 role="button"
@@ -301,7 +303,7 @@ const MenuTable = () => {
         {renderTableContents()}
         <Table.AddCategory
           onClick={() => {
-            Navigation.category(menu.id);
+            Navigation.category(restoId, menu.id);
           }}
         />
       </StyledMenuTable>

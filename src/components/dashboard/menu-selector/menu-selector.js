@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { navigate } from "gatsby";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Client from "../../../util/client";
@@ -49,6 +48,15 @@ const MenuTab = styled.div`
 `;
 
 const MenuSelector = ({ menuId, menus }) => {
+  const [restoId, setRestoId] = useState();
+
+  useEffect(() => {
+    (async () => {
+      const res = await Client.getRestaurantInfo();
+      setRestoId(res.data.id);
+    })();
+  }, []);
+
   return (
     <StyledMenuSelector>
       <Menus>
@@ -61,7 +69,7 @@ const MenuSelector = ({ menuId, menus }) => {
         </MenuTab>
         {menus?.map((item) => (
           <MenuTab
-            onClick={() => Navigation.table(item.id)}
+            onClick={() => Navigation.table(restoId, item.id)}
             selected={item.id === menuId}
             key={item.id}
           >

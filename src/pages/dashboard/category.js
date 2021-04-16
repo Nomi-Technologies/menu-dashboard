@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
-import { Router } from "@reach/router";
+import React, { useState, useEffect, useContext } from "react";
 
 import Client from "../../util/client";
 
@@ -15,8 +13,11 @@ import {
   FormControls,
 } from "../../components/form";
 import Navigation from "../../util/navigation";
+import { URLParamsContext } from "../../components/URL-params-context";
 
-const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
+const CategoryPage = () => {
+  const { restoId, menuId, categoryIdOrCreate } = useContext(URLParamsContext);
+
   let categoryId, create;
   if (categoryIdOrCreate === "create") {
     create = true;
@@ -57,7 +58,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
         await Client.updateCategory(categoryId, categoryData);
       }
 
-      Navigation.table(menuId);
+      Navigation.table(restoId, menuId);
     } catch (error) {
       console.log("could not create/update category");
     }
@@ -96,7 +97,7 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId);
+              Navigation.table(restoId, menuId);
             }}
           >
             Cancel
@@ -110,19 +111,10 @@ const CategoryPage = ({ menuId, categoryIdOrCreate }) => {
   );
 };
 
-const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
-
-  return <></>;
-};
-
-export default () => {
+export default ({ menuId, restoId, categoryIdOrCreate }) => {
   return (
-    <Router basepath="/dashboard/category">
-      <CategoryPage path="/:menuId/:categoryIdOrCreate" />
-      <AllMenusPage path="/" />
-    </Router>
+    <URLParamsContext.Provider value={{ menuId, restoId, categoryIdOrCreate }}>
+      <CategoryPage />
+    </URLParamsContext.Provider>
   );
 };

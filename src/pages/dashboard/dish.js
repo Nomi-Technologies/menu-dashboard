@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { navigate } from "gatsby";
-import { Router } from "@reach/router";
 import styled from "styled-components";
 
 import Client from "../../util/client";
@@ -29,7 +27,7 @@ import {
   ModificationModal,
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
-import { MenuContext } from "../../components/dashboard/menu-table/menu-context";
+import { URLParamsContext } from "../../components/URL-params-context";
 
 const Banner = styled.div`
   background: url(${({ src }) => src});
@@ -40,7 +38,9 @@ const Banner = styled.div`
   margin-bottom: 10px;
 `;
 
-const DishPage = ({ menuId, dishIdOrCreate }) => {
+const DishPage = () => {
+  const { restoId, menuId, dishIdOrCreate } = useContext(URLParamsContext);
+
   let dishId, create;
   if (dishIdOrCreate === "create") {
     create = true;
@@ -53,7 +53,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     name: "",
     description: "",
     price: "",
-    restaurantId: menu?.restaurantId,
+    restaurantId: restoId,
     categoryId: 0,
     Tags: [],
     Diets: [],
@@ -64,7 +64,6 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   const [dishImage, setDishImage] = useState(null);
   const [selectedDishImageURL, setSelectedDishImageURL] = useState(null);
   const modificationModalControls = useModificationModal();
-  const { menu } = useContext(MenuContext);
 
   const updateCategorySelection = (categoryId) => {
     setDishData({
@@ -165,7 +164,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         }
       }
 
-      Navigation.table(menuId);
+      Navigation.table(restoId, menuId);
     } catch (error) {
       console.log("could not create dish");
     }
@@ -176,7 +175,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   }, []);
 
   return (
-    <MenuTableLayout menuId={menuId}>
+    <MenuTableLayout>
       <FormContainer>
         <FormTitle>{create ? "Create Dish" : "Edit Dish Info"}</FormTitle>
         <FormSubtitle>Dish Name</FormSubtitle>
@@ -257,7 +256,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId);
+              Navigation.table(restoId, menuId);
             }}
           >
             Cancel
@@ -278,19 +277,10 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   );
 };
 
-const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
-
-  return <></>;
-};
-
-export default () => {
+export default ({ menuId, restoId, dishIdOrCreate }) => {
   return (
-    <Router basepath="/dashboard/dish">
-      <DishPage path="/:menuId/:dishIdOrCreate" />
-      <AllMenusPage path="/" />
-    </Router>
+    <URLParamsContext.Provider value={{ restoId, menuId, dishIdOrCreate }}>
+      <DishPage />
+    </URLParamsContext.Provider>
   );
 };

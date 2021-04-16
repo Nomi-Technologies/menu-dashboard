@@ -1,9 +1,9 @@
 {
   "branches": [
-    "+([0-9])?(.{+([0-9]),x}).x", 
-    "production", 
-    "next", 
-    { "name": "beta", "prerelease": true }, 
+    "+([0-9])?(.{+([0-9]),x}).x",
+    "production",
+    "next",
+    { "name": "beta", "prerelease": true },
     { "name": "alpha", "prerelease": true },
     { "name": "staging", "prerelease": true }
   ],
