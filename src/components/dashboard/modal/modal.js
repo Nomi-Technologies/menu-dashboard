@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import useEventListener from "@use-it/event-listener";
+import closeIcon from "../../../assets/img/close.png";
 
 const StyledModal = styled.div`
   display: ${({ open }) => (open ? "block" : "none")};
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  position: absolute;
+  position: fixed;
   width: ${({ width }) => (width ? width : "80%")};
   max-width: 600px;
   z-index: 100;
@@ -27,6 +28,21 @@ const Container = styled.div`
     color: red;
     padding: 0;
   }
+`;
+
+const CloseRow = styled.div`
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -40px;
+`;
+
+const CloseImg = styled.img`
+  padding: 12px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
 `;
 
 const useModal = () => {
@@ -57,6 +73,14 @@ const Modal = ({ children, open, openModal, closeModal, width }) => {
 
   return (
     <StyledModal open={open} width={width}>
+      <CloseRow>
+        <CloseImg
+          className="delete"
+          src={closeIcon}
+          alt="Close icon"
+          onClick={closeModal}
+        />
+      </CloseRow>
       <Container>{children}</Container>
     </StyledModal>
   );
