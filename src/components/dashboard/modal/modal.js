@@ -39,8 +39,10 @@ const CloseRow = styled.div`
 `;
 
 const CloseImg = styled.img`
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
+  width: 24px;
+  height: 24px;
 `;
 
 const useModal = () => {
