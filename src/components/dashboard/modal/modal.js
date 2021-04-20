@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import useEventListener from "@use-it/event-listener";
-import DeleteIcon from "../../../assets/img/delete-icon-red.png";
+import closeIcon from "../../../assets/img/close.png";
 
 const StyledModal = styled.div`
   display: ${({ open }) => (open ? "block" : "none")};
@@ -74,8 +74,8 @@ const Modal = ({ children, open, openModal, closeModal, width }) => {
       <CloseRow>
         <CloseImg
           className="delete"
-          src={DeleteIcon}
-          alt="delete icon"
+          src={closeIcon}
+          alt="Close icon"
           onClick={closeModal}
         />
       </CloseRow>
