@@ -86,15 +86,15 @@ const LoginForm = () => {
         }}
       />
       {/* <ForgotPassword>Forgot password?</ForgotPassword>   */}
-      <ButtonRow>
-        <ButtonPrimary onClick={loginUser}>Login</ButtonPrimary>
-        <ButtonSecondary
-          theme="light"
-          onClick={() => navigate("/register/contact-info")}
-        >
-          Sign Up
-        </ButtonSecondary>
-      </ButtonRow>
+      <ButtonPrimary style={{ textAlign: "center" }} onClick={loginUser}>
+        Login
+      </ButtonPrimary>
+      {/* <ButtonSecondary
+        theme="light"
+        onClick={() => navigate("/register/contact-info")}
+      >
+        Sign Up
+      </ButtonSecondary> */}
     </Container>
   );
 };
