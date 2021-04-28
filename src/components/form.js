@@ -89,6 +89,12 @@ export const FormTextArea = styled.textarea`
   margin-bottom: 24px;
 `;
 
+export const ImagePreview = styled.img`
+  max-width: 100%;
+  max-height: 300px;
+  margin: 20px 0;
+`;
+
 export const FormNotice = styled.div`
   font-family: HK Grotesk Light;
   color: ${Colors.BLACK75};
