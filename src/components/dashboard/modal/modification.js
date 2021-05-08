@@ -12,6 +12,7 @@ import {
 } from "../../form";
 import { DishTagForm } from "../menu-table/form/dish-tag-form";
 import { ModificationContext } from "../menu-table/modification-context";
+import { URLParamsContext } from "../../URL-params-context";
 
 import { Modal, useModal } from "./modal";
 
@@ -19,10 +20,11 @@ export const useModificationModal = () => {
   const [open, _openModal, closeModal] = useModal();
   const [modification, setModification] = useState();
   const [create, setCreate] = useState(true);
+  const context = useContext(URLParamsContext);
 
   const createModification = async (mod) => {
     try {
-      const res = await Client.createModification(mod);
+      const res = await Client.createModification(mod, context);
       if (res) {
         closeModal();
       }
@@ -34,7 +36,7 @@ export const useModificationModal = () => {
 
   const updateModification = async (mod) => {
     try {
-      const res = await Client.updateModification(mod.id, mod);
+      const res = await Client.updateModification(mod.id, mod, context);
       if (res) {
         closeModal();
       }

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 
 import { MenuCard } from "./menu-card";
 
 import { Colors } from "../../../util/colors";
 import Client from "../../../util/client";
+import { URLParamsContext } from "../../URL-params-context";
 
 const StyledMenuCard = styled(MenuCard)`
   margin: 10px;
@@ -67,13 +68,14 @@ function CardGrid(props) {
 const AllMenus = (props) => {
   const [menus, setMenus] = useState(null);
   const [favoriteMenus, setFavoriteMenus] = useState(null);
+  const context = useContext(URLParamsContext);
 
   useEffect(() => {
     getMenus();
   }, []);
 
   const getMenus = async () => {
-    await Client.getAllMenus().then((res) => {
+    await Client.getAllMenus(context).then((res) => {
       setMenus(res.data);
     });
 

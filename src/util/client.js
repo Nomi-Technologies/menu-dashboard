@@ -224,9 +224,9 @@ export default class Client {
     });
   };
 
-  static getAllMenus = () => {
+  static getAllMenus = (context) => {
     let token = retrieveUserToken(); // get user auth token
-    return axios.get(ROOT_URL + "/all-menus/", {
+    return axios.get(ROOT_URL + "/restaurants/" + context.restoId + "/menus/", {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
@@ -294,9 +294,9 @@ export default class Client {
     });
   };
 
-  static getRestaurantInfo = () => {
+  static getRestaurantInfo = (context) => {
     let token = retrieveUserToken(); // get user auth token
-    return axios.get(ROOT_URL + "/restaurants/me/", {
+    return axios.get(ROOT_URL + "/restaurants/" + context.restoId, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
@@ -376,23 +376,48 @@ export default class Client {
     );
   };
 
-  static getAllModifications = () => {
+  static getAllModifications = (context) => {
     let token = retrieveUserToken();
-    return axios.get(ROOT_URL + `/modifications`, {
+    return axios.get(
+      ROOT_URL + "/restaurants/" + context.restoId + `/modifications`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  static createModification = (modification, context) => {
+    let token = retrieveUserToken();
+    return axios.post(
+      ROOT_URL + "/restaurants/" + context.restoId + "/modifications",
+      modification,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  static updateModification = (id, modification, context) => {
+    let token = retrieveUserToken();
+    return axios.put(
+      `${ROOT_URL}/restraurants/${context.restoId}/modifications/${id}`,
+      modification,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  static getGroup = (context) => {
+    let token = retrieveUserToken();
+    return axios.get(ROOT_URL + `/groups/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  static createModification = (modification) => {
+  static getRestaurantsByGroup = (groupId) => {
     let token = retrieveUserToken();
-    return axios.post(ROOT_URL + "/modifications", modification, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
-
-  static updateModification = (id, modification) => {
-    let token = retrieveUserToken();
-    return axios.put(`${ROOT_URL}/modifications/${id}`, modification, {
+    return axios.get(ROOT_URL + `/groups/${groupId}/restaurants`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };

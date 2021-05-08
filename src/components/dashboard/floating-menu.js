@@ -15,6 +15,7 @@ import {
 } from "./modal/delete";
 import { useMenuImageModal, MenuImageModal } from "./modal/menu-image";
 import { checkPropTypes } from "prop-types";
+import { URLParamsContext } from "../URL-params-context";
 
 const Menu = styled.div`
   position: absolute;
@@ -51,9 +52,10 @@ const HorizontalSeparator = styled.div`
 const FloatingMenu = ({ isOpen, close, menuId, className }) => {
   const [uniqueName, setUniqueName] = useState(null);
   let { refreshMenu, menu } = useContext(MenuContext);
+  const context = useContext(URLParamsContext);
 
   useEffect(() => {
-    Client.getRestaurantInfo().then((res) => {
+    Client.getRestaurantInfo(context).then((res) => {
       setUniqueName(res.data.uniqueName);
     });
   }, []);

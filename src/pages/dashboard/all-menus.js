@@ -3,9 +3,9 @@ import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-la
 import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus";
 import { URLParamsContext } from "../../components/URL-params-context";
 
-export default () => {
+export default ({ restoId }) => {
   return (
-    <URLParamsContext.Provider value={{ menuId: "all-menus" }}>
+    <URLParamsContext.Provider value={{ restoId, menuId: "all-menus" }}>
       <MenuTableLayout>
         <AllMenus />
       </MenuTableLayout>

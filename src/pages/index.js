@@ -10,7 +10,7 @@ import "./index.css";
 const IndexPage = () => {
   useEffect(() => {
     if (retrieveUserToken() != null) {
-      Navigation.allMenus();
+      Navigation.allRestaurants();
     } else {
       navigate("/login");
     }

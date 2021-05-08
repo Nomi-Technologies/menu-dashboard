@@ -1,12 +1,16 @@
 import { navigate } from "gatsby";
 
 export default class Navigation {
-  static allMenus = () => {
+  static allRestaurants = () => {
     navigate("/dashboard");
   };
 
-  static table = (restoId, menuId) => {
-    navigate(`/dashboard/${restoId}/tables/${menuId}`);
+  static restaurant = (restoId) => {
+    navigate(`/dashboard/${restoId}`);
+  };
+
+  static menu = (restoId, menuId) => {
+    navigate(`/dashboard/${restoId}/menu/${menuId}`);
   };
 
   static dish = (restoId, menuId, dishId) => {

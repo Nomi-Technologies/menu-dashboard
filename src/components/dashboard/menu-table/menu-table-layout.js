@@ -7,20 +7,41 @@ import Client from "../../../util/client";
 import { MenuContext } from "./menu-context";
 import { ModificationContext } from "./modification-context";
 
+import { RestaurantSelector } from "../../dashboard/menu-selector/restaurant-selector";
 import { MenuSelector } from "../../dashboard/menu-selector/menu-selector";
 import TopBar from "../../top-bar";
 import Navigation from "../../../util/navigation";
 import { URLParamsContext } from "../../URL-params-context";
 
 const MenuTableLayout = ({ children }) => {
-  const { menuId } = useContext(URLParamsContext);
+  const context = useContext(URLParamsContext);
+  const { menuId } = context;
 
-  let [menus, setMenus] = useState([]);
-  const [currentMenu, setCurrentMenu] = useState(null);
+  let [restaurants, setRestaurants] = useState([]);
+  const [restaurantId, setRestaurantId] = useState(null);
+  const [currentRestaurant, setCurrentRestaurant] = useState(null);
   const [modificationsById, setModificationsById] = useState({});
 
-  const getAllMenus = async () => {
-    Client.getAllMenus().then((res) => {
+  const getRestaurants = async () => {
+    await Client.getGroup().then((res) => {
+      Client.getRestaurantsByGroup(res.data.id).then((res) => {
+        setRestaurants(res.data);
+        if (res.data.length != 0) {
+          setRestaurantId(res.data[0].id);
+        }
+      });
+    });
+  };
+
+  const getRestaurant = async () => {
+    await Client.getRestaurantInfo(context).then((res) => {
+      setCurrentRestaurant(res.data);
+      setRestaurantId(restaurantId);
+    });
+  };
+
+  /*const getAllMenus = async () => {
+    Client.getAllMenus(context).then((res) => {
       setMenus(res.data);
     });
   };
@@ -29,28 +50,32 @@ const MenuTableLayout = ({ children }) => {
     await Client.getMenu(menuId).then((res) => {
       setCurrentMenu(res.data);
     });
-  };
+  };*/
 
-  const refreshMenu = async () => {
-    await getAllMenus();
+  const refreshRestaurant = async () => {
+    //await getAllMenus();
+    await getRestaurants();
 
-    if (menuId !== null && menuId !== undefined && menuId !== "all-menus") {
-      setCurrentMenu({});
-      await getMenu(menuId);
+    if (
+      restaurantId !== null &&
+      restaurantId !== undefined &&
+      restaurantId !== "all-menus"
+    ) {
+      setCurrentRestaurant({});
+      await getRestaurant();
     } else {
-      if (menuId !== "all-menus") {
-        Navigation.allMenus();
-      }
+      //await getRestaurant(restaurants[0].id);
     }
   };
 
   let menuContext = {
-    menu: currentMenu,
-    refreshMenu: refreshMenu,
+    //menu: currentMenu,
+    restaurant: currentRestaurant,
+    refreshRestaurant: refreshRestaurant,
   };
 
   const refreshModifications = async () => {
-    const { data } = await Client.getAllModifications();
+    const { data } = await Client.getAllModifications(context);
     let modsLUT = data.reduce((accumulator, value) => {
       accumulator[value.id] = value;
       return accumulator;
@@ -64,11 +89,12 @@ const MenuTableLayout = ({ children }) => {
   };
 
   useEffect(() => {
-    refreshMenu();
+    refreshRestaurant();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuId]);
+  }, [restaurantId]);
 
   useEffect(() => {
+    getRestaurants();
     refreshModifications();
   }, []);
 
@@ -78,8 +104,15 @@ const MenuTableLayout = ({ children }) => {
         <ModificationContext.Provider value={modificationContext}>
           <Container>
             <Column>
-              <TopBar title="Menu Management">
-                <MenuSelector menuId={menuId} menus={menus} />
+              <TopBar title="Menus">
+                {
+                  //menuId ?
+                  //<MenuSelector menuId={menuId} /> :
+                  <RestaurantSelector
+                    restaurantId={restaurantId}
+                    restaurants={restaurants}
+                  />
+                }
               </TopBar>
               {children}
             </Column>

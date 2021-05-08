@@ -6,7 +6,7 @@ import { MenuCreator } from "../menu-creator/menu-creator";
 import Navigation from "../../../util/navigation";
 import { URLParamsContext } from "../../URL-params-context";
 
-let StyledMenuSelector = styled.div`
+let StyledRestaurantSelector = styled.div`
   width: 100%;
 `;
 
@@ -28,7 +28,7 @@ let ActiveIndicator = styled.div`
   width: 100%;
 `;
 
-const MenuTab = styled.div`
+const RestaurantTab = styled.div`
   position: relative;
   text-transform: uppercase;
   font-size: 14px;
@@ -48,29 +48,23 @@ const MenuTab = styled.div`
   text-align: center;
 `;
 
-const MenuSelector = ({ menuId }) => {
+const RestaurantSelector = ({ restaurantId, restaurants }) => {
   return (
-    <StyledMenuSelector>
+    <StyledRestaurantSelector>
       <Menus>
-        <MenuTab
-        //onClick={() => Navigation.restaurant(item.id)}
-        //selected={item.id === restaurantId}
-        //key={item.id}
-        >
-          Test
-          {/*item.id === restaurantId ? <ActiveIndicator /> : ""*/}
-        </MenuTab>
-        <MenuTab
-        //onClick={() => Navigation.restaurant(item.id)}
-        //selected={item.id === restaurantId}
-        //key={item.id}
-        >
-          Settings
-          {/*item.id === restaurantId ? <ActiveIndicator /> : ""*/}
-        </MenuTab>
+        {restaurants?.map((item) => (
+          <RestaurantTab
+            onClick={() => Navigation.restaurant(item.id)}
+            selected={item.id === restaurantId}
+            key={item.id}
+          >
+            {item.name}
+            {item.id === restaurantId ? <ActiveIndicator /> : ""}
+          </RestaurantTab>
+        ))}
       </Menus>
-    </StyledMenuSelector>
+    </StyledRestaurantSelector>
   );
 };
 
-export { MenuSelector };
+export { RestaurantSelector };

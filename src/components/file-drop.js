@@ -122,7 +122,7 @@ const FileDrop = ({
           {isDragActive ? (
             <p>Drop the file here ...</p>
           ) : (
-            <div class="input-inner">
+            <div className="input-inner">
               <img src={CSVUploadIcon} alt="Upload icon for CSV" />
               <p>
                 Drag and drop a file here, or <b>Choose File</b>

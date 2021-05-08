@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import styled from "styled-components";
 import EditIcon from "../../../assets/img/edit-orange.png";
@@ -9,6 +9,7 @@ import { FloatingMenu } from "../../dashboard/floating-menu";
 import Client from "../../../util/client";
 import { navigate } from "gatsby";
 import Navigation from "../../../util/navigation";
+import { URLParamsContext } from "../../URL-params-context";
 
 const StyledMenuCard = styled.div`
   background: #ffffff;
@@ -47,6 +48,7 @@ const MenuName = styled.div`
 
 const MenuCard = ({ menuId, name }) => {
   const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
+  const { restoId } = useContext(URLParamsContext);
 
   const toggleFloatingMenu = () => {
     setIsFloatingMenuOpen(!isFloatingMenuOpen);
@@ -55,7 +57,9 @@ const MenuCard = ({ menuId, name }) => {
   return (
     <>
       <StyledMenuCard>
-        <MenuName onClick={() => Navigation.table(menuId)}>{name}</MenuName>
+        <MenuName onClick={() => Navigation.menu(restoId, menuId)}>
+          {name}
+        </MenuName>
         <div className="controls">
           {/* {
                         props.isFavorited ?

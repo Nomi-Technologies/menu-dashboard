@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { ButtonPrimary } from "../../basics";
 import {
@@ -11,8 +11,10 @@ import {
 
 import Client from "../../../util/client";
 import { FileDrop } from "../../file-drop";
+import { URLParamsContext } from "../../URL-params-context";
 
 const PopulateRestaurant = () => {
+  const context = useContext(URLParamsContext);
   const [restaurant, setRestaurant] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -31,7 +33,7 @@ const PopulateRestaurant = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await Client.getRestaurantInfo();
+      const res = await Client.getRestaurantInfo(context);
       setRestaurant(res.data.name);
       setAddress(res.data.streetAddress);
       setCity(res.data.city);
@@ -65,7 +67,7 @@ const PopulateRestaurant = () => {
       setLogoUrl(res.config.url);
       setLogoImageHash(Date.now());
     } catch (err) {
-      const oldItem = await Client.getRestaurantInfo();
+      const oldItem = await Client.getRestaurantInfo(context);
       setRestaurant(oldItem.data.name);
       setAddress(oldItem.data.streetAddress);
       setCity(oldItem.data.city);

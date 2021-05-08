@@ -50,7 +50,7 @@ const LoginForm = () => {
       .then((response) => {
         saveUserToken(response.data["token"]);
         setLoginError(false);
-        Navigation.allMenus();
+        Navigation.allRestaurants();
       })
       .catch((response) => {
         setLoginError(true);
