@@ -55,7 +55,10 @@ const MenuCard = ({ menuId, name }) => {
   return (
     <>
       <StyledMenuCard>
-        <MenuName onClick={() => Navigation.table(menuId)}>{name}</MenuName>
+        {/* Adding placeholder here because it doesn't look trivial to supply the actual restaurant id. And it's not worth the effort because the field is only effective after the navigation rework */}
+        <MenuName onClick={() => Navigation.table("my", menuId)}>
+          {name}
+        </MenuName>
         <div className="controls">
           {/* {
                         props.isFavorited ?

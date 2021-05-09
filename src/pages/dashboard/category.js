@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import Client from "../../util/client";
 
-import { MenuTableLayout } from "../../components/dashboard/menu-table/menu-table-layout";
+import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
 import { ButtonPrimary, ButtonSecondary } from "../../components/basics";
 import {
   FormTitle,
