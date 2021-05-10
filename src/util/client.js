@@ -10,7 +10,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     console.error("error: " + error);
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       navigate("/login");
     }
 
@@ -69,13 +69,6 @@ export default class Client {
   static upsertDishImage = (id, data) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.put(ROOT_URL + "/images/dishes/" + id, data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
-
-  static getDishImage = (id) => {
-    let token = retrieveUserToken(); // get user auth token
-    return axios.get(ROOT_URL + "/images/dishes/" + id, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
@@ -206,10 +199,6 @@ export default class Client {
     });
   };
 
-  static getMenuImage = (id) => {
-    return axios.get(`${ROOT_URL}/images/menus/${id}`);
-  };
-
   static upsertMenuImage = (id, image) => {
     let token = retrieveUserToken();
     return axios.put(`${ROOT_URL}/images/menus/${id}`, image, {
@@ -306,10 +295,6 @@ export default class Client {
     return axios.put(ROOT_URL + "/restaurants/" + id, data, {
       headers: { Authorization: `Bearer ${token}` },
     });
-  };
-
-  static getRestaurantLogo = (id) => {
-    return axios.get(`${ROOT_URL}/images/restaurants/${id}`);
   };
 
   static upsertRestaurantLogo = (id, data) => {

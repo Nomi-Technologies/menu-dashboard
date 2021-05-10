@@ -19,6 +19,7 @@ import { FileDrop } from "../../components/file-drop";
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown";
 import { DishTagForm } from "../../components/dashboard/menu-table/form/dish-tag-form";
 import { DishDietForm } from "../../components/dashboard/menu-table/form/dish-diet-form";
+import ImagePreview from "../../components/image-preview";
 
 import ModificationForm from "../../components/dashboard/menu-table/form/modifier-form";
 import Navigation from "../../util/navigation";
@@ -28,15 +29,6 @@ import {
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
 import { URLParamsContext } from "../../components/URL-params-context";
-
-const Banner = styled.div`
-  background: url(${({ src }) => src});
-  background-size: cover;
-  width: 300px;
-  height: 200px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-`;
 
 const DishPage = () => {
   const { restoId, menuId, dishIdOrCreate } = useContext(URLParamsContext);
@@ -61,8 +53,7 @@ const DishPage = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState(null);
-  const [dishImage, setDishImage] = useState(null);
-  const [selectedDishImageURL, setSelectedDishImageURL] = useState(null);
+  const [dishImage, setDishImage] = useState(null); // for uploading
   const modificationModalControls = useModificationModal();
 
   const updateCategorySelection = (categoryId) => {
@@ -116,15 +107,9 @@ const DishPage = () => {
     if (!create) {
       Client.getDish(dishId).then((res) => {
         const dish = res.data;
-        console.log(dish);
         dish.modIds = dish.Modifications.map((mod) => mod.id);
         delete dish["Modification"];
         setDishData(dish);
-      });
-      Client.getDishImage(dishId).then((res) => {
-        if (res.config.url) {
-          setSelectedDishImageURL(res.config.url);
-        }
       });
     }
   };
@@ -235,11 +220,11 @@ const DishPage = () => {
           setDiets={setDishDiets}
         ></DishDietForm>
         <FormSubtitle>Image (Optional)</FormSubtitle>
-        {selectedDishImageURL ? (
-          <>
-            <Banner src={selectedDishImageURL} /> <div>Replace Image:</div>{" "}
-          </>
-        ) : null}
+        <ImagePreview
+          src={`${process.env.GATSBY_AWS_S3_BASE_URL}/dishes/${dishId}`}
+        >
+          <div>Replace Image: </div>
+        </ImagePreview>
         <FileDrop
           acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
           setFile={setFile}

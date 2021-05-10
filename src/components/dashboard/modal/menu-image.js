@@ -5,25 +5,18 @@ import { FileDrop } from "../../file-drop";
 
 import { Modal, useModal } from "./modal";
 import { ButtonRow } from "../../basics";
-import { FormSubtitle, FormTitle, ImagePreview } from "../../form";
+import { FormSubtitle, FormTitle } from "../../form";
+import ImagePreview from "../../image-preview";
 
 const useMenuImageModal = (menuId) => {
   let [open, openModal, closeModal] = useModal();
-  let [menuImage, setMenuImage] = useState();
   let [errorMessage, setErrorMessage] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const res = await Client.getMenuImage(menuId);
-      setMenuImage(res.config.url);
-    })();
-  });
+  let [updateTime, setUpdateTime] = useState(Date.now()); // trigger reload
 
   let upsertMenuImage = async (image) => {
     try {
-      await Client.upsertMenuImage(menuId, image);
-      const res = await Client.getMenuImage(menuId);
-      setMenuImage(res.config.url);
+      Client.upsertMenuImage(menuId, image);
+      setUpdateTime(Date.now());
     } catch (err) {
       setErrorMessage(err);
     }
@@ -34,7 +27,7 @@ const useMenuImageModal = (menuId) => {
     openModal,
     closeModal,
     upsertMenuImage,
-    menuImage,
+    `${process.env.GATSBY_AWS_S3_BASE_URL}/menus/${menuId}?${updateTime}`, // menuImage
     errorMessage,
     setErrorMessage,
   ];
@@ -70,18 +63,14 @@ const MenuImageModal = ({
       setErrorMessage("Please select a file to upload");
     }
   };
-
   return (
     <Modal open={open} openModal={openModal} closeModal={closeModal}>
       <FormTitle>Upload Menu Header Image</FormTitle>
       {errorMessage ? <p className="error">{errorMessage}</p> : <></>}
       <FormSubtitle>Menu Header Image</FormSubtitle>
-      {menuImage ? (
-        <>
-          <ImagePreview src={menuImage} />
-          <p>Replace Image:</p>
-        </>
-      ) : null}
+      <ImagePreview src={menuImage}>
+        <div>Replace Image:</div>
+      </ImagePreview>
       <FileDrop
         acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
         setFile={setFile}

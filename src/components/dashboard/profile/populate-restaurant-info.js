@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import { ButtonPrimary } from "../../basics";
-import {
-  FormInput,
-  FormContainer,
-  FormRow,
-  FormSubtitle,
-  ImagePreview,
-} from "../../form";
+import { FormInput, FormContainer, FormRow, FormSubtitle } from "../../form";
+import ImagePreview from "../../image-preview";
 
 import Client from "../../../util/client";
 import { FileDrop } from "../../file-drop";
@@ -25,8 +20,7 @@ const PopulateRestaurant = () => {
   const [save, setSave] = useState(false);
 
   const [logo, setLogo] = useState();
-  const [logoUrl, setLogoUrl] = useState();
-  const [logoImageHash, setLogoImageHash] = useState(); // trigger reload
+  const [logoImageHash, setLogoImageHash] = useState(Date.now()); // trigger reload
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
@@ -41,10 +35,6 @@ const PopulateRestaurant = () => {
       setWebsite(res.data.url);
       setId(res.data.id);
       setSave(false);
-      try {
-        const logo = await Client.getRestaurantLogo(res.data.id);
-        setLogoUrl(logo.config.url);
-      } catch (err) {}
     })();
   }, []);
 
@@ -61,8 +51,6 @@ const PopulateRestaurant = () => {
       });
       await Client.upsertRestaurantLogo(id, logo);
       setSave(true);
-      const res = await Client.getRestaurantLogo(id);
-      setLogoUrl(res.config.url);
       setLogoImageHash(Date.now());
     } catch (err) {
       const oldItem = await Client.getRestaurantInfo();
@@ -177,12 +165,11 @@ const PopulateRestaurant = () => {
       </FormRow>
       <FormRow>
         <FormSubtitle>Restaurant Logo</FormSubtitle>
-        {logoUrl ? (
-          <>
-            <ImagePreview src={`${logoUrl}?${logoImageHash}`} />
-            <p>Replace Image:</p>
-          </>
-        ) : null}
+        <ImagePreview
+          src={`${process.env.GATSBY_AWS_S3_BASE_URL}/restaurants/${id}?${logoImageHash}`}
+        >
+          <div>Replace Image:</div>
+        </ImagePreview>
         <FileDrop
           acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
           setFile={setFile}
