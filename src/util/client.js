@@ -217,11 +217,14 @@ export default class Client {
     });
   };
 
-  static getMenu = (id) => {
+  static getMenu = (context) => {
     let token = retrieveUserToken(); // get user auth token
-    return axios.get(ROOT_URL + "/menus/" + id, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    return axios.get(
+      ROOT_URL + "/restaurants/" + context.restoId + "/menus/" + context.menuId,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   };
 
   static getAllMenus = (context) => {

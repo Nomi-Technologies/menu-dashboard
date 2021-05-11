@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { ButtonPrimary } from "./basics";
 import { retrieveUserToken, logout } from "../util/auth";
 import { navigate } from "gatsby";
+import { Breadcrumb } from "./dashboard/menu-table/breadcrumb";
+import { URLParamsContext } from "./URL-params-context";
 
 // Top of most dashboard pages.  Can include children for custom conent (i.e. menu selector)
 const StyledTopBar = styled.div`
@@ -23,8 +25,9 @@ const LogoutButton = styled(ButtonPrimary)`
   right: 80px;
 `;
 
-const TopBar = ({ title, children }) => {
+const TopBar = ({ title, currentRestaurant, currentMenu, children }) => {
   const loggedIn = retrieveUserToken();
+  const context = useContext(URLParamsContext);
 
   const logoutUser = () => {
     logout();
@@ -33,8 +36,24 @@ const TopBar = ({ title, children }) => {
 
   return (
     <StyledTopBar>
+      {context.menuId !== "all-menus" ? (
+        <Breadcrumb
+          currentRestaurant={currentRestaurant}
+          currentMenu={currentMenu}
+        />
+      ) : null}
       {loggedIn ? <LogoutButton onClick={logoutUser}>Logout</LogoutButton> : ""}
-      <h1>{title}</h1>
+      <h1>
+        {context.menuId == "all-menus"
+          ? "Menus"
+          : context.dishIdOrCreate
+          ? "Add new dish"
+          : context.categoryIdOrCreate
+          ? "Add new category"
+          : currentMenu
+          ? currentMenu.name
+          : "Loading"}
+      </h1>
       {children}
     </StyledTopBar>
   );

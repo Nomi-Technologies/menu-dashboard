@@ -7,8 +7,8 @@ import Client from "../../../util/client";
 import { MenuContext } from "./menu-context";
 import { ModificationContext } from "./modification-context";
 
-import { RestaurantSelector } from "../../dashboard/menu-selector/restaurant-selector";
-import { MenuSelector } from "../../dashboard/menu-selector/menu-selector";
+import { RestaurantSelector } from "../tab-selector/restaurant-selector";
+import { MenuSelector } from "../tab-selector/menu-selector";
 import TopBar from "../../top-bar";
 import Navigation from "../../../util/navigation";
 import { URLParamsContext } from "../../URL-params-context";
@@ -20,6 +20,7 @@ const MenuTableLayout = ({ children }) => {
   let [restaurants, setRestaurants] = useState([]);
   const [restaurantId, setRestaurantId] = useState(null);
   const [currentRestaurant, setCurrentRestaurant] = useState(null);
+  const [currentMenu, setCurrentMenu] = useState(null);
   const [modificationsById, setModificationsById] = useState({});
 
   const getRestaurants = async () => {
@@ -56,13 +57,14 @@ const MenuTableLayout = ({ children }) => {
     //await getAllMenus();
     await getRestaurants();
 
-    if (
-      restaurantId !== null &&
-      restaurantId !== undefined &&
-      restaurantId !== "all-menus"
-    ) {
-      setCurrentRestaurant({});
+    if (restaurantId !== null && restaurantId !== undefined) {
+      //setCurrentRestaurant({});
       await getRestaurant();
+      if (context.menuId !== "all-menus") {
+        await Client.getMenu(context).then((res) => {
+          setCurrentMenu(res.data);
+        });
+      }
     } else {
       //await getRestaurant(restaurants[0].id);
     }
@@ -104,8 +106,13 @@ const MenuTableLayout = ({ children }) => {
         <ModificationContext.Provider value={modificationContext}>
           <Container>
             <Column>
-              <TopBar title="Menus">
-                {menuId === "all-menus" ? (
+              <TopBar
+                title="Menus"
+                currentRestaurant={currentRestaurant}
+                currentMenu={currentMenu}
+              >
+                {context.dishIdOrCreate ||
+                context.categoryIdOrCreate ? null : menuId === "all-menus" ? (
                   <RestaurantSelector
                     restaurantId={restaurantId}
                     restaurants={restaurants}
