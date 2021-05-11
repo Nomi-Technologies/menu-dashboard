@@ -61,7 +61,7 @@ function useAsyncState(initialValue) {
 
 // Overall component which renders the table as a list of menu categories
 const MenuTable = () => {
-  const { restoId } = useContext(URLParamsContext);
+  const { restoId, menuId } = useContext(URLParamsContext);
   let menuTableContext = useContext(MenuContext);
   let refreshMenu = menuTableContext?.refreshMenu;
   let menu = menuTableContext?.menu;
@@ -195,7 +195,7 @@ const MenuTable = () => {
 
   const saveCategoryOrder = async () => {
     try {
-      await Client.updateCategoryOrder(menu.id, categoryOrder);
+      await Client.updateCategoryOrder(menuId, categoryOrder);
     } catch {
       refreshMenu();
     }
@@ -210,7 +210,7 @@ const MenuTable = () => {
                 <Table.TableCategory
                   key={categoryId}
                   index={index}
-                  menuId={menu.id}
+                  menuId={menuId}
                   menuContext={menuData}
                   category={menuData.categoryDict[categoryId]}
                   openDeleteConfirmation={openDeleteConfirmation}
@@ -280,7 +280,7 @@ const MenuTable = () => {
             <>
               <ButtonPrimary
                 onClick={() => {
-                  Navigation.dish(restoId, menu.id);
+                  Navigation.dish(restoId, menuId);
                 }}
                 showEditMode={showEditMode}
                 role="button"
@@ -303,7 +303,7 @@ const MenuTable = () => {
         {renderTableContents()}
         <Table.AddCategory
           onClick={() => {
-            Navigation.category(restoId, menu.id);
+            Navigation.category(restoId, menuId);
           }}
         />
       </StyledMenuTable>

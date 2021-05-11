@@ -105,14 +105,14 @@ const MenuTableLayout = ({ children }) => {
           <Container>
             <Column>
               <TopBar title="Menus">
-                {
-                  //menuId ?
-                  //<MenuSelector menuId={menuId} /> :
+                {menuId === "all-menus" ? (
                   <RestaurantSelector
                     restaurantId={restaurantId}
                     restaurants={restaurants}
                   />
-                }
+                ) : (
+                  <MenuSelector menuId={menuId} />
+                )}
               </TopBar>
               {children}
             </Column>

@@ -49,15 +49,17 @@ const MenuTab = styled.div`
 `;
 
 const MenuSelector = ({ menuId }) => {
+  const { restoId } = useContext(URLParamsContext);
   return (
     <StyledMenuSelector>
       <Menus>
         <MenuTab
-        //onClick={() => Navigation.restaurant(item.id)}
-        //selected={item.id === restaurantId}
-        //key={item.id}
+          onClick={() => Navigation.menu(restoId, menuId)}
+          selected={true}
+          //key={item.id}
         >
-          Test
+          Dishes
+          <ActiveIndicator />
           {/*item.id === restaurantId ? <ActiveIndicator /> : ""*/}
         </MenuTab>
         <MenuTab
