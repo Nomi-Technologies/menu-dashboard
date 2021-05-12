@@ -19,8 +19,26 @@ const Breadcrumb = ({ currentRestaurant, currentMenu }) => {
   return (
     <>
       <StyledBreadcrumb>
-        {currentRestaurant ? currentRestaurant.name + " > " : " > "}
-        {currentMenu ? currentMenu.name : ""}
+        {currentRestaurant ? (
+          <span
+            onClick={() => Navigation.restaurant(context.restoId)}
+            style={{ cursor: "pointer" }}
+          >
+            {currentRestaurant.name + " > "}
+          </span>
+        ) : (
+          " > "
+        )}
+        {currentMenu ? (
+          <span
+            onClick={() => Navigation.menu(context.restoId, context.menuId)}
+            style={{ cursor: "pointer" }}
+          >
+            {currentMenu.name}
+          </span>
+        ) : (
+          ""
+        )}
         {context.dishIdOrCreate ? " > Add new dish" : null}
         {context.categoryIdOrCreate ? " > Add new category" : null}
       </StyledBreadcrumb>
