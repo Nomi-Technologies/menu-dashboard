@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import RegisterLayout from "../../components/register/register-layout";
 import Client from "../../util/client";
-// import { FormTitle, FormSubtitle, FormRow, FormControls, FormError, FormInput, ButtonPrimary } from "../../components/basics"
+import { ButtonPrimary } from "../../components/basics";
+import {
+  FormInput,
+  FormTitle,
+  FormSubtitle,
+  FormRow,
+  FormControls,
+  FormError,
+} from "../../components/form";
 import { navigate } from "gatsby";
-import useEventListener from "@use-it/event-listener";
 import {
   setRegistrationData,
   fetchRegistrationData,
@@ -63,17 +70,72 @@ const ContactInfo = () => {
     }
   };
 
-  //press enter to navigate to the next page
-  function handler({ key }) {
-    if (key === "Enter") {
-      validateForm();
-    }
-  }
-
-  useEventListener("keydown", handler);
   return (
-    // <p>Hello</p>
-    <RegisterLayout></RegisterLayout>
+    <RegisterLayout>
+      <FormTitle>About You</FormTitle>
+      <FormSubtitle>
+        Restaurant admins can set up restaurants, tag dish information, and
+        invite employees.
+      </FormSubtitle>
+      <FormError>{error}</FormError>
+      <FormRow>
+        <FormInput
+          width="45%"
+          name="first-name"
+          placeholder="first name"
+          onChange={(event) => {
+            setContactInfo({ ...contactInfo, firstName: event.target.value });
+          }}
+          value={contactInfo.firstName}
+        ></FormInput>
+        <FormInput
+          width="45%"
+          name="last-name"
+          placeholder="last name"
+          onChange={(event) => {
+            setContactInfo({ ...contactInfo, lastName: event.target.value });
+          }}
+          value={contactInfo.lastName}
+        ></FormInput>
+      </FormRow>
+      <FormRow>
+        <FormInput
+          width="100%"
+          name="email"
+          placeholder="email address"
+          onChange={(event) => {
+            setContactInfo({ ...contactInfo, email: event.target.value });
+          }}
+          value={contactInfo.email}
+        ></FormInput>
+      </FormRow>
+      <FormRow>
+        <FormInput
+          type="password"
+          width="100%"
+          name="password"
+          placeholder="password"
+          onChange={(event) => {
+            setContactInfo({ ...contactInfo, password: event.target.value });
+          }}
+          value={contactInfo.password}
+        ></FormInput>
+      </FormRow>
+      <FormRow>
+        <FormInput
+          width="100%"
+          name="phone"
+          placeholder="phone number"
+          onChange={(event) => {
+            setContactInfo({ ...contactInfo, phone: event.target.value });
+          }}
+          value={contactInfo.phone}
+        ></FormInput>
+      </FormRow>
+      <FormControls>
+        <ButtonPrimary onClick={validateForm}>Next</ButtonPrimary>
+      </FormControls>
+    </RegisterLayout>
   );
 };
 

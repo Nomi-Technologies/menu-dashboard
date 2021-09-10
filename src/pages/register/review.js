@@ -64,7 +64,7 @@ const Review = (props) => {
           Client.login(email, password).then((response) => {
             saveUserToken(response.data["token"]);
             removeRegistrationData();
-            navigate("/dashboard/menu");
+            navigate("/dashboard");
           });
         });
       }
