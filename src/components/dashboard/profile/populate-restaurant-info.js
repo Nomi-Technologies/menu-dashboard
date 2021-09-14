@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { ButtonPrimary } from "../../basics";
+import { ButtonPrimary, ButtonRow } from "../../basics";
 import {
   FormInput,
   FormContainer,
@@ -190,11 +190,12 @@ const PopulateRestaurant = () => {
           clearFile={clearFile}
         />
       </FormRow>
-
+      <ButtonRow>
+        <ButtonPrimary onClick={submit} save={save}>
+          Save
+        </ButtonPrimary>
+      </ButtonRow>
       {/* ! save/setSave is unused */}
-      <ButtonPrimary onClick={submit} save={save}>
-        Save
-      </ButtonPrimary>
     </FormContainer>
   );
 };

@@ -12,11 +12,6 @@ import { Link } from "gatsby";
 import {
   InfoTitle,
   SideTitle,
-  LinkToAnotherPage,
-  Back,
-  MarginTop,
-  Orange,
-  SideBar,
   GreyBar,
 } from "../../components/dashboard/profile/account";
 
@@ -40,11 +35,12 @@ const Personal = () => (
     <Wrapper>
       <Container>
         <GreyBar>
-          <InfoTitle>Profile</InfoTitle>
+          <InfoTitle>Settings</InfoTitle>
+          <SideTitle>Profile</SideTitle>
           <PopulatePersonal />
-          <InfoTitle>Change Password</InfoTitle>
+          <SideTitle>Change Password</SideTitle>
           <ChangePassword />
-          <InfoTitle>Restaurant</InfoTitle>
+          <SideTitle>Restaurant</SideTitle>
           <PopulateRestaurant />
         </GreyBar>
       </Container>

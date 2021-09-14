@@ -8,7 +8,7 @@ export const FormContainer = styled.div`
   position: relative;
   width: 100%;
   max-height: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   box-sizing: border-box;
   padding: 0 25%;
   padding-top: 32px;

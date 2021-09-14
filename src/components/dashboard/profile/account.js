@@ -10,7 +10,7 @@ let InfoTitle = styled.p`
   font-family: HK Grotesk Regular;
   font-style: normal;
   font-weight: bold;
-  font-size: 36px;
+  font-size: 28px;
   color: #000000;
   flex: none;
   order: 0;
@@ -20,7 +20,7 @@ let SideTitle = styled.p`
   font-family: HK Grotesk Regular;
   font-style: normal;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 29px;
   color: #8a9db7;
 `;
