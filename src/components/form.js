@@ -54,6 +54,14 @@ export const FormSubtitle = styled.p`
   margin-bottom: 8px;
 `;
 
+export const FormHint = styled.p`
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: grey;
+  font-weight: light;
+  font-style: italic;
+`;
+
 export const FormMessage = styled.p`
   padding: 0;
   margin-top: 0;

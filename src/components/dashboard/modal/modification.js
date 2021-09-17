@@ -28,7 +28,7 @@ export const useModificationModal = () => {
       }
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -40,7 +40,7 @@ export const useModificationModal = () => {
       }
       return res.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

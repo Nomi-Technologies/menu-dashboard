@@ -14,6 +14,7 @@ import {
   FormSplitColumn,
   FormContainer,
   FormControls,
+  FormHint,
 } from "../../components/form";
 import { FileDrop } from "../../components/file-drop";
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown";
@@ -79,6 +80,13 @@ const DishPage = () => {
     });
   };
 
+  const setDishRemovableTags = (removableTags) => {
+    setDishData({
+      ...dishData,
+      RemovableTags: removableTags,
+    });
+  };
+
   const setDishDiets = (diets) => {
     setDishData({
       ...dishData,
@@ -116,7 +124,6 @@ const DishPage = () => {
     if (!create) {
       Client.getDish(dishId).then((res) => {
         const dish = res.data;
-        console.log(dish);
         dish.modIds = dish.Modifications.map((mod) => mod.id);
         delete dish["Modification"];
         setDishData(dish);
@@ -147,6 +154,7 @@ const DishPage = () => {
     let postDishData = {
       ...dishData,
       dishTags: dishData.Tags.map((tag) => tag.id),
+      dishRemovableTags: dishData.RemovableTags.map((tag) => tag.id),
       dishDiets: dishData.Diets.map((diet) => diet.id),
       dishModifications: dishData.modIds,
     };
@@ -166,7 +174,7 @@ const DishPage = () => {
 
       Navigation.table(restoId, menuId);
     } catch (error) {
-      console.log("could not create dish");
+      console.error("could not create dish");
     }
   };
 
@@ -228,6 +236,18 @@ const DishPage = () => {
         </FormSplitRow>
         <FormSubtitle>Allergens</FormSubtitle>
         <DishTagForm tags={dishData.Tags} setTags={setDishTags}></DishTagForm>
+
+        <FormSubtitle>Removable Allergens</FormSubtitle>
+
+        <FormHint>
+          Removable allergens are allergens that can be removed from the dish.
+          If you add an allergen here, it will also show up above in all
+          allergens.
+        </FormHint>
+        <DishTagForm
+          tags={dishData.Tags.filter((tag) => tag.DishTag.removable)}
+          setTags={setDishRemovableTags}
+        ></DishTagForm>
 
         <FormSubtitle>Diets</FormSubtitle>
         <DishDietForm

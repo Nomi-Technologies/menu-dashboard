@@ -31,7 +31,6 @@ const ContactInfo = () => {
     let registrationData = fetchRegistrationData();
 
     if (registrationData !== undefined && registrationData !== null) {
-      // console.log(registrationData)
       setContactInfo({
         ...registrationData.contactInfo,
         password: "",
