@@ -19,6 +19,11 @@ let FormColumn = styled(Column)`
   padding-right: 52px;
 `;
 
+let RegisterFormContainer = styled(FormContainer)`
+  overflow: hidden;
+  padding-top: 100px;
+`;
+
 const RegisterLayout = ({ children }) => {
   const [registrationData, setRegistrationData] = useState({});
 
@@ -44,7 +49,7 @@ const RegisterLayout = ({ children }) => {
           <RegistrationProgress currentIdx={getCurrentIndex()} />
         </SideBar>
         <FormColumn>
-          <FormContainer>{children}</FormContainer>
+          <RegisterFormContainer>{children}</RegisterFormContainer>
         </FormColumn>
       </Container>
     </StyledRegisterLayout>

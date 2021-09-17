@@ -2,7 +2,7 @@ import { Link, navigate } from "gatsby";
 import React, { useState } from "react";
 
 import styled from "styled-components";
-import { ButtonPrimary, ButtonSecondary, ButtonRow } from "../basics";
+import { ButtonPrimary, ButtonSecondary, ButtonRow, Button } from "../basics";
 import { FormInput } from "../form";
 import Client from "../../util/client";
 import { saveUserToken } from "../../util/auth";
@@ -37,6 +37,12 @@ const Container = styled.div`
 
   ${ButtonRow} {
     justify-content: space-between;
+
+    ${Button} {
+      margin-left: 0;
+      width: 25%;
+      text-align: center;
+    }
   }
 `;
 
@@ -87,7 +93,9 @@ const LoginForm = () => {
       />
       {/* <ForgotPassword>Forgot password?</ForgotPassword>   */}
       <ButtonRow>
-        <ButtonPrimary onClick={loginUser}>Login</ButtonPrimary>
+        <ButtonPrimary style={{ textAlign: "center" }} onClick={loginUser}>
+          Login
+        </ButtonPrimary>
         <ButtonSecondary
           theme="light"
           onClick={() => navigate("/register/contact-info")}

@@ -8,7 +8,7 @@ export const FormContainer = styled.div`
   position: relative;
   width: 100%;
   max-height: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   box-sizing: border-box;
   padding: 0 25%;
   padding-top: 32px;
@@ -54,6 +54,14 @@ export const FormSubtitle = styled.p`
   margin-bottom: 8px;
 `;
 
+export const FormHint = styled.p`
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: grey;
+  font-weight: light;
+  font-style: italic;
+`;
+
 export const FormMessage = styled.p`
   padding: 0;
   margin-top: 0;
@@ -87,6 +95,12 @@ export const FormTextArea = styled.textarea`
   border: none;
   height: 70px;
   margin-bottom: 24px;
+`;
+
+export const ImagePreview = styled.img`
+  max-width: 100%;
+  max-height: 300px;
+  margin: 20px 0;
 `;
 
 export const FormNotice = styled.div`

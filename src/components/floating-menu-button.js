@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import styled from "styled-components";
 import HamburgerMenu from "react-hamburger-menu";
 import { FloatingMenu } from "../components/dashboard/floating-menu";
 import { Colors } from "../util/colors";
+import { URLParamsContext } from "./URL-params-context";
 
 const Button = styled.div`
   position: fixed;
@@ -36,7 +37,8 @@ let StyledFloatingMenu = styled(FloatingMenu)`
   }
 `;
 
-const FloatingMenuButton = ({ menuId }) => {
+const FloatingMenuButton = () => {
+  const { menuId } = useContext(URLParamsContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleFloatingMenu = () => {

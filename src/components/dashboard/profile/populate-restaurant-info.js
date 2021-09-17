@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import styled from "styled-components";
-import { ButtonPrimary } from "../../basics";
-import { FormInput, FormContainer, FormRow } from "../../form";
+import { ButtonPrimary, ButtonRow } from "../../basics";
+import {
+  FormInput,
+  FormContainer,
+  FormRow,
+  FormSubtitle,
+  ImagePreview,
+} from "../../form";
 
 import Client from "../../../util/client";
+import { FileDrop } from "../../file-drop";
 
 const PopulateRestaurant = () => {
   const [restaurant, setRestaurant] = useState("");
@@ -18,47 +24,75 @@ const PopulateRestaurant = () => {
   const [id, setId] = useState();
   const [save, setSave] = useState(false);
 
+  const [logo, setLogo] = useState();
+  const [logoUrl, setLogoUrl] = useState();
+  const [logoImageHash, setLogoImageHash] = useState(); // trigger reload
+  const [errorMessage, setErrorMessage] = useState();
+
   useEffect(() => {
-    Client.getRestaurantInfo().then((response) => {
-      setRestaurant(response.data.name);
-      setAddress(response.data.streetAddress);
-      setCity(response.data.city);
-      setState(response.data.state);
-      setZip(response.data.zip);
-      setPhone(response.data.phone);
-      setWebsite(response.data.url);
-      setId(response.data.id);
+    (async () => {
+      const res = await Client.getRestaurantInfo();
+      setRestaurant(res.data.name);
+      setAddress(res.data.streetAddress);
+      setCity(res.data.city);
+      setState(res.data.state);
+      setZip(res.data.zip);
+      setPhone(res.data.phone);
+      setWebsite(res.data.url);
+      setId(res.data.id);
       setSave(false);
-    });
+      try {
+        const logo = await Client.getRestaurantLogo(res.data.id);
+        setLogoUrl(logo.config.url);
+      } catch (err) {}
+    })();
   }, []);
 
-  const submit = () => {
-    Client.updateRestaurantInfo(id, {
-      name: restaurant,
-      streetAddress: address,
-      city: city,
-      state: state,
-      zip: zip,
-      phone: phone,
-      url: website,
-    })
-      .then(() => {
-        setSave(true);
-      })
-      .catch((err) => {
-        Client.getRestaurantInfo().then((oldItem) => {
-          setRestaurant(oldItem.data.name);
-          setAddress(oldItem.data.streetAddress);
-          setCity(oldItem.data.city);
-          setState(oldItem.data.state);
-          setZip(oldItem.data.zip);
-          setPhone(oldItem.data.phone);
-          setWebsite(oldItem.data.url);
-          setId(oldItem.data.id);
-          setSave(false);
-        });
-        console.error(err);
+  const submit = async () => {
+    try {
+      await Client.updateRestaurantInfo(id, {
+        name: restaurant,
+        streetAddress: address,
+        city: city,
+        state: state,
+        zip: zip,
+        phone: phone,
+        url: website,
       });
+      await Client.upsertRestaurantLogo(id, logo);
+      setSave(true);
+      const res = await Client.getRestaurantLogo(id);
+      setLogoUrl(res.config.url);
+      setLogoImageHash(Date.now());
+    } catch (err) {
+      const oldItem = await Client.getRestaurantInfo();
+      setRestaurant(oldItem.data.name);
+      setAddress(oldItem.data.streetAddress);
+      setCity(oldItem.data.city);
+      setState(oldItem.data.state);
+      setZip(oldItem.data.zip);
+      setPhone(oldItem.data.phone);
+      setWebsite(oldItem.data.url);
+      setId(oldItem.data.id);
+      setSave(false);
+    }
+  };
+
+  const setFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onabort = () => console.error("File reading aborted");
+    reader.onerror = () => setErrorMessage("An error occurred.");
+    reader.onload = () => {
+      const formData = new FormData();
+      formData.append("file", file);
+      setLogo(formData);
+      setSave(false);
+    };
+  };
+
+  const clearFile = () => {
+    setLogo(null);
   };
 
   return (
@@ -141,10 +175,27 @@ const PopulateRestaurant = () => {
           }}
         ></FormInput>
       </FormRow>
-
-      <ButtonPrimary onClick={submit} save={save}>
-        Save
-      </ButtonPrimary>
+      <FormRow>
+        <FormSubtitle>Restaurant Logo</FormSubtitle>
+        {logoUrl ? (
+          <>
+            <ImagePreview src={`${logoUrl}?${logoImageHash}`} />
+            <p>Replace Image:</p>
+          </>
+        ) : null}
+        <FileDrop
+          acceptedFileTypes={[".png", ".jpg", ".jpeg"]}
+          setFile={setFile}
+          setErrorMessage={setErrorMessage}
+          clearFile={clearFile}
+        />
+      </FormRow>
+      <ButtonRow>
+        <ButtonPrimary onClick={submit} save={save}>
+          Save
+        </ButtonPrimary>
+      </ButtonRow>
+      {/* ! save/setSave is unused */}
     </FormContainer>
   );
 };

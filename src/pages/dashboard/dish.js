@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
-import { Router } from "@reach/router";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 
 import Client from "../../util/client";
@@ -16,6 +14,7 @@ import {
   FormSplitColumn,
   FormContainer,
   FormControls,
+  FormHint,
 } from "../../components/form";
 import { FileDrop } from "../../components/file-drop";
 import { CategoryDropdown } from "../../components/dashboard/menu-table/form/dropdown";
@@ -29,6 +28,7 @@ import {
   ModificationModal,
   useModificationModal,
 } from "../../components/dashboard/modal/modification";
+import { URLParamsContext } from "../../components/URL-params-context";
 
 const Banner = styled.div`
   background: url(${({ src }) => src});
@@ -39,7 +39,9 @@ const Banner = styled.div`
   margin-bottom: 10px;
 `;
 
-const DishPage = ({ menuId, dishIdOrCreate }) => {
+const DishPage = () => {
+  const { restoId, menuId, dishIdOrCreate } = useContext(URLParamsContext);
+
   let dishId, create;
   if (dishIdOrCreate === "create") {
     create = true;
@@ -52,6 +54,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     name: "",
     description: "",
     price: "",
+    restaurantId: restoId,
     categoryId: 0,
     Tags: [],
     Diets: [],
@@ -68,14 +71,19 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
       ...dishData,
       categoryId: categoryId,
     });
-
-    console.log(dishData);
   };
 
   const setDishTags = (tags) => {
     setDishData({
       ...dishData,
       Tags: tags,
+    });
+  };
+
+  const setDishRemovableTags = (removableTags) => {
+    setDishData({
+      ...dishData,
+      RemovableTags: removableTags,
     });
   };
 
@@ -116,7 +124,6 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     if (!create) {
       Client.getDish(dishId).then((res) => {
         const dish = res.data;
-        console.log(dish);
         dish.modIds = dish.Modifications.map((mod) => mod.id);
         delete dish["Modification"];
         setDishData(dish);
@@ -147,6 +154,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
     let postDishData = {
       ...dishData,
       dishTags: dishData.Tags.map((tag) => tag.id),
+      dishRemovableTags: dishData.RemovableTags.map((tag) => tag.id),
       dishDiets: dishData.Diets.map((diet) => diet.id),
       dishModifications: dishData.modIds,
     };
@@ -164,9 +172,9 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         }
       }
 
-      Navigation.table(menuId);
+      Navigation.table(restoId, menuId);
     } catch (error) {
-      console.log("could not create dish");
+      console.error("could not create dish");
     }
   };
 
@@ -175,7 +183,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   }, []);
 
   return (
-    <MenuTableLayout menuId={menuId}>
+    <MenuTableLayout>
       <FormContainer>
         <FormTitle>{create ? "Create Dish" : "Edit Dish Info"}</FormTitle>
         <FormSubtitle>Dish Name</FormSubtitle>
@@ -229,6 +237,18 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         <FormSubtitle>Allergens</FormSubtitle>
         <DishTagForm tags={dishData.Tags} setTags={setDishTags}></DishTagForm>
 
+        <FormSubtitle>Removable Allergens</FormSubtitle>
+
+        <FormHint>
+          Removable allergens are allergens that can be removed from the dish.
+          If you add an allergen here, it will also show up above in all
+          allergens.
+        </FormHint>
+        <DishTagForm
+          tags={dishData.Tags.filter((tag) => tag.DishTag.removable)}
+          setTags={setDishRemovableTags}
+        ></DishTagForm>
+
         <FormSubtitle>Diets</FormSubtitle>
         <DishDietForm
           diets={dishData.Diets}
@@ -256,7 +276,7 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
         <FormControls>
           <ButtonSecondary
             onClick={() => {
-              Navigation.table(menuId);
+              Navigation.table(restoId, menuId);
             }}
           >
             Cancel
@@ -277,19 +297,10 @@ const DishPage = ({ menuId, dishIdOrCreate }) => {
   );
 };
 
-const AllMenusPage = () => {
-  if (typeof window !== `undefined`) {
-    Navigation.allMenus();
-  }
-
-  return <></>;
-};
-
-export default () => {
+export default ({ menuId, restoId, dishIdOrCreate }) => {
   return (
-    <Router basepath="/dashboard/dish">
-      <DishPage path="/:menuId/:dishIdOrCreate" />
-      <AllMenusPage path="/" />
-    </Router>
+    <URLParamsContext.Provider value={{ restoId, menuId, dishIdOrCreate }}>
+      <DishPage />
+    </URLParamsContext.Provider>
   );
 };

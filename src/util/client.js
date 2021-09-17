@@ -206,6 +206,17 @@ export default class Client {
     });
   };
 
+  static getMenuImage = (id) => {
+    return axios.get(`${ROOT_URL}/images/menus/${id}`);
+  };
+
+  static upsertMenuImage = (id, image) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/images/menus/${id}`, image, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   static getMenu = (id) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.get(ROOT_URL + "/menus/" + id, {
@@ -297,6 +308,17 @@ export default class Client {
     });
   };
 
+  static getRestaurantLogo = (id) => {
+    return axios.get(`${ROOT_URL}/images/restaurants/${id}`);
+  };
+
+  static upsertRestaurantLogo = (id, data) => {
+    let token = retrieveUserToken();
+    return axios.put(`${ROOT_URL}/images/restaurants/${id}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   static downloadCSV = (menuId) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.get(ROOT_URL + `/menus/${menuId}/csv`, {
@@ -316,12 +338,23 @@ export default class Client {
 
   static toggleFiltering = (menuId, enableFiltering) => {
     let token = retrieveUserToken(); // get user auth token
-    console.log(token);
-    console.log(menuId);
     return axios.put(
       ROOT_URL + `/menus/${menuId}/toggle-filtering`,
       {
         enableFiltering: enableFiltering,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  };
+
+  static setPublished = (menuId, published) => {
+    let token = retrieveUserToken();
+    return axios.put(
+      ROOT_URL + `/menus/${menuId}/set-published`,
+      {
+        published: published,
       },
       {
         headers: { Authorization: `Bearer ${token}` },

@@ -1,14 +1,11 @@
 import React from "react";
-import { Router } from "@reach/router";
 
 import styled from "styled-components";
-import { navigate } from "gatsby";
 import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
-import Navigation from "../../util/navigation";
-import { AllMenus } from "../../components/dashboard/all-menus-tab/all-menus";
+import { URLParamsContext } from "../../components/URL-params-context";
 
 let MenuContainer = styled.div`
   box-sizing: border-box;
@@ -17,32 +14,23 @@ let MenuContainer = styled.div`
   padding-top: 30px;
 `;
 
-const MenuTablePage = ({ menuId }) => {
+const MenuTablePage = () => {
   // TODO: fix menu title and floating menu button
   return (
-    <MenuTableLayout menuId={menuId}>
+    <MenuTableLayout>
       <MenuContainer>
         <MenuTitle />
         <MenuTable />
-        <FloatingMenuButton menuId={menuId} />
+        <FloatingMenuButton />
       </MenuContainer>
     </MenuTableLayout>
   );
 };
 
-const AllMenusPage = () => {
+export default ({ menuId, restoId }) => {
   return (
-    <MenuTableLayout menuId="all-menus">
-      <AllMenus />
-    </MenuTableLayout>
-  );
-};
-
-export default () => {
-  return (
-    <Router basepath="/dashboard/table">
-      <MenuTablePage path="/:menuId" />
-      <AllMenusPage path="/" />
-    </Router>
+    <URLParamsContext.Provider value={{ restoId, menuId }}>
+      <MenuTablePage />
+    </URLParamsContext.Provider>
   );
 };
