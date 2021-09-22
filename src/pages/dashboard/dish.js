@@ -126,6 +126,7 @@ const DishPage = () => {
         const dish = res.data;
         dish.modIds = dish.Modifications.map((mod) => mod.id);
         delete dish["Modification"];
+        dish.RemovableTags = dish.Tags.filter((tag) => tag.DishTag.removable);
         setDishData(dish);
       });
       Client.getDishImage(dishId).then((res) => {
@@ -245,7 +246,7 @@ const DishPage = () => {
           allergens.
         </FormHint>
         <DishTagForm
-          tags={dishData.Tags.filter((tag) => tag.DishTag.removable)}
+          tags={dishData.RemovableTags}
           setTags={setDishRemovableTags}
         ></DishTagForm>
 
