@@ -57,6 +57,7 @@ const DishPage = () => {
     restaurantId: restoId,
     categoryId: 0,
     Tags: [],
+    RemovableTags: [],
     Diets: [],
     modIds: [], // only contains ids
   });
