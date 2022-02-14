@@ -3,6 +3,7 @@ import { retrieveUserToken } from "./auth";
 import { navigate } from "gatsby";
 
 const ROOT_URL = process.env.GATSBY_API_URL;
+console.log(ROOT_URL);
 
 axios.interceptors.response.use(
   (response) => {
@@ -60,6 +61,7 @@ export default class Client {
   };
 
   static createDish = (data) => {
+    console.log(data);
     let token = retrieveUserToken(); // get user auth token
     return axios.post(ROOT_URL + "/dishes/", data, {
       headers: { Authorization: `Bearer ${token}` },
