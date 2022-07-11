@@ -91,7 +91,7 @@ const Modal = ({ children, open, openModal, closeModal, width }) => {
             className="delete"
             src={closeIcon}
             alt="Close icon"
-            onClick={closeModal}
+            onClick={() => closeModal(false)}
           />
         </CloseRow>
         <Container>{children}</Container>
