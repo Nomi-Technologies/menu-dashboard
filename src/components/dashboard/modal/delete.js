@@ -127,7 +127,8 @@ export const useDeleteMenuModal = (menuId, refreshMenu) => {
     if (shouldDelete) {
       try {
         await Client.deleteMenu(menuId);
-        navigate("/dashboard/all-menus");
+        navigate("/dashboard");
+        window.location.reload();
       } catch (error) {
         console.error(error);
       }
