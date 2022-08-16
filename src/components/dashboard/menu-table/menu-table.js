@@ -65,6 +65,7 @@ const MenuTable = () => {
   let menuTableContext = useContext(MenuContext);
   let refreshMenu = menuTableContext?.refreshMenu;
   let menu = menuTableContext?.menu;
+  let reorderMenu = menuTableContext?.reorderMenu;
   const [menuData, setMenuData] = useState({}); // includes parsed menuData
 
   const [showCopyMenuConfirmation, setCopyMenuConfirmation] = useAsyncState(
@@ -248,7 +249,18 @@ const MenuTable = () => {
     <DndProvider backend={HTML5Backend}>
       <MenuControls>
         <div className="buttons">
-          {/* <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial> */}
+          <ButtonSecondary onClick={() => reorderMenu(menu, "top")}>
+            Move to First
+          </ButtonSecondary>
+          <ButtonSecondary onClick={() => reorderMenu(menu, "up")}>
+            Move Up
+          </ButtonSecondary>
+          <ButtonSecondary onClick={() => reorderMenu(menu, "down")}>
+            Move Down
+          </ButtonSecondary>
+          <ButtonSecondary onClick={() => reorderMenu(menu, "bottom")}>
+            Move to Last
+          </ButtonSecondary>
         </div>
 
         <SearchBox
