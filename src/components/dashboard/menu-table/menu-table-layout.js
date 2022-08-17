@@ -76,6 +76,7 @@ const MenuTableLayout = ({ children }) => {
   };
 
   let menuContext = {
+    menus,
     menu: currentMenu,
     refreshMenu: refreshMenu,
     reorderMenu: reorderMenu,

@@ -4,6 +4,7 @@ export const Colors = {
   ORANGE_LIGHTEST: "#FBD8D0",
   SLATE: "#8A9DB7",
   SLATE_LIGHT: "#E1E7EC",
+  SLATE_LIGHTER: "#F0F2F7",
   SLATE_DARK: "#627083",
   GRAY: "#939393",
   BLUE: "#628DEB",
