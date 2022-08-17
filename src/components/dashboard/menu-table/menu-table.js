@@ -247,9 +247,7 @@ const MenuTable = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <MenuControls>
-        <div className="buttons">
-          {/* <ButtonSpecial onClick={toggleEditMode} role="button">{ showEditMode ? "Done" : "Edit" }</ButtonSpecial> */}
-        </div>
+        <div className="buttons"></div>
 
         <SearchBox
           setIsSearching={setIsSearching}

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FloatingMenuButton } from "../../components/floating-menu-button";
 import { MenuTable } from "../../components/dashboard/menu-table/menu-table";
 import { MenuTitle } from "../../components/dashboard/menu-table/menu-title";
+import { MenuReorderControl } from "../../components/dashboard/menu-table/menu-reorder-control";
 import MenuTableLayout from "../../components/dashboard/menu-table/menu-table-layout";
 import { URLParamsContext } from "../../components/URL-params-context";
 
@@ -19,6 +20,7 @@ const MenuTablePage = () => {
   return (
     <MenuTableLayout>
       <MenuContainer>
+        <MenuReorderControl />
         <MenuTitle />
         <MenuTable />
         <FloatingMenuButton />

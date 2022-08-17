@@ -338,6 +338,16 @@ export default class Client {
     });
   };
 
+  static updateMenuOrder = (orderedMenus) => {
+    let token = retrieveUserToken();
+    let data = {
+      orderedMenus,
+    };
+    return axios.put(ROOT_URL + "/menus/update-menu-order", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   static toggleFiltering = (menuId, enableFiltering) => {
     let token = retrieveUserToken(); // get user auth token
     return axios.put(

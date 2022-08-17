@@ -44,9 +44,42 @@ const MenuTableLayout = ({ children }) => {
     }
   };
 
+  const reorderMenu = (menu, action) => {
+    if (menu === undefined) return;
+    let reorderedMenus = [...menus];
+    const currentIndex = reorderedMenus.findIndex((e) => e.id === menu.id);
+    // Remove current id from the list.
+    reorderedMenus.splice(currentIndex, 1);
+    switch (action) {
+      case "top":
+        reorderedMenus = [menu, ...reorderedMenus];
+        break;
+      case "bottom":
+        reorderedMenus.push(menu);
+        break;
+      case "up":
+        reorderedMenus.splice(Math.max(currentIndex - 1, 0), 0, menu);
+        break;
+      case "down":
+        reorderedMenus.splice(
+          Math.min(currentIndex + 1, reorderedMenus.length),
+          0,
+          menu
+        );
+        break;
+      default:
+        reorderedMenus.splice(currentIndex, menu);
+    }
+    reorderedMenus.forEach((menu, index) => (menu.index = index));
+    setMenus(reorderedMenus);
+    Client.updateMenuOrder(reorderedMenus);
+  };
+
   let menuContext = {
+    menus,
     menu: currentMenu,
     refreshMenu: refreshMenu,
+    reorderMenu: reorderMenu,
   };
 
   const refreshModifications = async () => {
