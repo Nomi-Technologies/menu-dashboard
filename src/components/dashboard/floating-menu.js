@@ -49,12 +49,12 @@ const HorizontalSeparator = styled.div`
 `;
 
 const FloatingMenu = ({ isOpen, close, menuId, className }) => {
-  const [uniqueName, setUniqueName] = useState(null);
+  const [restoId, setRestoId] = useState(null);
   let { refreshMenu, menu } = useContext(MenuContext);
 
   useEffect(() => {
     Client.getRestaurantInfo().then((res) => {
-      setUniqueName(res.data.uniqueName);
+      setRestoId(res.data.id);
     });
   }, []);
 
@@ -136,7 +136,8 @@ const FloatingMenu = ({ isOpen, close, menuId, className }) => {
         open={showQRCodeModal}
         openModal={openQRCodeModal}
         closeModal={closeQRCodeModal}
-        uniqueName={uniqueName}
+        restoId={restoId}
+        menuId={menuId}
       />
       <UploadCSVModal
         open={showUploadCSVModal}

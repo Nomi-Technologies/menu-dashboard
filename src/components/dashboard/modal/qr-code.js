@@ -19,10 +19,14 @@ const useQRCodeModal = () => {
   return [open, openModal, closeQRCodeModal];
 };
 
-const QRCodeModal = ({ open, openModal, closeModal, uniqueName }) => {
-  const url = `${process.env.GATSBY_SMART_MENU_URL}/${uniqueName}`;
+const QRCodeModal = ({ open, openModal, closeModal, restoId, menuId }) => {
+  const url = `${process.env.GATSBY_REDIRECT_SERVICE_URL}?restoId=${restoId}&menuId=${menuId}`;
 
   const [qrCodeDataUrl, setQRCodeDataUrl] = useState();
+
+  useEffect(() => {
+    setQRCodeDataUrl(null);
+  }, [menuId]);
 
   useEffect(() => {
     // only start generation if modal is opened & qr code not generated
@@ -54,7 +58,7 @@ const QRCodeModal = ({ open, openModal, closeModal, uniqueName }) => {
       )}
       <ButtonRow>
         <ButtonSecondary onClick={closeModal}>Close</ButtonSecondary>
-        <a href={qrCodeDataUrl} download={`${uniqueName}-QRCode`}>
+        <a href={qrCodeDataUrl} download={`${menuId}-QRCode`}>
           <ButtonPrimary onClick={() => {}}>Download as .PNG</ButtonPrimary>
         </a>
       </ButtonRow>
