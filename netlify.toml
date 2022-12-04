@@ -2,7 +2,7 @@
 [context.production.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service.herokuapp.com/api"
-GATSBY_REDIRECT_SERVICE_URL = "https://redirect.nomi.menu"
+GATSBY_REDIRECT_SERVICE_URL = "https://api.nomi.menu/redirect"
 
 # PR Previews
 [context.deploy-preview.environment]
