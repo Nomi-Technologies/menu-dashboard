@@ -2,22 +2,17 @@
 [context.production.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://nomi.menu"
+GATSBY_REDIRECT_SERVICE_URL = "https://api.nomi.menu/redirect"
 
 # PR Previews
 [context.deploy-preview.environment]
 NODE_ENV = "production"
-GATSBY_API_URL = "https://nomi-menu-service-testing.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://develop-web-menu-prod.netlify.app"
+GATSBY_API_URL = "https://nomi-menu-service-staging.herokuapp.com/api"
+GATSBY_REDIRECT_SERVICE_URL = "https://nomi-menu-service-staging.herokuapp.com/redirect"
 
 # Staging
 [context.staging.environment]
 NODE_ENV = "production"
 GATSBY_API_URL = "https://nomi-menu-service-staging.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://web-menu-staging.netlify.app"
-
-# Testing
-[context.develop.environment]
-NODE_ENV = "production"
-GATSBY_API_URL = "https://nomi-menu-service-testing.herokuapp.com/api"
-GATSBY_SMART_MENU_URL = "https://develop--web-menu-prod.netlify.app"
+GATSBY_SMART_MENU_URL = "https://nomi-menu-service-staging.herokuapp.com/redirect"
+GATSBY_REDIRECT_SERVICE_URL = "https://nomi-menu-service-staging.herokuapp.com/redirect"
