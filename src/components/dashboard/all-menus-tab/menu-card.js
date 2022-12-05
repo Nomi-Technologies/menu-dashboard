@@ -65,19 +65,19 @@ const MenuCard = ({ menuId, name }) => {
                         <img alt="Unfavorite" src={HeartIcon} onClick={() => props.toggleFavoriteMenu(props.id, false)}/> :
                         <img alt="Favorite" src={HeartEmptyIcon} onClick={() => props.toggleFavoriteMenu(props.id, true)}/>
                     } */}
-          <img
+          {/* <img
             type="image"
             alt="Edit"
             src={EditIcon}
             onClick={toggleFloatingMenu}
-          />
+          /> */}
         </div>
       </StyledMenuCard>
-      <FloatingMenu
+      {/* <FloatingMenu
         isOpen={isFloatingMenuOpen}
         close={toggleFloatingMenu}
         menuId={menuId}
-      />
+      /> */}
     </>
   );
 };
